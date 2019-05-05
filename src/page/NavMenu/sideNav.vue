@@ -1,0 +1,255 @@
+<template>
+  <div :class="$style.side_nav" class="side_nav">
+    <!-- 菜单列表 -->
+    <transition name="fade">
+    <!-- 仓秘书 -->
+    <div v-if="!sideNavStatus"
+      :class="$style.nav"
+      @mouseleave="handleLeave()"
+    >
+      <ul
+        :class="$style.side_nav_ul"
+      >
+        <li
+          :class="$style.side_nav_li"
+          v-for="(item, index) in sideList"
+          :key="index"
+          @mouseover="ClickToItem(item.name, index)"
+        >
+          <i
+            :class="$style.li_icon"
+            class="iconfont"
+            v-html="item.icon"
+          >
+          </i>
+          <span
+            :class="$style.li_title"
+            @click="handleHomeClick(item.name)"
+          >
+            {{$t(item.name)}}
+          </span>
+        </li>
+      </ul>
+      <ul
+        :class="$style.NavChild"
+        ref="NavChild"
+        v-show="li_show_switch"
+        @click="handleCloseNavChild"
+      >
+        <li
+          :class="$style.NavChild_li"
+          v-for="item in li_NavChild"
+          :key="item.name"
+        >
+          <router-link :to="{ name: item.name }"
+            style="text-decoration: none;
+                  color: #fff;"
+          >
+            {{$t(item.name)}}
+          </router-link>
+        </li>
+      </ul>
+    </div>
+    </transition>
+    <!-- 隐藏后的菜单列表（先不做）-->
+    <!-- <el-menu
+      background-color="#444154"
+      :default-active="$route.name"
+      class="el-menu-vertical-demo"
+      active-text-color="#ffd04b"
+      text-color="#fff"
+      v-show="sideNavStatus"
+      :collapse="true"
+    >
+      <el-submenu
+        v-for="(item, index) in sideList"
+        :key="index"
+      >
+        <template slot="title">
+          <i class="iconfont" v-html="sideNavTitle.icon"></i>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item
+          :index="item.name"
+          v-for="item in item.children"
+          :key="item.name"
+          @click="$router.push({
+            name: item.name,
+          })">
+            {{$t(item.name)}}
+          </el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+    </el-menu> -->
+  </div>
+</template>
+<script>
+export default {
+  name: 'sideNav',
+  props: ['nav', 'sideNavList'],
+  data() {
+    return {
+      li_show_switch: true, // 子菜单显示开关
+      li_NavChild: [], // 子菜单数组
+      ul_Nav: this.sideNavList, // 缓存的路由表
+    };
+  },
+  methods: {
+    // 子菜单操作
+    ClickToItem(itemName, index) {
+      // 缓存子菜单
+      let sunMeanu = [];
+      // 缓存计算值
+      let distance;
+      const menu = this.sideNavList;
+      for (let i = 0; i < menu.length; i += 1) {
+        if (menu[i].name === itemName) {
+          if (index === 0) {
+            this.li_show_switch = false;
+            return;
+          }
+          this.li_show_switch = true;
+          distance = `${(i * 80) + 40}px`;
+          sunMeanu = menu[i].children;
+        }
+      }
+      this.$refs.NavChild.style.margin = `${distance} 0 0 0 `;
+      this.li_NavChild = sunMeanu;
+    },
+    handleCloseNavChild() {
+      this.li_show_switch = false;
+    },
+    handleLeave() {
+      this.li_show_switch = false;
+    },
+    handleHomeClick(name) {
+      if (name === 'initPage') {
+        this.$router.push({ name: 'home' });
+      }
+    },
+  },
+  computed: {
+    sideList() {
+      // console.log(this.sideNavList, 'this.sideNavList');
+      return this.sideNavList;
+    },
+    // 仓秘书
+    sideNavData() {
+      return this.nav.children.filter(item => item.nav === 2);
+    },
+    sideNavTitle() {
+      return this.nav;
+    },
+    sideNavStatus() {
+      return +this.$store.state.config.shutdown_status;
+    },
+  },
+};
+</script>
+<style lang="less" module>
+@import '../../less/public_variable.less';
+.side_nav {
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 80px;
+  z-index: 1000;
+  min-width: 80px;
+  background: #444154;
+  padding-top: 40px;
+  .side_nav_title {
+    margin-top: 61px;
+    background:rgba(185,173,255,.2);
+    font-size:16px;
+    color: @white;
+    display: flex;
+    flex-flow: row wrap;
+    // padding-left: 50px;
+    line-height: 34px;
+    i {
+      font-size: 17px;
+    }
+    span {
+      display: block;
+      margin-top: 1px;
+      font-weight: 600;
+      margin-left: 11px;
+    }
+  }
+  .side_nav_ul {
+    min-width: 231px;
+    width: 231px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    .side_nav_li {
+      list-style: none;
+      width: 100%;
+      cursor: pointer;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      font-size: 16px;
+      color: @white;
+      margin: 0px auto;
+      position: relative;
+      .li_icon {
+        display: inline-block;
+        padding: 0 10px 0 0;
+      }
+      .li_title {
+        display: inline-block;
+        position: relative;
+        top: -4px;
+      }
+      &:hover {
+        background: #463F74;
+      }
+    }
+  }
+  .NavChild {
+    margin: 0;
+    padding: 0; // 解决浏览器中 ul 自动右移 40px
+    background-color: red;
+    width: 200px;
+    list-style: none;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 231px;
+    .NavChild_li {
+      background-color: #444154;
+      padding: 20px 0 0 0;
+      width: 100%;
+      height: 40px;
+      font-size: 1.1rem;
+      &:hover {
+        color: #6E5DD5;
+        background: #463F74;
+      }
+    }
+  }
+}
+</style>
+<style lang="less">
+@import '../../less/public_variable.less';
+.side_nav {
+  .router-link-active {
+    border-radius: 5px;
+  }
+  .el-menu-vertical-demo {
+    margin-top: 70px;
+  }
+  .el-menu {
+    border: none;
+  }
+  .el-menu--collapse {
+    width: 80px;
+  }
+  .iconfont {
+    font-size: 1.8rem;
+  }
+}
+</style>
