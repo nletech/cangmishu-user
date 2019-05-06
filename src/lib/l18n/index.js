@@ -14,6 +14,13 @@ export default {
     myGoodsList: '货品管理',
     inventoryManage: '库存管理',
     inventoryAlarm: '库存报警',
+    stockTaking: '库存盘点',
+    report: '报表',
+    inboundDetail: '入库单明细',
+    outboundDetail: '出库单明细',
+    setting: '设置',
+    addressManagement: '地址管理',
+    supplierManagement: '供应商管理',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',

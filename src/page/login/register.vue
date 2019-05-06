@@ -145,7 +145,7 @@ export default {
         .then(() => {
           this.$message({
             type: 'success',
-            message: '添加成功!',
+            message: '注册成功!',
           });
           // 跳转到登陆页
           this.$router.replace({

@@ -98,12 +98,18 @@ export default {
       // 获取到用户输入信息是否符合
       // validate() 方法对填入的表单进行校验
       this.$refs.refelogin.validate((valid) => {
-        if (!valid) return; // 如果不符合valied将等于false，则终止运行
+        if (!valid) return; // 验证不通过禁止发起请求
         $http.login(this.form)
           .then((res) => {
+            console.log(res.data, 'res.data');
             if (res.status) return;
             // 将token保存到本地
-            this.$store.commit('token/addToken', { token: res.data.token.token_value, keep: this.keep, id: res.data.token.id });
+            this.$store.commit('token/addToken', {
+              token: res.data.token.token_value,
+              keep: this.keep,
+              id: res.data.token.id,
+            });
+            // 跳转到首页
             this.$router.push({
               name: 'home',
             });

@@ -21,12 +21,11 @@ function addToken(keep, key, val) {
   return val;
 }
 
-
 // 获取到本地数据
 function getData(kye) {
   return localStorage.getItem(kye) || sessionStorage.getItem(kye) || '';
 }
-
+// 状态对象
 const token = {
   namespaced: true,
   state: {
@@ -53,9 +52,14 @@ const token = {
     getVipInfo({ state }) {
       return new Promise(() => {
         if (!state.token) return;
-        $http.account().then((res) => {
-          state.vip_info = res.data;
-        });
+        $http.account()
+          .then((res) => {
+            state.vip_info = res.data;
+            console.log(res.data, 'actions的数据');
+          })
+          .catch(() => {
+            console.log('actions was wrong!');
+          });
       });
     },
   },

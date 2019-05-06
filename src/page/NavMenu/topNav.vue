@@ -33,32 +33,31 @@
       <div
         :class="$style.selectedTag"
       >
-        <el-dropdown>
-          <el-button type="primary">
-            {{'某某仓库'}}
+        <el-dropdown
+          :class="$style.selectedTag_main"
+        >
+          <el-button
+            :class="$style.selectedTag_main_btn"
+          >
+            <span>{{'某某仓库'}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>某某仓库1</el-dropdown-item>
-            <el-dropdown-item>某某仓库2</el-dropdown-item>
+          <el-dropdown-menu
+            slot="dropdown"
+            :class="$style.selectedTag_main_dropdown"
+            style="width: 200px; text-align: center;"
+          >
+            <el-dropdown-item>
+              仓库配置
+            </el-dropdown-item>
+            <el-dropdown-item>
+              创建仓库
+            </el-dropdown-item>
+            <el-dropdown-item>
+              切换仓库
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <!-- <div
-         :class="$style.selectedTag_main"
-        >
-          <div :class="$style.selectedTag_main_desc">
-            <span :class="$style.desc_title">
-              一些文字一些文字
-            </span>
-            <i :class="$style.desc_icon" class="iconfont">
-              &#xeb6d;
-            </i>
-          </div>
-          <div
-            :class="$style.selectedTag_main_"
-          >
-          </div>
-        </div> -->
       </div>
     </div>
     <div :class="$style.user_info">
@@ -196,19 +195,6 @@ export default {
     closeSideNav() {
       this.$store.commit('config/closeSideNav', !+this.sideNavStatus);
     },
-    emitSelectWarehouse(index) {
-      this.iconShow = true;
-      this.isShowSelectWarehouseIcon = (index === 4 && this.warehouseList.length >= 1);
-      if (this.warehouseList.length === 1) { this.iconShow = false; }
-      if (index === 4 && !this.$store.state.config.setWarehouseId && this.warehouseList.length) {
-        this.centerDialogVisible = true;
-      }
-    },
-    goIcon() {
-      this.$router.push({
-        name: 'myAuthentication',
-      });
-    },
   },
   computed: {
     topNavData() {
@@ -234,12 +220,6 @@ export default {
 
 <style lang="less" module>
 @import '../../less/public_variable.less';
-.selectcentered {
-  width: 200px;
-  position: relative;
-  margin-left: 50%;
-  transform: translateX(-50%);
-}
 .dialogcentered {
   margin: auto;
   text-align: center;
@@ -273,18 +253,25 @@ export default {
     .selectedTag {
       width: 200px;
       height: 80px;
-      background-color:#ccc;
-      .el-dropdown {
-        width: 100%;
-        height: 80px;
-      }
+      border-right: 1px solid #d8d3f4;
+      // background-color:#ccc;
+      // .el-dropdown {
+      //   width: 100%;
+      //   height: 80px;
+      // }
       .selectedTag_main {
         width: 100%;
         height: 100%;
-        background-color: orange;
+        // background-color: orange;
         display: flex;
         justify-content: center;
         align-items: center;
+        .selectedTag_main_btn {
+          border: none;
+        }
+        .selectedTag_main_dropdown {
+          width: 200px;
+        }
         .selectedTag_main_desc {
           text-align: center;
           font-size: 1.3rem;
@@ -396,14 +383,6 @@ export default {
 .top_nav {
   .router-link-active {
     color:  @ThemeColor !important;
-  }
-  .nav {
-    .selectedTag {
-      .el-dropdown {
-        width: 100%;
-        height: 80px;
-      }
-    }
   }
 }
 

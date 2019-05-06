@@ -2,55 +2,103 @@
   <div :class="$style.side_nav" class="side_nav">
     <!-- 菜单列表 -->
     <transition name="fade">
-    <!-- 仓秘书 -->
-    <div v-if="!sideNavStatus"
-      :class="$style.nav"
-      @mouseleave="handleLeave()"
-    >
-      <ul
-        :class="$style.side_nav_ul"
+      <!-- 仓秘书 -->
+      <div v-if="!sideNavStatus"
+        :class="$style.nav"
+        @mouseleave="handleLeave()"
       >
-        <li
-          :class="$style.side_nav_li"
-          v-for="(item, index) in sideList"
-          :key="index"
-          @mouseover="ClickToItem(item.name, index)"
+      <!-- 侧边栏导航 -->
+        <ul
+          :class="$style.side_nav_ul"
         >
-          <i
-            :class="$style.li_icon"
-            class="iconfont"
-            v-html="item.icon"
+          <li
+            :class="$style.side_nav_li"
+            v-for="(item, index) in sideList"
+            :key="index"
+            @mouseover="showItem(item.name, index)"
           >
-          </i>
-          <span
-            :class="$style.li_title"
-            @click="handleHomeClick(item.name)"
-          >
-            {{$t(item.name)}}
-          </span>
-        </li>
-      </ul>
-      <ul
-        :class="$style.NavChild"
-        ref="NavChild"
-        v-show="li_show_switch"
-        @click="handleCloseNavChild"
-      >
-        <li
-          :class="$style.NavChild_li"
-          v-for="item in li_NavChild"
-          :key="item.name"
+            <i
+              :class="$style.li_icon"
+              class="iconfont"
+              v-html="item.icon"
+            >
+            </i>
+            <span
+              :class="$style.li_title"
+              @click="handleHomeClick(item.name)"
+            >
+              {{$t(item.name)}}
+            </span>
+          </li>
+        </ul>
+        <!-- 对应的子菜单 -->
+        <ul
+          :class="$style.NavChild"
+          ref="NavChild"
+          v-show="li_show_switch"
+          @click="handleClickCloseNavChild"
         >
-          <router-link :to="{ name: item.name }"
-            style="text-decoration: none;
-                  color: #fff;"
+          <li
+            :class="$style.NavChild_li"
+            v-for="item in li_NavChild"
+            :key="item.name"
           >
-            {{$t(item.name)}}
-          </router-link>
-        </li>
-      </ul>
-    </div>
+            <router-link :to="{ name: item.name }"
+              style="text-decoration: none;
+                    color: #fff;"
+            >
+              {{$t(item.name)}}
+            </router-link>
+          </li>
+        </ul>
+      </div>
     </transition>
+    <!-- 隐藏 -->
+      <div
+        v-show="sideNavStatus"
+        :class="$style.nav_hidden"
+        @mouseleave="handleLeave()"
+      >
+      <!-- 侧边栏导航 -->
+        <ul
+          :class="$style.side_nav_ul_hidden"
+        >
+          <li
+            :class="$style.nav_li_hidden"
+            v-for="(item, index) in sideList"
+            :key="index"
+            @mouseover="showItem(item.name, index)"
+          >
+            <i
+              class="iconfont"
+              v-html="item.icon"
+            >
+            </i>
+            <span
+              @click="handleHomeClick(item.name)"
+            >
+            </span>
+          </li>
+        </ul>
+        <!-- 对应的子菜单 -->
+        <ul
+          ref="NavChild"
+          v-show="li_show_switch"
+          @click="handleClickCloseNavChild"
+        >
+          <li
+            v-for="item in li_NavChild"
+            :key="item.name"
+          >
+            <router-link :to="{ name: item.name }"
+              style="text-decoration: none;
+                    color: #fff;"
+            >
+              {{$t(item.name)}}
+            </router-link>
+          </li>
+        </ul>
+      </div>
     <!-- 隐藏后的菜单列表（先不做）-->
     <!-- <el-menu
       background-color="#444154"
@@ -96,10 +144,10 @@ export default {
   },
   methods: {
     // 子菜单操作
-    ClickToItem(itemName, index) {
+    showItem(itemName, index) {
       // 缓存子菜单
       let sunMeanu = [];
-      // 缓存计算值
+      // 缓存计算的距离
       let distance;
       const menu = this.sideNavList;
       for (let i = 0; i < menu.length; i += 1) {
@@ -107,26 +155,26 @@ export default {
           if (index === 0) {
             this.li_show_switch = false;
             return;
-          }
+          } // 鼠标悬浮到侧边栏首页不展示子列表
           this.li_show_switch = true;
-          distance = `${(i * 80) + 40}px`;
+          distance = `${(i * 80) + 40}px`; // 根据计算修改子菜单对应的布局
           sunMeanu = menu[i].children;
         }
-      }
-      this.$refs.NavChild.style.margin = `${distance} 0 0 0 `;
-      this.li_NavChild = sunMeanu;
+      } // 这个循环实现的思路：通过点击不同的侧边栏导航项来展示不同的导航项对应的子菜单
+      this.$refs.NavChild.style.margin = `${distance} 0 0 0 `; // 输出处理后的计算值
+      this.li_NavChild = sunMeanu; // 输出子菜单
     },
-    handleCloseNavChild() {
+    handleClickCloseNavChild() {
       this.li_show_switch = false;
-    },
+    }, // 点击关闭子菜单
     handleLeave() {
       this.li_show_switch = false;
-    },
+    }, // 移出鼠标，关闭子菜单
     handleHomeClick(name) {
       if (name === 'initPage') {
         this.$router.push({ name: 'home' });
       }
-    },
+    }, // 只有点击侧边栏 首页 路由跳转才生效
   },
   computed: {
     sideList() {
@@ -231,7 +279,15 @@ export default {
       }
     }
   }
+  .nav_hidden {
+    background-color: red;
+    position: relative;
+    .nav_li_hidden {
+      padding: 4px;
+    }
+  }
 }
+
 </style>
 <style lang="less">
 @import '../../less/public_variable.less';

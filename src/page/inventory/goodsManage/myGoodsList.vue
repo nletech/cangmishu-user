@@ -347,7 +347,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../less/public_variable.less';
+@import '../../../less/public_variable.less';
 .centerSelection {
   position: relative;
   margin-left: 50%;

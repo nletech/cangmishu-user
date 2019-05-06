@@ -5,6 +5,9 @@ const $http = {
   getVerificationCode(data) {
     return Axios.post('/user/activateCode', data);
   },
+  register(data) {
+    return Axios.post('user/activateRegister', data);
+  },
   // =========== 以上是仓秘书
   // 登录
   login(data) {
@@ -30,9 +33,9 @@ const $http = {
     return Axios.post('nladdress', data);
   },
   // 用户注册
-  register(data) {
-    return Axios.post('user/register', data);
-  },
+  // register(data) {
+  //   return Axios.post('user/register', data);
+  // },
   // 用户登出
   logout(data) {
     return Axios.post('user/logout', data);
