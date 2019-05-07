@@ -33,7 +33,7 @@ export default {
   props: {
     tagList: [Array],
     value: [String],
-    addText: [String],
+    addText: [String, Array],
     query: [String, Number],
   },
   methods: {

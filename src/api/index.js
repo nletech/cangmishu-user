@@ -1,18 +1,19 @@
 import Axios from '@/lib/axios/config';
 
 const $http = {
-  // 获取验证码 --仓秘书
   getVerificationCode(data) {
     return Axios.post('/user/activateCode', data);
-  },
+  }, // 获取验证码
   register(data) {
-    return Axios.post('user/activateRegister', data);
-  },
-  // =========== 以上是仓秘书
-  // 登录
+    return Axios.post('/register', data);
+  }, // 注册
   login(data) {
-    return Axios.post('user/auth', data);
-  },
+    return Axios.post('/login', data);
+  }, // 登陆
+  logout(data) {
+    return Axios.post('/logout', data);
+  }, // 登出
+  // =========== 以上是仓秘书
   warehouseLists(data) {
     return Axios.post('user/warehouses', data);
   },
@@ -33,13 +34,6 @@ const $http = {
     return Axios.post('nladdress', data);
   },
   // 用户注册
-  // register(data) {
-  //   return Axios.post('user/register', data);
-  // },
-  // 用户登出
-  logout(data) {
-    return Axios.post('user/logout', data);
-  },
   // 仓库列表
   warehouse(data) {
     return Axios.get('warehouse', { params: data });

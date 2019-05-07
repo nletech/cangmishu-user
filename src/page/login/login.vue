@@ -101,7 +101,6 @@ export default {
         if (!valid) return; // 验证不通过禁止发起请求
         $http.login(this.form)
           .then((res) => {
-            console.log(res.data, 'res.data');
             if (res.status) return;
             // 将token保存到本地
             this.$store.commit('token/addToken', {
@@ -109,6 +108,7 @@ export default {
               keep: this.keep,
               id: res.data.token.id,
             });
+            // 存入用户信息
             // 跳转到首页
             this.$router.push({
               name: 'home',

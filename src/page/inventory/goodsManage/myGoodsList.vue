@@ -4,6 +4,7 @@
     <my-group
     v-model="params"
     @submit="onSubmit">
+      <!-- 请选择分类 -->
       <el-col :span="5">
         <my-select keyName="category_id" placeholder="请选择分类">
           <el-option
@@ -13,30 +14,13 @@
           </el-option>
         </my-select>
       </el-col>
-      <el-col :offset="3" :span="8">
-        <my-date :begin.sync="params.updated_at_b"
-          :end.sync="params.updated_at_e"></my-date>
-      </el-col>
-      <el-col :offset="2" :span="6">
+      <!-- 搜索框 -->
+      <el-col :offset="14" :span="5">
         <my-input keyName="keywords"></my-input>
       </el-col>
     </my-group>
     <el-row>
-      <el-col :span="2" :offset="15">
-        <el-button
-        @click="setGoodsType"
-        size="medium">
-           设置分类
-        </el-button>
-      </el-col>
-      <el-col :span="2" :offset="1">
-       <el-button
-        @click="addCommodity"
-        size="medium">
-          {{$t('addGoods')}}
-        </el-button>
-      </el-col>
-      <el-col :span="2" :offset="1">
+      <el-col :offset="20" :span="2">
        <el-button
         @click="importGoods"
         icon="el-icon-plus"

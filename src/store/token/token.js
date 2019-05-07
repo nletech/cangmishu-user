@@ -32,6 +32,7 @@ const token = {
     token: '',
     // id: '',
     vip_info: null,
+    user: {}, // 用户登录存的信息(默认仓库啥的)
   },
   mutations: {
     // 写入token

@@ -12,15 +12,29 @@
         <el-col :span="12">
           {{$t(key)}}
         </el-col>
-        <el-col :span="12" style="text-align: right;">
-          <el-button type="text" @click="$router.go(-1)" icon="el-icon-back">返回</el-button>
+        <el-col
+          :span="12"
+          style="text-align: right;"
+        >
+          <el-button
+            type="text"
+            @click="$router.go(-1)"
+            icon="el-icon-back"
+          >
+            返回
+          </el-button>
         </el-col>
       </el-row>
     </div>
     <!-- 右侧主要内容展示区 -->
-    <router-view :key="key" :class="$style.content"></router-view>
+    <router-view
+      :key="key"
+      :class="$style.content"
+    >
+    </router-view>
+    <!-- 底部产权说明 -->
     <div :class="$style.footer">
-      Copyright © 2018 EU Techne B.V.（2.0.1）技术支持
+      <span>Copyright © 2018 EU Techne B.V.（2.0.1）技术支持</span>
       <i class="iconfont">&#xe604;</i>
     </div>
   </div>

@@ -10,35 +10,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="外部编码">
-            <el-input
-            v-model="params.relevance_code"
-            @keyup.enter="getList"
-            size="small"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="生产批次号">
-            <el-input v-model="params.production_batch_number" size="small"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
           <el-form-item label="货品名称">
             <el-input v-model="params.product_name" size="small"></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :span="8">
-            <!-- <el-input v-model="params.product_name" size="small"></el-input> -->
-          <el-select
-          style="width: 100%"
-          @change="getList"
-          size="small"
-          clearable
-          v-model="params.option">
-            <el-option value="1" label="已盘点"></el-option>
-            <el-option value="2" label="未盘点"></el-option>
-            <el-option value="3" label="未上架"></el-option>
-          </el-select>
         </el-col>
         <el-col :span="8">
           <el-form-item >
@@ -54,7 +28,7 @@
             icon="el-icon-plus"
             type="text"
             :loading="$store.state.config.button_loading"
-            @click="dialogVisible = true">导出商品库存</el-button>
+            @click="dialogVisible = true">导出库存</el-button>
           </el-form-item>
         </el-col>
       </el-form>
@@ -120,49 +94,19 @@
           {{scope.row.product_name}}
         </template>
       </el-table-column>
-      <!-- <el-table-column
+      <el-table-column
         label="中文规格">
         <template slot-scope="scope">
           {{scope.row.product_name}}
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column
         prop="relevance_code"
-        label="外部编码">
+        label="SKU">
       </el-table-column>
-      <el-table-column
-        prop="owner"
-        label="所属商家">
-      </el-table-column>
-      <!-- <el-table-column
-        prop="sum_stockin_num"
-        label="入库货品数">
-      </el-table-column>
-      <el-table-column
-        prop="sum_shelf_num"
-        label="上架货品数">
-      </el-table-column>
-      <el-table-column
-        prop="sum_out_num"
-        label="出库货品数">
-      </el-table-column> -->
-      <!-- <el-table-column
-        prop="email"
-        label="所属账号">
-      </el-table-column> -->
       <el-table-column
         prop="stock_in_warehouse"
-        label="总仓库库存">
-      </el-table-column>
-      <el-table-column
-        label="未上架/上架库存">
-        <template slot-scope="scope">
-          {{scope.row.stock_to_be_on_shelf}}/{{scope.row.stock_on_shelf}}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="total_to_be_verify"
-        label="待验货库存">
+        label="仓库库存">
       </el-table-column>
       <el-table-column
         label="锁定/可用库存">
@@ -184,15 +128,11 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="sku_count"
-        label="SKU数">
-      </el-table-column>
-      <el-table-column
         prop="feature_name_cn"
         label="特征">
       </el-table-column>
       <el-table-column
-        label="操作">
+        label="出入库记录">
         <template slot-scope="scope">
           <el-button size="mini" @click="viewDetails(scope.row)">详情</el-button>
         </template>

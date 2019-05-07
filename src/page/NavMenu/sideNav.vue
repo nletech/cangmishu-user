@@ -53,52 +53,6 @@
         </ul>
       </div>
     </transition>
-    <!-- 隐藏 -->
-      <div
-        v-show="sideNavStatus"
-        :class="$style.nav_hidden"
-        @mouseleave="handleLeave()"
-      >
-      <!-- 侧边栏导航 -->
-        <ul
-          :class="$style.side_nav_ul_hidden"
-        >
-          <li
-            :class="$style.nav_li_hidden"
-            v-for="(item, index) in sideList"
-            :key="index"
-            @mouseover="showItem(item.name, index)"
-          >
-            <i
-              class="iconfont"
-              v-html="item.icon"
-            >
-            </i>
-            <span
-              @click="handleHomeClick(item.name)"
-            >
-            </span>
-          </li>
-        </ul>
-        <!-- 对应的子菜单 -->
-        <ul
-          ref="NavChild"
-          v-show="li_show_switch"
-          @click="handleClickCloseNavChild"
-        >
-          <li
-            v-for="item in li_NavChild"
-            :key="item.name"
-          >
-            <router-link :to="{ name: item.name }"
-              style="text-decoration: none;
-                    color: #fff;"
-            >
-              {{$t(item.name)}}
-            </router-link>
-          </li>
-        </ul>
-      </div>
     <!-- 隐藏后的菜单列表（先不做）-->
     <!-- <el-menu
       background-color="#444154"
@@ -114,17 +68,17 @@
         :key="index"
       >
         <template slot="title">
-          <i class="iconfont" v-html="sideNavTitle.icon"></i>
+          <i class="iconfont" v-html="item.icon"></i>
         </template>
         <el-menu-item-group>
           <el-menu-item
           :index="item.name"
-          v-for="item in item.children"
-          :key="item.name"
+          v-for="i in item.children"
+          :key="i.name"
           @click="$router.push({
-            name: item.name,
+            name: i.name,
           })">
-            {{$t(item.name)}}
+            {{$t(i.name)}}
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>

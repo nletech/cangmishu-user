@@ -1,7 +1,7 @@
 <template>
 <div class="storeManage">
   <wms-tags
-    :tagList="tag_data"
+    :tagList="[]"
     addText="addStoreManage"
     @change="storeType"
     v-model="params.type">
@@ -21,44 +21,13 @@
         label="仓库编号">
       </my-table-item>
       <my-table-item
-        prop="country"
-        label="国家">
-      </my-table-item>
-      <my-table-item
-        prop="contact_user"
-        label="联系人">
-      </my-table-item>
-      <my-table-item
-        prop="contact_number"
-        label="联系方式">
+        prop="address"
+        label="地址">
       </my-table-item>
       <my-table-item
         prop="area"
         label="仓库面积(㎡)">
       </my-table-item>
-      <my-table-item
-        label="仓库类型">
-        <template slot-scope="scope">
-          {{scope.row.type | storeType}}
-        </template>
-      </my-table-item>
-      <my-table-item
-        label="开通状态">
-        <template slot-scope="scope">
-          {{scope.row.status | switchTypeCn}}
-        </template>
-      </my-table-item>
-      <my-table-item
-        v-if="params.type == 1"
-        prop="apply_num"
-        label="申请数量">
-      </my-table-item>
-      <!-- <my-table-item
-        label="使用状态">
-        <template slot-scope="scope">
-          {{scope.row.is_used | switchTypeCn}}
-        </template>
-      </my-table-item> -->
       <el-table-column
         width="240"
         label="操作">
@@ -84,10 +53,10 @@ export default {
   data() {
     return {
       store_list_data: [], // 仓库列表状态
-      tag_data: [
-        { name: '2', label: '自用仓库' },
-        { name: '1', label: '共享仓库' },
-      ],
+      // tag_data: [
+      //   { name: '2', label: '自用仓库' },
+      //   { name: '1', label: '共享仓库' },
+      // ],
       params: {
         type: '2',
       },
