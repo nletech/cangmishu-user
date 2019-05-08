@@ -1,7 +1,7 @@
 <template>
-  <div class="wms-tag">
-    <div :class="$style.wms_tag_container_table">
-      <div :class="$style.wms_tag_container">
+  <div class="cms">
+    <div :class="$style.cms_tag_container_table">
+      <div :class="$style.cms_tag_container">
         <el-row>
           <el-col :span="20">
             <el-tabs :value="value" @tab-click="handleClick">
@@ -15,20 +15,13 @@
           </el-col>
           <el-col v-if="addText"
                   :span="4"
+                  style="float: right;"
                   :class="$style.text_right">
             <el-button
               type="text"
               @click="$router.push({name: addText, query: {id: query && query}})"
               icon="el-icon-plus">
               {{$t(addText)}}
-            </el-button>
-          </el-col>
-          <el-col v-if="addDeliverInfo" :span="4" :class="$style.text_right">
-            <el-button
-            type="text"
-            @click="$router.push({name: addText, query: {id: query && query}})"
-            icon="el-icon-plus">
-            {{$t(addText)}}
             </el-button>
           </el-col>
         </el-row>
@@ -45,7 +38,6 @@ export default {
     value: [String],
     addText: [String, Array], // 添加文字
     query: [String, Number],
-    addDeliverInfo: [Array], // 包裹信息
   },
   methods: {
     // 返回选中的tag
@@ -62,7 +54,7 @@ export default {
 
 <style lang="less" module>
 @import '../less/public_variable.less';
-.wms_tag_container {
+.cms_tag_container {
   margin: 10px 0 10px 0;
   padding: 0 20px 0 48px;
   background: @white;
@@ -71,7 +63,7 @@ export default {
     line-height: 48px;
   }
 }
-.wms_tag_container_table {
+.cms_tag_container_table {
   padding: 10px 45px 20px 45px ;
   .page {
     margin-top: 10px;
@@ -80,7 +72,7 @@ export default {
 </style>
 <style lang="less">
 @import '../less/public_variable.less';
-.wms-tag {
+.cms {
   .el-tabs__nav-wrap::after {
     display: none;
   }

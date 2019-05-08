@@ -15,7 +15,7 @@
     <lease-wareh-by
     v-else-if="status.certification_renter_status === 2
     && status.is_activated"></lease-wareh-by> -->
-    <normal-home></normal-home>
+    <!-- <normal-home></normal-home> -->
   </div>
 </template>
 <script>

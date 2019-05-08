@@ -2,7 +2,6 @@
 <div class="storeManage">
   <wms-tags
     :tagList="tag_data"
-    addText="添加收件信息"
     @change="storeType"
     v-model="params.type"
   >
@@ -32,15 +31,17 @@
       >
       </my-table-item>
       <my-table-item
-        align="center"
         header-align="center"
+        align="center"
         prop="contact_user"
         label="地址"
       >
       </my-table-item>
       <el-table-column
+        header-align="center"
         width="240"
-        label="操作">
+        label="操作"
+      >
         <template slot-scope="scope">
           <el-button size="mini" @click="edit(scope.row.id)">编辑</el-button>
           <el-button size="mini" @click="config(scope.row.id)">删除</el-button>

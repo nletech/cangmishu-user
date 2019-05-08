@@ -1,4 +1,4 @@
-import $http from '@/api';
+// import $http from '@/api';
 
 // 返回处理过的token数据
 function tokenData(value) {
@@ -30,39 +30,20 @@ const token = {
   namespaced: true,
   state: {
     token: '',
-    // id: '',
     vip_info: null,
-    user: {}, // 用户登录存的信息(默认仓库啥的)
   },
   mutations: {
-    // 写入token
+    // TOKEN 相关
     getToken(state) {
       state.token = getData('TOKEN');
-    },
-    // 添加token
+    }, // 写入token
     addToken(state, data) {
       state.token = addToken(data.keep, 'TOKEN', tokenData(data.token));
-    },
-    // 删除token
+    }, // 添加token
     delToken(state) {
       state.token = '';
       removeToken('TOKEN');
-    },
-  },
-  actions: {
-    getVipInfo({ state }) {
-      return new Promise(() => {
-        if (!state.token) return;
-        $http.account()
-          .then((res) => {
-            state.vip_info = res.data;
-            console.log(res.data, 'actions的数据');
-          })
-          .catch(() => {
-            console.log('actions was wrong!');
-          });
-      });
-    },
+    }, // 删除token
   },
 };
 

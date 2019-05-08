@@ -56,7 +56,7 @@ export default {
     PleaseEnterTheMailbox: '请输入您的邮箱',
     PleaseInputApassword: '请输入您的密码',
     authenticationForm: '创建认证',
-    addStoreManage: '创建仓库',
+    addWarehouse: '创建仓库',
     uploadFile: '上传合同',
     viewEdit: '查看编辑',
     storeName: '仓库名称',

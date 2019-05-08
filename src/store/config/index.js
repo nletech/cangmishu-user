@@ -3,14 +3,21 @@ export default {
   state: {
     button_loading: false,
     shutdown_status: false,
-    setWarehouseId: '',
+    setWarehouseName: '', // 设置仓库名
+    setWarehouseId: '', // 仓库 id
     noneWarehouseId: false,
     warehouseList: '',
   },
   mutations: {
+    //  设置选择的warehouseName
+    setWarehouseName(state, data) {
+      state.setWarehouseName = data;
+      localStorage.setItem('warehouseName', data);
+    },
     // 设置选择的warehouseid
     setWarehouseId(state, data) {
       state.setWarehouseId = data;
+      localStorage.setItem('warehouseId', data);
     },
     // 设置是否含有warehouseid
     ifHaveWarehouse(state, data) {

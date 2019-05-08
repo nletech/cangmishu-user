@@ -33,33 +33,29 @@
       <div
         :class="$style.selectedTag"
       >
-        <el-dropdown
-          :class="$style.selectedTag_main"
-        >
-          <el-button
-            :class="$style.selectedTag_main_btn"
-          >
-            <span>{{'某某仓库'}}</span>
+        <el-dropdown :class="$style.selectedTag_main">
+          <el-button :class="$style.selectedTag_main_btn">
+            <span>{{default_warehouse_name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu
             slot="dropdown"
             :class="$style.selectedTag_main_dropdown"
-            style="width: 200px; text-align: center;"
-          >
+            style="width: 200px; text-align: center;">
             <el-dropdown-item>
-              仓库配置
+              <span>仓库配置</span>
             </el-dropdown-item>
             <el-dropdown-item>
-              创建仓库
+              <span>创建仓库</span>
             </el-dropdown-item>
             <el-dropdown-item>
-              切换仓库
+              <span @click="choseWarehouse">切换仓库</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </div>
+    <!-- 用户信息 -->
     <div :class="$style.user_info">
       <div v-if="isShowSelectWarehouseIcon" @click="toggleWarehouseIcon"
           :class="$style.warehouse">
@@ -80,21 +76,20 @@
     </div>
   </div>
  <el-dialog
-   :visible.sync="centerDialogVisible"
+   :visible.sync="showWarehousesSwitch"
    width="30%"
-   center>
-   <div v-if='noWarehouse' :class="$style.dialogcentered">
-     <p>您暂无仓库，</p>
-     <p>请先创建或租赁仓库</p>
-   </div>
-   <div v-else :class="$style.dialogcentered">
+   :show-close="false"
+   :close-on-click-modal="false"
+   center
+  >
+   <div :class="$style.dialogcentered">
      <p>请选择仓库</p>
     <el-radio-group v-model="selectWarehouse">
       <el-radio-button
         :class="$style.selectline"
-        v-for="item in warehouseList"
-        :label="item.warehouse.name_cn"
+        v-for="item in warehouses"
         :key="item.warehouse.id"
+        :label="item.warehouse.name_cn"
       >
       </el-radio-button>
     </el-radio-group>
@@ -113,6 +108,9 @@ export default {
   name: 'topNav',
   data() {
     return {
+      showWarehousesSwitch: false, // 选择仓库按钮
+      warehouses: [], // 仓库列表
+      // 仓秘书
       centerDialogVisible: false,
       isShowSelectWarehouseIcon: false,
       noWarehouse: true,
@@ -122,52 +120,21 @@ export default {
     };
   },
   created() {
-    this.getWarehouseLists();
-  },
-  watch: {
-    $route(to) {
-      if (to.path.split('/')[1] === 'commodityManage' && this.warehouseList.length === 1) {
-        this.isShowSelectWarehouseIcon = true;
-        this.iconShow = false;
-      } else if (to.path.split('/')[1] === 'commodityManage' && this.warehouseList.length > 1) {
-        this.isShowSelectWarehouseIcon = true;
-        this.iconShow = true;
-      }
-    },
+    this.getWarehouses(); // 获取仓库列表
   },
   methods: {
-    getWarehouseLists() {
-      const sessionID = sessionStorage.getItem('WAREHOUSEID');
-      const sessionNAME = sessionStorage.getItem('WAREHOUSENAME');
-      $http.warehouseLists().then((res) => {
-        this.warehouseList = res.data;
-        this.noWarehouse = !this.warehouseList.length;
-        this.$store.commit('config/ifHaveWarehouse', !res.data.length);
-        this.$store.commit('config/warehouseLists', res.data);
-        if (this.warehouseList.length === 1) {
-          this.selectWarehouse = this.warehouseList[0].warehouse.name_cn;
-          this.$store.commit('config/setWarehouseId', res.data[0].warehouse.id);
-          this.isShowSelectWarehouseIcon = true;
-          this.iconShow = false;
-        }
-        if (sessionID) {
-          this.$store.commit('config/setWarehouseId', sessionID);
-          this.isShowSelectWarehouseIcon = true;
-          this.selectWarehouse = sessionNAME;
-        }
+    choseWarehouse() {
+      this.showWarehousesSwitch = true;
+    }, // 选择仓库按钮
+    getWarehouses() {
+      $http.warehouses().then((res) => {
+        this.warehouses = res.data;
+        console.log(res.data, 'wwwwres');
       });
-    },
+    }, // 获取仓库列表
     handleConfirm() {
-      this.centerDialogVisible = false;
-      this.warehouseList.forEach((element) => {
-        if (element.warehouse.name_cn === this.selectWarehouse) {
-          this.$store.commit('config/setWarehouseId', element.warehouse.id);
-          sessionStorage.setItem('WAREHOUSEID', element.warehouse.id);
-          sessionStorage.setItem('WAREHOUSENAME', element.warehouse.name_cn);
-          $http.toggleWarehouse(element.warehouse.id).then(() => {
-          });
-        }
-      });
+      this.showWarehousesSwitch = false; // 关闭对话框
+      // 以上仓
     },
     toggleWarehouseIcon() {
       if (this.warehouseList.length === 1) { return; }
@@ -185,6 +152,10 @@ export default {
           this.$store.commit('config/setWarehouseId', '');
           sessionStorage.setItem('WAREHOUSEID', '');
           sessionStorage.setItem('WAREHOUSENAME', '');
+          // 删除登录的信息
+          localStorage.removeItem('email');
+          localStorage.removeItem('warehouseId');
+          localStorage.removeItem('warehouseName');
           this.$router.push({
             name: 'login',
           });
@@ -197,29 +168,25 @@ export default {
     },
   },
   computed: {
+    default_warehouse_name() {
+      return this.$store.state.config.setWarehouseName || localStorage.getItem('warehouseName');
+    }, // 初始化默认仓库
     topNavData() {
       return this.$store.state.routerData.routerMap[0].children;
     },
     email() {
-      return this.$store.state.token.vip_info && this.$store.state.token.vip_info.email;
-    },
-    isOwner() {
-      // eslint-disable-next-line
-      return this.$store.state.token.vip_info && this.$store.state.token.vip_info.certification_owner_status === 2;
-    },
-    isRenter() {
-      // eslint-disable-next-line
-      return this.$store.state.token.vip_info && this.$store.state.token.vip_info.certification_renter_status === 2;
+      return localStorage.getItem('email');
     },
     sideNavStatus() {
       return +this.$store.state.config.shutdown_status;
-    },
+    }, // 隐藏侧边栏标志
   },
 };
 </script>
 
 <style lang="less" module>
 @import '../../less/public_variable.less';
+
 .dialogcentered {
   margin: auto;
   text-align: center;

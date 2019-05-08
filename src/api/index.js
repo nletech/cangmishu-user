@@ -13,10 +13,10 @@ const $http = {
   logout(data) {
     return Axios.post('/logout', data);
   }, // 登出
+  warehouses() {
+    return Axios.get('/warehouses');
+  }, // 仓库列表
   // =========== 以上是仓秘书
-  warehouseLists(data) {
-    return Axios.post('user/warehouses', data);
-  },
   // 切换仓库
   toggleWarehouse(data) {
     return Axios.get(`user/setWarehouse/${data}`);

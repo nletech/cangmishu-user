@@ -6,7 +6,7 @@
         :key="index"
         @click="item.method"
         :loading="item.loading"
-        :disabled="item.disabled?item.disabled:false">
+        :disabled="item.disabled ? item.disabled : false">
           {{item.name}}
         </el-button>
       </el-col>

@@ -109,14 +109,15 @@ export default {
               id: res.data.token.id,
             });
             // 存入用户信息
+            this.$store.commit('config/setWarehouseName', res.data.user.default_warehouse.name_cn);
+            this.$store.commit('config/setWarehouseId', res.data.user.default_warehouse.id);
             // 跳转到首页
             this.$router.push({
               name: 'home',
             });
-            this.$store.dispatch('token/getVipInfo');
           })
-          .catch(() => {
-            console.log('登陆信息有误');
+          .catch((e) => {
+            console.log(e, '登录信息有误');
           });
       });
     },
