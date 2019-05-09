@@ -36,7 +36,7 @@ const OutboundDetail = loadOnDemand('report/outboundDetail/outboundDetail');// �
 // 设置
 const StoreManagement = loadOnDemand('setting/storeManagement/storeManagement'); // 仓库管理
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
-const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应AddWarehouse个人资料
+const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
 export const routerMap = [
   {
     component: LayoutTop,

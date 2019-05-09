@@ -69,6 +69,8 @@
   </div>
   <!-- 添加仓库 -->
   <el-dialog
+    title="新增仓库信息"
+    :center="true"
     :visible.sync="showAddWarehouse"
   >
     <add-warehouse></add-warehouse>
@@ -86,6 +88,7 @@ export default {
   name: 'storeManage',
   data() {
     return {
+      showAddWarehouse: false, // 显示添加仓库
       warehouses: [],
       currentPage1: 5,
       currentPage2: 5,
@@ -115,7 +118,7 @@ export default {
       });
     },
     handleClick() {
-      this.$router.push({ name: 'addWarehouse' });
+      this.showAddWarehouse = true;
     },
   },
 };

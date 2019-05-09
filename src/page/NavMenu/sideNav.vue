@@ -99,10 +99,8 @@ export default {
   methods: {
     // 子菜单操作
     showItem(itemName, index) {
-      // 缓存子菜单
-      let sunMeanu = [];
-      // 缓存计算的距离
-      let distance;
+      let sunMeanu = []; // 缓存子菜单
+      let distance; // 缓存计算的距离
       const menu = this.sideNavList;
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {

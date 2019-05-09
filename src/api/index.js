@@ -16,6 +16,12 @@ const $http = {
   warehouses() {
     return Axios.get('/warehouses');
   }, // 仓库列表
+  addWarehouse() {
+    return Axios.post('/warehouses');
+  }, // 仓库新增
+  modifyWarehouse() {
+    return Axios.put('/warehouses');
+  }, // 仓库编辑
   // =========== 以上是仓秘书
   // 切换仓库
   toggleWarehouse(data) {
