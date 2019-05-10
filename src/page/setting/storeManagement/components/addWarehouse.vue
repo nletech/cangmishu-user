@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <el-row :class="$style.staffAdd_main">
+  <el-dialog
+    title="新增仓库信息"
+    :center="true"
+    @update:visible="$emit('update:visible', $event)"
+    :visible="visible"
+  >
+    <el-row :class="$style.add_warehouse_main">
       <!-- 新增仓库信息 -->
       <el-col :span="10" :offset="6">
         <el-form
@@ -37,7 +42,7 @@
             <el-cascader
               :props="props"
               :options="addressInfo"
-              v-model="selectOptions"
+              v-model="warehouseInfo.address"
               style="width: 260px;">
             </el-cascader>
           </el-form-item>
@@ -47,7 +52,7 @@
             size="middle">
             <el-input
               type="textarea"
-              v-model="warehouseInfo.door_no">
+              v-model="warehouseInfo.addressDetail">
             </el-input>
           </el-form-item>
           <el-form-item
@@ -72,17 +77,16 @@
         </el-row>
       </el-col>
     </el-row>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
 import $http from '@/api';
 import Address from '@/assets/address.json';
-import mixin from '@/mixin/form_config';
 
 export default {
   name: 'addWarehouse',
-  mixins: [mixin],
+  props: ['visible'],
   data() {
     // 自定义的验证规则
     const check = {
@@ -97,35 +101,31 @@ export default {
         }
       },
       address: (rule, value, callback) => {
-        if (value === '') {
+        if (value.length === 0) {
           return callback(new Error('请输入地址'));
         }
       },
       addressDetail: (rule, value, callback) => {
-        /* eslint-disable */
-        if (String(value) === '') {
-          console.log(value, 'detail');
+        if (!value) {
           return callback(new Error('请输入详细地址'));
         }
       },
       area: (rule, value, callback) => {
+        console.log(value, 'val');
         if (!value || Number.isInteger(value) || value <= 0) {
           return callback(new Error('仓库面积必填且为正整数'));
         }
       },
     };
     return {
-      obj: {},
       warehouseInfo: {
         name_cn: '',
         code: '',
+        address: [],
+        addressDetail: '',
         area: '',
-        province: '', // 省
-        city: '', // 市
-        street: '', // 区
-        door_no: '', // 详细地址
       },
-      selectOptions: [], // 选择的地址
+      formInfo: {},
       addressInfo: Address.children, // 选择地址联动
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
@@ -140,89 +140,61 @@ export default {
           { validator: check.code, trigger: 'blur', required: true },
         ],
         address: [
-          { validator: check.address, trigger: 'change', required: true },
-        ],
-        area: [
-          { validator: check.area, trigger: 'blur', required: true },
+          { type: Array, validator: check.address, trigger: 'change', required: true },
         ],
         addressDetail: [
           { validator: check.addressDetail, trigger: 'blur', required: true },
         ],
+        area: [
+          { validator: check.area, trigger: 'blur', required: true },
+        ],
       },
     };
-  },
-  updated() {
-    console.log(this.warehouseInfo.door_no, 'door');
-  },
-  watch: {
-    selectOptions() {
-      this.warehouseInfo.province = this.selectOptions[0];
-      this.warehouseInfo.city = this.selectOptions[1];
-      this.warehouseInfo.street = this.selectOptions[2];
-      console.log(this.warehouseInfo, 'winfo');
-    },
   },
   methods: {
     // 提交修改信息
     warehouseInfoSubmit() {
-      this.$confirm('确认修改?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          $http.addWarehouse(this.warehouseInfo)
-            .then((res) => {
-              if (res.status === 0) {
-                // 显示成功消息
-                this.$message({
-                  type: 'success',
-                  message: '成功!',
-                });
-                // 跳转员工列表页
-                this.$router.go(-1);
-              } else {
-                this.$message({
-                  type: 'info',
-                  message: '添加失败',
-                });
-              }
-            })
-            .catch(() => {
-              console.log('添加出错');
-            });
-          // this.$refs.form.validate((valid) => {
-          //   if (valid) {
-          //     $http.addWarehouse(this.warehouseInfo)
-          //       .then((res) => {
-          //         if (res.status === 0) {
-          //           // 显示成功消息
-          //           this.$message({
-          //             type: 'success',
-          //             message: '成功!',
-          //           });
-          //           // 跳转员工列表页
-          //           this.$router.go(-1);
-          //         } else {
-          //           this.$message({
-          //             type: 'info',
-          //             message: '添加失败',
-          //           });
-          //         }
-          //       })
-          //       .catch(() => {
-          //         console.log('添加出错');
-          //       });
-          //   }
-          // })
+      // 提交的表单信息处理
+      this.formInfo.name_cn = this.warehouseInfo.name_cn;
+      this.formInfo.code = this.warehouseInfo.code;
+      this.formInfo.province = this.warehouseInfo.address[0];
+      this.formInfo.city = this.warehouseInfo.address[1];
+      this.formInfo.street = this.warehouseInfo.address[2];
+      this.formInfo.door_no = this.warehouseInfo.addressDetail;
+      this.formInfo.area = this.warehouseInfo.area;
+      const flag = this.$refs.form.validate(a => a);
+      // eslint-disable-next-line
+      if (!flag) {
+        // eslint-disable-next-line
+        if (Object.values(this.formInfo).includes('')) return;
+        this.$confirm('确认提交?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
         })
-        .catch(() => {
-          // 显示取消消息
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
-        });
+          .then(() => {
+            $http.addWarehouse(this.formInfo)
+              .then((res) => {
+                if (res.status === 0) {
+                  // 显示成功消息
+                  this.$message({
+                    type: 'success',
+                    message: '成功!',
+                  });
+                  this.$emit('update:visible', false);
+                } else {
+                  this.$message({
+                    type: 'info',
+                    message: '添加失败',
+                  });
+                }
+              })
+              .catch(() => {
+                console.log('添加出错');
+              });
+          })
+          .catch(() => {});
+      }
     },
   },
 };
@@ -230,7 +202,7 @@ export default {
 
 <style lang="less" module>
 @import '../../../../less/public_variable.less';
-.staffAdd_main {
+.add_warehouse_main {
   width: 90%;
   height: 50%;
   margin: 0 auto;

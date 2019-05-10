@@ -1,5 +1,47 @@
 <template>
-<div class="storeManage">
+  <div>
+    <div :class="$style.addressManagement">
+      <div :class="$style.am_main">
+        <!-- 标签页 -->
+        <el-row>
+          <el-col>
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+              <el-tab-pane label="用户管理" name="first">
+              </el-tab-pane>
+              <el-tab-pane label="配置管理" name="second">
+                配置管理
+              </el-tab-pane>
+            </el-tabs>
+          </el-col>
+          <el-col>
+            <el-button>添加something</el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+        </el-row>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: 'addressManagement',
+};
+</script>
+<style lang="less" module>
+@import '../../../less/public_variable.less';
+
+.addressManagement {
+  margin: 40px 0 10px 0;
+  .am_main {
+    width: 90%;
+    margin: 0 auto;
+    // background-color: red;
+  }
+}
+</style>
+
+<!-- <div class="storeManage">
   <wms-tags
     :tagList="tag_data"
     @change="storeType"
@@ -51,10 +93,9 @@
     <pagination-and-buttons :pageParams="params">
     </pagination-and-buttons>
   </wms-tags>
-</div>
-</template>
+</div> -->
 
-<script>
+<!-- <script>
 import WmsTags from '@/components/wms_tags';
 import getListData from '@/mixin/list';
 import PaginationAndButtons from '@/components/pagination_and_buttons';
@@ -63,7 +104,7 @@ import $http from '@/api';
 export default {
   data() {
     return {
-      store_list_data: [], // 仓库列表状态
+      store_list_data: [],
       tag_data: [
         { name: '1', label: '收件信息' },
         { name: '2', label: '发件信息' },
@@ -85,13 +126,10 @@ export default {
     },
   },
   methods: {
-    // 获取到选中仓库类型
     storeType() {
       this.getList();
     },
-    // 获取仓库列表
     getList() {
-      // this.params.owner_id = this.ownerId;
       $http.warehouse(this.params)
         .then((res) => {
           this.store_list_data = res.data.data;
@@ -101,7 +139,6 @@ export default {
           console.log(err);
         });
     },
-    // 编辑仓库
     edit(idVal) {
       this.$router.push({
         name: 'viewEdit',
@@ -110,7 +147,6 @@ export default {
         },
       });
     },
-    // 基础配置
     config(idVal) {
       this.$router.push({
         name: 'BasicsConfig',
@@ -125,4 +161,4 @@ export default {
 
 <style lang="less" module>
 
-</style>
+</style> -->

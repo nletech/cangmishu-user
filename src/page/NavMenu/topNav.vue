@@ -49,7 +49,7 @@
               <span>创建仓库</span>
             </el-dropdown-item>
             <el-dropdown-item>
-              <span @click="choseWarehouse">切换仓库</span>
+              <span @click="shift_warehouse">切换仓库</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -75,8 +75,9 @@
       </div>
     </div>
   </div>
+  <!-- 切换仓库 -->
  <el-dialog
-   :visible.sync="showWarehousesSwitch"
+   :visible="showWarehousesSwitch"
    width="30%"
    :show-close="false"
    :close-on-click-modal="false"
@@ -84,12 +85,15 @@
   >
    <div :class="$style.dialogcentered">
      <p>请选择仓库</p>
-    <el-radio-group v-model="selectWarehouse">
+    <el-radio-group
+      :class="$style.radio_group"
+      v-model="selectWarehouse">
       <el-radio-button
         :class="$style.selectline"
-        v-for="item in warehouses"
-        :key="item.warehouse.id"
-        :label="item.warehouse.name_cn"
+        v-for="item in all_warehouse"
+        :key="item.id"
+        :label="item.name_cn"
+        :value="item.id"
       >
       </el-radio-button>
     </el-radio-group>
@@ -108,7 +112,9 @@ export default {
   name: 'topNav',
   data() {
     return {
-      showWarehousesSwitch: false, // 选择仓库按钮
+      all_warehouse: '', // 仓库列表
+      selectWarehouse: '', // 切换仓库选择的仓库
+      showWarehousesSwitch: false, // 切换仓库弹窗开关
       warehouses: [], // 仓库列表
       // 仓秘书
       centerDialogVisible: false,
@@ -116,23 +122,30 @@ export default {
       noWarehouse: true,
       iconShow: true,
       warehouseList: '',
-      selectWarehouse: '',
     };
   },
   created() {
     this.getWarehouses(); // 获取仓库列表
   },
   methods: {
-    choseWarehouse() {
-      this.showWarehousesSwitch = true;
-    }, // 选择仓库按钮
+    shift_warehouse() {
+      const timer = setTimeout(() => {
+        this.showWarehousesSwitch = true;
+        clearTimeout(timer);
+      }, 300);
+    }, // 切换仓库--确定按钮
     getWarehouses() {
-      $http.warehouses().then((res) => {
-        this.warehouses = res.data;
-        console.log(res.data, 'wwwwres');
+      $http.warehouses().then((re) => {
+        const data = re.data.data;
+        this.all_warehouse = data;
+        this.$set(this.all_warehouse);
+        // console.log(this.all_warehouse, 'this.all_warehouse');
       });
     }, // 获取仓库列表
     handleConfirm() {
+      console.log(this.selectWarehouse, 'sss');
+      this.$store.commit('config/setWarehouseId', this.selectWarehouse);
+      this.$store.commit('config/setWarehouseName', this.selectWarehouse);
       this.showWarehousesSwitch = false; // 关闭对话框
       // 以上仓
     },
@@ -191,6 +204,11 @@ export default {
   margin: auto;
   text-align: center;
   font-size: 20px;
+  .radio_group {
+    width: 400px;
+    height: 300px;
+    overflow: auto;
+  }
 }
 .selectline {
   display: block!important;

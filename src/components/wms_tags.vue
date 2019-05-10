@@ -2,6 +2,7 @@
   <div class="wms-tag">
     <div :class="$style.wms_tag_container_table">
       <div :class="$style.wms_tag_container">
+        <!-- 选择块 -->
         <el-row>
           <el-col :span="20">
             <el-tabs :value="value" @tab-click="handleClick">
@@ -13,6 +14,7 @@
               </el-tab-pane>
             </el-tabs>
           </el-col>
+          <!-- 添加按钮 -->
           <el-col v-if="addText"
                   :span="4"
                   :class="$style.text_right">
@@ -87,7 +89,7 @@ export default {
   .el-tabs__header {
     margin: 0;
     .el-tabs__item {
-      height:50px;
+      height: 50px;
       line-height: 50px;
       font-size: 16px;
     }

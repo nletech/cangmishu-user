@@ -75,6 +75,12 @@ function responseError(error) {
       type: 'error',
       showClose: true,
     });
+  } else if (error.response && error.response.status === 403) {
+    Message({
+      message: error.response.data.msg,
+      type: 'error',
+      showClose: true,
+    });
   }
   return Promise.reject(error);
 }

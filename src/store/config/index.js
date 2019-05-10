@@ -19,6 +19,7 @@ export default {
       state.setWarehouseId = data;
       localStorage.setItem('warehouseId', data);
     },
+    // 仓秘书
     // 设置是否含有warehouseid
     ifHaveWarehouse(state, data) {
       state.noneWarehouseId = data;

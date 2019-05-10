@@ -1,81 +1,78 @@
 <template>
-<div :class="$style.storeManage">
-  <div :class="$style.body_main">
-    <div :class="$style.btn">
-      <i class="el-icon-plus"></i>
-      <span @click="handleClick">添加仓库</span>
+  <div :class="$style.storeManage">
+    <div :class="$style.body_main">
+      <div :class="$style.btn">
+        <i class="el-icon-plus"></i>
+        <span @click="handleClick">添加仓库</span>
+      </div>
+      <!-- 表格 -->
+      <el-table
+        :class="$style.table_main"
+        :data="warehouses"
+        border
+      >
+        <el-table-column
+          header-align="center"
+          align="center"
+          type="index"
+          width="80"
+          label="#">
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="name_cn"
+          label="仓库名称">
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="code"
+          label="仓库编号">
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="warehouse_address"
+          label="地址">
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="area"
+          label="仓库面积(㎡)">
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          width="240"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="edit(scope.row.id)">查看编辑</el-button>
+            <el-button size="mini" @click="config(scope.row.id)">基础配置</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <!-- <div
+        :class="$style.pagination"
+      >
+        <pagination-andButtons></pagination-andButtons>
+      </div> -->
+      <el-pagination
+        :class="$style.pagination"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        layout="total, prev, pager, next, jumper"
+        :total="+this.total"
+      >
+      </el-pagination>
     </div>
-    <!-- 表格 -->
-    <el-table
-      :class="$style.table_main"
-      :data="warehouses"
-      border
+    <!-- 添加仓库 -->
+    <add-warehouse
+      :visible.sync = "switchFlag"
     >
-      <el-table-column
-        header-align="center"
-        align="center"
-        type="index"
-        width="80"
-        label="#">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="name_cn"
-        label="仓库名称">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="code"
-        label="仓库编号">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="address"
-        label="地址">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="area"
-        label="仓库面积(㎡)">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        width="240"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="edit(scope.row.id)">查看编辑</el-button>
-          <el-button size="mini" @click="config(scope.row.id)">基础配置</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <!-- <div
-      :class="$style.pagination"
-    >
-      <pagination-andButtons></pagination-andButtons>
-    </div> -->
-    <el-pagination
-      :class="$style.pagination"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      layout="total, prev, pager, next, jumper"
-      :total="100"
-    >
-    </el-pagination>
+    </add-warehouse>
   </div>
-  <!-- 添加仓库 -->
-  <el-dialog
-    title="新增仓库信息"
-    :center="true"
-    :visible.sync="showAddWarehouse"
-  >
-    <add-warehouse></add-warehouse>
-  </el-dialog>
-</div>
 </template>
 
 <script>
@@ -88,12 +85,11 @@ export default {
   name: 'storeManage',
   data() {
     return {
-      showAddWarehouse: false, // 显示添加仓库
-      warehouses: [],
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      switchFlag: false,
+      all_warehouses_data: {}, // 所有仓库列表信息
+      warehouses: [], // 仓库列表
+      total: '', // 列表总条数
+      currentPage: 1, // 当前页
     };
   },
   components: {
@@ -106,19 +102,29 @@ export default {
       return this.$store.state.token.id;
     },
   },
+  created() {
+    this.getWarehouse(); // 拉取仓库列表
+  },
   methods: {
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      $http.checkWarehouses({ page: val })
+        .then((res) => {
+          this.warehouses = res.data.data;
+        })
+        .catch(() => {});
     },
-    // 获取仓库列表
-    getList() {
-      // this.params.owner_id = this.ownerId;
-      $http.warehouses().then((res) => {
-        this.warehouses = res.data.data;
-      });
+    getWarehouse() {
+      $http.warehouses()
+        .then((res) => {
+          this.warehouses = res.data.data;
+          this.total = res.data.total;
+          this.current_page = res.data.current_page;
+          this.all_warehouses_data = res.data;
+        })
+        .catch(() => {});
     },
     handleClick() {
-      this.showAddWarehouse = true;
+      this.switchFlag = true;
     },
   },
 };
