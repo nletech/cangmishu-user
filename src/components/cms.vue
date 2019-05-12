@@ -1,88 +1,95 @@
 <template>
   <div class="cms">
-    <div :class="$style.cms_tag_container_table">
-      <div :class="$style.cms_tag_container">
-        <el-row>
-          <el-col :span="20">
-            <el-tabs :value="value" @tab-click="handleClick">
+    <div :class="$style.addressManagement">
+      <div :class="$style.am_main">
+        <!-- 标签页 -->
+        <el-row
+        >
+          <div :class="$style.am_operation_btn">
+            <span @click="addInfo">
+              <i class="iconfont">&#xe618;</i>
+              添加发件信息
+            </span>
+          </div>
+          <el-tabs
+            :class="$style.am_tabs"
+            v-model="tabsInfo.active_name"
+            >
               <el-tab-pane
-                v-for="item in tagList"
-                :label="item.label"
-                :name="item.name"
-                :key="item.name">
+                :class="$style.am_tabs_item"
+                v-for="item in tabsInfo.tabs"
+                :key="item.id"
+                :label="item.name"
+                :name="item.name">
               </el-tab-pane>
-            </el-tabs>
-          </el-col>
-          <el-col v-if="addText"
-                  :span="4"
-                  style="float: right;"
-                  :class="$style.text_right">
-            <el-button
-              type="text"
-              @click="$router.push({name: addText, query: {id: query && query}})"
-              icon="el-icon-plus">
-              {{$t(addText)}}
-            </el-button>
-          </el-col>
+          </el-tabs>
         </el-row>
       </div>
-      <slot></slot>
     </div>
   </div>
 </template>
-
 <script>
 export default {
+  name: 'cms',
   props: {
-    tagList: [Array],
-    value: [String],
-    addText: [String, Array], // 添加文字
-    query: [String, Number],
+    tabsInfo: [Object],
+    btn_text: [String],
+  },
+  data() {
+    return {
+    };
   },
   methods: {
-    // 返回选中的tag
-    handleClick(val) {
-      this.$emit('input', val.name);
-      this.$emit('change', val.name);
-      this.$router.replace({
-        query: { ...this.$route.query, type: val.name },
-      });
+    addInfo() {
+      console.log('addInfo');
     },
   },
 };
 </script>
-
 <style lang="less" module>
 @import '../less/public_variable.less';
-.cms_tag_container {
-  margin: 10px 0 10px 0;
-  padding: 0 20px 0 48px;
-  background: @white;
-  .text_right {
-    text-align: right;
-    line-height: 48px;
-  }
-}
-.cms_tag_container_table {
-  padding: 10px 45px 20px 45px ;
-  .page {
-    margin-top: 10px;
+
+.cms {
+  margin: 40px 0 10px 0;
+  .am_main {
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+    .am_operation_btn {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      z-index: 3;
+      border: none;
+      font-size: 1.15rem;
+      &:hover {
+        color: @ThemeColor;
+      }
+    }
   }
 }
 </style>
 <style lang="less">
-@import '../less/public_variable.less';
-.cms {
-  .el-tabs__nav-wrap::after {
-    display: none;
-  }
-  .el-tabs__header {
-    margin: 0;
-    .el-tabs__item {
-      height:50px;
-      line-height: 50px;
-      font-size: 16px;
+  .cms{
+    .el-tabs__nav-scroll {
+      .el-tabs__nav {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        // background-color: orange;
+        float: none;
+        .el-tabs__item {
+          width: 50%;
+          text-align: center;
+          font-size: 1.2rem;
+        }
+      }
+    }
+    .el-tabs {
+      .el-tabs__content {
+        margin: 80px 0 0 0;
+      }
     }
   }
-}
 </style>
