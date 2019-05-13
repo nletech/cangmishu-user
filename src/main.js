@@ -26,7 +26,7 @@ const i18n = new VueI18n({
 });
 store.commit('token/getToken');
 store.commit('config/getSideNavStatus');
-store.dispatch('token/getVipInfo');
+// store.dispatch('token/getVipInfo');
 Vue.use(ElementUI, {
   i18n: (key, value) => i18n.t(key, value),
 });

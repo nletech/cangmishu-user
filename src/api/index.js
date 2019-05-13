@@ -13,6 +13,7 @@ const $http = {
   logout(data) {
     return Axios.post('/logout', data);
   }, // 登出
+  // 设置-仓库管理
   warehouses() {
     return Axios.get('/warehouses');
   }, // 仓库列表
@@ -25,6 +26,47 @@ const $http = {
   modifyWarehouse() {
     return Axios.put('/warehouses');
   }, // 编辑仓库
+  // 设置 -地址管理
+  addSenderAddress(data) {
+    return Axios.post('/senderAddress', data);
+  }, // 添加发件人信息
+  getSenderAddress() {
+    return Axios.get('/senderAddress');
+  }, // 获取发件人信息列表
+  checkSenderAddress(data) {
+    return Axios.get('/senderAddress', { params: data });
+  }, // 发件人分页查询
+  deleteSender(id) {
+    return Axios.delete(`/senderAddress/${id}`);
+  }, // 删除发件人
+  addReceiverAddress(data) {
+    return Axios.post('/receiverAddress', data);
+  }, // 添加收件人信息
+  getReceiverAddress() {
+    return Axios.get('/receiverAddress');
+  }, // 获取收件人信息列表
+  checkReceiverAddress(data) {
+    return Axios.get('/receiverAddress', { params: data });
+  }, // 收件人分页查询
+  deleteReceiver(id) {
+    return Axios.delete(`/receiverAddress${id}`);
+  }, // 删除收件人
+  // 设置-供应商管理
+  addDistributor(data) {
+    return Axios.post('/distributor', data);
+  }, // 添加供应商
+  getDistributor() {
+    return Axios.get('/distributor');
+  }, // 获取供应商列表
+  checkDistributor(data) {
+    return Axios.get('/distributor', { params: data });
+  }, // 分页查询供应商
+  deleteDistributor(id) {
+    return Axios.delete(`/distributor${id}`);
+  }, // 删除供应商
+  editDistributor(id) {
+    return Axios.put(`/distributor${id}`);
+  }, // 编辑供应商
   // =========== 以上是仓秘书
   // 切换仓库
   toggleWarehouse(data) {

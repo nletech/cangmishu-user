@@ -14,8 +14,7 @@
           size="middle"
           label-position="left"
           :model="warehouseInfo"
-          ref="form"
-          :rules="info_Verify_rules">
+        >
           <el-form-item
             prop="name_cn"
             label="仓库名称"
@@ -39,12 +38,13 @@
             prop="address"
             label="地址"
             size="middle">
-            <el-cascader
-              :props="props"
-              :options="addressInfo"
-              v-model="warehouseInfo.address"
-              style="width: 260px;">
-            </el-cascader>
+              <el-cascader
+                :props="props"
+                :options="addressInfo"
+                @change="a"
+                v-model="warehouseInfo.address"
+                style="width: 100%;">
+              </el-cascader>
           </el-form-item>
           <el-form-item
             prop="addressDetail"
@@ -81,42 +81,16 @@
 </template>
 
 <script>
+// import Axios from 'axios';
 import $http from '@/api';
-import Address from '@/assets/address.json';
+import Options from '@/assets/address.json';
 
 export default {
   name: 'addWarehouse',
   props: ['visible'],
+  mounted() {
+  },
   data() {
-    // 自定义的验证规则
-    const check = {
-      name_cn: (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入仓库名称'));
-        }
-      },
-      code: (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入仓库编码名称'));
-        }
-      },
-      address: (rule, value, callback) => {
-        if (value.length === 0) {
-          return callback(new Error('请输入地址'));
-        }
-      },
-      addressDetail: (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入详细地址'));
-        }
-      },
-      area: (rule, value, callback) => {
-        console.log(value, 'val');
-        if (!value || Number.isInteger(value) || value <= 0) {
-          return callback(new Error('仓库面积必填且为正整数'));
-        }
-      },
-    };
     return {
       warehouseInfo: {
         name_cn: '',
@@ -126,34 +100,39 @@ export default {
         area: '',
       },
       formInfo: {},
-      addressInfo: Address.children, // 选择地址联动
+      addressInfo: Options, // 选择地址联动
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
         value: 'value',
         children: 'children',
       },
-      info_Verify_rules: { // 表单输入验证提醒
-        name_cn: [
-          { validator: check.name_cn, trigger: 'blur', required: true },
-        ],
-        code: [
-          { validator: check.code, trigger: 'blur', required: true },
-        ],
-        address: [
-          { type: Array, validator: check.address, trigger: 'change', required: true },
-        ],
-        addressDetail: [
-          { validator: check.addressDetail, trigger: 'blur', required: true },
-        ],
-        area: [
-          { validator: check.area, trigger: 'blur', required: true },
-        ],
-      },
     };
   },
   methods: {
+    a() {
+      console.log('a');
+    },
+    // 获取省市区
+    // getAddress() {
+    //   Axios.get('https://postcode.exss.io/public/pcd/version.json')
+    //     .then((re) => {
+    //       Axios.get(`https://postcode.exss.io/public/pcd/${re.version}/pcd.json`)
+    //         .then((res) => {
+    //           this.addressInfo = this.deleteChildren(res).children;
+    //           console.log(this.addressInfo, 'this.addressInfo');
+    //           // eslint-disable-next-line
+    //           // for (const item in re) {
+    //           //   console.log(item, 'item');
+    //           // }
+    //           // this.addressInfo = res.children;
+    //         })
+    //         .catch();
+    //     })
+    //     .catch();
+    // },
     // 提交修改信息
     warehouseInfoSubmit() {
+      console.log(this.$refs, 'address');
       // 提交的表单信息处理
       this.formInfo.name_cn = this.warehouseInfo.name_cn;
       this.formInfo.code = this.warehouseInfo.code;
@@ -162,39 +141,35 @@ export default {
       this.formInfo.street = this.warehouseInfo.address[2];
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
-      const flag = this.$refs.form.validate(a => a);
-      // eslint-disable-next-line
-      if (!flag) {
-        // eslint-disable-next-line
-        if (Object.values(this.formInfo).includes('')) return;
-        this.$confirm('确认提交?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+      console.log(this.warehouseInfo, 'this.warehouseInfo');
+      if (Object.values(this.formInfo).includes('')) return;
+      this.$confirm('确认提交?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          $http.addWarehouse(this.formInfo)
+            .then((res) => {
+              if (res.status === 0) {
+                // 显示成功消息
+                this.$message({
+                  type: 'success',
+                  message: '成功!',
+                });
+                this.$emit('update:visible', false);
+              } else {
+                this.$message({
+                  type: 'info',
+                  message: '添加失败',
+                });
+              }
+            })
+            .catch(() => {
+              console.log('添加出错');
+            });
         })
-          .then(() => {
-            $http.addWarehouse(this.formInfo)
-              .then((res) => {
-                if (res.status === 0) {
-                  // 显示成功消息
-                  this.$message({
-                    type: 'success',
-                    message: '成功!',
-                  });
-                  this.$emit('update:visible', false);
-                } else {
-                  this.$message({
-                    type: 'info',
-                    message: '添加失败',
-                  });
-                }
-              })
-              .catch(() => {
-                console.log('添加出错');
-              });
-          })
-          .catch(() => {});
-      }
+        .catch(() => {});
     },
   },
 };
@@ -214,8 +189,8 @@ export default {
   }
 }
 .staff_form {
-  width: 400px;
-  height: 400px;
+  width: 120%;
+  height: 120%;
   margin: 0 auto;
   background-color: white;
 }

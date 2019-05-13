@@ -53,11 +53,6 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <!-- <div
-        :class="$style.pagination"
-      >
-        <pagination-andButtons></pagination-andButtons>
-      </div> -->
       <el-pagination
         :class="$style.pagination"
         @current-change="handleCurrentChange"
@@ -125,6 +120,12 @@ export default {
     },
     handleClick() {
       this.switchFlag = true;
+    },
+    edit(row) {
+      console.log(row, 'edit');
+    },
+    config(row) {
+      console.log(row, 'config');
     },
   },
 };
