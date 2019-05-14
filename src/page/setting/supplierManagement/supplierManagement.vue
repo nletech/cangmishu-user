@@ -8,7 +8,7 @@
           <div :class="$style.am_operation_btn">
             <span @click="info_add_btn">
               <i class="iconfont">&#xe618;</i>
-              {{`添加供应商`}}
+              {{'添加供应商'}}
             </span>
           </div>
         <!-- 对应的标签页内容 -->
@@ -46,8 +46,8 @@
                             编辑
                 </el-button>
                 <el-button size="mini"
-                            type="danger"
-                            @click="delete(scope.row)">
+                           type="danger"
+                            @click="delete_data(scope.row)">
                             删除
                 </el-button>
               </template>
@@ -66,14 +66,20 @@
     </div>
     <!-- 添加供应商 -->
     <el-dialog
-      title="添加供应商"
+      :title="this.id ? '编辑供应商' : '添加供应商 '"
       :visible.sync="dialogVisible"
       width="30%">
-      <el-form ref="form" :model="distributor" label-width="100px">
-        <el-form-item label="供应商中文名:">
+      <el-form
+        :rules="rules"
+        ref="form"
+        :model="distributor"
+        label-width="140px">
+        <el-form-item label="供应商中文名:"
+                      prop="name_cn">
           <el-input v-model="distributor.name_cn"></el-input>
         </el-form-item>
-        <el-form-item label="供应商英文名:">
+        <el-form-item label="供应商英文名:"
+                      prop="name_cn">
           <el-input v-model="distributor.name_en"></el-input>
         </el-form-item>
       </el-form>
@@ -96,11 +102,29 @@ export default {
         name_cn: '',
         name_en: '',
       },
+      id: '', // 供应商的id（编辑）
+      rules: {
+        name_cn: [
+          { required: true, message: '供应商中文名', trigger: 'blur' },
+        ],
+        name_en: [
+          { required: true, message: '供应商英文名', trigger: 'blur' },
+        ],
+      },
       //
       info_data: [], // 数据
       total: '', // 列表总条数
       currentPage: 1, // 当前页
     };
+  },
+  watch: {
+    dialogVisible() {
+      if (!this.dialogVisible) {
+        this.distributor.name_cn = '';
+        this.distributor.name_en = '';
+        this.id = '';
+      }
+    },
   },
   methods: {
     get_distributor_data() {
@@ -114,12 +138,29 @@ export default {
         .catch(() => {});
     },
     submit_form() {
-      $http.addDistributor(this.distributor)
-        .then((re) => {
-          if (re.status) return;
-          this.dialogVisible = false;
-        })
-        .catch(() => {});
+      this.$refs.form.validate((validate) => {
+        if (validate) {
+          if (+this.id) {
+            $http.editDistributor(this.id, this.distributor)
+              .then((re) => {
+                if (re.status) return;
+                this.id = '';
+                this.dialogVisible = false;
+                // 更新数据
+                this.get_distributor_data();
+              })
+              .catch(() => {});
+          }
+          $http.addDistributor(this.distributor)
+            .then((re) => {
+              if (re.status) return;
+              this.dialogVisible = false;
+              // 更新数据
+              this.get_distributor_data();
+            })
+            .catch(() => {});
+        }
+      });
     },
     info_add_btn() {
       this.dialogVisible = true;
@@ -131,11 +172,19 @@ export default {
         })
         .catch(() => {});
     }, // 分页查询
-    edit() {},
-    delete(id) {
-      console.log(id, 'no');
-      $http.deleteReceiver(id)
-        .then(() => {})
+    edit(info) {
+      this.dialogVisible = true;
+      this.id = info.id;
+      this.distributor.name_cn = info.name_cn;
+      this.distributor.name_en = info.name_en;
+    },
+    delete_data(info) {
+      $http.deleteDistributor(info.id)
+        .then(() => {
+          if (!status) {
+            this.get_distributor_data();
+          }
+        })
         .catch(() => {});
     },
   },
@@ -160,7 +209,8 @@ export default {
       right: 20px;
       z-index: 3;
       border: none;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      background-color: #fff;
     }
   }
 }

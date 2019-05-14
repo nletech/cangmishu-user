@@ -3,7 +3,9 @@
     <div :class="$style.body_main">
       <div :class="$style.btn">
         <i class="el-icon-plus"></i>
-        <span @click="handleClick">添加仓库</span>
+        <span @click="handleClick">
+          添加仓库
+        </span>
       </div>
       <!-- 表格 -->
       <el-table
@@ -47,8 +49,14 @@
           width="240"
           label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="edit(scope.row.id)">查看编辑</el-button>
-            <el-button size="mini" @click="config(scope.row.id)">基础配置</el-button>
+            <el-button size="mini"
+                       @click="edit(scope.row)">
+                       查看编辑
+            </el-button>
+            <el-button size="mini"
+                       @click="config(scope.row.id)">
+                       基础配置
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,6 +73,7 @@
     <!-- 添加仓库 -->
     <add-warehouse
       :visible.sync = "switchFlag"
+      :row_data="row_data"
     >
     </add-warehouse>
   </div>
@@ -85,6 +94,7 @@ export default {
       warehouses: [], // 仓库列表
       total: '', // 列表总条数
       currentPage: 1, // 当前页
+      row_data: {},
     };
   },
   components: {
@@ -92,19 +102,18 @@ export default {
     PaginationAndButtons,
     AddWarehouse,
   },
-  computed: {
-    ownerId() {
-      return this.$store.state.token.id;
-    },
-  },
   created() {
     this.getWarehouse(); // 拉取仓库列表
   },
   methods: {
+    clear(val) {
+      this.row_data = val;
+    },
     handleCurrentChange(val) {
       $http.checkWarehouses({ page: val })
         .then((res) => {
           this.warehouses = res.data.data;
+          console.log(res.data.data, 'getWarehouse');
         })
         .catch(() => {});
     },
@@ -121,11 +130,17 @@ export default {
     handleClick() {
       this.switchFlag = true;
     },
-    edit(row) {
-      console.log(row, 'edit');
+    edit(info) {
+      this.row_data = info;
+      this.switchFlag = true;
     },
-    config(row) {
-      console.log(row, 'config');
+    config(info) {
+      this.$router.push({
+        name: 'basicSetting',
+        params: {
+          warehouses_id: info.id,
+        },
+      });
     },
   },
 };
@@ -137,7 +152,7 @@ export default {
 
 .storeManage {
   position: relative;
-  margin: 40px 0 20px 0;
+  margin: 20px 0 20px 0;
   .body_main {
     margin: 0 auto;
     width: 90%;

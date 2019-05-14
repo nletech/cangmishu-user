@@ -13,7 +13,7 @@ const $http = {
   logout(data) {
     return Axios.post('/logout', data);
   }, // 登出
-  // 设置-仓库管理
+  //                                                          设置-仓库管理
   warehouses() {
     return Axios.get('/warehouses');
   }, // 仓库列表
@@ -23,16 +23,21 @@ const $http = {
   addWarehouse(data) {
     return Axios.post('/warehouses', data);
   }, // 添加仓库
-  modifyWarehouse() {
-    return Axios.put('/warehouses');
+  modifyWarehouse(id, data) {
+    return Axios.put(`/warehouses/${id}`, data);
   }, // 编辑仓库
-  // 设置 -地址管理
+  //                                              仓库管理 -基本配置
+  //                                  基本配置-货区
+  //                                                          设置 -地址管理
   addSenderAddress(data) {
     return Axios.post('/senderAddress', data);
   }, // 添加发件人信息
   getSenderAddress() {
     return Axios.get('/senderAddress');
   }, // 获取发件人信息列表
+  editSenderAddress(id, data) {
+    return Axios.get(`/senderAddress/${id}`, data);
+  }, // 编辑发件人
   checkSenderAddress(data) {
     return Axios.get('/senderAddress', { params: data });
   }, // 发件人分页查询
@@ -45,13 +50,16 @@ const $http = {
   getReceiverAddress() {
     return Axios.get('/receiverAddress');
   }, // 获取收件人信息列表
+  editReceiverAddress(id, data) {
+    return Axios.get(`/receiverAddress/${id}`, data);
+  }, // 编辑收件人
   checkReceiverAddress(data) {
     return Axios.get('/receiverAddress', { params: data });
   }, // 收件人分页查询
   deleteReceiver(id) {
-    return Axios.delete(`/receiverAddress${id}`);
+    return Axios.delete(`/receiverAddress/${id}`);
   }, // 删除收件人
-  // 设置-供应商管理
+  //                                                            设置-供应商管理
   addDistributor(data) {
     return Axios.post('/distributor', data);
   }, // 添加供应商
@@ -62,10 +70,10 @@ const $http = {
     return Axios.get('/distributor', { params: data });
   }, // 分页查询供应商
   deleteDistributor(id) {
-    return Axios.delete(`/distributor${id}`);
+    return Axios.delete(`/distributor/${id}`);
   }, // 删除供应商
-  editDistributor(id) {
-    return Axios.put(`/distributor${id}`);
+  editDistributor(id, data) {
+    return Axios.put(`/distributor/${id}`, data);
   }, // 编辑供应商
   // =========== 以上是仓秘书
   // 切换仓库

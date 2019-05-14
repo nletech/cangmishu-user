@@ -1,17 +1,19 @@
 <template>
   <el-dialog
-    title="新增仓库信息"
+    :title="this.id ? '编辑仓库信息' : '新增仓库信息'"
     :center="true"
     @update:visible="$emit('update:visible', $event)"
     :visible="visible"
+    width="60%"
   >
     <el-row :class="$style.add_warehouse_main">
-      <!-- 新增仓库信息 -->
       <el-col :span="10" :offset="6">
         <el-form
           :class="$style.staff_form"
           label-width="140px"
           size="middle"
+          :rules="rules"
+          ref="rule_form"
           label-position="left"
           :model="warehouseInfo"
         >
@@ -41,7 +43,6 @@
               <el-cascader
                 :props="props"
                 :options="addressInfo"
-                @change="a"
                 v-model="warehouseInfo.address"
                 style="width: 100%;">
               </el-cascader>
@@ -87,11 +88,67 @@ import Options from '@/assets/address.json';
 
 export default {
   name: 'addWarehouse',
-  props: ['visible'],
-  mounted() {
+  props: {
+    visible: [Boolean],
+    row_data: [Object],
   },
   data() {
+    // 自定义的验证规则
+    const check = {
+      name_cn: (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请输入姓名'));
+        } else {
+          callback();
+        }
+      },
+      code: (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请输入电话'));
+        } else {
+          callback();
+        }
+      },
+      address: (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请输入省市区'));
+        } else {
+          callback();
+        }
+      },
+      addressDetail: (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请输入详细地址'));
+        } else {
+          callback();
+        }
+      },
+      area: (rule, value, callback) => {
+        if (parseInt(value, 10) <= 0 || isNaN(parseInt(value, 10))) {
+          callback(new Error('请输入正整数'));
+        } else {
+          callback();
+        }
+      },
+    };
     return {
+      rules: {
+        name_cn: [
+          { validator: check.name_cn, trigger: 'blur', required: true },
+        ],
+        code: [
+          { validator: check.code, trigger: 'blur', required: true },
+        ],
+        address: [
+          { type: Array, validator: check.address, trigger: 'change', required: true },
+        ],
+        addressDetail: [
+          { validator: check.addressDetail, trigger: 'blur', required: true },
+        ],
+        area: [
+          { validator: check.area, trigger: 'blur', required: true },
+        ],
+      },
       warehouseInfo: {
         name_cn: '',
         code: '',
@@ -99,6 +156,7 @@ export default {
         addressDetail: '',
         area: '',
       },
+      id: '',
       formInfo: {},
       addressInfo: Options, // 选择地址联动
       props: {
@@ -108,10 +166,26 @@ export default {
       },
     };
   },
-  methods: {
-    a() {
-      console.log('a');
+  mounted() {
+    if (this.row_data.id) {
+      /* eslint-disable */
+      this.warehouseInfo.name_cn       = this.row_data.name_cn;
+      this.warehouseInfo.code          = this.row_data.code;
+      this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
+      this.warehouseInfo.addressDetail = this.row_data.door_no;
+      this.warehouseInfo.area          = this.row_data.area;
+      this.id = this.row_data.id;
+      this.row_data.id = '';
+    }
+  },
+  watch: {
+    visible() {
+      if (!this.visible) {
+        this.$emit('update:visible', false); // 关闭弹窗
+      }
     },
+  },
+  methods: {
     // 获取省市区
     // getAddress() {
     //   Axios.get('https://postcode.exss.io/public/pcd/version.json')
@@ -132,7 +206,6 @@ export default {
     // },
     // 提交修改信息
     warehouseInfoSubmit() {
-      console.log(this.$refs, 'address');
       // 提交的表单信息处理
       this.formInfo.name_cn = this.warehouseInfo.name_cn;
       this.formInfo.code = this.warehouseInfo.code;
@@ -141,35 +214,56 @@ export default {
       this.formInfo.street = this.warehouseInfo.address[2];
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
-      console.log(this.warehouseInfo, 'this.warehouseInfo');
-      if (Object.values(this.formInfo).includes('')) return;
-      this.$confirm('确认提交?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          $http.addWarehouse(this.formInfo)
-            .then((res) => {
-              if (res.status === 0) {
-                // 显示成功消息
-                this.$message({
-                  type: 'success',
-                  message: '成功!',
-                });
-                this.$emit('update:visible', false);
+      //
+      this.$refs.rule_form.validate((validate) => {
+        if (validate) {
+          this.$confirm('确认提交?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+            .then(() => {
+              // 编辑
+              if (this.id) {
+                $http.modifyWarehouse(this.id, this.formInfo)
+                  .then((re) => {
+                    if (re.status) return;
+                    // this.warehouseInfo.name_cn = '';
+                    // this.warehouseInfo.code = '';
+                    // this.warehouseInfo.address = [];
+                    // this.warehouseInfo.addressDetail = '';
+                    // this.warehouseInfo.area = '';
+                    // this.id = '';
+                    // this.$emit('clear', {});
+                    this.$emit('update:visible', false);
+                  })
+                  .catch();
               } else {
-                this.$message({
-                  type: 'info',
-                  message: '添加失败',
-                });
+                $http.addWarehouse(this.formInfo)
+                  .then((res) => {
+                    if (res.status === 0) {
+                      this.$message({
+                        type: 'success',
+                        message: '成功!',
+                      });
+                      this.$emit('update:visible', false);
+                    } else {
+                      this.$message({
+                        type: 'info',
+                        message: '添加失败',
+                      });
+                    }
+                  })
+                  .catch(() => {
+                    console.log('添加出错');
+                  });
               }
             })
-            .catch(() => {
-              console.log('添加出错');
-            });
-        })
-        .catch(() => {});
+            .catch(() => {});
+        } else {
+          return false;
+        }
+      });
     },
   },
 };

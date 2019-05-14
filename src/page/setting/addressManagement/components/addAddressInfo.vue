@@ -1,9 +1,10 @@
 <template>
   <el-dialog
-    :title="`添加${active_add_text}信息`"
+    :title="this.row_data ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
     :center="true"
     @update:visible="$emit('update:visible', $event)"
     :visible="visible"
+    width="60%"
   >
     <el-row :class="$style.add_warehouse_main">
       <!-- 添加信息 -->
@@ -35,17 +36,17 @@
             </el-input>
           </el-form-item>
           <!-- 地址 -->
-          <!-- <el-form-item
+          <el-form-item
             prop="address"
             label="省市区"
-            size="middle"> -->
-            <!-- <el-cascader
+            size="middle">
+            <el-cascader
               :props="props"
               :options="addressInfo"
               v-model="add_info.address"
               style="width: 260px;">
-            </el-cascader> -->
-          <!-- </el-form-item> -->
+            </el-cascader>
+          </el-form-item>
           <el-form-item
             prop="addressDetail"
             label="(详细地址)"
@@ -89,22 +90,30 @@ export default {
     const check = {
       full_name: (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('请输入姓名'));
+          callback(new Error('请输入姓名'));
+        } else {
+          callback();
         }
       },
       phone: (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('请输入电话'));
+          callback(new Error('请输入电话'));
+        } else {
+          callback();
         }
       },
       address: (rule, value, callback) => {
         if (value.length === 0) {
-          return callback(new Error('请输入省市区'));
+          callback(new Error('请输入省市区'));
+        } else {
+          callback();
         }
       },
       addressDetail: (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('请输入详细地址'));
+          callback(new Error('请输入详细地址'));
+        } else {
+          callback();
         }
       },
     };
@@ -149,62 +158,76 @@ export default {
       this.formInfo.city      = this.add_info.address[1];
       this.formInfo.district  = this.add_info.address[2];
       this.formInfo.address   = this.add_info.addressDetail;
-      const flag = this.$refs.form.validate(a => a);
-      // eslint-disable-next-line
-      if (!flag) {
-        // eslint-disable-next-line
-        if (Object.values(this.formInfo).includes('')) return;
-        this.$confirm('确认提交?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-          .then(() => {
-            if (this.active_tab_item === '发件信息') {
-              $http.addSenderAddress(this.formInfo)
-                .then((res) => {
-                  if (res.status === 0) {
-                    // 显示成功消息
-                    this.$message({
-                      type: 'success',
-                      message: '成功!',
-                    });
-                    this.$emit('update:visible', false);
-                  } else {
-                    this.$message({
-                      type: 'info',
-                      message: '添加失败',
-                    });
-                  }
-                })
-                .catch(() => {
-                  console.log('添加出错');
-                });
-            }
-            if (this.active_tab_item === '收件信息') {
-              $http.addReceiverAddress(this.formInfo)
-                .then((res) => {
-                  if (res.status === 0) {
-                    // 显示成功消息
-                    this.$message({
-                      type: 'success',
-                      message: '成功!',
-                    });
-                    this.$emit('update:visible', false);
-                  } else {
-                    this.$message({
-                      type: 'info',
-                      message: '添加失败',
-                    });
-                  }
-                })
-                .catch(() => {
-                  console.log('添加出错');
-                });
-            }
+      this.$refs.form.validate((validate) => {
+        if (validate) {
+          this.$confirm('确认提交?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
           })
-          .catch(() => {});
-      }
+            .then(() => {
+              console.log(this.row_data.id, 'this.row_data.id');
+              // 编辑
+              let id = this.row_data.id;
+              if (id) {
+                this.active_tab_item === '发件人信息'
+                ? $http.editSenderAddress(id, this.formInfo)
+                    .then(() => {
+                      if (status) return;
+                      this.active_item_check(this.active_tab_item);
+                    })
+                    .catch(() => {})
+                : $http.editReceiverAddress(id, this.formInfo)
+                  .then(() => {
+                    if (status) return;
+                    this.active_item_check(this.active_tab_item);
+                  })
+                  .catch(() => {});
+                return; // 终止
+              } else {
+                this.active_tab_item === '发件人信息'
+                ? $http.addSenderAddress(this.formInfo)
+                    .then((res) => {
+                      if (res.status === 0) {
+                        // 显示成功消息
+                        this.$message({
+                          type: 'success',
+                          message: '成功!',
+                        });
+                        this.$emit('update:visible', false);
+                      } else {
+                        this.$message({
+                          type: 'error',
+                          message: '添加失败',
+                        });
+                      }
+                    })
+                    .catch(() => {
+                      console.log('添加出错');
+                    })
+                : http.addReceiverAddress(this.formInfo)
+                    .then((res) => {
+                      if (res.status === 0) {
+                        this.$message({
+                          type: 'success',
+                          message: '成功!',
+                        });
+                        this.$emit('update:visible', false);
+                      } else {
+                        this.$message({
+                          type: 'error',
+                          message: '添加失败',
+                        });
+                      }
+                    })
+                    .catch(() => {
+                      console.log('添加出错');
+                    });
+              }
+            })
+            .catch(() => {});
+        }
+      });
     },
   },
 };
@@ -212,6 +235,7 @@ export default {
 
 <style lang="less" module>
 @import '../../../../less/public_variable.less';
+
 .add_warehouse_main {
   width: 90%;
   height: 50%;

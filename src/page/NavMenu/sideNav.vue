@@ -99,9 +99,11 @@ export default {
   methods: {
     // 子菜单操作
     showItem(itemName, index) {
-      let sunMeanu = []; // 缓存子菜单
+      /* eslint-disable */
+      let subMeanu = []; // 缓存子菜单
       let distance; // 缓存计算的距离
       const menu = this.sideNavList;
+      console.log(menu, 'menu');
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
           if (index === 0) {
@@ -110,11 +112,16 @@ export default {
           } // 鼠标悬浮到侧边栏首页不展示子列表
           this.li_show_switch = true;
           distance = `${(i * 80) + 40}px`; // 根据计算修改子菜单对应的布局
-          sunMeanu = menu[i].children;
+          menu[i].children.forEach((e) => {
+            if (e.nav === 2) {
+              subMeanu.push(e);
+            }
+          });
+          // subMeanu = menu[i].children;
         }
       } // 这个循环实现的思路：通过点击不同的侧边栏导航项来展示不同的导航项对应的子菜单
       this.$refs.NavChild.style.margin = `${distance} 0 0 0 `; // 输出处理后的计算值
-      this.li_NavChild = sunMeanu; // 输出子菜单
+      this.li_NavChild = subMeanu; // 输出子菜单
     },
     handleClickCloseNavChild() {
       this.li_show_switch = false;

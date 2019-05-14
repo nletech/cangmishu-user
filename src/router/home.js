@@ -35,6 +35,15 @@ const OutboundDetail = loadOnDemand('report/outboundDetail/outboundDetail');// �
 
 // 设置
 const StoreManagement = loadOnDemand('setting/storeManagement/storeManagement'); // 仓库管理
+
+const BasicSetting = loadOnDemand('setting/storeManagement/components/basicSetting/basicSetting'); // - 基本配置
+/* eslint-disable */
+const basic_setting = 'setting/storeManagement/components/basicSetting/components';
+const AddCargoArea = loadOnDemand(`${basic_setting}/components/addCargoArea`); // 添加货区
+const AddCargoShelf = loadOnDemand(`${basic_setting}/components/addCargoShelf`); // 添加货位
+const AddBatchType = loadOnDemand(`${basic_setting}/components/addBatchType`); // 添加入库单分类
+const AddOrderType = loadOnDemand(`${basic_setting}/components/addOrderType`); // 添加出库单分类
+
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
 export const routerMap = [
@@ -61,7 +70,7 @@ export const routerMap = [
         ],
       },
       {
-        name: 'inbound', // 侧边栏 入库
+        name: 'inbound', // 大菜单 入库
         path: 'inbound',
         component: LayoutSide,
         icon: '&#xeb1b;',
@@ -69,13 +78,13 @@ export const routerMap = [
         id: 'inbound',
         children: [
           {
-            name: 'inboundList', // 入库单列表
+            name: 'inboundList', // 子菜单-入库单列表
             path: 'inboundList',
             component: InboundList,
             nav: 2,
           },
           {
-            name: 'addInbound', // 添加入库单
+            name: 'addInbound', // 子菜单-添加入库单
             path: 'inbound/addInbound',
             component: AddInbound,
             nav: 2,
@@ -83,7 +92,7 @@ export const routerMap = [
         ],
       },
       {
-        name: 'outbound', // 侧边栏 出库
+        name: 'outbound', // 大菜单 出库
         path: 'outbound',
         component: LayoutSide,
         icon: '&#xeb1c;',
@@ -91,13 +100,13 @@ export const routerMap = [
         id: 'outbound',
         children: [
           {
-            name: 'outboundList', // 出库单列表
+            name: 'outboundList', // 子菜单-出库单列表
             path: 'outboundList',
             component: OutboundList,
             nav: 2,
           },
           {
-            name: 'addOutbound', // 添加出库单
+            name: 'addOutbound', // 子菜单-添加出库单
             path: 'outboundList/addOutbound',
             component: AddOutbound,
             nav: 2,
@@ -105,7 +114,7 @@ export const routerMap = [
         ],
       },
       {
-        name: 'inventory', // 侧边栏 库存
+        name: 'inventory', // 大菜单 库存
         path: 'inventory',
         component: LayoutSide,
         icon: '&#xeb25;',
@@ -113,25 +122,25 @@ export const routerMap = [
         id: 'inventory',
         children: [
           {
-            name: 'myGoodsList', // 货品管理
+            name: 'myGoodsList', // 子菜单-货品管理
             path: 'myGoodsList',
             component: MyGoodsList,
             nav: 2,
           },
           {
-            name: 'stockTaking', // 库存盘点
+            name: 'stockTaking', // 子菜单-库存盘点
             path: 'stockTaking',
             component: StockTaking,
             nav: 2,
           },
           {
-            name: 'inventoryManage', // 库存管理
+            name: 'inventoryManage', // 子菜单-库存管理
             path: 'inventoryManage',
             component: InventoryManage,
             nav: 2,
           },
           {
-            name: 'inventoryAlarm', // 库存报警
+            name: 'inventoryAlarm', // 子菜单-库存报警
             path: 'inventoryAlarm',
             component: InventoryAlarm,
             nav: 2,
@@ -139,7 +148,7 @@ export const routerMap = [
         ],
       },
       {
-        name: 'report', // 侧边栏 报表
+        name: 'report', // 大菜单 报表
         path: 'report',
         component: LayoutSide,
         icon: '&#xeb2e;',
@@ -147,13 +156,13 @@ export const routerMap = [
         id: 'report',
         children: [
           {
-            name: 'inboundDetail', // 入库单明细
+            name: 'inboundDetail', // 子菜单-入库单明细
             path: 'inboundDetail',
             component: InboundDetail,
             nav: 2,
           },
           {
-            name: 'outboundDetail', // 出库单明细
+            name: 'outboundDetail', // 子菜单-出库单明细
             path: 'outboundDetail',
             component: OutboundDetail,
             nav: 2,
@@ -161,7 +170,7 @@ export const routerMap = [
         ],
       },
       {
-        name: 'setting', // 侧边栏 设置
+        name: 'setting', // 大菜单 设置
         path: 'setting',
         component: LayoutSide,
         icon: '&#xeb41;',
@@ -169,19 +178,49 @@ export const routerMap = [
         id: 'setting',
         children: [
           {
-            name: 'storeManage', // 仓库管理
+            name: 'storeManage', // 子菜单-仓库管理
             path: 'storeManage',
             component: StoreManagement,
             nav: 2,
           },
           {
-            name: 'addressManagement', // 地址管理
+            name: 'basicSetting', // 仓库管理-基本配置
+            path: 'basicSetting',
+            component: BasicSetting,
+            nav: 3,
+          },
+          {
+            name: 'addCargoArea', // 组件-基础配置-添加货区
+            path: 'addCargoArea',
+            component: AddCargoArea,
+            nav: 3,
+          },
+          {
+            name: 'addCargoShelf', // 组件-基本配置-添加货位
+            path: 'addCargoShelf',
+            component: AddCargoShelf,
+            nav: 3,
+          },
+          {
+            name: 'addBatchType', // 组件-基本配置-添加入库单分类
+            path: 'addBatchType',
+            component: AddBatchType,
+            nav: 3,
+          },
+          {
+            name: 'addOrderType', // 基组件-本配置-添加出库单分类
+            path: 'addOrderType',
+            component: AddOrderType,
+            nav: 3,
+          },
+          {
+            name: 'addressManagement', // 子菜单-地址管理
             path: 'addressManagement',
             component: AddressManagement,
             nav: 2,
           },
           {
-            name: 'supplierManagement', // 供应商管理
+            name: 'supplierManagement', // 子菜单-供应商管理
             path: 'supplierManagement',
             component: SupplierManagement,
             nav: 2,

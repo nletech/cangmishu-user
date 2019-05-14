@@ -21,6 +21,7 @@ export default {
     setting: '设置',
     addressManagement: '地址管理',
     supplierManagement: '供应商管理',
+    basicSetting: '基础配置',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',
