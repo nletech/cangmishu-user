@@ -254,6 +254,7 @@ export default {
     // },
     // 导出库存
     exportStock() {
+      // eslint-disable-next-line
       const exportParams = `&product_name=${this.params.product_name}&production_batch_number=${this.params.production_batch_number}&relevance_code=${this.params.relevance_code}&sku=${this.params.sku}&option=${this.params.option}`;
       if (this.export_data.length === 2) {
         window.open(`${baseApi}stock/export-sku?warehouse_id=${

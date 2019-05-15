@@ -91,6 +91,8 @@
       :active_tab_item="active_tab_item"
       :active_add_text="active_add_text"
       :row_data="row_data"
+      @updata_data="handle_updata_data"
+      @updata_data_list="handle_updata_data_list"
     >
     </add-info>
   </div>
@@ -124,6 +126,7 @@ export default {
       info_data: [], // 数据
       total: '', // 列表总条数
       currentPage: 1, // 当前页
+      current_page: 1, // 编辑的当前页
     };
   },
   watch: {
@@ -140,12 +143,27 @@ export default {
     this.active_tab_item = this.tabs[0].name; // 默认选中标签页
   },
   methods: {
+    handle_updata_data_list(val) {
+      this.active_item_check(val);
+    }, // 添加之后更新信息
+    handle_updata_data(active_item) {
+      this.handleCurrentChange(this.current_page);
+    }, // 编辑信息之后更新信息
     info_add_btn() {
+      this.row_data = {};
       this.switchFlag = true;
     }, // 添加信息按钮
     active_item_check(item) {
-      if (item === '发件人信息') {
-        $http.getSenderAddress()
+      item === '发件人信息'
+      ? $http.getSenderAddress()
+          .then((re) => {
+            if (re.status) return;
+            this.info_data = re.data.data;
+            this.total = re.data.total;
+            this.current_page = re.data.current_page;
+          })
+          .catch(() => {})
+      : $http.getReceiverAddress()
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -153,59 +171,42 @@ export default {
             this.current_page = re.data.current_page;
           })
           .catch(() => {});
-      } else if (item === '收件人信息') {
-        $http.getReceiverAddress()
-          .then((re) => {
-            if (re.status) return;
-            this.info_data = re.data.data;
-            this.total = re.data.total;
-            this.current_page = re.data.current_page;
-          })
-          .catch(() => {});
-      }
     }, // 检测选中的标签页
     handleCurrentChange(val) {
+      this.current_page = val;
       this.active_tab_item === '发件人信息'
       ? $http.checkSenderAddress({ page: val })
-          .then((res) => {
-            this.info_data = res.data.data;
+          .then((re) => {
+            this.info_data = re.data.data;
+            this.total = re.data.total;
+            this.current_page = re.data.current_page;
           })
           .catch(() => {})
       : $http.checkReceiverAddress({ page: val })
-          .then((res) => {
-            this.info_data = res.data.data;
+          .then((re) => {
+            this.info_data = re.data.data;
+            this.total = re.data.total;
+            this.current_page = re.data.current_page;
           })
           .catch(() => {});
     }, // 分页查询
     edit(info) {
-      this.switchFlag = true;
       this.row_data = info;
-      // this.active_tab_item === '发件人信息'
-      // ? $http.editSenderAddress(info.id)
-      //     .then(() => {
-      //       if (status) return;
-      //       this.active_item_check(this.active_tab_item);
-      //     })
-      //     .catch(() => {})
-      // : $http.editReceiverAddress(info.id)
-      // .then(() => {
-      //   if (status) return;
-      //   this.active_item_check(this.active_tab_item);
-      // })
-      // .catch(() => {});
+      this.switchFlag = true;
     },
     delete_data(info) {
-      this.active_tab_item === '发件人信息'
+      const active_item = this.active_tab_item;
+      active_item === '发件人信息'
       ? $http.deleteSender(info.id)
           .then(() => {
             if (status) return;
-            this.active_item_check(this.active_tab_item);
+            this.active_item_check(active_item);
           })
           .catch(() => {})
       : $http.deleteReceiver(info.id)
           .then(() => {
             if (status) return;
-            this.active_item_check(this.active_tab_item);
+            this.active_item_check(active_item);
           })
           .catch(() => {});
     },

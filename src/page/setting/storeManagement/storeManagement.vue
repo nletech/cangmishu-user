@@ -74,6 +74,7 @@
     <add-warehouse
       :visible.sync = "switchFlag"
       :row_data="row_data"
+      @updata_data="handle_updata_data"
     >
     </add-warehouse>
   </div>
@@ -91,6 +92,7 @@ export default {
     return {
       switchFlag: false,
       all_warehouses_data: {}, // 所有仓库列表信息
+      current_page: 1, // 编辑之后跳转的页面
       warehouses: [], // 仓库列表
       total: '', // 列表总条数
       currentPage: 1, // 当前页
@@ -106,20 +108,26 @@ export default {
     this.getWarehouse(); // 拉取仓库列表
   },
   methods: {
+    handle_updata_data(val) {
+      if (val) {
+        this.handleCurrentChange(this.current_page);
+      }
+    }, // 更新数据
     clear(val) {
       this.row_data = val;
     },
     handleCurrentChange(val) {
+      this.current_page = +val;
       $http.checkWarehouses({ page: val })
         .then((res) => {
           this.warehouses = res.data.data;
-          console.log(res.data.data, 'getWarehouse');
         })
         .catch(() => {});
     },
     getWarehouse() {
       $http.warehouses()
         .then((res) => {
+          console.log(res);
           this.warehouses = res.data.data;
           this.total = res.data.total;
           this.current_page = res.data.current_page;
@@ -128,6 +136,7 @@ export default {
         .catch(() => {});
     },
     handleClick() {
+      this.row_data = {};
       this.switchFlag = true;
     },
     edit(info) {

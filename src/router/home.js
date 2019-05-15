@@ -46,6 +46,8 @@ const AddOrderType = loadOnDemand(`${basic_setting}/components/addOrderType`); /
 
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
+const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryManagement'); // 分类管理
+
 export const routerMap = [
   {
     component: LayoutTop,
@@ -223,6 +225,12 @@ export const routerMap = [
             name: 'supplierManagement', // 子菜单-供应商管理
             path: 'supplierManagement',
             component: SupplierManagement,
+            nav: 2,
+          },
+          {
+            name: 'categoryManagement', // 子菜单-分类管理
+            path: 'categoryManagement',
+            component: CategoryManagement,
             nav: 2,
           },
         ],

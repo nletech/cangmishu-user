@@ -115,6 +115,7 @@ export default {
       info_data: [], // 数据
       total: '', // 列表总条数
       currentPage: 1, // 当前页
+      current_page: 1, // 编辑的当前页(当选中的信息不在第一页时)
     };
   },
   watch: {
@@ -140,6 +141,7 @@ export default {
     submit_form() {
       this.$refs.form.validate((validate) => {
         if (validate) {
+          // 编辑信息
           if (+this.id) {
             $http.editDistributor(this.id, this.distributor)
               .then((re) => {
@@ -147,18 +149,20 @@ export default {
                 this.id = '';
                 this.dialogVisible = false;
                 // 更新数据
+                this.handleCurrentChange(this.current_page);
+              })
+              .catch(() => {});
+          } else {
+            // 添加信息
+            $http.addDistributor(this.distributor)
+              .then((re) => {
+                if (re.status) return;
+                // 更新数据
                 this.get_distributor_data();
               })
               .catch(() => {});
           }
-          $http.addDistributor(this.distributor)
-            .then((re) => {
-              if (re.status) return;
-              this.dialogVisible = false;
-              // 更新数据
-              this.get_distributor_data();
-            })
-            .catch(() => {});
+          this.dialogVisible = false;
         }
       });
     },
@@ -166,9 +170,13 @@ export default {
       this.dialogVisible = true;
     }, // 添加信息按钮
     handleCurrentChange(val) {
+      // 缓存当前页
+      this.current_page = val;
       $http.checkDistributor({ page: val })
         .then((res) => {
           this.info_data = res.data.data;
+          // this.total = res.data.total;
+          // this.current_page = res.data.current_page;
         })
         .catch(() => {});
     }, // 分页查询

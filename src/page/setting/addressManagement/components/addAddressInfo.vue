@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="this.row_data ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
+    :title="this.text_flag ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
     :center="true"
     @update:visible="$emit('update:visible', $event)"
     :visible="visible"
@@ -84,6 +84,7 @@ export default {
     tabs: [Array],
     active_tab_item: [String],
     active_add_text: [String],
+    row_data: [Object],
   },
   data() {
     // 自定义的验证规则
@@ -103,7 +104,7 @@ export default {
         }
       },
       address: (rule, value, callback) => {
-        if (value.length === 0) {
+        if (!value) {
           callback(new Error('请输入省市区'));
         } else {
           callback();
@@ -125,6 +126,7 @@ export default {
         addressDetail: '', // 详细地址
       },
       formInfo: {},
+      text_flag: '',
       addressInfo: Address, // 选择地址联动
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
@@ -139,13 +141,33 @@ export default {
           { validator: check.phone, trigger: 'blur', required: true },
         ],
         address: [
-          { type: Array, validator: check.address, trigger: 'change', required: true },
+          { type: Array, validator: check.address, trigger: 'blur', required: true },
         ],
         addressDetail: [
           { validator: check.addressDetail, trigger: 'blur', required: true },
         ],
       },
     };
+  },
+  mounted() {
+    console.log(this.row_data, 'row_data');
+  },
+  watch: {
+    row_data() {
+      // 监听传入的 row_data 如果是空对象则弹框文字显示为 "添加",然后清除下表单的缓存
+      // 如果是通过编辑按钮传入 row_data 则将信息填充进表单，填充的 id 用于请求编辑信息接口
+      if (!Object.keys(this.row_data).length) {
+        this.text_flag = false;
+        this.add_info = {};
+      } else {
+        /* eslint-disable */
+        this.text_flag = true;
+        this.add_info.full_name       = this.row_data.fullname; // 姓名
+        this.add_info.phone           = this.row_data.phone; // 电话
+        this.add_info.address         = [this.row_data.province, this.row_data.city, this.row_data.district]; // 地址
+        this.add_info.addressDetail   = this.row_data.address; // 详细地址
+      }
+    },
   },
   methods: {
     // 提交修改信息
@@ -166,64 +188,43 @@ export default {
             type: 'warning',
           })
             .then(() => {
-              console.log(this.row_data.id, 'this.row_data.id');
-              // 编辑
-              let id = this.row_data.id;
+              let active_item = this.active_tab_item; // 活动标签
+              let id = this.row_data.id; // 用于编辑
+              // 如果 id 存在, 则为编辑信息，否则是添加信息
               if (id) {
-                this.active_tab_item === '发件人信息'
-                ? $http.editSenderAddress(id, this.formInfo)
-                    .then(() => {
-                      if (status) return;
-                      this.active_item_check(this.active_tab_item);
+                if (this.active_tab_item === '发件人信息') {
+                  $http.editSenderAddress(id, this.formInfo)
+                    .then((re) => {
+                      if (re.status) return;
+                      this.$emit('updata_data', active_item); // 更新数据列表
                     })
-                    .catch(() => {})
-                : $http.editReceiverAddress(id, this.formInfo)
-                  .then(() => {
-                    if (status) return;
-                    this.active_item_check(this.active_tab_item);
-                  })
-                  .catch(() => {});
-                return; // 终止
+                    .catch(() => {});
+                } else if(this.active_tab_item === '收件人信息') {
+                  $http.editReceiverAddress(id, this.formInfo)
+                    .then((re) => {
+                      if (re.status) return;
+                      this.$emit('updata_data', active_item); // 更新数据列表
+                    })
+                    .catch(() => {});
+                }
               } else {
-                this.active_tab_item === '发件人信息'
-                ? $http.addSenderAddress(this.formInfo)
-                    .then((res) => {
-                      if (res.status === 0) {
-                        // 显示成功消息
-                        this.$message({
-                          type: 'success',
-                          message: '成功!',
-                        });
-                        this.$emit('update:visible', false);
-                      } else {
-                        this.$message({
-                          type: 'error',
-                          message: '添加失败',
-                        });
-                      }
+                if (this.active_tab_item === '发件人信息') {
+                  $http.addSenderAddress(this.formInfo)
+                    .then((re) => {
+                      if (re.status) return;
+                      this.$emit('updata_data_list', active_item); // 更新数据列表
                     })
-                    .catch(() => {
-                      console.log('添加出错');
+                    .catch(() => {});
+                } else if(this.active_tab_item === '收件人信息') {
+                  $http.addReceiverAddress(this.formInfo)
+                    .then((re) => {
+                      if (re.status) return;
+                      this.$emit('updata_data_list', active_item); // 更新数据列表
                     })
-                : http.addReceiverAddress(this.formInfo)
-                    .then((res) => {
-                      if (res.status === 0) {
-                        this.$message({
-                          type: 'success',
-                          message: '成功!',
-                        });
-                        this.$emit('update:visible', false);
-                      } else {
-                        this.$message({
-                          type: 'error',
-                          message: '添加失败',
-                        });
-                      }
-                    })
-                    .catch(() => {
-                      console.log('添加出错');
-                    });
+                    .catch(() => {});
+                }
               }
+              this.$emit('update:visible', false); // 关闭弹窗
             })
             .catch(() => {});
         }

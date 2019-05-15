@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="this.id ? '编辑仓库信息' : '新增仓库信息'"
+    :title="this.text_flag ? '编辑仓库信息' : '新增仓库信息'"
     :center="true"
     @update:visible="$emit('update:visible', $event)"
     :visible="visible"
@@ -140,7 +140,7 @@ export default {
           { validator: check.code, trigger: 'blur', required: true },
         ],
         address: [
-          { type: Array, validator: check.address, trigger: 'change', required: true },
+          { type: Array, validator: check.address, trigger: 'blur', required: true },
         ],
         addressDetail: [
           { validator: check.addressDetail, trigger: 'blur', required: true },
@@ -157,6 +157,7 @@ export default {
         area: '',
       },
       id: '',
+      text_flag: '',
       formInfo: {},
       addressInfo: Options, // 选择地址联动
       props: {
@@ -166,26 +167,41 @@ export default {
       },
     };
   },
-  mounted() {
-    if (this.row_data.id) {
-      /* eslint-disable */
-      this.warehouseInfo.name_cn       = this.row_data.name_cn;
-      this.warehouseInfo.code          = this.row_data.code;
-      this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
-      this.warehouseInfo.addressDetail = this.row_data.door_no;
-      this.warehouseInfo.area          = this.row_data.area;
-      this.id = this.row_data.id;
-      this.row_data.id = '';
-    }
-  },
   watch: {
     visible() {
       if (!this.visible) {
         this.$emit('update:visible', false); // 关闭弹窗
       }
     },
+    row_data() {
+      if (!Object.keys(this.row_data).length) {
+        this.text_flag = false;
+        this.warehouseInfo = {};
+      } else {
+        /* eslint-disable */
+        this.text_flag = true;
+        this.warehouseInfo.name_cn       = this.row_data.name_cn;
+        this.warehouseInfo.code          = this.row_data.code;
+        this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
+        this.warehouseInfo.addressDetail = this.row_data.door_no;
+        this.warehouseInfo.area          = this.row_data.area;
+      }
+    },
   },
   methods: {
+    message(status, success_msg, fail_msg) {
+      if (!status) {
+        this.$message({
+          type: 'success',
+          message: `${success_msg}`,
+        });
+      } else {
+        this.$message({
+          type: 'info',
+          message: `${fail_msg}`,
+        });
+      }
+    },
     // 获取省市区
     // getAddress() {
     //   Axios.get('https://postcode.exss.io/public/pcd/version.json')
@@ -223,41 +239,26 @@ export default {
             type: 'warning',
           })
             .then(() => {
-              // 编辑
-              if (this.id) {
-                $http.modifyWarehouse(this.id, this.formInfo)
+              let id = this.row_data.id; // 用于编辑
+              if (id) {
+                $http.modifyWarehouse(id, this.formInfo)
                   .then((re) => {
                     if (re.status) return;
-                    // this.warehouseInfo.name_cn = '';
-                    // this.warehouseInfo.code = '';
-                    // this.warehouseInfo.address = [];
-                    // this.warehouseInfo.addressDetail = '';
-                    // this.warehouseInfo.area = '';
-                    // this.id = '';
-                    // this.$emit('clear', {});
-                    this.$emit('update:visible', false);
+                    this.$emit('updata_data', true); // 更新数据列表
                   })
                   .catch();
               } else {
                 $http.addWarehouse(this.formInfo)
                   .then((res) => {
-                    if (res.status === 0) {
-                      this.$message({
-                        type: 'success',
-                        message: '成功!',
-                      });
-                      this.$emit('update:visible', false);
-                    } else {
-                      this.$message({
-                        type: 'info',
-                        message: '添加失败',
-                      });
-                    }
+                    if (res.status) return;
+                    // this.message(res.status, '添加成功!', '添加失败!')
+                    this.$emit('updata_data', true); // 更新数据列表
                   })
                   .catch(() => {
                     console.log('添加出错');
                   });
               }
+              this.$emit('update:visible', false); // 关闭弹窗
             })
             .catch(() => {});
         } else {

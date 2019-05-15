@@ -36,7 +36,7 @@ const $http = {
     return Axios.get('/senderAddress');
   }, // 获取发件人信息列表
   editSenderAddress(id, data) {
-    return Axios.get(`/senderAddress/${id}`, data);
+    return Axios.put(`/senderAddress/${id}`, data);
   }, // 编辑发件人
   checkSenderAddress(data) {
     return Axios.get('/senderAddress', { params: data });
@@ -51,7 +51,7 @@ const $http = {
     return Axios.get('/receiverAddress');
   }, // 获取收件人信息列表
   editReceiverAddress(id, data) {
-    return Axios.get(`/receiverAddress/${id}`, data);
+    return Axios.put(`/receiverAddress/${id}`, data);
   }, // 编辑收件人
   checkReceiverAddress(data) {
     return Axios.get('/receiverAddress', { params: data });
@@ -75,6 +75,19 @@ const $http = {
   editDistributor(id, data) {
     return Axios.put(`/distributor/${id}`, data);
   }, // 编辑供应商
+  //                                                            设置-分类管理
+  getCategoryManagement() {
+    return Axios.get('/categories');
+  }, // 获取分类列表
+  addCategoryManagement(data) {
+    return Axios.post('/categories', data);
+  }, // 添加分类列表
+  checkCategoryManagement(data) {
+    return Axios.get('/categories', { params: data });
+  }, // 分页查询分类列表
+  editCategoryManagement(id, data) {
+    return Axios.put(`/categories/${id}`, data);
+  }, // 编辑分类信息
   // =========== 以上是仓秘书
   // 切换仓库
   toggleWarehouse(data) {
