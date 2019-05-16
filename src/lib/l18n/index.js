@@ -22,7 +22,8 @@ export default {
     addressManagement: '地址管理',
     supplierManagement: '供应商管理',
     basicSetting: '基础配置',
-    categoryManagement: '分类管理',
+    categoryManagement: '货品分类',
+    record: '出入库单分类',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',
@@ -259,7 +260,7 @@ export default {
     PleaseEnterTheShippingAreaEnglishName: '请输入货区外文名称',
     StorageTemperature: '储存温度',
     ShippingAreaNumber: '货区编号',
-    ChineseNameOfTheGoodsArea: '货区中文名称',
+    NameOfTheGoodsArea: '货区名称',
     ShippingAreaEnglishName: '货区外文名称',
     WhetherToEnable: '是否启用',
     OptionalInformation: '可选信息',

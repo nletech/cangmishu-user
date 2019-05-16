@@ -1,71 +1,49 @@
 <template>
   <mdoel-form>
-    <el-form
-      slot="left"
-      ref="CargoAreaReference"
-      :model="form"
-      label-width="120px"
-      :rules="formValidator"
-    >
-      <label class="label"> {{$t('EssentialInformation')}} </label>
-      <el-form-item :label="$t('ShippingAreaNumber')" :class="$style.avatar_uploader" prop="code">
-        <el-input v-model="form.code" size="small"  :disabled="!!$route.query.areaId"></el-input>
-      </el-form-item>
-      <el-form-item :label="$t('ChineseNameOfTheGoodsArea')" prop="name_cn">
-        <el-input v-model="form.name_cn" size="small"></el-input>
-      </el-form-item>
-      <el-form-item :label="$t('ShippingAreaEnglishName')" prop="name_en">
-        <el-input v-model="form.name_en" size="small"></el-input>
-      </el-form-item>
-      <el-form-item :label="$t('cargoProperty')" prop="warehouse_feature_id">
-        <el-radio-group v-model="form.warehouse_feature_id">
-          <el-radio v-for="(item, index) in features" :label="item.id" :key="index">
-            {{item.name_cn}}
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item :label="$t('WhetherToEnable')">
-        <el-tooltip :content="isOpenText" placement="top">
-          <el-switch
-            v-model="is_enabled"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          >
-          </el-switch>
-        </el-tooltip>
-      </el-form-item>
-      <label class="label"> {{$t('OptionalInformation')}}</label>
-      <el-form-item :label="$t('FunctionalClassification')" :class="$style.avatar_uploader">
-        <el-select
-          v-model="form.functions"
-          multiple
-          filterable
-          allow-create
-          default-first-option
-          :placeholder="$t('Pleaseselectthecargoareafunction')"
-        >
-          <el-option
-            v-for="item in functions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item :label="$t('remarks')">
-        <el-input v-model="form.remark" type="textarea" size="small" :rows="3"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="primary"
-          @click="onSubmit"
-          :loading="$store.state.config.button_loading"
-        >
-          {{$route.query.areaId ? $t('ModifyNow') : $t('CreateNow')}}
-        </el-button>
-        <cancel-button></cancel-button>
-      </el-form-item>
+    <el-form  slot="left"
+              :model="form"
+              ref="CargoAreaReference"
+              label-width="120px"
+              :rules="formValidator">
+              <label class="label"> {{$t('EssentialInformation')}} </label>
+              <el-form-item  prop="code"
+                           :label="$t('ShippingAreaNumber')"
+                           :class="$style.avatar_uploader">
+                           <el-input v-model="form.code"
+                                     size="small"
+                                     :disabled="!!$route.query.areaId">
+                           </el-input>
+              </el-form-item>
+              <el-form-item  prop="name_cn"
+                            :label="$t('NameOfTheGoodsArea')">
+                            <el-input  v-model="form.name_cn"
+                                        size="small">
+                            </el-input>
+              </el-form-item>
+              <el-form-item  :label="$t('WhetherToEnable')">
+                              <el-tooltip :content="isOpenText" placement="top">
+                                <el-switch  v-model="is_enabled"
+                                            active-color="#13ce66"
+                                            inactive-color="#ff4949">
+                                </el-switch>
+                </el-tooltip>
+              </el-form-item>
+              <label  class="label">{{$t('OptionalInformation')}}</label>
+              <el-form-item :label="$t('remarks')">
+                            <el-input v-model="form.remark"
+                                      type="textarea"
+                                      size="small"
+                                      :rows="3">
+                            </el-input>
+              </el-form-item>
+              <el-form-item>
+                            <el-button  type="primary"
+                                        @click="onSubmit"
+                                        :loading="$store.state.config.button_loading">
+                                        {{$route.query.areaId ? $t('ModifyNow') : $t('CreateNow')}}
+                            </el-button>
+                            <cancel-button></cancel-button>
+              </el-form-item>
     </el-form>
   </mdoel-form>
 </template>
@@ -115,12 +93,6 @@ export default {
       return name;
     },
     formValidator() {
-      // const validatorChinese = (rule, value, callback) => {
-      //   if (!Chinese(value)) {
-      //     return callback(Error('中文名称必须包含中文'));
-      //   }
-      //   return callback();
-      // };
       const validatorEnglish = (rule, value, callback) => {
         if (!English(value) || !noChinese(value)) {
           return callback(Error(this.$t('外文名称不能出现中文且必须包含外文')));
@@ -157,29 +129,30 @@ export default {
   },
   created() {
     this.getInfo();
-    this.getFeaturesList();
+    // this.getFeaturesList();
   },
   methods: {
     getInfo() {
       if (!this.$route.query.areaId) return;
+      console.log(this.$route.query.areaId, '添加货区');
       $http.getInfoWarehouseArea(this.$route.query.areaId).then((res) => {
         this.is_enabled = !!res.data.is_enabled;
         this.form = res.data;
       });
     },
     // 拉取特性列表
-    getFeaturesList() {
-      const warehouseId = this.$route.query.id;
-      console.log(warehouseId);
-      $http.warehouseFeature({
-        warehouse_id: warehouseId,
-        page: 1,
-        page_size: 10,
-        data_count: 0,
-      }).then((res) => {
-        this.features = res.data.data.filter(item => !!item.is_enabled);
-      });
-    },
+    // getFeaturesList() {
+    //   const warehouseId = this.$route.query.id;
+    //   console.log(warehouseId);
+    //   $http.warehouseFeature({
+    //     warehouse_id: warehouseId,
+    //     page: 1,
+    //     page_size: 10,
+    //     data_count: 0,
+    //   }).then((res) => {
+    //     this.features = res.data.data.filter(item => !!item.is_enabled);
+    //   });
+    // },
     onSubmit() {
       this.$refs.CargoAreaReference.validate((valid) => {
         if (!valid) return;

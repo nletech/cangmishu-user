@@ -9,8 +9,6 @@
   >
     <warehouse-area @change="seeArea" v-if="type == 1"></warehouse-area>
     <warehouse-shelf :id="warehouse_area_id" v-else-if="type == 2"></warehouse-shelf>
-    <batch-type v-else-if="type == 3"></batch-type>
-    <order-type v-else-if="type == 4"></order-type>
   </cms-tags>
 </div>
 </template>
@@ -19,8 +17,6 @@
 import CmsTags from '@/components/cms'; // 标签复用组件
 import WarehouseArea from './components/warehouseArea'; // 货区
 import WarehouseShelf from './components/warehouseShelf'; // 货位
-import BatchType from './components/batchType'; // 入库单分类数据表
-import OrderType from './components/orderType'; // 入库单分类数据表
 
 export default {
   data() {
@@ -28,8 +24,6 @@ export default {
       tag_data: [
         { name: '1', label: '货区', addName: 'addCargoArea' },
         { name: '2', label: '货位', addName: 'addCargoShelf' },
-        { name: '3', label: '入库单分类', addName: 'addBatchType' },
-        { name: '4', label: '出库单分类', addName: 'addOrderType' },
       ],
       type: '1',
       warehouse_area_id: '',
@@ -39,8 +33,6 @@ export default {
     CmsTags,
     WarehouseArea,
     WarehouseShelf,
-    OrderType,
-    BatchType,
   },
   computed: {
     addText() {

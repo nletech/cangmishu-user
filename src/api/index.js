@@ -17,17 +17,48 @@ const $http = {
   warehouses() {
     return Axios.get('/warehouses');
   }, // 仓库列表
-  checkWarehouses(data) {
-    return Axios.get('/warehouses', { params: data });
-  }, // 仓库列表分页查询
   addWarehouse(data) {
     return Axios.post('/warehouses', data);
   }, // 添加仓库
   modifyWarehouse(id, data) {
     return Axios.put(`/warehouses/${id}`, data);
   }, // 编辑仓库
-  //                                              仓库管理 -基本配置
-  //                                  基本配置-货区
+  checkWarehouses(data) {
+    return Axios.get('/warehouses', { params: data });
+  }, // 仓库列表分页查询
+  //                                              仓库管理(基本配置)
+  //                               基本配置-货区
+  getWarehouseArea(data) {
+    return Axios.get('areas', { params: data });
+  }, // 获取货区列表
+  addWarehouseArea(data) {
+    return Axios.post('/areas', data);
+  }, // 添加货区
+  delWarehouseArea(id) {
+    return Axios.delete(`/areas${id}`);
+  }, // 删除货区
+  editWarehouseArea(id, data) {
+    return Axios.put(`/areas${id}`, data);
+  }, // 编辑货区
+  checkWarehouseArea(data) {
+    return Axios.get('/areas', { params: data });
+  }, // 分页查询--货区列表
+  //                               基本配置-货位
+  getWarehouseshelf(data) {
+    return Axios.get('/location', { params: data });
+  }, // 获取货位列表
+  addWarehouseshelf(data) {
+    return Axios.post('/location', { params: data });
+  }, // 添加货位
+  delWarehouseshelf(id) {
+    return Axios.delete(`/location${id}`);
+  }, // 删除货位
+  editWarehouseshelf(id, data) {
+    return Axios.put(`/location${id}`, data);
+  }, // 编辑货位
+  checkWarehouseshelf(data) {
+    return Axios.get('/location', { params: data });
+  }, // 分页查询--货位列表
   //                                                          设置 -地址管理
   addSenderAddress(data) {
     return Axios.post('/senderAddress', data);
@@ -88,6 +119,42 @@ const $http = {
   editCategoryManagement(id, data) {
     return Axios.put(`/categories/${id}`, data);
   }, // 编辑分类信息
+  deleteCategoryManagement(id) {
+    return Axios.delete(`/categories/${id}`);
+  }, // 删除分类信息
+  //                                                            设置-出入库分类
+  //                               入库单分类
+  getBatchType() {
+    return Axios.get('/batchType');
+  }, // 获取入库单分类
+  addBatchType(data) {
+    return Axios.post('/batchType', data);
+  }, // 添加入库单分类
+  delBatchType(id) {
+    return Axios.delete(`/batchType/${id}`);
+  }, // 删除入库单分类
+  editBatchType(id, data) {
+    return Axios.put(`/batchType/${id}`, data);
+  }, // 编辑入库单分类
+  checkBatchType(data) {
+    return Axios.get('/batchType', { params: data });
+  }, // 分页查询--入库单分类
+  //                               出库单分类
+  getOrderType() {
+    return Axios.get('/orderType');
+  }, // 获取出库单分类
+  addOrderType(data) {
+    return Axios.post('/orderType', data);
+  }, // 添加出库单分类
+  delOrderType(id) {
+    return Axios.delete(`/orderType/${id}`);
+  }, // 删除出库单分类
+  editOrderType(id, data) {
+    return Axios.put(`/orderType/${id}`, data);
+  }, // 编辑出库单分类
+  checkOrderType(data) {
+    return Axios.get('/orderType', { params: data });
+  }, // 分页查询--出库单分类
   // =========== 以上是仓秘书
   // 切换仓库
   toggleWarehouse(data) {
@@ -144,27 +211,9 @@ const $http = {
   delWarehouseFeature(data) {
     return Axios.delete('warehouseFeature', { params: data });
   },
-  // 添加货区
-  addWarehouseArea(data, type) {
-    if (type) return Axios.post('warehouseArea', data);
-    return Axios.put('warehouseArea', data);
-  },
-  // 删除货区
-  delWarehouseArea(data) {
-    return Axios.delete('warehouseArea', { params: data });
-  },
   // 单条货区
   getInfoWarehouseArea(data) {
     return Axios.get(`warehouseArea/${data}`);
-  },
-  // 货位列表
-  Warehouseshelf(data) {
-    return Axios.get('warehouseLocation', { params: data });
-  },
-  // 添加货架
-  addWarehouseshelf(data, edit) {
-    if (edit) return Axios.post('warehouseLocation', data);
-    return Axios.put('warehouseLocation', data);
   },
   // 单条货架
   shelfInfo(data) {
@@ -224,43 +273,6 @@ const $http = {
   // 删除篮子
   delKep(data) {
     return Axios.delete('kep', { params: data });
-  },
-  // 入库单分类
-  batchType(data) {
-    return Axios.get('batchType', { params: data });
-  },
-  // 修改入库单分类
-  editBatchType(data) {
-    return Axios.post('batchType', data);
-  },
-  // 添加入库单分类
-  addBatchType(data) {
-    return Axios.put('batchType', data);
-  },
-  // 删除入库单分类
-  delBatchType(data) {
-    return Axios.delete('batchType', { params: data });
-  },
-  // 出库列表
-  orderType(data) {
-    return Axios.get('orderType', { params: data });
-  },
-  // 删除出库单
-  delOrderType(data) {
-    return Axios.delete('orderType', { params: data });
-  },
-  // 修改入库单分类
-  editOrderType(data) {
-    return Axios.post('orderType', data);
-  },
-  // 添加出库单
-  addOrderType(data) {
-    return Axios.put('orderType', data);
-  },
-  // 添加/编辑货品分类
-  addCategoryType(data, edit) {
-    if (edit) return Axios.post('category', data);
-    return Axios.put('category', data);
   },
   // 货品库列表
   goodsList(data) {

@@ -43,10 +43,10 @@
             :class="$style.selectedTag_main_dropdown"
             style="width: 200px; text-align: center;">
             <el-dropdown-item>
-              <span>仓库配置</span>
+              <span @click="to_store_management">仓库管理</span>
             </el-dropdown-item>
             <el-dropdown-item>
-              <span>创建仓库</span>
+              <span @click="to_create_store">创建仓库</span>
             </el-dropdown-item>
             <el-dropdown-item>
               <span @click="shift_warehouse">切换仓库</span>
@@ -128,6 +128,16 @@ export default {
     this.getWarehouses(); // 获取仓库列表
   },
   methods: {
+    to_store_management() {
+      this.$router.replace({ name: 'storeManage' });
+    }, // 跳转到仓库管理
+    to_create_store() {
+      sessionStorage.setItem('show_create_warehouse', true);
+      const timer1 = setTimeout(() => {
+        this.$router.replace({ name: 'storeManage' });
+        clearTimeout(timer1);
+      }, 500);
+    }, // 跳转到创建仓库
     shift_warehouse() {
       const timer = setTimeout(() => {
         this.showWarehousesSwitch = true;

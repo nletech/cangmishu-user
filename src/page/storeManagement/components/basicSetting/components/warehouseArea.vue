@@ -18,16 +18,6 @@
       label="名称">
     </el-table-column>
     <el-table-column
-      label="功能分类">
-      <template slot-scope="scope">
-        {{scope.row.function_names}}
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="feature.name_cn"
-      label="仓库特性">
-    </el-table-column>
-    <el-table-column
       prop="functions"
       label="启用状态">
       <template slot-scope="scope">
@@ -68,11 +58,11 @@ export default {
   },
   methods: {
     getList() {
-      $http.warehouseArea(this.params).then((res) => {
+      $http.getWarehouseArea(this.params).then((res) => {
         this.Area_list_data = res.data.data;
         this.params.data_count = res.data.total;
       });
-    },
+    }, // 获取货区信息
     del(id) {
       this.$confirm('此操作将永久删除该货区, 是否继续?', '提示', {
         confirmButtonText: '确定',

@@ -9,11 +9,6 @@ export default {
     warehouseList: '',
   },
   mutations: {
-    //  设置选择的warehouseName
-    setWarehouseName(state, data) {
-      state.setWarehouseName = data;
-      localStorage.setItem('warehouseName', data);
-    },
     // 设置选择的warehouseid
     setWarehouseId(state, data) {
       state.setWarehouseId = data;

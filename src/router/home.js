@@ -30,23 +30,24 @@ const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage'
 const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存报警
 
 // 报表
-const InboundDetail = loadOnDemand('report/inboundDetail/inboundDetail');// 入库单明细
-const OutboundDetail = loadOnDemand('report/outboundDetail/outboundDetail');// 出库单明细
+// const InboundDetail = loadOnDemand('report/inboundDetail/inboundDetail');// 入库单明细
+// const OutboundDetail = loadOnDemand('report/outboundDetail/outboundDetail');// 出库单明细
 
 // 设置
-const StoreManagement = loadOnDemand('setting/storeManagement/storeManagement'); // 仓库管理
+const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓库管理
 
-const BasicSetting = loadOnDemand('setting/storeManagement/components/basicSetting/basicSetting'); // - 基本配置
+// const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - 基本配置
+const Demo = loadOnDemand('storeManagement/components/basicSetting/demo'); // - demo
+
 /* eslint-disable */
-const basic_setting = 'setting/storeManagement/components/basicSetting/components';
+const basic_setting = 'storeManagement/components/basicSetting/components';
 const AddCargoArea = loadOnDemand(`${basic_setting}/components/addCargoArea`); // 添加货区
 const AddCargoShelf = loadOnDemand(`${basic_setting}/components/addCargoShelf`); // 添加货位
-const AddBatchType = loadOnDemand(`${basic_setting}/components/addBatchType`); // 添加入库单分类
-const AddOrderType = loadOnDemand(`${basic_setting}/components/addOrderType`); // 添加出库单分类
 
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
-const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryManagement'); // 分类管理
+const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryManagement'); // 货品分类管理
+const Record = loadOnDemand('setting/record/record'); // 出入库单分类
 
 export const routerMap = [
   {
@@ -149,28 +150,28 @@ export const routerMap = [
           },
         ],
       },
-      {
-        name: 'report', // 大菜单 报表
-        path: 'report',
-        component: LayoutSide,
-        icon: '&#xeb2e;',
-        nav: 1,
-        id: 'report',
-        children: [
-          {
-            name: 'inboundDetail', // 子菜单-入库单明细
-            path: 'inboundDetail',
-            component: InboundDetail,
-            nav: 2,
-          },
-          {
-            name: 'outboundDetail', // 子菜单-出库单明细
-            path: 'outboundDetail',
-            component: OutboundDetail,
-            nav: 2,
-          },
-        ],
-      },
+      // {
+      //   name: 'report', // 大菜单 报表
+      //   path: 'report',
+      //   component: LayoutSide,
+      //   icon: '&#xeb2e;',
+      //   nav: 1,
+      //   id: 'report',
+      //   children: [
+      //     {
+      //       name: 'inboundDetail', // 子菜单-入库单明细
+      //       path: 'inboundDetail',
+      //       component: InboundDetail,
+      //       nav: 2,
+      //     },
+      //     {
+      //       name: 'outboundDetail', // 子菜单-出库单明细
+      //       path: 'outboundDetail',
+      //       component: OutboundDetail,
+      //       nav: 2,
+      //     },
+      //   ],
+      // },
       {
         name: 'setting', // 大菜单 设置
         path: 'setting',
@@ -183,12 +184,12 @@ export const routerMap = [
             name: 'storeManage', // 子菜单-仓库管理
             path: 'storeManage',
             component: StoreManagement,
-            nav: 2,
+            nav: 3,
           },
           {
             name: 'basicSetting', // 仓库管理-基本配置
             path: 'basicSetting',
-            component: BasicSetting,
+            component: Demo,
             nav: 3,
           },
           {
@@ -201,18 +202,6 @@ export const routerMap = [
             name: 'addCargoShelf', // 组件-基本配置-添加货位
             path: 'addCargoShelf',
             component: AddCargoShelf,
-            nav: 3,
-          },
-          {
-            name: 'addBatchType', // 组件-基本配置-添加入库单分类
-            path: 'addBatchType',
-            component: AddBatchType,
-            nav: 3,
-          },
-          {
-            name: 'addOrderType', // 基组件-本配置-添加出库单分类
-            path: 'addOrderType',
-            component: AddOrderType,
             nav: 3,
           },
           {
@@ -231,6 +220,12 @@ export const routerMap = [
             name: 'categoryManagement', // 子菜单-分类管理
             path: 'categoryManagement',
             component: CategoryManagement,
+            nav: 2,
+          },
+          {
+            name: 'record', // 子菜单-出入库单分类管理
+            path: 'record',
+            component: Record,
             nav: 2,
           },
         ],

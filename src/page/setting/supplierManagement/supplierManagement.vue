@@ -53,13 +53,12 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            :class="$style.pagination"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            layout="total, prev, pager, next, jumper"
-            :total="+total"
-          >
+          <el-pagination  :class="$style.pagination"
+                          v-show="+total"
+                          @current-change="handleCurrentChange"
+                          :current-page="currentPage"
+                          layout="total, prev, pager, next, jumper"
+                          :total="+total">
           </el-pagination>
         </el-row>
       </div>

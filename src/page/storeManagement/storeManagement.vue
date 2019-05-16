@@ -54,7 +54,7 @@
                        查看编辑
             </el-button>
             <el-button size="mini"
-                       @click="config(scope.row.id)">
+                       @click="config(scope.row)">
                        基础配置
             </el-button>
           </template>
@@ -107,6 +107,15 @@ export default {
   created() {
     this.getWarehouse(); // 拉取仓库列表
   },
+  mounted() {
+    if (sessionStorage.getItem('show_create_warehouse')) {
+      this.handleClick();
+    }
+    const timer2 = setTimeout(() => {
+      sessionStorage.removeItem('show_create_warehouse');
+      clearTimeout(timer2);
+    }, 500);
+  },
   methods: {
     handle_updata_data(val) {
       if (val) {
@@ -144,6 +153,7 @@ export default {
       this.switchFlag = true;
     },
     config(info) {
+      console.log(info, 'info');
       this.$router.push({
         name: 'basicSetting',
         params: {
@@ -156,8 +166,8 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../less/public_style.less';
-@import '../../../less/public_variable.less';
+@import '../../less/public_variable.less';
+@import '../../less/public_variable.less';
 
 .storeManage {
   position: relative;

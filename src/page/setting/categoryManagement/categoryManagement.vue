@@ -8,7 +8,7 @@
                         <div :class="$style.am_operation_btn">
                           <span @click="info_add_btn">
                             <i class="iconfont">&#xe618;</i>
-                            {{'添加分类'}}
+                            {{'添加货品分类'}}
                           </span>
                         </div>
                         <!-- 列表信息-->
@@ -22,12 +22,12 @@
                                                     header-align="center"
                                                     align="center">
                                    </el-table-column>
-                                   <el-table-column  label="分类中文名"
+                                   <el-table-column  label="货品分类中文名"
                                                      prop="name_cn"
                                                      header-align="center"
                                                      align="center">
                                    </el-table-column>
-                                   <el-table-column  label="分类外文名"
+                                   <el-table-column  label="货品分类外文名"
                                                     prop="name_en"
                                                     header-align="center"
                                                     align="center">
@@ -46,7 +46,7 @@
                                                               <el-tag type="success"
                                                                       size="medium"
                                                                       v-if="scope.row.need_production_batch_number == 1">
-                                                                      生产批次号
+                                                                      生产批次
                                                               </el-tag>
                                                               <el-tag type="success"
                                                                       size="medium"
@@ -55,10 +55,12 @@
                                                               </el-tag>
                                                      </template>
                                    </el-table-column>
-                                   <el-table-column label="是否启用">
+                                   <el-table-column  label="是否启用"
+                                                     header-align="center"
+                                                     align="center">
                                                   <template slot-scope="scope">
-                                                            <span v-if="scope.row.is_enabledd==1">是</span>
-                                                            <span v-if="scope.row.is_enabledd==0">否</span>
+                                                            <span v-if="scope.row.is_enabled==1">是</span>
+                                                            <span v-if="scope.row.is_enabled==0">否</span>
                                                   </template>
                                    </el-table-column>
                                    <el-table-column header-align="center"
@@ -67,25 +69,25 @@
                                                   label="操作">
                                                   <template slot-scope="scope">
                                                     <el-button size="mini"
-                                                              @click="editCategory(scope.row.id)">
+                                                              @click="editCategory(scope.row)">
                                                               编辑
                                                     </el-button>
                                                     <el-button size="mini"
                                                               type="danger"
-                                                              @click="delClassification(scope.row.id)">
+                                                              @click="delClassification(scope.row)">
                                                               删除
                                                     </el-button>
                                                   </template>
                                    </el-table-column>
                         </el-table>
                         <!-- 分页 -->
-                        <el-pagination
-                          :class="$style.pagination"
-                          @current-change="handleCurrentChange"
-                          :current-page="currentPage"
-                          layout="total, prev, pager, next, jumper"
-                          :total="+total"
-                        >
+                        <el-pagination  :class="$style.pagination"
+                                        v-show="+total"
+                                        :page-size="15"
+                                        @current-change="handleCurrentChange"
+                                        :current-page="currentPage"
+                                        layout="total, prev, pager, next, jumper"
+                                        :total="+total">
                         </el-pagination>
                   </el-row>
             </div>
@@ -112,7 +114,7 @@
                                           prop="sku_property">
                                           <el-checkbox-group  v-model="sku_property">
                                                               <el-checkbox label="保质期"></el-checkbox>
-                                                              <el-checkbox label="生产批次号"></el-checkbox>
+                                                              <el-checkbox label="生产批次"></el-checkbox>
                                                               <el-checkbox label="最佳食用期"></el-checkbox>
                                           </el-checkbox-group>
                             </el-form-item>
@@ -127,8 +129,8 @@
                             </el-form-item>
                   </el-form>
                   <span  slot="footer"
-                        class="dialog-footer">
-                        <el-button type="primary" @click="submit_form">提 交</el-button>
+                         class="dialog-footer">
+                         <el-button type="primary" @click="submit_form">提 交</el-button>
                   </span>
       </el-dialog>
   </div>
@@ -179,44 +181,64 @@ export default {
   created() {
     this.get_category_list_data(); // 初始化列表数据
   },
-  watch: {
-    dialogVisible() {
-    },
-  },
   methods: {
+    info_add_btn() {
+      this.sku_property = []; // 清空
+      this.category_info_form = {}; // 清空
+      this.dialogVisible = true; // 打开弹窗
+    }, // 添加信息按钮
+    editCategory(info) {
+      this.dialogVisible = true;
+      // 选中 sku属性
+      /* eslint-disable */
+      info.need_best_before_date === 1 // 最佳食用期
+        ? this.sku_property.push('最佳食用期')
+        : this.sku_property.push('');
+      info.need_expiration_date === 1 // 保质期
+        ? this.sku_property.push('保质期')
+        : this.sku_property.push('');
+      info.need_production_batch_number === 1 // 生产批次
+        ? this.sku_property.push('生产批次')
+        : this.sku_property.push('');
+      this.category_info_form = info;
+      this.category_info_form.is_enabled = `${info.is_enabled}`;
+      this.id = info.id; // 用于编辑
+    }, // 编辑信息按钮
+    delClassification(info) {
+      $http.deleteCategoryManagement(info.id)
+        .then((re) => {
+          if (re.status) return;
+          this.get_category_list_data();
+        })
+        .catch(() => {});
+    }, // 删除信息按钮
     get_category_list_data() {
       $http.getCategoryManagement()
         .then((re) => {
           if (re.status) return;
-          console.log(re.data, 'data');
+          // console.log(re.data, 'data');
           this.category_list_data = re.data.data;
           this.total = re.data.total;
         })
         .catch(() => {});
-    },
+    }, // 获取货品分类信息
     submit_form() {
       this.$refs.form.validate((validate) => {
         if (validate) {
-          console.log(this.category_info_form.is_enabled, 'this.category_info_form.is_enabled');
+          // console.log(this.category_info_form.is_enabled, 'this.category_info_form.is_enabled');
           this.form_info.name_cn = this.category_info_form.name_cn;
           this.form_info.name_en = this.category_info_form.name_en;
           this.form_info.is_enabled = this.category_info_form.is_enabled || 0; // 是否启用
-          // this.form_info.need_expiration_date = this.category_info_form.need_expiration_date;
-          // this.form_info.need_production_batch_number = this.category_info_form.need_production_batch_number;
-          // this.form_info.need_best_before_date = this.category_info_form.need_best_before_date;
-          //
           const arr = this.sku_property;
           for (let i = 0; i < arr.length; i += 1) {
             if (arr[i] === '保质期') {
               this.form_info.need_expiration_date = 1;
-              console.log(this.form_info, '1');
             } else if (arr[i] === '生产批次') {
               this.form_info.need_production_batch_number = 1;
             } else if (arr[i] === '最佳食用期') {
               this.form_info.need_best_before_date = 1;
             }
           }
-          console.log(typeof this.form_info.is_enabled, 'type');
           console.log(this.form_info, 'form_info');
           this.$confirm('确认提交?', '提示', {
             confirmButtonText: '确定',
@@ -225,12 +247,16 @@ export default {
           })
             .then(() => {
               if (+this.id) {
+                this.form_info.id = this.id; // 用于编辑
                 $http.editCategoryManagement(this.id, this.form_info)
                   .then((re) => {
                     if (re.status) return;
+                    this.$message({
+                      type: 'success',
+                      message: '修改成功',
+                    });
                     console.log('编辑');
-                    // this.id = '';
-                    // this.dialogVisible = false;
+                    this.id = '';
                     // 更新数据
                     this.handleCurrentChange(this.current_page);
                   })
@@ -240,7 +266,11 @@ export default {
                 $http.addCategoryManagement(this.form_info)
                   .then((re) => {
                     if (re.status) return;
-                    console.log('添加');
+                    this.$message({
+                      type: 'success',
+                      message: '添加成功',
+                    });
+                    this.id = '';
                     // 更新数据
                     this.get_category_list_data();
                   })
@@ -252,37 +282,19 @@ export default {
           this.dialogVisible = false;
         }
       });
-    },
-    info_add_btn() {
-      this.category_info_form = {};
-      this.dialogVisible = true;
-    }, // 添加信息按钮
+    }, // 提交表单
     handleCurrentChange(val) {
       // 缓存当前页
       this.current_page = val;
       $http.checkCategoryManagement({ page: val })
         .then((re) => {
+          // console.log(re, '分页查询');
           this.category_list_data = re.data.data;
           this.total = re.data.total;
-          this.current_page = re.data.current_page;
+          this.currentPage = re.data.current_page;
         })
         .catch(() => {});
-    }, // 分页查询
-    edit(info) {
-      this.dialogVisible = true;
-      this.id = info.id;
-      this.distributor.name_cn = info.name_cn;
-      this.distributor.name_en = info.name_en;
-    },
-    delete_data(info) {
-      $http.deleteDistributor(info.id)
-        .then(() => {
-          if (!status) {
-            this.get_distributor_data();
-          }
-        })
-        .catch(() => {});
-    },
+    }, // 分页查询--货品分类信息
   },
 };
 </script>
@@ -303,7 +315,7 @@ export default {
       z-index: 3;
       border: none;
       font-size: 1.2rem;
-      background-color: #fff;
+      color: @ThemeColor;
     }
   }
 }

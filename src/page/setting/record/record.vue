@@ -3,8 +3,7 @@
     <div :class="$style.addressManagement">
       <div :class="$style.am_main">
         <!-- 标签页 -->
-        <el-row
-        >
+        <el-row>
           <!-- 点击按键 -->
           <div :class="$style.am_operation_btn">
             <span @click="info_add_btn">
@@ -13,78 +12,69 @@
             </span>
           </div>
           <!-- 标签页 -->
-          <el-tabs
-            :class="$style.am_tabs"
-            v-model="active_tab_item"
-            >
-            <el-tab-pane
-              :class="$style.am_tabs_item"
-              v-for="item in tabs"
-              :key="item.id"
-              :label="item.name"
-              :name="item.name">
-              <!-- 对应的标签页内容 -->
-                <el-table
-                  :class="$style.table_main"
-                  :data="info_data"
-                  border
-                >
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    type="index"
-                    width="80"
-                    label="#">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    prop="fullname"
-                    label="姓名">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    prop="phone"
-                    label="电话">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    prop="full_address"
-                    label="地址">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    width="240"
-                    label="操作">
-                    <template slot-scope="scope">
-                      <el-button size="mini"
-                                 @click="edit(scope.row)">
-                                  编辑
-                      </el-button>
-                      <el-button size="mini"
-                                 type="danger"
-                                 @click="delete_data(scope.row)">
-                                  删除
-                      </el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-                <el-pagination  :class="$style.pagination"
-                                v-show="+total"
-                                @current-change="handleCurrentChange"
-                                :current-page="currentPage"
-                                layout="total, prev, pager, next, jumper"
-                                :total="+total">
-                </el-pagination>
-            </el-tab-pane>
+          <el-tabs  v-model="active_tab_item"
+                    :class="$style.am_tabs">
+                    <el-tab-pane  :class="$style.am_tabs_item"
+                                  v-for="item in tabs"
+                                  :key="item.id"
+                                  :label="item.name"
+                                  :name="item.name">
+                                  <!-- 对应的标签页内容 -->
+                                  <el-table  :data="info_data"
+                                             :class="$style.table_main"
+                                             border>
+                                             <el-table-column
+                                              header-align="center"
+                                              align="center"
+                                              type="index"
+                                              width="80"
+                                              label="#">
+                                             </el-table-column>
+                                             <el-table-column
+                                              header-align="center"
+                                              align="center"
+                                              prop="name"
+                                              label="类型名称">
+                                             </el-table-column>
+                                             <el-table-column  label="启用状态"
+                                                              header-align="center"
+                                                              align="center">
+                                                              <template slot-scope="scope">
+                                                                        <span v-if="scope.row.is_enabled==1">是</span>
+                                                                        <span v-if="scope.row.is_enabled==0">否</span>
+                                                              </template>
+                                             </el-table-column>
+                                             <el-table-column
+                                              header-align="center"
+                                              width="240"
+                                              label="操作">
+                                              <template slot-scope="scope">
+                                                <el-button size="mini"
+                                                          @click="edit(scope.row)">
+                                                            编辑
+                                                </el-button>
+                                                <el-button size="mini"
+                                                          type="danger"
+                                                          @click="delete_data(scope.row)">
+                                                            删除
+                                                </el-button>
+                                              </template>
+                                             </el-table-column>
+                                  </el-table>
+                                  <el-pagination  :class="$style.pagination"
+                                                  v-show="+total"
+                                                  @current-change="handleCurrentChange"
+                                                  :current-page="currentPage"
+                                                  layout="total, prev, pager, next, jumper"
+                                                  :total="+total">
+                                  </el-pagination>
+                    </el-tab-pane>
           </el-tabs>
         </el-row>
       </div>
     </div>
     <!-- 添加收发人信息 -->
-    <add-info
+    <add-record-info
       :visible.sync = "switchFlag"
       :tabs="tabs"
       :active_tab_item="active_tab_item"
@@ -92,32 +82,34 @@
       :row_data="row_data"
       @updata_data="handle_updata_data"
       @updata_data_list="handle_updata_data_list"
+      :clear_is_enabled="clear_is_enabled"
     >
-    </add-info>
+    </add-record-info>
   </div>
 </template>
 <script>
 import $http from '@/api';
-import AddInfo from './components/addAddressInfo';
+import AddRecordInfo from './components/addRecordInfo';
 
 export default {
-  name: 'addressManagement',
+  name: 'record',
   components: {
-    AddInfo,
+    AddRecordInfo,
   },
   data() {
     return {
       tabs: [
         {
           id: 1,
-          name: '发件人信息',
-          btn_text: '添加发件人信息',
+          name: '入库单分类',
+          btn_text: '添加入库单分类',
         }, {
           id: 2,
-          name: '收件人信息',
-          btn_text: '添加收件人信息',
+          name: '出库单分类',
+          btn_text: '添加出库单分类',
         },
       ],
+      clear_is_enabled: 0,
       row_data: {}, // 行数据
       active_tab_item: '', // 默认选择的标签页 (主要判断标志)
       active_add_text: '', // 默认添加按钮文字
@@ -132,7 +124,7 @@ export default {
     active_tab_item() {
       /* eslint-disable */
       let active_tag = this.active_tab_item;
-      active_tag === '发件人信息'
+      active_tag === '入库单分类'
         ? this.active_add_text = this.tabs[0].btn_text
         : this.active_add_text = this.tabs[1].btn_text;
       this.active_item_check(active_tag); // 点击不同的标签页显示不同的数据
@@ -150,11 +142,12 @@ export default {
     }, // 编辑信息之后更新信息
     info_add_btn() {
       this.row_data = {};
+      this.clear_is_enabled = 1;
       this.switchFlag = true;
     }, // 添加信息按钮
     active_item_check(item) {
-      item === '发件人信息'
-      ? $http.getSenderAddress()
+      item === '入库单分类'
+      ? $http.getBatchType()
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -162,7 +155,7 @@ export default {
             this.current_page = re.data.current_page;
           })
           .catch(() => {})
-      : $http.getReceiverAddress()
+      : $http.getOrderType()
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -173,15 +166,15 @@ export default {
     }, // 检测选中的标签页
     handleCurrentChange(val) {
       this.current_page = val;
-      this.active_tab_item === '发件人信息'
-      ? $http.checkSenderAddress({ page: val })
+      this.active_tab_item === '入库单分类'
+      ? $http.checkBatchType({ page: val })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
           .catch(() => {})
-      : $http.checkReceiverAddress({ page: val })
+      : $http.checkOrderType({ page: val })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
@@ -195,23 +188,23 @@ export default {
     },
     delete_data(info) {
       const active_item = this.active_tab_item;
-      active_item === '发件人信息'
-      ? $http.deleteSender(info.id)
+      active_item === '入库单分类'
+      ? $http.delBatchType(info.id)
           .then(() => {
             if (status) return;
             this.$message({
               type: 'success',
-              message: '删除发件人成功',
+              message: '删除入库单分类成功',
             });
             this.active_item_check(active_item);
           })
           .catch(() => {})
-      : $http.deleteReceiver(info.id)
+      : $http.delOrderType(info.id)
           .then(() => {
             if (status) return;
             this.$message({
               type: 'success',
-              message: '删除收件人成功',
+              message: '删除出库单分类成功',
             });
             this.active_item_check(active_item);
           })
