@@ -35,29 +35,30 @@ const $http = {
     return Axios.post('/areas', data);
   }, // 添加货区
   delWarehouseArea(id) {
-    return Axios.delete(`/areas${id}`);
+    return Axios.delete(`/areas/${id}`);
   }, // 删除货区
   editWarehouseArea(id, data) {
-    return Axios.put(`/areas${id}`, data);
+    return Axios.put(`/areas/${id}`, data);
   }, // 编辑货区
   checkWarehouseArea(data) {
     return Axios.get('/areas', { params: data });
   }, // 分页查询--货区列表
+  //
   //                               基本配置-货位
   getWarehouseshelf(data) {
-    return Axios.get('/location', { params: data });
+    return Axios.get('/locations', { params: data });
   }, // 获取货位列表
   addWarehouseshelf(data) {
-    return Axios.post('/location', { params: data });
+    return Axios.post('/locations', { params: data });
   }, // 添加货位
   delWarehouseshelf(id) {
-    return Axios.delete(`/location${id}`);
+    return Axios.delete(`/locations/${id}`);
   }, // 删除货位
   editWarehouseshelf(id, data) {
-    return Axios.put(`/location${id}`, data);
+    return Axios.put(`/locations/${id}`, data);
   }, // 编辑货位
   checkWarehouseshelf(data) {
-    return Axios.get('/location', { params: data });
+    return Axios.get('/locations', { params: data });
   }, // 分页查询--货位列表
   //                                                          设置 -地址管理
   addSenderAddress(data) {

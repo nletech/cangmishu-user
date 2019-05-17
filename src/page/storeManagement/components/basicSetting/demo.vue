@@ -23,42 +23,44 @@
                                   <el-table  :data="info_data"
                                              :class="$style.table_main"
                                              border>
-                                             <el-table-column
-                                              header-align="center"
-                                              align="center"
-                                              type="index"
-                                              width="80"
-                                              label="#">
+                                             <el-table-column  label="#"
+                                                               header-align="center"
+                                                               align="center"
+                                                               type="index"
+                                                               width="80">
                                              </el-table-column>
-                                             <el-table-column
-                                              header-align="center"
-                                              align="center"
-                                              prop="name"
-                                              label="类型名称">
+                                             <el-table-column  label="编号"
+                                                               header-align="center"
+                                                               align="center"
+                                                               prop="code">
+                                             </el-table-column>
+                                             <el-table-column  label="类型名称"
+                                                               header-align="center"
+                                                               align="center"
+                                                               prop="name_cn">
                                              </el-table-column>
                                              <el-table-column  label="启用状态"
-                                                              header-align="center"
-                                                              align="center">
-                                                              <template slot-scope="scope">
-                                                                        <span v-if="scope.row.is_enabled==1">是</span>
-                                                                        <span v-if="scope.row.is_enabled==0">否</span>
-                                                              </template>
+                                                               header-align="center"
+                                                               align="center">
+                                                               <template  slot-scope="scope">
+                                                                          <span v-if="scope.row.is_enabled==1">是</span>
+                                                                         <span v-if="scope.row.is_enabled==0">否</span>
+                                                               </template>
                                              </el-table-column>
-                                             <el-table-column
-                                              header-align="center"
-                                              width="240"
-                                              label="操作">
-                                              <template slot-scope="scope">
-                                                <el-button size="mini"
-                                                          @click="edit(scope.row)">
-                                                            编辑
-                                                </el-button>
-                                                <el-button size="mini"
-                                                          type="danger"
-                                                          @click="delete_data(scope.row)">
-                                                            删除
-                                                </el-button>
-                                              </template>
+                                             <el-table-column  label="操作"
+                                                               header-align="center"
+                                                               width="240">
+                                                               <template  slot-scope="scope">
+                                                                          <el-button  size="mini"
+                                                                                      @click="edit(scope.row)">
+                                                                                      编辑
+                                                                          </el-button>
+                                                                          <el-button  size="mini"
+                                                                                      type="danger"
+                                                                                      @click="delete_data(scope.row)">
+                                                                                      删除
+                                                                          </el-button>
+                                                               </template>
                                              </el-table-column>
                                   </el-table>
                                   <el-pagination  :class="$style.pagination"
@@ -104,12 +106,12 @@ export default {
       tabs: [
         {
           id: 1,
-          name: '入库单分类',
-          btn_text: '添加入库单分类',
+          name: '货区',
+          btn_text: '添加货区',
         }, {
           id: 2,
-          name: '出库单分类',
-          btn_text: '添加出库单分类',
+          name: '货位',
+          btn_text: '添加货位',
         },
       ],
       clear_is_enabled: 0,
@@ -127,7 +129,7 @@ export default {
     active_tab_item() {
       /* eslint-disable */
       let active_tag = this.active_tab_item;
-      active_tag === '入库单分类'
+      active_tag === '货区'
         ? this.active_add_text = this.tabs[0].btn_text
         : this.active_add_text = this.tabs[1].btn_text;
       this.active_item_check(active_tag); // 点击不同的标签页显示不同的数据
@@ -149,8 +151,8 @@ export default {
       this.switchFlag = true;
     }, // 添加信息按钮
     active_item_check(item) {
-      item === '入库单分类'
-      ? $http.getBatchType()
+      item === '货区'
+      ? $http.getWarehouseArea({ warehouse_id: this.$route.params.warehouses_id })
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -158,7 +160,7 @@ export default {
             this.current_page = re.data.current_page;
           })
           .catch(() => {})
-      : $http.getOrderType()
+      : $http.getWarehouseshelf({ warehouse_id: this.$route.params.warehouses_id })
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -169,15 +171,21 @@ export default {
     }, // 检测选中的标签页
     handleCurrentChange(val) {
       this.current_page = val;
-      this.active_tab_item === '入库单分类'
-      ? $http.checkBatchType({ page: val })
+      this.active_tab_item === '货区'
+      ? $http.checkWarehouseArea({
+        page: val,
+        warehouse_id: this.$route.params.warehouses_id,
+      })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
           .catch(() => {})
-      : $http.checkOrderType({ page: val })
+      : $http.checkWarehouseshelf({
+          page: val,
+          warehouse_id: this.$route.params.warehouses_id,
+      })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
@@ -191,23 +199,23 @@ export default {
     },
     delete_data(info) {
       const active_item = this.active_tab_item;
-      active_item === '入库单分类'
-      ? $http.delBatchType(info.id)
+      active_item === '货区'
+      ? $http.delWarehouseArea(info.id)
           .then(() => {
             if (status) return;
             this.$message({
               type: 'success',
-              message: '删除入库单分类成功',
+              message: '删除货区成功',
             });
             this.active_item_check(active_item);
           })
           .catch(() => {})
-      : $http.delOrderType(info.id)
+      : $http.delWarehouseshelf(info.id)
           .then(() => {
             if (status) return;
             this.$message({
               type: 'success',
-              message: '删除出库单分类成功',
+              message: '删除货位成功',
             });
             this.active_item_check(active_item);
           })
