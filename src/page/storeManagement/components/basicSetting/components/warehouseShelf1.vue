@@ -5,62 +5,6 @@
                       :visible="visible"
                       width="50%">
                       <el-row :class="$style.add_warehouse_main">
-                        <!-- 添加信息 -->
-                        <el-col  :span="10"
-                                 :offset="6">
-                                 <el-form  :model="add_info"
-                                           ref="form"
-                                           :class="$style.staff_form"
-                                           label-width="140px"
-                                           size="middle"
-                                           label-position="left"
-                                           :rules="info_Verify_rules">
-                                           <!-- 货区编号 -->
-                                           <el-form-item  :label="`${active_tab_item}编号`"
-                                                          prop="code"
-                                                          size="middle">
-                                                          <el-input  v-model="add_info.code">
-                                                          </el-input>
-                                           </el-form-item>
-                                           <!-- 货区名称 -->
-                                           <el-form-item  :label="`${active_tab_item}名称`"
-                                                          prop="name_cn"
-                                                          size="middle">
-                                                          <el-input  v-model="add_info.name_cn">
-                                                          </el-input>
-                                           </el-form-item>
-                                           <!-- 是否启用 -->
-                                           <el-form-item  label="是否启用"
-                                                          prop="is_enabled">
-                                                          <el-switch  v-model="is_enabled"
-                                                                      active-color="#13ce66"
-                                                                      active-value="1"
-                                                                      inactive-value="0"
-                                                                      inactive-color="#ccc">
-                                                          </el-switch>
-                                           </el-form-item>
-                                           <label class="label"> 选填信息: </label>
-                                           <el-form-item  label="备注"
-                                                          prop="remark"
-                                                          size="middle">
-                                                          <el-input  v-model="add_info.remark"
-                                                                     type="textarea">
-                                                          </el-input>
-                                           </el-form-item>
-                                 </el-form>
-                                 <!-- 提交 -->
-                                 <el-row  :class="$style.submit_btn">
-                                          <el-col  :span="2"
-                                                  :offset="13">
-                                                  <el-button  @click="infoSubmit"
-                                                              type="success">
-                                                              提交
-                                                  </el-button>
-                                          </el-col>
-                                 </el-row>
-                        </el-col>
-                      </el-row>
-                      <el-row :class="$style.add_warehouse_main">
                               <!-- 添加信息 -->
                               <el-col  :span="10"
                                       :offset="6">

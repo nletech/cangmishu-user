@@ -25,22 +25,6 @@
         prop="capacity"
         label="容积（m³）">
       </el-table-column>
-      <!-- <el-table-column
-        prop="passage"
-        label="通道">
-      </el-table-column>
-      <el-table-column
-        prop="row"
-        label="排">
-      </el-table-column>
-      <el-table-column
-        prop="col"
-        label="列">
-      </el-table-column>
-      <el-table-column
-        prop="floor"
-        label="层">
-      </el-table-column> -->
       <el-table-column
         label="启用状态">
         <template slot-scope="scope">
@@ -62,14 +46,37 @@
 </template>
 
 <script>
-import mixin from '@/mixin/list';
+// import mixin from '@/mixin/list';
 import $http from '@/api';
 import PaginationAndButtons from '@/components/pagination_and_buttons';
 
 export default {
-  mixins: [mixin],
+  mounted() {
+    console.log('Shelf');
+  },
+  props: {
+    warehouse_id: [Number],
+    id: [String],
+    show_data_flag: [String],
+  },
+  watch: {
+    warehouse_id(val) {
+      const idCache = val;
+      if (idCache !== this.warehouse_id) {
+        // 发起请求
+      }
+    },
+    show_data_flag(val) {
+      if (val === '货位') {
+        console.log('监听到货位', val);
+        this.active = true;
+      }
+    },
+  },
+  // mixins: [mixin],
   data() {
     return {
+      active: false, // 父组件已经选中标志
       shelf_list_data: [],
       params: {
         warehouse_id: this.$route.query.id,
@@ -82,42 +89,51 @@ export default {
   components: {
     PaginationAndButtons,
   },
-  props: ['id'],
   methods: {
-    getList() {
-      this.params.warehouse_area_id = this.id;
-      if (localStorage.getItem('shelfID') && this.params.page === 1) {
-        this.params.page = parseInt(localStorage.getItem('shelfID'), 10);
-      }
-      $http.Warehouseshelf({
-        page: this.params.page,
-        page_size: this.params.page_size,
-        warehouse_id: this.params.warehouse_id,
-        warehouse_area_id: '',
-        is_enabled: '',
-      }).then((res) => {
-        localStorage.removeItem('shelfID');
-        this.shelf_list_data = res.data.data;
-        this.params.data_count = res.data.total;
-        this.shelf_list_data.forEach((val) => {
-          val.warehouse_name = val.warehouse_area && val.warehouse_area.name_cn;
-        });
-      });
-      if (!this.isGetAreaData) {
-        $http.warehouseArea({
-          warehouse_id: this.params.warehouse_id,
-          page: 1,
-          page_size: 200,
-          is_enabled: 1 }).then((res) => {
-          this.area_list_data = res.data.data;
-          this.area_list_data.forEach((val) => {
-            val.text = val.name_cn;
-            val.value = val.name_cn;
+    get_data() {
+      if (this.active) {
+        console.log('货位请求');
+        console.log(this.warehouse_id, '当前仓库id');
+        $http.getWarehouseshelf({ warehouse_id: this.warehouse_id })
+          .then((res) => {
+            console.log(res, 'res');
           });
-          this.isGetAreaData = true;
-        });
       }
     },
+    // getList() {
+    //   this.params.warehouse_area_id = this.id;
+    //   if (localStorage.getItem('shelfID') && this.params.page === 1) {
+    //     this.params.page = parseInt(localStorage.getItem('shelfID'), 10);
+    //   }
+    //   $http.Warehouseshelf({
+    //     page: this.params.page,
+    //     page_size: this.params.page_size,
+    //     warehouse_id: this.params.warehouse_id,
+    //     warehouse_area_id: '',
+    //     is_enabled: '',
+    //   }).then((res) => {
+    //     localStorage.removeItem('shelfID');
+    //     this.shelf_list_data = res.data.data;
+    //     this.params.data_count = res.data.total;
+    //     this.shelf_list_data.forEach((val) => {
+    //       val.warehouse_name = val.warehouse_area && val.warehouse_area.name_cn;
+    //     });
+    //   });
+    //   if (!this.isGetAreaData) {
+    //     $http.warehouseArea({
+    //       warehouse_id: this.params.warehouse_id,
+    //       page: 1,
+    //       page_size: 200,
+    //       is_enabled: 1 }).then((res) => {
+    //       this.area_list_data = res.data.data;
+    //       this.area_list_data.forEach((val) => {
+    //         val.text = val.name_cn;
+    //         val.value = val.name_cn;
+    //       });
+    //       this.isGetAreaData = true;
+    //     });
+    //   }
+    // },
     del(id) {
       this.$confirm('此操作将永久删除该货位, 是否继续?', '提示', {
         confirmButtonText: '确定',

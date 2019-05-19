@@ -116,6 +116,7 @@ export default {
       selectWarehouse: '', // 切换仓库选择的仓库
       showWarehousesSwitch: false, // 切换仓库弹窗开关
       warehouses: [], // 仓库列表
+      currentWarehouseId: '', // 当前选中仓库 Id
       // 仓秘书
       centerDialogVisible: false,
       isShowSelectWarehouseIcon: false,
@@ -126,6 +127,17 @@ export default {
   },
   created() {
     this.getWarehouses(); // 获取仓库列表
+  },
+  watch: {
+    default_warehouse_name(val) {
+      const arr = this.all_warehouse;
+      // 监听当前选择的仓库名称，如果选中的名称改变，则缓存改仓库的 id
+      for (let i = 0; i < arr.length; i += 1) {
+        if (val === arr[i].name_cn) {
+          this.currentWarehouseId = +arr[i].id;
+        }
+      }
+    },
   },
   methods: {
     to_store_management() {
@@ -139,22 +151,22 @@ export default {
       }, 500);
     }, // 跳转到创建仓库
     shift_warehouse() {
-      const timer = setTimeout(() => {
-        this.showWarehousesSwitch = true;
-        clearTimeout(timer);
-      }, 300);
+      this.showWarehousesSwitch = true;
+      // const timer = setTimeout(() => {
+      //   this.showWarehousesSwitch = true;
+      //   clearTimeout(timer);
+      // }, 300);
     }, // 切换仓库--确定按钮
     getWarehouses() {
       $http.warehouses().then((re) => {
         const data = re.data.data;
         this.all_warehouse = data;
         this.$set(this.all_warehouse);
-        // console.log(this.all_warehouse, 'this.all_warehouse');
       });
     }, // 获取仓库列表
     handleConfirm() {
-      console.log(this.selectWarehouse, 'sss');
-      this.$store.commit('config/setWarehouseId', this.selectWarehouse);
+      console.log(this.currentWarehouseId, 'this.currentWarehouseId');
+      this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
       this.showWarehousesSwitch = false; // 关闭对话框
       // 以上仓

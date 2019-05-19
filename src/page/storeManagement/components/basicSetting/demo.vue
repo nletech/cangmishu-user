@@ -21,6 +21,7 @@
                                   :name="item.name">
                                   <!-- 对应的标签页内容 -->
                                   <el-table  :data="info_data"
+                                             v-if="active_tab_item === '货区'"
                                              :class="$style.table_main"
                                              border>
                                              <el-table-column  label="#"
@@ -35,6 +36,55 @@
                                                                prop="code">
                                              </el-table-column>
                                              <el-table-column  label="类型名称"
+                                                               header-align="center"
+                                                               align="center"
+                                                               prop="name_cn">
+                                             </el-table-column>
+                                             <el-table-column  label="启用状态"
+                                                               header-align="center"
+                                                               align="center">
+                                                               <template  slot-scope="scope">
+                                                                          <span v-if="scope.row.is_enabled==1">是</span>
+                                                                         <span v-if="scope.row.is_enabled==0">否</span>
+                                                               </template>
+                                             </el-table-column>
+                                             <el-table-column  label="操作"
+                                                               header-align="center"
+                                                               width="240">
+                                                               <template  slot-scope="scope">
+                                                                          <el-button  size="mini"
+                                                                                      @click="edit(scope.row)">
+                                                                                      编辑
+                                                                          </el-button>
+                                                                          <el-button  size="mini"
+                                                                                      type="danger"
+                                                                                      @click="delete_data(scope.row)">
+                                                                                      删除
+                                                                          </el-button>
+                                                               </template>
+                                             </el-table-column>
+                                  </el-table>
+                                  <el-table  :data="info_data"
+                                             v-if="active_tab_item === '货位'"
+                                             :class="$style.table_main"
+                                             border>
+                                             <el-table-column  label="#"
+                                                               header-align="center"
+                                                               align="center"
+                                                               type="index"
+                                                               width="80">
+                                             </el-table-column>
+                                             <el-table-column  label="编号"
+                                                               header-align="center"
+                                                               align="center"
+                                                               prop="code">
+                                             </el-table-column>
+                                             <el-table-column  label="所属货区"
+                                                               header-align="center"
+                                                               align="center"
+                                                               prop="name_cn">
+                                             </el-table-column>
+                                             <el-table-column  label="容积(m³)"
                                                                header-align="center"
                                                                align="center"
                                                                prop="name_cn">

@@ -37,7 +37,7 @@ const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存
 const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓库管理
 
 // const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - 基本配置
-const Demo = loadOnDemand('storeManagement/components/basicSetting/demo'); // - demo
+const Demo = loadOnDemand('storeManagement/components/basicSetting/demo1'); // - demo
 
 /* eslint-disable */
 const basic_setting = 'storeManagement/components/basicSetting/components';
