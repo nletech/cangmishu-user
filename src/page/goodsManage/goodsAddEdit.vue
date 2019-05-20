@@ -10,8 +10,7 @@
                         <el-form-item  label="分类"
                                       prop="category_id">
                                       <el-select v-model="form.category_id"
-                                                 size="small"
-                                                 :disabled="!!$route.query.isCheck">
+                                                 size="small">
                                                   <el-option  v-for="item in typeList"
                                                               :label="item.name_cn"
                                                               :value="item.id" :key="item.id">
@@ -89,31 +88,6 @@
                                       </el-table>
                         </el-form-item>
                         <label class="label"> 选填信息 </label>
-                        <!-- <el-form-item :label="$t('customsCode')"
-                                      style="width:70%">
-                                      <el-input v-model="form.hs_code"
-                                                size="small"
-                                                :disabled="!!$route.query.isCheck">
-                                      </el-input>
-                        </el-form-item> -->
-                        <!-- 原产地 -->
-                        <!-- <el-form-item :label="$t('origin')">
-                          <el-select  size="small" v-model="form.origin" :disabled="!!$route.query.isCheck">
-                            <el-option
-                              v-for="item in originList"
-                              :label="item.name_cn"
-                              :value="item.id" :key="item.id">
-                            </el-option>
-                          </el-select>
-                          <el-button @click="onOrigin" size="small"
-                                    :disabled="!!$route.query.isCheck">{{$t('originManagement')}}
-                          </el-button>
-                        </el-form-item> -->
-                        <!-- 货品链接 -->
-                        <!-- <el-form-item :label="$t('goodsLink')" style="width:70%">
-                          <el-input v-model="form.display_link" :disabled="!!$route.query.isCheck"
-                                    size="small" placeholder="需添加前缀http://"></el-input>
-                        </el-form-item> -->
                         <el-form-item :label="$t('goodsRemark')"
                                       style="width:70%">
                                       <el-input  v-model="form.remark"
@@ -140,62 +114,6 @@
                         </el-form-item>
               </el-form>
     </mdoel-form>
-
-    <!-- 产地管理弹窗 -->
-    <!-- <el-dialog
-      :title="$t('originManagement')"
-      :visible.sync="originListShow"
-      width="50%">
-      <div class="utils" :class="$style.originUtil">
-        <el-button type="primary" @click="addOrigin" size="mini">添加</el-button>
-      </div>
-
-      <el-table :data="originList" border style="width: 100%">
-        <el-table-column type="index" width="60">
-        </el-table-column>
-        <el-table-column prop="name_cn" :label="$t('originName')">
-        </el-table-column>
-
-        <el-table-column label="操作" width="200">
-          <template slot-scope="scope">
-            <el-button
-              @click="originEdit(scope.row)"
-              type="primary"
-              size="mini"
-              plain>
-              修改
-            </el-button>
-            <el-button
-              @click="originDelete(scope.row.id)"
-              type="danger"
-              size="mini"
-              plain>
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog> -->
-
-    <!-- 新增产地弹窗 -->
-    <!-- <el-dialog
-      :visible.sync="originEditShow"
-      @close="cancelOrigin"
-      width="40%">
-      <el-row :gutter="20">
-        <el-col :span="5">{{$t('originName')}}</el-col>
-        <el-col :span="10">
-          <el-input v-model="originInfo.name_cn"></el-input>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelOrigin">取消</el-button>
-        <el-button
-          type="primary"
-          @click="onOriginSave"
-          plain :loading="$store.state.btn_loading">提交</el-button>
-      </span>
-    </el-dialog> -->
 </div>
 </template>
 
@@ -219,15 +137,12 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      // originListShow: false, // 产地列表对话框
-      // originEditShow: false, // 产地编辑对话框
       isOriginEdit: false, // 编辑还是新增
       originInfo: {},
       form: {
         category_id: '', // 所属分类
         name_cn: '', // 仓库中文
         name_en: '', // 仓库外文
-        // origin: '', // 原产地
         hs_code: '',
         display_link: '',
         photos: '',
@@ -243,8 +158,6 @@ export default {
         { name: '冷藏', id: 2 },
         { name: '冰冻', id: 3 },
       ],
-      // originList: [], // 产地列表
-      originParams: {}, // 产地传参
       skuList: [], // 商品规格
       fileList: [],
       is_edit: false,
@@ -263,7 +176,6 @@ export default {
       this.getInfo();
     }
     this.getTypeList();
-    // this.getOriginList();
   },
   computed: {
     warehouseId() {
@@ -314,11 +226,11 @@ export default {
     // },
     // 商品分类列表
     getTypeList() {
-      $http.categoryList({
-        page: 1, page_size: 100, is_enabled: 1, warehouse_id: this.$route.query.warehouse_id,
-      }).then((res) => {
-        this.typeList = res.data.data;
-      });
+      // $http.categoryList({
+      //   page: 1, page_size: 100, is_enabled: 1, warehouse_id: this.$route.query.warehouse_id,
+      // }).then((res) => {
+      //   this.typeList = res.data.data;
+      // });
     },
     // 规格取消
     ScpeCancel(row) {
@@ -333,12 +245,6 @@ export default {
         this.$set(row, '$_edit', true);
       }
     },
-    // 产地列表
-    // getOriginList() {
-    //   $http.originList().then((res) => {
-    //     this.originList = res.data.data;
-    //   });
-    // },
     // 保存/编辑规格
     saveSpec(row, index, is) {
       if (!row.name_cn || !row.name_en) {
@@ -379,7 +285,6 @@ export default {
             type: 'success',
           });
           this.$set(row, '$_edit', false);
-          // if (!is) this.skuList.push(this.specsForm());
           this.getInfo();
         });
       } else {
@@ -420,52 +325,6 @@ export default {
         this.skuList.splice(index, 1);
       });
     },
-    // 新增产地弹出框
-    // addOrigin() {
-    //   this.originEditShow = true;
-    //   this.isOriginEdit = false;
-    // },
-    // 编辑产地弹出框
-    // originEdit(row) {
-    //   this.originEditShow = true;
-    //   this.isOriginEdit = true;
-    //   this.originInfo = Object.assign({}, row);
-    // },
-    // 取消新增产地
-    // cancelOrigin() {
-    //   this.originEditShow = false;
-    //   this.originInfo.id = '';
-    //   this.originInfo.name_cn = '';
-    // },
-    // 删除产地
-    // originDelete(originId) {
-    //   this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     type: 'warning',
-    //   }).then(() => {
-    //     $http.originDel({
-    //       id: originId,
-    //     }).then(() => {
-    //       this.$message({
-    //         message: '删除成功',
-    //         type: 'success',
-    //       });
-    //       this.getOriginList();
-    //     });
-    //   });
-    // },
-    // 保存产地
-    // onOriginSave() {
-    //   $http.originAdd(this.originInfo, this.isOriginEdit).then(() => {
-    //     this.$message({
-    //       message: '操作成功',
-    //       type: 'success',
-    //     });
-    //     this.getOriginList();
-    //     this.originEditShow = false;
-    //   });
-    // },
     // 初始化表单
     specsForm() {
       return {
@@ -534,14 +393,6 @@ export default {
           return true;
         });
       }
-      // if (this.$route.query.id) {
-      //   this.form.product_id = this.$route.query.id;
-      // }
-      // this.form.photos = `/${this.form.photos}`;
-      // this.form.specs = this.skuList.filter(res => res.name_cn);
-      // $http.GoodsAdd(this.form, this.$route.query.id).then(() => {
-      //   this.successTips(this.$route.query.id);
-      // });
     },
     // 获取商品单条信息
     getInfo() {
@@ -559,22 +410,6 @@ export default {
         this.skuList = res.data.specs.concat(this.skuList);
       });
     },
-    // 上传截图成功回调
-    // handleAvatarSuccess(res) {
-    //   if (res.status === 0) {
-    //     this.form.photos = res.data.url.substring(1);
-    //   } else if (res.status === 1) {
-    //     this.$notify({
-    //       title: this.$t('fail'),
-    //       message: res.msg,
-    //       type: 'warning',
-    //     });
-    //   }
-    // },
-    // 删除上传图片
-    // handleRemove() {
-    //   this.form.photos = '';
-    // },
   },
 };
 </script>

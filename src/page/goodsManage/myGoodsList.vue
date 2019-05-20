@@ -429,16 +429,16 @@ export default {
     },
     // 货品分类列表
     getTypeList() {
-      if (!this.warehouseId) return;
-      $http.categoryList(
-        { page: 1, page_size: 100, is_enabled: 1, warehouse_id: this.warehouseId },
-      )
-        .then((res) => {
-          this.typeList = res.data.data;
-        })
-        .catch(() => {
-          console.log('categoryList');
-        });
+      // if (!this.warehouseId) return;
+      // $http.categoryList(
+      //   { page: 1, page_size: 100, is_enabled: 1, warehouse_id: this.warehouseId },
+      // )
+      //   .then((res) => {
+      //     this.typeList = res.data.data;
+      //   })
+      //   .catch(() => {
+      //     console.log('categoryList');
+      //   });
     },
     // 添加货品
     addCommodity() {

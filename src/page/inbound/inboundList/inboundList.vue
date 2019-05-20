@@ -1,132 +1,111 @@
 <template>
 <div class="inboundList">
   <wms-tags>
-    <my-group
-      v-model="params"
-      @submit="onSubmit">
-      <!-- <el-col :span="4">
-        <my-select keyName="warehouse_id" placeholder="请选择仓库">
-          <el-option
-            v-for="item in boundList"
-            :label="item.name_cn"
-            :value="item.id" :key="item.id">
-          </el-option>
-        </my-select>
-      </el-col> -->
-      <el-col :span="8" style="margin-bottom:10px;">
-        <my-date :begin.sync="params.created_at_b"
-          :end.sync="params.created_at_e"></my-date>
-      </el-col>
-      <el-col :span="6" :offset="2" style="margin-bottom:10px;">
-        <my-select keyName="status" placeholder="请选择入库单状态">
-          <el-option
-            v-for="item in statusList"
-            :label="item.name"
-            :value="item.id" :key="item.id">
-          </el-option>
-        </my-select>
-      </el-col>
-      <el-col :span="6" :offset="2" style="margin-bottom:10px;">
-        <my-select keyName="type_id" placeholder="请选择入库单类型">
-          <el-option
-            v-for="item in typeList"
-            :label="item.name"
-            :value="item.id" :key="item.id">
-          </el-option>
-        </my-select>
-      </el-col>
-      <el-col :span="8">
-        <my-select keyName="distributor_id" placeholder="请选择供应商" style="max-width:350px;">
-          <el-option
-            v-for="item in distributorList"
-            :label="item.name_cn"
-            :value="item.id" :key="item.id">
-          </el-option>
-        </my-select>
-      </el-col>
-      <el-col :offset="2" :span="6">
-        <my-input keyName="keywords">
-        </my-input>
-      </el-col>
-      <el-col :span="3" :offset="4">
-        <el-button
-        type="text"
-        @click="addInbound"
-        icon="el-icon-plus">
-          {{$t('addInbound')}}
-        </el-button>
-      </el-col>
+    <my-group  v-model="params"
+               @submit="onSubmit">
+              <el-col :span="8"
+                      style="margin-bottom:10px;">
+                      <my-date :begin.sync="params.created_at_b"
+                              :end.sync="params.created_at_e">
+                      </my-date>
+              </el-col>
+              <el-col :span="6" :offset="2" style="margin-bottom:10px;">
+                <my-select keyName="status"
+                          placeholder="请选择入库单状态">
+                          <el-option
+                            v-for="item in statusList"
+                            :label="item.name"
+                            :value="item.id" :key="item.id">
+                          </el-option>
+                </my-select>
+              </el-col>
+              <el-col :span="6"
+                      :offset="2"
+                      style="margin-bottom:10px;">
+                      <my-select keyName="type_id"
+                                 placeholder="请选择入库单类型">
+                                <el-option
+                                  v-for="item in typeList"
+                                  :label="item.name"
+                                  :value="item.id" :key="item.id">
+                                </el-option>
+                      </my-select>
+              </el-col>
+              <el-col :span="8">
+                      <my-select keyName="distributor_id"
+                                  placeholder="请选择供应商"
+                                  style="max-width:350px;">
+                                  <el-option  v-for="item in distributorList"
+                                              :label="item.name_cn"
+                                              :value="item.id" :key="item.id">
+                                  </el-option>
+                      </my-select>
+              </el-col>
+              <el-col :offset="2" :span="6">
+                      <my-input keyName="keywords">
+                      </my-input>
+              </el-col>
+              <el-col :span="3" :offset="4">
+                      <el-button  type="text"
+                                  @click="addInbound"
+                                  icon="el-icon-plus">
+                                  {{$t('addInbound')}}
+                      </el-button>
+              </el-col>
     </my-group>
-    <el-table
-      :data="inbound_list_data"
-      border
-      style="width:100%">
-      <el-table-column
-        type="index"
-        label="#">
-      </el-table-column>
-      <el-table-column
-        prop="status_name"
-        label="状态">
-      </el-table-column>
-      <!-- <el-table-column
-        prop="warehouse.name_cn"
-        label="仓库">
-      </el-table-column> -->
-      <el-table-column
-        prop="batch_type.name"
-        :label="$t('inboundType')">
-      </el-table-column>
-      <el-table-column
-        prop="batch_code"
-        :label="$t('inboundNumber')">
-      </el-table-column>
-      <el-table-column
-      prop="distributor.name_cn"
-      label="供应商">
-      </el-table-column>
-      <el-table-column
-        prop="confirmation_number"
-        :label="$t('confirmationNumber')">
-      </el-table-column>
-      <el-table-column label="预/已入库数量">
-        <template slot-scope="scope">
-          {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="created_at"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        prop="updated_at"
-        label="最后修改时间">
-      </el-table-column>
-      <el-table-column
-        width="180"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini"
-            @click="viewDetails(scope.row)"
-            :loading="$store.state.config.button_loading">
-            查看详情
-          </el-button>
-          <el-button
-            size="mini"
-            @click="inboundDelete(scope.row.id)"
-            v-if="scope.row.status === 1"
-            type="danger">删除</el-button>
-        </template>
-      </el-table-column>
+    <el-table  :data="inbound_list_data"
+              border
+              style="width:100%">
+    <el-table-column  type="index"
+                      label="#">
+    </el-table-column>
+    <el-table-column  prop="status_name"
+                      label="状态">
+    </el-table-column>
+    <el-table-column  prop="batch_type.name"
+                      :label="$t('inboundType')">
+    </el-table-column>
+    <el-table-column  prop="batch_code"
+                      :label="$t('inboundNumber')">
+    </el-table-column>
+    <el-table-column  prop="distributor.name_cn"
+                      label="供应商">
+    </el-table-column>
+    <el-table-column  prop="confirmation_number"
+                      :label="$t('confirmationNumber')">
+    </el-table-column>
+    <el-table-column label="预/已入库数量">
+                      <template slot-scope="scope">
+                        {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
+                      </template>
+    </el-table-column>
+    <el-table-column  prop="created_at"
+                      label="创建时间">
+    </el-table-column>
+    <el-table-column  label="操作"
+                      width="180">
+                      <template slot-scope="scope">
+                                <el-button size="mini"
+                                           @click="viewDetails(scope.row)"
+                                           :loading="$store.state.config.button_loading">
+                                            查看详情
+                                </el-button>
+                                <el-button  size="mini"
+                                            @click="inboundDelete(scope.row.id)"
+                                            v-if="scope.row.status === 1"
+                                            type="danger">
+                                            删除
+                                </el-button>
+                      </template>
+    </el-table-column>
     </el-table>
 
     <button-pagination :pageParams="params"></button-pagination>
   </wms-tags>
 
   <!-- 入库单详情弹框 -->
-  <DetailDialog
-    :visible.sync="inboundDialogVisible"
-    :id="id">
+  <DetailDialog  :visible.sync="inboundDialogVisible"
+                 :id="id">
   </DetailDialog>
 
 </div>

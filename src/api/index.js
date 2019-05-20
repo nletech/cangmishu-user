@@ -15,6 +15,39 @@ const $http = {
   }, // 登出
   //                                                          库存
   // 货品管理
+  getProducts(data) {
+    return Axios.post('/products', { params: data });
+  }, // 获取货品列表
+  addProducts(data) {
+    return Axios.post('/products', data);
+  }, // 添加货品
+  editProducts(id) {
+    return Axios.put(`/products/${id}`);
+  }, // 编辑货品
+  deleteProducts(id) {
+    return Axios.delete(`/products/${id}`);
+  }, // 删除货品
+  importProducts(data) {
+    return Axios.post('/products/import', data);
+  }, // 导入货品
+  importSpecs(data) {
+    return Axios.post('/specs/import', data);
+  }, // 导入货品规格
+  deleteSpecs(id) {
+    return Axios.delete(`/specs/${id}`);
+  }, // 删除货品规格
+  // 库存盘点
+  // 库存管理
+  // 库存报警
+  addWarning(data) {
+    return Axios.post('/warning', data);
+  }, // 添加库存报警
+  deleteWarning(data) {
+    return Axios.delete('/warning', { params: data });
+  }, // 删除库存报警
+  getWarning() {
+    return Axios.get('/warning');
+  }, // 获取库存报警详情
   //                                                          设置-仓库管理
   warehouses() {
     return Axios.get('/warehouses');
