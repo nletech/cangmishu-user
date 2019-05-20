@@ -1,158 +1,148 @@
 <template>
 <div class="goods_edit">
-  <mdoel-form
-  :colValue="24">
-      <el-form slot="left" label-width="120px" :rules="formValidator" :model="form" ref="form">
-        <label class="label"> {{$t('EssentialInformation')}} </label>
-        <el-form-item :label="$t('category')" prop="category_id">
-          <el-select size="small" v-model="form.category_id" :disabled="!!$route.query.isCheck">
-            <el-option
-              v-for="item in typeList"
-              :label="item.name_cn"
-              :value="item.id" :key="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('inputInHand')">
-        <div
-        :class="$style.code"
-        v-show="form.category_id === item.id"
-        v-for="item in typeList"
-        :key="item.id">
-          <el-tag
-          v-show="item.need_best_before_date">最佳食用期</el-tag>
-          <el-tag
-          v-show="item.need_expiration_date">保质期</el-tag>
-          <el-tag
-          v-show="item.need_production_batch_number">批次号</el-tag>
-        </div>
-        </el-form-item>
-        <el-form-item label="中文名称" prop="name_cn" style="width:70%">
-          <el-input v-model="form.name_cn" size="small"
-          :disabled="!!$route.query.isCheck"></el-input>
-        </el-form-item>
-        <el-form-item label="外文名称" prop="name_en" style="width:70%">
-          <el-input v-model="form.name_en" size="small"
-          :disabled="!!$route.query.isCheck"></el-input>
-        </el-form-item>
-        <label class="label"> {{$t('goodsSpecification')}} </label>
-        <el-form-item>
-          <el-table
-            :data="skuList"
-            border >
-            <my-edit-table
-            label="规格中文名*"
-            prop="name_cn">
-            </my-edit-table>
-            <my-edit-table
-            label="规格外文名*"
-            prop="name_en">
-            </my-edit-table>
-            <my-edit-table
-            label="外部编码*"
-            prop="relevance_code"
-            :isDisabled="!!$route.query.id">
-            </my-edit-table>
-            <my-edit-table
-            width="80"
-            label="净重(g)"
-            prop="net_weight">
-            </my-edit-table>
-            <my-edit-table
-            width="80"
-            label="毛重(g)"
-            prop="gross_weight">
-            </my-edit-table>
-            <table-function
-            :disabled="!!$route.query.isCheck"
-            label="操作" width="160px">
-            <template slot="edit" slot-scope="scope">
-              <el-button
-              :disabled="!!$route.query.isCheck"
-              @click="saveSpec(scope.row, scope.index, scope.row.is_add)"
-              type="text">
-              {{$t('save')}}
-              </el-button>
-            </template>
-            <template slot-scope="scope">
-              <el-button @click="delScpe(scope.row, scope.index)"
-              :disabled="!!$route.query.isCheck"
-              type="danger"
-              size="mini">{{$t('remove')}}</el-button>
-            </template>
-            </table-function>
-          </el-table>
-        </el-form-item>
-        <label class="label"> 选填信息 </label>
-        <!-- <el-form-item :label="$t('storageTemperature')">
-          <el-select  size="small" v-model="form.storage_compartment">
-            <el-option
-              v-for="item in wencengList"
-              :label="item.name"
-              :value="item.id" :key="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item> -->
-        <el-form-item :label="$t('customsCode')" style="width:70%">
-          <el-input v-model="form.hs_code" size="small"
-          :disabled="!!$route.query.isCheck"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('origin')">
-          <el-select  size="small" v-model="form.origin" :disabled="!!$route.query.isCheck">
-            <el-option
-              v-for="item in originList"
-              :label="item.name_cn"
-              :value="item.id" :key="item.id">
-            </el-option>
-          </el-select>
-          <el-button @click="onOrigin" size="small"
-                     :disabled="!!$route.query.isCheck">{{$t('originManagement')}}
-          </el-button>
-        </el-form-item>
-        <el-form-item :label="$t('goodsLink')" style="width:70%">
-          <el-input v-model="form.display_link" :disabled="!!$route.query.isCheck"
-                    size="small" placeholder="需添加前缀http://"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('goodsRemark')" style="width:70%">
-          <el-input
-            :disabled="!!$route.query.isCheck"
-            v-model="form.remark"
-            type="textarea"
-            :autosize="{ minRows: 4, maxRows: 6}"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('goodsPhoto')">
-          <!-- <el-upload
-            class="avatar-uploader"
-            :headers="Authorization"
-            :on-success="handleAvatarSuccess"
-            :on-remove="handleRemove"
-            :action=api
-            :file-list="fileList"
-            name="image">
-            <img v-if="this.form.photos"
-            :src="imgUrl"
-            class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload> -->
-          <picture-upload :photo.sync="form.photos"
-                          :disabled="!!$route.query.isCheck">
-          </picture-upload>
-          <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            :loading="$store.state.config.button_loading"
-            v-if="!$route.query.isCheck"
-            @click="onSubmitGoods('form')">提交</el-button>
-          <cancel-button v-if="!$route.query.isCheck"></cancel-button>
-          <cancel-button v-else>返回</cancel-button>
-        </el-form-item>
-      </el-form>
+  <mdoel-form :colValue="24">
+              <el-form  :model="form"
+                        slot="left"
+                        label-width="120px"
+                        :rules="formValidator"
+                        ref="form">
+                        <label class="label"> {{'基本信息'}} </label>
+                        <el-form-item  label="分类"
+                                      prop="category_id">
+                                      <el-select v-model="form.category_id"
+                                                 size="small"
+                                                 :disabled="!!$route.query.isCheck">
+                                                  <el-option  v-for="item in typeList"
+                                                              :label="item.name_cn"
+                                                              :value="item.id" :key="item.id">
+                                                  </el-option>
+                                      </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                                    <div  :class="$style.code"
+                                          v-show="form.category_id === item.id"
+                                          v-for="item in typeList"
+                                          :key="item.id">
+                                          <el-tag  v-show="item.need_best_before_date">最佳食用期</el-tag>
+                                          <el-tag  v-show="item.need_expiration_date">保质期</el-tag>
+                                          <el-tag  v-show="item.need_production_batch_number">批次号</el-tag>
+                                    </div>
+                        </el-form-item>
+                        <el-form-item label="中文名称"
+                                      prop="name_cn"
+                                      style="width:70%">
+                                      <el-input v-model="form.name_cn"
+                                                size="small"
+                                                :disabled="!!$route.query.isCheck">
+                                      </el-input>
+                        </el-form-item>
+                        <el-form-item label="外文名称"
+                                      prop="name_en"
+                                      style="width:70%">
+                                      <el-input v-model="form.name_en"
+                                                size="small"
+                                                :disabled="!!$route.query.isCheck">
+                                      </el-input>
+                        </el-form-item>
+                        <label class="label"> {{$t('goodsSpecification')}} </label>
+                        <el-form-item>
+                                      <el-table  :data="skuList"
+                                                border >
+                                                  <my-edit-table  label="规格中文名*"
+                                                                  prop="name_cn">
+                                                  </my-edit-table>
+                                                  <my-edit-table  label="规格外文名*"
+                                                                  prop="name_en">
+                                                  </my-edit-table>
+                                                  <my-edit-table  label="SKU*"
+                                                                  prop="relevance_code"
+                                                                  :isDisabled="!!$route.query.id">
+                                                  </my-edit-table>
+                                                  <my-edit-table  label="净重(g)"
+                                                                  width="80"
+                                                                  prop="net_weight">
+                                                  </my-edit-table>
+                                                  <my-edit-table  label="毛重(g)"
+                                                                  width="80"
+                                                                  prop="gross_weight">
+                                                  </my-edit-table>
+                                                  <table-function  label="操作"
+                                                                  :disabled="!!$route.query.isCheck"
+                                                                  width="160px">
+                                                                  <template slot="edit"
+                                                                            slot-scope="scope">
+                                                                            <el-button  :disabled="!!$route.query.isCheck"
+                                                                                        @click="saveSpec(scope.row, scope.index, scope.row.is_add)"
+                                                                                        type="text">
+                                                                                        {{$t('save')}}
+                                                                            </el-button>
+                                                                  </template>
+                                                                  <template slot-scope="scope">
+                                                                            <el-button  @click="delScpe(scope.row, scope.index)"
+                                                                                        :disabled="!!$route.query.isCheck"
+                                                                                        type="danger"
+                                                                                        size="mini">
+                                                                                        {{$t('remove')}}
+                                                                            </el-button>
+                                                                  </template>
+                                                  </table-function>
+                                      </el-table>
+                        </el-form-item>
+                        <label class="label"> 选填信息 </label>
+                        <!-- <el-form-item :label="$t('customsCode')"
+                                      style="width:70%">
+                                      <el-input v-model="form.hs_code"
+                                                size="small"
+                                                :disabled="!!$route.query.isCheck">
+                                      </el-input>
+                        </el-form-item> -->
+                        <!-- 原产地 -->
+                        <!-- <el-form-item :label="$t('origin')">
+                          <el-select  size="small" v-model="form.origin" :disabled="!!$route.query.isCheck">
+                            <el-option
+                              v-for="item in originList"
+                              :label="item.name_cn"
+                              :value="item.id" :key="item.id">
+                            </el-option>
+                          </el-select>
+                          <el-button @click="onOrigin" size="small"
+                                    :disabled="!!$route.query.isCheck">{{$t('originManagement')}}
+                          </el-button>
+                        </el-form-item> -->
+                        <!-- 货品链接 -->
+                        <!-- <el-form-item :label="$t('goodsLink')" style="width:70%">
+                          <el-input v-model="form.display_link" :disabled="!!$route.query.isCheck"
+                                    size="small" placeholder="需添加前缀http://"></el-input>
+                        </el-form-item> -->
+                        <el-form-item :label="$t('goodsRemark')"
+                                      style="width:70%">
+                                      <el-input  v-model="form.remark"
+                                                :disabled="!!$route.query.isCheck"
+                                                type="textarea"
+                                                :autosize="{ minRows: 4, maxRows: 6}">
+                                      </el-input>
+                        </el-form-item>
+                        <el-form-item :label="$t('goodsPhoto')">
+                                      <picture-upload :photo.sync="form.photos"
+                                                      :disabled="!!$route.query.isCheck">
+                                      </picture-upload>
+                                      <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
+                        </el-form-item>
+                        <el-form-item>
+                                      <el-button  @click="onSubmitGoods('form')"
+                                                  type="primary"
+                                                  :loading="$store.state.config.button_loading"
+                                                  v-if="!$route.query.isCheck">
+                                                  提交
+                                      </el-button>
+                                      <cancel-button v-if="!$route.query.isCheck"></cancel-button>
+                                      <cancel-button v-else>返回</cancel-button>
+                        </el-form-item>
+              </el-form>
     </mdoel-form>
 
     <!-- 产地管理弹窗 -->
-    <el-dialog
+    <!-- <el-dialog
       :title="$t('originManagement')"
       :visible.sync="originListShow"
       width="50%">
@@ -185,10 +175,10 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-dialog>
+    </el-dialog> -->
 
     <!-- 新增产地弹窗 -->
-    <el-dialog
+    <!-- <el-dialog
       :visible.sync="originEditShow"
       @close="cancelOrigin"
       width="40%">
@@ -205,7 +195,7 @@
           @click="onOriginSave"
           plain :loading="$store.state.btn_loading">提交</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
 </div>
 </template>
 
@@ -229,15 +219,15 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      originListShow: false, // 产地列表对话框
-      originEditShow: false, // 产地编辑对话框
+      // originListShow: false, // 产地列表对话框
+      // originEditShow: false, // 产地编辑对话框
       isOriginEdit: false, // 编辑还是新增
       originInfo: {},
       form: {
         category_id: '', // 所属分类
         name_cn: '', // 仓库中文
         name_en: '', // 仓库外文
-        origin: '', // 原产地
+        // origin: '', // 原产地
         hs_code: '',
         display_link: '',
         photos: '',
@@ -253,7 +243,7 @@ export default {
         { name: '冷藏', id: 2 },
         { name: '冰冻', id: 3 },
       ],
-      originList: [], // 产地列表
+      // originList: [], // 产地列表
       originParams: {}, // 产地传参
       skuList: [], // 商品规格
       fileList: [],
@@ -273,7 +263,7 @@ export default {
       this.getInfo();
     }
     this.getTypeList();
-    this.getOriginList();
+    // this.getOriginList();
   },
   computed: {
     warehouseId() {
@@ -318,10 +308,10 @@ export default {
   },
   methods: {
     // 产地管理
-    onOrigin() {
-      this.originListShow = true;
-      this.getOriginList();
-    },
+    // onOrigin() {
+    //   this.originListShow = true;
+    //   this.getOriginList();
+    // },
     // 商品分类列表
     getTypeList() {
       $http.categoryList({
@@ -344,11 +334,11 @@ export default {
       }
     },
     // 产地列表
-    getOriginList() {
-      $http.originList().then((res) => {
-        this.originList = res.data.data;
-      });
-    },
+    // getOriginList() {
+    //   $http.originList().then((res) => {
+    //     this.originList = res.data.data;
+    //   });
+    // },
     // 保存/编辑规格
     saveSpec(row, index, is) {
       if (!row.name_cn || !row.name_en) {
@@ -431,51 +421,51 @@ export default {
       });
     },
     // 新增产地弹出框
-    addOrigin() {
-      this.originEditShow = true;
-      this.isOriginEdit = false;
-    },
+    // addOrigin() {
+    //   this.originEditShow = true;
+    //   this.isOriginEdit = false;
+    // },
     // 编辑产地弹出框
-    originEdit(row) {
-      this.originEditShow = true;
-      this.isOriginEdit = true;
-      this.originInfo = Object.assign({}, row);
-    },
+    // originEdit(row) {
+    //   this.originEditShow = true;
+    //   this.isOriginEdit = true;
+    //   this.originInfo = Object.assign({}, row);
+    // },
     // 取消新增产地
-    cancelOrigin() {
-      this.originEditShow = false;
-      this.originInfo.id = '';
-      this.originInfo.name_cn = '';
-    },
+    // cancelOrigin() {
+    //   this.originEditShow = false;
+    //   this.originInfo.id = '';
+    //   this.originInfo.name_cn = '';
+    // },
     // 删除产地
-    originDelete(originId) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        $http.originDel({
-          id: originId,
-        }).then(() => {
-          this.$message({
-            message: '删除成功',
-            type: 'success',
-          });
-          this.getOriginList();
-        });
-      });
-    },
+    // originDelete(originId) {
+    //   this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning',
+    //   }).then(() => {
+    //     $http.originDel({
+    //       id: originId,
+    //     }).then(() => {
+    //       this.$message({
+    //         message: '删除成功',
+    //         type: 'success',
+    //       });
+    //       this.getOriginList();
+    //     });
+    //   });
+    // },
     // 保存产地
-    onOriginSave() {
-      $http.originAdd(this.originInfo, this.isOriginEdit).then(() => {
-        this.$message({
-          message: '操作成功',
-          type: 'success',
-        });
-        this.getOriginList();
-        this.originEditShow = false;
-      });
-    },
+    // onOriginSave() {
+    //   $http.originAdd(this.originInfo, this.isOriginEdit).then(() => {
+    //     this.$message({
+    //       message: '操作成功',
+    //       type: 'success',
+    //     });
+    //     this.getOriginList();
+    //     this.originEditShow = false;
+    //   });
+    // },
     // 初始化表单
     specsForm() {
       return {

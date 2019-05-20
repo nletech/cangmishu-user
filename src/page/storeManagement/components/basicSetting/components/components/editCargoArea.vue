@@ -21,6 +21,8 @@
               </el-form-item>
               <el-form-item  label="是否启用">
                              <el-switch  v-model="is_enabled"
+                                         active-value="1"
+                                         inactive-value="0"
                                          active-color="#13ce66"
                                          inactive-color="#ff4949">
                              </el-switch>
@@ -57,13 +59,12 @@ export default {
       form: {
         code: '', // 货区编号
         name_cn: '', // 货区名称
-        warehouse_feature_id: '', // 仓库特性
-        is_enabled: 0, // 启用状态
+        is_enabled: '0', // 启用状态
         remark: '', // 备注
         name_en: '', // 外文名称
         warehouse_id: this.$route.params.warehouse_id, // 所属货区id
       },
-      is_enabled: true,
+      is_enabled: '0',
     };
   },
   computed: {
@@ -85,13 +86,20 @@ export default {
   },
   methods: {
     getInfo() {
-      if (!this.$route.params.areaId) return;
-      // console.log(this.$route.params.warehouse_id, 'warehouse_id添加货区');
-      $http.getInfoWarehouseArea(this.$route.params.warehouse_id)
-        .then((res) => {
-          this.is_enabled = !!res.data.is_enabled;
-          this.form = res.data;
-        });
+      if (this.$route.params.edit) {
+        $http.getWarehouseArea({ warehouse_id: this.$route.params.warehouse_id })
+          .then((res) => {
+            const data = res.data.data;
+            for (let i = 0; i < data.length; i += 1) {
+              if (data[i].id === +this.$route.params.area_id) {
+                this.form.code = data[i].code;
+                this.form.name_cn = data[i].name_cn;
+                this.is_enabled = `${data[i].is_enabled}`; // 这里必须是字符串
+                this.form.remark = data[i].remark;
+              }
+            }
+          });
+      }
     },
     onSubmit() {
       this.$refs.CargoAreaReference.validate((valid) => {
@@ -104,18 +112,10 @@ export default {
           type: 'warning',
         })
           .then(() => {
-            $http.addWarehouseArea(this.form, this.$route.params.warehouse_id)
+            $http.editWarehouseArea(this.$route.params.area_id, this.form)
               .then((res) => {
                 if (res.status) return;
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  showClose: true,
-                });
-                this.$router.push({
-                  name: 'basicSetting',
-                  params: { add_shelf_back: false },
-                });
+                this.$router.go(-1);
               });
           })
           .catch(() => {});

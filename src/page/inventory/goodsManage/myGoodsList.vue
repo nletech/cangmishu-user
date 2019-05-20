@@ -78,10 +78,6 @@
         :label="$t('category')">
       </el-table-column>
       <el-table-column
-        prop="owner.email"
-        label="所属账号">
-      </el-table-column>
-      <el-table-column
         prop="updated_at"
         label="最后修改时间">
       </el-table-column>

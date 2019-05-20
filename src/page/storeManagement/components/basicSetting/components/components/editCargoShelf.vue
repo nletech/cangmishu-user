@@ -25,13 +25,6 @@
                                         </el-option>
                             </el-select>
               </el-form-item>
-              <el-form-item label="容积"
-                            prop="capacity">
-                            <el-input v-model="form.capacity"
-                                      size="small">
-                                      <span slot="suffix">m³</span>
-                            </el-input>
-              </el-form-item>
               <el-form-item label="是否启用">
                              <el-switch  v-model="is_enabled"
                                          active-value="1"
@@ -92,13 +85,13 @@ export default {
   },
   created() {
     this.get_area_data();
+    this.get_data();
   },
   data() {
     return {
       form: {
         code: '', // 货位编号
         warehouse_area_id: '', // 货架 ID
-        capacity: '', // 容积
         passage: '', // 通道
         row: '', // 排
         col: '', // 列
@@ -120,9 +113,6 @@ export default {
         warehouse_area_id: [
           { required: true, message: '请选择货区', trigger: 'change' },
         ], // 货区id
-        capacity: [
-          { required: true, message: '请填写容积', trigger: 'blur' },
-        ], // 容积
       };
     },
   },
@@ -135,10 +125,57 @@ export default {
         })
         .catch(() => {});
     },
+    get_data() {
+      let allData = {}; // 缓存拿到的数据
+      if (this.$route.params.edit) {
+        if (this.$route.params.currentPage !== 1) {
+          // 请求非首页的数据
+          $http.checkWarehouseshelf({
+            page: this.$route.params.currentPage,
+            warehouse_id: this.$route.params.warehouse_id,
+          })
+            .then((res) => {
+              if (res.status) return;
+              allData = res.data.data; // 存储数据
+              for (let i = 0; i < allData.length; i += 1) {
+                if (allData[i].id === this.$route.params.shelfId) {
+                  this.form.code = allData[i].code;
+                  this.form.warehouse_area_id = allData[i].warehouse_area.name_cn;
+                  this.is_enabled = `${allData[i].is_enabled}`; // 这里必须是字符串
+                  // 可选信息
+                  this.form.passage = allData[i].passage;
+                  this.form.row = allData[i].row;
+                  this.form.col = allData[i].col;
+                  this.form.floor = allData[i].floor;
+                  this.form.remark = allData[i].remark;
+                }
+              }
+            });
+        } else { // 请求首页的数据
+          $http.getWarehouseshelf({ warehouse_id: this.$route.params.warehouse_id })
+            .then((res) => {
+              if (res.status) return;
+              allData = res.data.data; // 存储数据
+              for (let i = 0; i < allData.length; i += 1) {
+                if (allData[i].id === this.$route.params.shelfId) {
+                  this.form.code = allData[i].code;
+                  this.form.warehouse_area_id = allData[i].warehouse_area.name_cn;
+                  this.is_enabled = `${allData[i].is_enabled}`; // 这里必须是字符串
+                  // 可选信息
+                  this.form.passage = allData[i].passage;
+                  this.form.row = allData[i].row;
+                  this.form.col = allData[i].col;
+                  this.form.floor = allData[i].floor;
+                  this.form.remark = allData[i].remark;
+                }
+              }
+            });
+        }
+      }
+    }, // 获取当前货位信息
     onSubmit() {
       this.$refs.ShelfReference.validate((valid) => {
         if (!valid) return;
-        this.form.is_enabled = this.is_enabled; // 这个问题很操蛋
         this.$confirm('确认提交?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -147,7 +184,6 @@ export default {
           .then(() => {
             $http.addWarehouseshelf(this.form)
               .then((res) => {
-                // console.log(this.form, 'this.formthis.formthis.form');
                 if (res.status) return;
                 this.$message({
                   message: '操作成功',

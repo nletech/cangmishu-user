@@ -8,7 +8,8 @@
     <el-table
       :data="renters_list_data"
       border
-      style="width: 100%">
+      style="width: 100%"
+    >
       <el-table-column
         type="index"
         label="#">
@@ -25,9 +26,12 @@
         prop="is_enabled"
         label="app_secret">
         <template slot-scope="scope">
-          <el-button v-if="true"
-                     @click="unlockKeyVisible = true"
-                     round>点击查看
+          <el-button
+            v-if="true"
+            @click="unlockKeyVisible = true"
+            round
+          >
+            点击查看
           </el-button>
           <span v-if="scope.row.is_enabled==0">否</span>
         </template>
@@ -37,9 +41,12 @@
         width="180"
         label="操作">
         <template slot-scope="scope">
-          <el-button size="mini"
-                     type="danger"
-                     @click="delClassification(scope.row.id)">删除
+          <el-button
+            size="mini"
+            type="danger"
+            @click="delClassification(scope.row.id)"
+          >
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -47,10 +54,12 @@
      <button-pagination :pageParams="params"></button-pagination>
   </wms-tags>
   <el-dialog title="添加店铺" :visible.sync="dialogFormVisible" center>
-  <el-form :model="form"
-           :class="$style.form_width"
-           :rules="formValidator "
-           ref="shop_name">
+  <el-form
+    :model="form"
+    :class="$style.form_width"
+    :rules="formValidator "
+    ref="shop_name"
+  >
     <el-form-item prop="name_cn">
       <el-input v-model="form.name_cn" placeholder="请输入店铺中文名" auto-complete="off"></el-input>
     </el-form-item>
@@ -63,9 +72,11 @@
   </div>
 </el-dialog>
 <el-dialog :visible.sync="unlockKeyVisible" center>
-    <el-input v-model="password"
-              placeholder="为防止信息泄露，请输入账号密码"
-              auto-complete="off">
+    <el-input
+      v-model="password"
+      placeholder="为防止信息泄露，请输入账号密码"
+      auto-complete="off"
+    >
     </el-input>
   <div slot="footer" class="dialog-footer">
     <el-button type="primary" @click="checkSecret">查看</el-button>

@@ -33,15 +33,19 @@
       </template>
     </el-table-column>
   </el-table>
-  <!-- <pagination-and-buttons :pageParams="params">
-  </pagination-and-buttons> -->
+  <!-- 分页组件 -->
+  <el-pagination  :class="$style.pagination"
+                  v-show="+total"
+                  @current-change="handleCurrentChange"
+                  :current-page="currentPage"
+                  layout="total, prev, pager, next, jumper"
+                  :total="+total">
+  </el-pagination>
 </div>
 </template>
 
 <script>
-// import mixin from '@/mixin/list';
 import $http from '@/api';
-// import PaginationAndButtons from '@/components/pagination_and_buttons';
 
 export default {
   props: {
@@ -50,75 +54,70 @@ export default {
     show_data_flag: [String],
   },
   watch: {
-    warehouse_id(val) {
-      console.log(this.warehouse_id, val, 'this.warehouse_id');
-    },
     show_data_flag(val) {
-      console.log(this.show_data_flag, val, 'show_data_flag');
       if (val === '货区') {
-        console.log(this.show_data_flag, val, 'show_data_flag');
         this.active = true;
         this.get_data();
       }
     },
   },
-  // mixins: [mixin],
   data() {
     return {
       active: false, // 父组件已经选中标志
       Area_data: [],
-      // params: {
-      //   warehouse_id: this.$route.query.id,
-      // },
+      params: {}, // 分页参数
+      total: '', // 分页的总数
+      currentPage: 1, // 当前页(默认值 1)
     };
-  },
-  components: {
-    // PaginationAndButtons,
   },
   methods: {
     get_data() {
       if (this.active) {
-        console.log('货区请求');
-        console.log(this.warehouse_id, '当前仓库id');
         $http.getWarehouseArea({ warehouse_id: this.warehouse_id })
           .then((res) => {
             this.Area_data = res.data.data;
-            this.$set(this.Area_data);
-            console.log(res, 'res');
-            console.log(this.Area_data, 'this.Area_data');
+            this.total = res.data.total;
+            this.current_page = res.data.current_page;
           });
       }
     },
-    getList() {
-      // $http.getWarehouseArea(this.params).then((res) => {
-      //   this.Area_list_data = res.data.data;
-      //   this.params.data_count = res.data.total;
-      // });
-    }, // 获取货区信息
-    del(id) {
+    handleCurrentChange(val) {
+      $http.checkWarehouseArea({
+        page: val,
+        warehouse_id: this.warehouse_id,
+      })
+        .then((res) => {
+          this.Area_data = res.data.data;
+          this.total = res.data.total;
+          this.current_page = res.data.current_page;
+        })
+        .catch(() => {});
+    },
+    del(areaId) {
       this.$confirm('此操作将永久删除该货区, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
-      }).then(() => {
-        $http.delWarehouseArea({
-          area_id: id,
-        }).then(() => {
-          this.$message({
-            message: '删除成功',
-            type: 'success',
-            showClose: true,
-          });
-          this.getList();
+      })
+        .then(() => {
+          $http.delWarehouseArea(areaId)
+            .then(() => {
+              this.$message({
+                message: '删除成功',
+                type: 'success',
+                showClose: true,
+              });
+              this.get_data();
+            });
         });
-      });
     },
     edit(id) {
       this.$router.push({
         name: 'editCargoArea',
-        query: {
-          areaId: id,
-          id: this.$route.query.id,
+        params: {
+          warehouse_id: this.warehouse_id,
+          area_id: id, // 当前货区 id
+          edit: true,
         },
       });
     },
@@ -126,6 +125,9 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="less" module>
+.pagination {
+  margin: 2px 0 0 0;
+  float: right;
+}
 </style>

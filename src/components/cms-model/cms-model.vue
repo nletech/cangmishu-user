@@ -22,15 +22,6 @@
 
           <!-- 插入数据 -->
           <slot></slot>
-          <slot name="pagination"></slot>
-          <!-- 分页 -->
-          <!-- <el-pagination  :class="$style.pagination"
-                          v-show="+total"
-                          @current-change="handleCurrentChange"
-                          :current-page="currentPage"
-                          layout="total, prev, pager, next, jumper"
-                          :total="+total">
-          </el-pagination> -->
       </div>
     </div>
   </div>
@@ -41,8 +32,6 @@ export default {
   props: {
     tabs: [Array], // 标签列表
     active_tab_name: [String], // 当前选定的 tab
-  },
-  created() {
   },
   mounted() {
     console.log('is');
@@ -63,7 +52,7 @@ export default {
   },
   methods: {
     add_btn() {
-      console.log('add_btn');
+      this.$emit('add_callback', this.active_tab_name_cms);
     },
   },
 };

@@ -12,6 +12,9 @@
 <script>
 export default {
   name: 'cmsPagination',
+  props: {
+    params: [Object],
+  },
   data() {
     return {
       currentPage: 1,

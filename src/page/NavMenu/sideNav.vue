@@ -103,7 +103,6 @@ export default {
       let subMeanu = []; // 缓存子菜单
       let distance; // 缓存计算的距离
       const menu = this.sideNavList;
-      console.log(menu, 'menu');
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
           if (index === 0) {
@@ -113,7 +112,7 @@ export default {
           this.li_show_switch = true;
           distance = `${(i * 80) + 40}px`; // 根据计算修改子菜单对应的布局
           menu[i].children.forEach((e) => {
-            if (e.nav === 2) {
+            if (e.nav === 2) { // 这里是筛特定的路由
               subMeanu.push(e);
             }
           });

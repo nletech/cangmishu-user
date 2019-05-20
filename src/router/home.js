@@ -24,25 +24,30 @@ const OutboundList = loadOnDemand('outbound/outboundList/outboundList');// 出�
 const AddOutbound = loadOnDemand('outbound/addOutbound/addOutbound');// 添加出库单
 
 // 库存
-const MyGoodsList = loadOnDemand('inventory/goodsManage/myGoodsList');// 货品管理
+// const MyGoodsList = loadOnDemand('inventory/goodsManage/myGoodsList');// 货品管理
 const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking');// 库存盘点 (新模块)
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage');// 库存管理
 const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存报警
-
-// 报表
-// const InboundDetail = loadOnDemand('report/inboundDetail/inboundDetail');// 入库单明细
-// const OutboundDetail = loadOnDemand('report/outboundDetail/outboundDetail');// 出库单明细
+// 库存旧代码
+const MyGoodsList1 = loadOnDemand('goodsManage/myGoodsList'); // 我的商品库
+const GoodsAddEdit1 = loadOnDemand('goodsManage/goodsAddEdit'); // 商品编辑新增
+// const InventoryManage1 = loadOnDemand('goodsManage/inventoryManage'); // 库存管理
+// const InventoryAlarm1 = loadOnDemand('goodsManage/goodsAlarm'); // 库存报警
+// const InboundList1 = loadOnDemand('goodsManage/inboundList'); // 入库单列表
+// const AddInbound1 = loadOnDemand('goodsManage/addInbound'); // 添加入库单
+// const OutboundList1 = loadOnDemand('goodsManage/outboundList'); // 出库单列表
+// const AddOutbound1 = loadOnDemand('goodsManage/addOutbound'); // 添加入库单
 
 // 设置
 const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓库管理
-
-// const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - 基本配置
-const Demo = loadOnDemand('storeManagement/components/basicSetting/demo1'); // - demo
+const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - demo
 
 /* eslint-disable */
 const basic_setting = 'storeManagement/components/basicSetting/components';
 const AddCargoArea = loadOnDemand(`${basic_setting}/components/addCargoArea`); // 添加货区
 const AddCargoShelf = loadOnDemand(`${basic_setting}/components/addCargoShelf`); // 添加货位
+const EditCargoArea = loadOnDemand(`${basic_setting}/components/editCargoArea`); // 编辑货区
+const EditCargoShelf = loadOnDemand(`${basic_setting}/components/editCargoShelf`); // 编辑货位
 
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
@@ -127,7 +132,7 @@ export const routerMap = [
           {
             name: 'myGoodsList', // 子菜单-货品管理
             path: 'myGoodsList',
-            component: MyGoodsList,
+            component: MyGoodsList1,
             nav: 2,
           },
           {
@@ -148,6 +153,36 @@ export const routerMap = [
             component: InventoryAlarm,
             nav: 2,
           },
+          {
+            name: 'goodsAdd', // 模块 货品管理--添加货品
+            path: 'myGoodsList/goodsAdd',
+            component: GoodsAddEdit1,
+            nav: 3,
+          },
+          {
+            name: 'goodsEdit', // 模块  // 模块 货品管理--编辑货品
+            path: 'myGoodsList/goodsEdit',
+            component: GoodsAddEdit1,
+            nav: 3,
+          },
+          // {
+          //   name: 'inventoryAlarm1', // 模块
+          //   path: 'inventoryAlarm1',
+          //   component: InventoryAlarm,
+          //   nav: 3,
+          // },
+          // {
+          //   name: 'inventoryAlarm1', // 模块
+          //   path: 'inventoryAlarm1',
+          //   component: InventoryAlarm,
+          //   nav: 3,
+          // },
+          // {
+          //   name: 'inventoryAlarm1', // 模块
+          //   path: 'inventoryAlarm1',
+          //   component: InventoryAlarm,
+          //   nav: 3,
+          // },
         ],
       },
       // {
@@ -189,7 +224,7 @@ export const routerMap = [
           {
             name: 'basicSetting', // 仓库管理-基本配置
             path: 'basicSetting',
-            component: Demo,
+            component: BasicSetting,
             nav: 3,
           },
           {
@@ -202,6 +237,18 @@ export const routerMap = [
             name: 'addCargoShelf', // 组件-基本配置-添加货位
             path: 'addCargoShelf',
             component: AddCargoShelf,
+            nav: 3,
+          },
+          {
+            name: 'editCargoArea', // 组件-基础配置-编辑货区
+            path: 'editCargoArea',
+            component: EditCargoArea,
+            nav: 3,
+          },
+          {
+            name: 'editCargoShelf', // 组件-基本配置-编辑货位
+            path: 'editCargoShelf',
+            component: EditCargoShelf,
             nav: 3,
           },
           {

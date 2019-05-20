@@ -13,6 +13,8 @@ const $http = {
   logout(data) {
     return Axios.post('/logout', data);
   }, // 登出
+  //                                                          库存
+  // 货品管理
   //                                                          设置-仓库管理
   warehouses() {
     return Axios.get('/warehouses');
@@ -43,13 +45,12 @@ const $http = {
   checkWarehouseArea(data) {
     return Axios.get('/areas', { params: data });
   }, // 分页查询--货区列表
-  //
   //                               基本配置-货位
   getWarehouseshelf(data) {
     return Axios.get('/locations', { params: data });
   }, // 获取货位列表
   addWarehouseshelf(data) {
-    return Axios.post('/locations', { params: data });
+    return Axios.post('/locations', data);
   }, // 添加货位
   delWarehouseshelf(id) {
     return Axios.delete(`/locations/${id}`);
@@ -277,7 +278,7 @@ const $http = {
   },
   // 货品库列表
   goodsList(data) {
-    return Axios.get('product', { params: data });
+    return Axios.get('products', { params: data });
   },
   // 设置商品分类
   setGoodscategory(data) {
@@ -285,8 +286,8 @@ const $http = {
   },
   // 添加货品
   GoodsAdd(data, type) {
-    if (type) return Axios.post('product', data);
-    return Axios.put('product', data);
+    if (type) return Axios.post('products', data);
+    return Axios.put('products', data);
   },
   // 添加规格
   addSpec(data, type) {
