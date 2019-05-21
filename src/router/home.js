@@ -30,7 +30,8 @@ const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage'
 const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存报警
 // 库存旧代码
 const MyGoodsList1 = loadOnDemand('goodsManage/myGoodsList'); // 我的商品库
-const GoodsAddEdit1 = loadOnDemand('goodsManage/goodsAddEdit'); // 商品编辑新增
+const GoodsAdd = loadOnDemand('goodsManage/goodsAdd'); // 商品新增
+const GoodsEdit = loadOnDemand('goodsManage/goodsEdit'); // 商品编辑
 // const InventoryManage1 = loadOnDemand('goodsManage/inventoryManage'); // 库存管理
 // const InventoryAlarm1 = loadOnDemand('goodsManage/goodsAlarm'); // 库存报警
 // const InboundList1 = loadOnDemand('goodsManage/inboundList'); // 入库单列表
@@ -156,13 +157,13 @@ export const routerMap = [
           {
             name: 'goodsAdd', // 模块 货品管理--添加货品
             path: 'myGoodsList/goodsAdd',
-            component: GoodsAddEdit1,
+            component: GoodsAdd,
             nav: 3,
           },
           {
             name: 'goodsEdit', // 模块  // 模块 货品管理--编辑货品
             path: 'myGoodsList/goodsEdit',
-            component: GoodsAddEdit1,
+            component: GoodsEdit,
             nav: 3,
           },
           // {

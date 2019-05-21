@@ -19,11 +19,11 @@
               </el-form-item>
               <!-- 入库单编号 -->
               <el-form-item :label="$t('inboundNumber')" prop="batch_code">
-                <el-input v-model="form.batch_code" size="small" :disabled="true"></el-input>
+                            <el-input v-model="form.batch_code" size="small" :disabled="true"></el-input>
               </el-form-item>
               <!-- 确认入库单编号 -->
               <el-form-item :label="$t('confirmationNumber')" prop="confirmation_number">
-                <el-input v-model="form.confirmation_number" size="small"></el-input>
+                            <el-input v-model="form.confirmation_number" size="small"></el-input>
               </el-form-item>
               <el-form-item :label="$t('distributor')" prop="distributor_id">
                 <el-select v-model="form.distributor_id"
@@ -38,16 +38,18 @@
               </el-form-item>
 
               <label class="label"> {{$t('waitingInboundList')}}</label>
-                <el-button @click="showDialog">{{$t('chooseGoods')}}</el-button>
+                      <el-button @click="showDialog">
+                                  {{$t('chooseGoods')}}
+                      </el-button>
               <el-table :data="goodsList"
                         border style="width: 100%;margin: 20px 0 20px 100px;">
                         <el-table-column  type="index"
                                           label="#">
                         </el-table-column>
                         <el-table-column :label="$t('cnName')">
-                          <template slot-scope="scope">
-                            {{scope.row.name_parent}}({{scope.row.name_cn}})
-                          </template>
+                                          <template slot-scope="scope">
+                                                    {{scope.row.name_parent}}({{scope.row.name_cn}})
+                                          </template>
                         </el-table-column>
                         <el-table-column :label="$t('inboundNumbers')"
                                          width="150px;">
@@ -127,26 +129,24 @@
                               <div class="start-time">
                               <el-col :span="10"
                                       style="padding:0;">
-                                      <el-date-picker
-                                        v-model="endDate"
-                                        type="date"
-                                        :placeholder="$t('endDate')"
-                                        :picker-options="pickerOptions"
-                                        value-format="yyyy-MM-dd"
-                                        size="small">
+                                      <el-date-picker  v-model="endDate"
+                                                      type="date"
+                                                      :placeholder="$t('endDate')"
+                                                      :picker-options="pickerOptions"
+                                                      value-format="yyyy-MM-dd"
+                                                      size="small">
                                       </el-date-picker>
                               </el-col>
                               <el-col :span="6"
                                       style="padding:0;">
-                                      <el-time-select
-                                        v-model="endTime"
-                                        :picker-options="{
-                                          start: '00:00',
-                                          step: '00:30',
-                                          end: '23:30'
-                                        }"
-                                        :placeholder="$t('endTime')"
-                                        size="small">
+                                      <el-time-select  v-model="endTime"
+                                                      :picker-options="{
+                                                        start: '00:00',
+                                                        step: '00:30',
+                                                        end: '23:30'
+                                                      }"
+                                                      :placeholder="$t('endTime')"
+                                                      size="small">
                                       </el-time-select>
                                 </el-col>
                             </div>
@@ -176,74 +176,69 @@
                 :visible.sync="goodsDialog"
                 :show-close="false"
                 :before-close="handleClose">
-                <my-group
-                  v-model="params"
-                  @submit="onSubmit">
-                  <el-col :span="4" :class="$style.myselect">
-                    <my-select keyName="category_id">
-                      <el-option
-                        v-for="item in typeList"
-                        :label="item.name_cn"
-                        :value="item.id" :key="item.id">
-                      </el-option>
-                    </my-select>
-                  </el-col>
-                  <el-col :span="6" :offset="14">
-                    <my-input keyName="keywords"></my-input>
-                  </el-col>
+                <my-group v-model="params"
+                          @submit="onSubmit">
+                          <el-col :span="4"
+                                  :class="$style.myselect">
+                                  <my-select keyName="category_id">
+                                              <el-option  v-for="item in typeList"
+                                                          :label="item.name_cn"
+                                                          :value="item.id" :key="item.id">
+                                              </el-option>
+                                  </my-select>
+                          </el-col>
+                          <el-col :span="6" :offset="14">
+                                  <my-input keyName="keywords"></my-input>
+                          </el-col>
                 </my-group>
-                <el-table
-                  ref="table"
-                  border
-                  :data="goods"
-                  style="width: 100%"
-                  :row-style="{cursor: 'pointer'}">
-                  <el-table-column type="expand">
-                    <template slot-scope="props">
-                      <el-table
-                        :data="props.row.specs"
-                        border
-                        @row-click="rowClickGoods">
-                        <el-table-column
-                          width="55">
-                          <template slot-scope="scope">
-                            <label class="el-checkbox">
-                              <span
-                                class="el-checkbox__input"
-                                :class="scope.row.checked && 'is-checked'">
-                                <span class="el-checkbox__inner"></span>
-                              </span>
-                            </label>
-                          </template>
-                        </el-table-column>
-                        <el-table-column
-                          prop="relevance_code"
-                          label="外部编码">
-                        </el-table-column>
-                        <el-table-column
-                          prop="name_cn"
-                          label="规格中文名">
-                        </el-table-column>
-                        <el-table-column
-                          prop="name_en"
-                          label="规格外文名">
-                        </el-table-column>
-                      </el-table>
-                    </template>
-                  </el-table-column>
+                <el-table  :data="goods"
+                          ref="table"
+                          border
+                          style="width: 100%"
+                          :row-style="{cursor: 'pointer'}">
+                          <el-table-column type="expand">
+                            <template slot-scope="props">
+                              <el-table
+                                :data="props.row.specs"
+                                border
+                                @row-click="rowClickGoods">
+                                <el-table-column
+                                  width="55">
+                                  <template slot-scope="scope">
+                                    <label class="el-checkbox">
+                                      <span
+                                        class="el-checkbox__input"
+                                        :class="scope.row.checked && 'is-checked'">
+                                        <span class="el-checkbox__inner"></span>
+                                      </span>
+                                    </label>
+                                  </template>
+                                </el-table-column>
+                                <el-table-column
+                                  prop="relevance_code"
+                                  label="外部编码">
+                                </el-table-column>
+                                <el-table-column
+                                  prop="name_cn"
+                                  label="规格中文名">
+                                </el-table-column>
+                                <el-table-column
+                                  prop="name_en"
+                                  label="规格外文名">
+                                </el-table-column>
+                              </el-table>
+                            </template>
+                          </el-table-column>
 
-                  <el-table-column
-                    label="货品中文名称"
-                    prop="name_cn">
-                  </el-table-column>
-                  <el-table-column
-                    label="货品外文名称"
-                    prop="name_en">
-                  </el-table-column>
-                  <el-table-column
-                  prop="owner.email"
-                  label="所属账号">
-                </el-table-column>
+                          <el-table-column  label="货品中文名称"
+                                            prop="name_cn">
+                          </el-table-column>
+                          <el-table-column  label="货品外文名称"
+                                            prop="name_en">
+                          </el-table-column>
+                          <el-table-column  prop="owner.email"
+                                            label="所属账号">
+                        </el-table-column>
                 </el-table>
 
                 <button-pagination :pageParams="params"></button-pagination>

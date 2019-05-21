@@ -3,12 +3,14 @@
   <wms-tags>
     <my-group  v-model="params"
                @submit="onSubmit">
+               <!-- 选择时间 -->
               <el-col :span="8"
                       style="margin-bottom:10px;">
                       <my-date :begin.sync="params.created_at_b"
-                              :end.sync="params.created_at_e">
+                               :end.sync="params.created_at_e">
                       </my-date>
               </el-col>
+              <!-- 入库单状态 -->
               <el-col :span="6" :offset="2" style="margin-bottom:10px;">
                 <my-select keyName="status"
                           placeholder="请选择入库单状态">
@@ -19,6 +21,7 @@
                           </el-option>
                 </my-select>
               </el-col>
+              <!-- 入库单类型 -->
               <el-col :span="6"
                       :offset="2"
                       style="margin-bottom:10px;">
@@ -31,6 +34,7 @@
                                 </el-option>
                       </my-select>
               </el-col>
+              <!-- 选择供应商 -->
               <el-col :span="8">
                       <my-select keyName="distributor_id"
                                   placeholder="请选择供应商"
@@ -41,10 +45,12 @@
                                   </el-option>
                       </my-select>
               </el-col>
+              <!-- 搜索框 -->
               <el-col :offset="2" :span="6">
                       <my-input keyName="keywords">
                       </my-input>
               </el-col>
+              <!-- 添加入库单 -->
               <el-col :span="3" :offset="4">
                       <el-button  type="text"
                                   @click="addInbound"
@@ -53,53 +59,62 @@
                       </el-button>
               </el-col>
     </my-group>
+    <!-- 数据表格 -->
     <el-table  :data="inbound_list_data"
               border
               style="width:100%">
-    <el-table-column  type="index"
-                      label="#">
-    </el-table-column>
-    <el-table-column  prop="status_name"
-                      label="状态">
-    </el-table-column>
-    <el-table-column  prop="batch_type.name"
-                      :label="$t('inboundType')">
-    </el-table-column>
-    <el-table-column  prop="batch_code"
-                      :label="$t('inboundNumber')">
-    </el-table-column>
-    <el-table-column  prop="distributor.name_cn"
-                      label="供应商">
-    </el-table-column>
-    <el-table-column  prop="confirmation_number"
-                      :label="$t('confirmationNumber')">
-    </el-table-column>
-    <el-table-column label="预/已入库数量">
-                      <template slot-scope="scope">
-                        {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
-                      </template>
-    </el-table-column>
-    <el-table-column  prop="created_at"
-                      label="创建时间">
-    </el-table-column>
-    <el-table-column  label="操作"
-                      width="180">
-                      <template slot-scope="scope">
-                                <el-button size="mini"
-                                           @click="viewDetails(scope.row)"
-                                           :loading="$store.state.config.button_loading">
-                                            查看详情
-                                </el-button>
-                                <el-button  size="mini"
-                                            @click="inboundDelete(scope.row.id)"
-                                            v-if="scope.row.status === 1"
-                                            type="danger">
-                                            删除
-                                </el-button>
-                      </template>
-    </el-table-column>
+              <el-table-column  type="index"
+                                label="#">
+              </el-table-column>
+              <!-- 状态 -->
+              <el-table-column  prop="status_name"
+                                label="状态">
+              </el-table-column>
+              <!-- 入库单分类 -->
+              <el-table-column  prop="batch_type.name"
+                                :label="$t('inboundType')">
+              </el-table-column>
+              <!-- 入库单编号 -->
+              <el-table-column  prop="batch_code"
+                                :label="$t('inboundNumber')">
+              </el-table-column>
+              <!-- 供应商 -->
+              <el-table-column  prop="distributor.name_cn"
+                                label="供应商">
+              </el-table-column>
+              <!-- 确认订单编号 -->
+              <el-table-column  prop="confirmation_number"
+                                :label="$t('confirmationNumber')">
+              </el-table-column>
+              <!-- 预/已入库数量 -->
+              <el-table-column label="预/已入库数量">
+                                <template slot-scope="scope">
+                                  {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
+                                </template>
+              </el-table-column>
+              <!-- 创建时间 -->
+              <el-table-column  prop="created_at"
+                                label="创建时间">
+              </el-table-column>
+              <!-- 操作 -->
+              <el-table-column  label="操作"
+                                width="180">
+                                <template slot-scope="scope">
+                                          <el-button size="mini"
+                                                    @click="viewDetails(scope.row)"
+                                                    :loading="$store.state.config.button_loading">
+                                                      查看详情
+                                          </el-button>
+                                          <el-button  size="mini"
+                                                      @click="inboundDelete(scope.row.id)"
+                                                      v-if="scope.row.status === 1"
+                                                      type="danger">
+                                                      删除
+                                          </el-button>
+                                </template>
+              </el-table-column>
     </el-table>
-
+    <!-- 分页 -->
     <button-pagination :pageParams="params"></button-pagination>
   </wms-tags>
 

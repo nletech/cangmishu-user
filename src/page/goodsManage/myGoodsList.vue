@@ -1,182 +1,173 @@
 <template>
 <div class="storeManage">
   <wms-tags>
-    <my-group
-      v-model="params"
-      @submit="onSubmit"
-    >
-      <!-- 请选择分类 -->
-      <el-col :span="5">
-        <my-select keyName="category_id" placeholder="请选择分类">
-          <el-option
-            v-for="item in typeList"
-            :label="item.name_cn"
-            :value="item.id"
-            :key="item.id"
-          >
-          </el-option>
-        </my-select>
-      </el-col>
-      <!-- 选择时间 -->
-      <!-- <el-col :offset="3" :span="8">
-        <my-date :begin.sync="params.updated_at_b"
-          :end.sync="params.updated_at_e"></my-date>
-      </el-col> -->
-      <!-- 搜索框 -->
-      <el-col :offset="2" :span="6">
-        <my-input keyName="keywords"></my-input>
-      </el-col>
-      <!-- 添加货品 -->
-      <el-col :span="2"
-              :offset="6">
-              <el-button  v-if="isRole()"
-                          @click="addCommodity"
-                          size="medium">
-                          {{$t('addGoods')}}
-              </el-button>
-      </el-col>
-    </my-group>
-    <!-- <el-row> -->
-      <!-- 设置分类 -->
-      <!-- <el-col :span="2" :offset="15">
-        <el-button
-          v-if="isRole()"
-          @click="setGoodsType"
-          size="medium"
-        >
-           设置分类
-        </el-button>
-      </el-col> -->
-      <!-- 添加货品 -->
-      <!-- <el-col :span="2" :offset="1">
-       <el-button
-        v-if="isRole()"
-        @click="addCommodity"
-        size="medium">
-          {{$t('addGoods')}}
-        </el-button>
-      </el-col> -->
-      <!-- 导入货品Excel -->
-      <!-- <el-col :span="2" :offset="1">
-       <el-button
-        v-if="isRole()"
-        @click="importGoods"
-        icon="el-icon-plus"
-        type="text">
-          导入货品Excel
-        </el-button>
-      </el-col> -->
-    <!-- </el-row> -->
-    <!-- 货品数据展示列表 -->
-    <el-table
-      :data="goods_list_data"
-      @selection-change="handleSelectionChange"
-      border
-      style="margin:10px auto 0;"
-    >
-      <!-- 复选框 -->
-      <el-table-column  :selectable="checkSelectable"
-                        type="selection"
-                        width="55">
-      </el-table-column>
-      <!-- 收缩右箭头 -->
-      <el-table-column  type="expand">
-        <template slot-scope="props">
-          <el-table :data="props.row.specs" border style="width:80%;">
-            <el-table-column
-              prop="relevance_code"
-              :label="$t('relevanceCode')">
-            </el-table-column>
-            <el-table-column
-              prop="name_cn"
-              :label="$t('specificationChineseName')">
-            </el-table-column>
-            <el-table-column
-              prop="name_en"
-              :label="$t('specificationEnglishName')">
-            </el-table-column>
-            <el-table-column
-              prop="net_weight"
-              :label="$t('netWeight') + '(g)'"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="gross_weight"
-              :label="$t('grossWeight') + '(g)'"
-            >
-            </el-table-column>
+          <my-group  v-model="params"
+                     @submit="onSubmit">
+                    <!-- 请选择分类 -->
+                    <el-col :span="5">
+                      <my-select keyName="category_id" placeholder="请选择分类">
+                        <el-option
+                          v-for="item in typeList"
+                          :label="item.name_cn"
+                          :value="item.id"
+                          :key="item.id"
+                        >
+                        </el-option>
+                      </my-select>
+                    </el-col>
+                    <!-- 搜索框 -->
+                    <el-col :offset="2" :span="6">
+                      <my-input keyName="keywords"></my-input>
+                    </el-col>
+                    <!-- 添加货品 -->
+                    <el-col :span="2"
+                            :offset="6">
+                            <el-button  v-if="isRole()"
+                                        @click="dialogVisible = true"
+                                        size="medium">
+                                        {{$t('addGoods')}}
+                            </el-button>
+                            <!-- 弹窗 -->
+                            <el-dialog  title="添加货品"
+                                        :visible.sync="dialogVisible"
+                                        width="30%">
+                                        <el-row>
+                                                <el-col :span="4">
+                                                        <el-button  v-if="isRole()"
+                                                                    @click="addCommodity"
+                                                                    size="medium">
+                                                                    {{'添加单个货品'}}
+                                                        </el-button>
+                                                </el-col>
+                                                <el-col :span="6"
+                                                        :offset="8">
+                                                        <el-upload
+                                                          :class="$style.uploaddemo"
+                                                          :action=goodsapi
+                                                          :data=uploadData
+                                                          :on-success="handleSuccess"
+                                                          :headers="Authorization"
+                                                          name="file"
+                                                          :show-file-list="false"
+                                                        >
+                                                          <el-button  slot="trigger"
+                                                                      size="medium">
+                                                                      导入货品表
+                                                          </el-button>
+                                                        </el-upload>
+                                                        <el-button  size="medium"
+                                                                    @click="downloadTemplate">
+                                                                    下载模板
+                                                        </el-button>
+                                                        <el-upload  :data=uploadData
+                                                                    :class="$style.uploaddemo"
+                                                                    :action=specapi
+                                                                    :on-success="handleSuccess"
+                                                                    :headers="Authorization"
+                                                                    name="file"
+                                                                    :show-file-list="false">
+                                                          <el-button  slot="trigger"
+                                                                      size="medium">
+                                                                    导入货品规格表
+                                                          </el-button>
+                                                        </el-upload>
+                                                </el-col>
+                                        </el-row>
+                            </el-dialog>
+                    </el-col>
+          </my-group>
+          <!-- 货品数据展示列表 -->
+          <el-table  :data="goods_list_data"
+                    @selection-change="handleSelectionChange"
+                    border
+                    style="margin:10px auto 0;">
+                    <!-- 收缩右箭头 -->
+                    <el-table-column  type="expand">
+                      <template slot-scope="props">
+                        <el-table :data="props.row.specs" border style="width:80%;">
+                          <el-table-column
+                            prop="relevance_code"
+                            :label="$t('relevanceCode')">
+                          </el-table-column>
+                          <el-table-column
+                            prop="name_cn"
+                            :label="$t('specificationChineseName')">
+                          </el-table-column>
+                          <el-table-column
+                            prop="name_en"
+                            :label="$t('specificationEnglishName')">
+                          </el-table-column>
+                          <el-table-column
+                            prop="net_weight"
+                            :label="$t('netWeight') + '(g)'"
+                          >
+                          </el-table-column>
+                          <el-table-column
+                            prop="gross_weight"
+                            :label="$t('grossWeight') + '(g)'"
+                          >
+                          </el-table-column>
+                        </el-table>
+                      </template>
+                    </el-table-column>
+                    <!-- 中文名称 -->
+                    <el-table-column
+                      align="center"
+                      header-align="center"
+                      prop="name_cn"
+                      :label="$t('cnName')"
+                    >
+                    </el-table-column>
+                    <!-- 英文名称 -->
+                    <el-table-column
+                      align="center"
+                      header-align="center"
+                      prop="name_en"
+                      :label="$t('enName')"
+                    >
+                    </el-table-column>
+                    <!-- 分类 -->
+                    <el-table-column
+                      align="center"
+                      header-align="center"
+                      prop="category.name_cn"
+                      :label="$t('category')"
+                    >
+                    </el-table-column>
+                    <!-- 最后修改时间 -->
+                    <el-table-column
+                      align="center"
+                      header-align="center"
+                      prop="updated_at"
+                      label="最后修改时间"
+                    >
+                      <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.updated_at }}</span>
+                      </template>
+                    </el-table-column>
+                    <!-- 操作 -->
+                    <el-table-column
+                      header-align="center"
+                      width="170"
+                      :label="$t('operation')">
+                      <template slot-scope="scope">
+                        <el-button
+                          size="mini"
+                          @click="checkCommodity(scope.row.id, scope.row.warehouse_id)"
+                        >
+                          详情
+                        </el-button>
+                        <!-- 编辑 -->
+                        <el-button  size="mini"
+                                    type="danger"
+                                    @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)">
+                                    {{$t('edit')}}
+                        </el-button>
+                      </template>
+                    </el-table-column>
           </el-table>
-        </template>
-      </el-table-column>
-      <!-- 中文名称 -->
-      <el-table-column
-        align="center"
-        header-align="center"
-        prop="name_cn"
-        :label="$t('cnName')"
-      >
-      </el-table-column>
-      <!-- 英文名称 -->
-      <el-table-column
-        align="center"
-        header-align="center"
-        prop="name_en"
-        :label="$t('enName')"
-      >
-      </el-table-column>
-      <!-- 分类 -->
-      <el-table-column
-        align="center"
-        header-align="center"
-        prop="category.name_cn"
-        :label="$t('category')"
-      >
-      </el-table-column>
-      <!-- 所属账号 -->
-      <!-- <el-table-column
-        align="center"
-        header-align="center"
-        prop="owner.email"
-        label="所属账号"
-      >
-      </el-table-column> -->
-      <!-- 最后修改时间 -->
-      <el-table-column
-        align="center"
-        header-align="center"
-        prop="updated_at"
-        label="最后修改时间"
-      >
-        <template slot-scope="scope">
-          <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.updated_at }}</span>
-        </template>
-      </el-table-column>
-      <!-- 操作 -->
-      <el-table-column
-        header-align="center"
-        width="170"
-        :label="$t('operation')">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="checkCommodity(scope.row.id, scope.row.warehouse_id)"
-          >
-            详情
-          </el-button>
-          <!-- 编辑 -->
-          <el-button
-            size="mini"
-            type="danger"
-            v-if="show(scope.row)"
-            @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)"
-          >
-            {{$t('edit')}}
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-  <button-pagination :pageParams="params"></button-pagination>
+          <button-pagination :pageParams="params"></button-pagination>
   </wms-tags>
   <!-- 设置分类弹框 -->
   <el-dialog
@@ -214,56 +205,6 @@
       </el-button>
     </span>
   </el-dialog>
-  <el-dialog
-    :visible.sync="importVisible"
-    title="导入货品Excel"
-    width="40%"
-    center
-  >
-    <div style="text-align:center;">
-      <el-upload
-        :class="$style.uploaddemo"
-        :action=goodsapi
-        :data=uploadData
-        :on-success="handleSuccess"
-        :headers="Authorization"
-        name="file"
-        :show-file-list="false"
-      >
-        <el-button
-          slot="trigger"
-          size="medium"
-          type="primary"
-        >
-          导入货品表
-        </el-button>
-      </el-upload>
-      <el-upload
-        :class="$style.uploaddemo"
-        :action=specapi
-        :data=uploadData
-        :on-success="handleSuccess"
-        :headers="Authorization"
-        name="file"
-        :show-file-list="false"
-      >
-        <el-button
-          slot="trigger"
-          size="medium"
-          type="primary"
-        >
-          导入货品规格表
-        </el-button>
-      </el-upload>
-      <el-button
-        size="medium"
-        type="success"
-        @click="downloadTemplate"
-      >
-        下载模板
-      </el-button>
-    </div>
-  </el-dialog>
 </div>
 </template>
 
@@ -289,8 +230,7 @@ export default {
       importgoods: '',
       selectCategory_id: '',
       uploadData: {},
-      // email: this.$store.state.token.vip_info && this.$store.state.token.vip_info.email,
-      // warehouseId: +localStorage.getItem('selectWareHouseId'),
+      dialogVisible: false,
     };
   },
   components: {
@@ -317,11 +257,11 @@ export default {
       return { Authorization: this.$store.state.token.token };
     },
     goodsapi() {
-      return `${baseApi}product/import`;
-    },
+      return `${baseApi}/products/import`;
+    }, // 导入商品
     specapi() {
-      return `${baseApi}spec/import`;
-    },
+      return `${baseApi}/specs/import`;
+    }, // 商品规格导入
   },
   watch: {
     warehouseId() {
@@ -333,6 +273,9 @@ export default {
     },
   },
   methods: {
+    addCommodity1() {
+      console.log('添加货品');
+    },
     isRole() {
       if (localStorage.getItem('role') && +localStorage.getItem('role') === 4) {
         return false;
@@ -385,6 +328,7 @@ export default {
           type: 'success',
         });
         if (res.data[0].error[0]) {
+          console.log('上传有点问题:', res.data[0]);
           this.$message({
             message: res.data[0].error[0],
             type: 'warning',
@@ -429,16 +373,14 @@ export default {
     },
     // 货品分类列表
     getTypeList() {
-      // if (!this.warehouseId) return;
-      // $http.categoryList(
-      //   { page: 1, page_size: 100, is_enabled: 1, warehouse_id: this.warehouseId },
-      // )
-      //   .then((res) => {
-      //     this.typeList = res.data.data;
-      //   })
-      //   .catch(() => {
-      //     console.log('categoryList');
-      //   });
+      if (!this.warehouseId) return;
+      $http.getCategoryManagement()
+        .then((res) => {
+          this.typeList = res.data.data;
+        })
+        .catch(() => {
+          console.log('categoryList');
+        });
     },
     // 添加货品
     addCommodity() {
@@ -456,6 +398,7 @@ export default {
         query: {
           id: idVal,
           warehouse_id: wID,
+          isCheck: true,
         },
       });
     },
@@ -479,6 +422,7 @@ export default {
           if (res.status) {
             console.log(res.status);
           }
+          console.log(res, 'res货品列表');
           this.goods_list_data = res.data.data;
           this.params.data_count = res.data.total;
         })

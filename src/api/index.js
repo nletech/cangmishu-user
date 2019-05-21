@@ -13,16 +13,25 @@ const $http = {
   logout(data) {
     return Axios.post('/logout', data);
   }, // 登出
+  //                                                          入库
+  //                                    入库单列表
+  //                                    添加入库单
+  //                                                          出库
+  //                                    出库单列表
+  //                                    添加出库单
   //                                                          库存
-  // 货品管理
+  //                                    货品管理
   getProducts(data) {
     return Axios.post('/products', { params: data });
   }, // 获取货品列表
+  getAProducts(id, data) {
+    return Axios.get(`/products/${id}`, { params: data });
+  }, // 获取单个货品
   addProducts(data) {
     return Axios.post('/products', data);
   }, // 添加货品
-  editProducts(id) {
-    return Axios.put(`/products/${id}`);
+  editProducts(id, data) {
+    return Axios.put(`/products/${id}`, data);
   }, // 编辑货品
   deleteProducts(id) {
     return Axios.delete(`/products/${id}`);
@@ -141,7 +150,7 @@ const $http = {
   editDistributor(id, data) {
     return Axios.put(`/distributor/${id}`, data);
   }, // 编辑供应商
-  //                                                            设置-分类管理
+  //                                                            设置-货品分类管理
   getCategoryManagement() {
     return Axios.get('/categories');
   }, // 获取分类列表
