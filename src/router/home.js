@@ -39,6 +39,20 @@ const GoodsEdit = loadOnDemand('goodsManage/goodsEdit'); // 商品编辑
 // const OutboundList1 = loadOnDemand('goodsManage/outboundList'); // 出库单列表
 // const AddOutbound1 = loadOnDemand('goodsManage/addOutbound'); // 添加入库单
 
+// 员工管理
+// 员工列表
+const StaffList = loadOnDemand('staffManage/staffList/staffList'); // 员工列表
+const StaffAdd = loadOnDemand('staffManage/staffList/components/staffAdd'); // 新增员工
+const EditStaffData = loadOnDemand('staffManage/staffList/components/editStaffData'); // 编辑资料
+const ModifyStaffPsw = loadOnDemand('staffManage/staffList/components/modifyStaffPsw'); // 修改密码
+
+// 员工组列表
+const StaffGroupList = loadOnDemand('staffManage/staffGroupList/staffGroupList'); // 员工组列表
+const StaffGroupAdd = loadOnDemand('staffManage/staffGroupList/components/staffGroupAdd'); // 添加员工组
+const StaffGroupBasicInfo = loadOnDemand('staffManage/staffGroupList/components/staffGroupBasicInfo'); // 基本信息
+const StaffGroupShowEmployee = loadOnDemand('staffManage/staffGroupList/components/staffGroupShowEmployee'); // 添加员工组
+const StaffGroupAddEmployee = loadOnDemand('staffManage/staffGroupList/components/staffGroupAddEmployee'); // (查看员工组)添加员工
+const StaffGroupPermissions = loadOnDemand('staffManage/staffGroupList/components/staffGroupPermissions'); // 权限
 // 设置
 const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓库管理
 const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - demo
@@ -184,6 +198,76 @@ export const routerMap = [
           //   component: InventoryAlarm,
           //   nav: 3,
           // },
+        ],
+      },
+      {
+        name: 'staff', // 大菜单 员工
+        path: 'staff',
+        component: LayoutSide,
+        icon: '&#xeb3e;',
+        nav: 1,
+        id: 'staff',
+        children: [
+          {
+            name: 'staffList', // 子菜单-员工列表
+            path: 'staffList',
+            component: StaffList,
+            nav: 2,
+          },
+          {
+            name: 'staffGroupList', // 子菜单-员工组列表
+            path: 'staffGroupList',
+            component: StaffGroupList,
+            nav: 2,
+          },
+          {
+            name: 'staffAdd', // 模块-添加员工
+            path: 'staffAdd',
+            component: StaffAdd,
+            nav: 3,
+          },
+          {
+            name: 'editStaffData', // 模块-编辑员工信息
+            path: 'editStaffData',
+            component: EditStaffData,
+            nav: 3,
+          },
+          {
+            name: 'modifyStaffPsw', // 模块-修改员工密码
+            path: 'modifyStaffPsw',
+            component: ModifyStaffPsw,
+            nav: 3,
+          },
+          {
+            name: 'staffGroupAdd', // 模块-添加员工组
+            path: 'staffGroupAdd',
+            component: StaffGroupAdd,
+            nav: 3,
+          },
+          {
+            name: 'staffGroupBasicInfo', // 模块-员工组基本信息
+            path: 'staffGroupBasicInfo',
+            component: StaffGroupBasicInfo,
+            nav: 3,
+          },
+          {
+            name: 'staffGroupShowEmployee', // 模块-员工组查看员工
+            path: 'staffGroupShowEmployee',
+            component: StaffGroupShowEmployee,
+            nav: 3,
+          },
+          {
+            name: 'staffGroupAddEmployee', // 模块-员工组添加员工
+            path: 'staffGroupAddEmployee',
+            component: StaffGroupAddEmployee,
+            nav: 3,
+          },
+          {
+            name: 'staffGroupPermissions', // 模块-员工组权限
+            path: 'staffGroupPermissions',
+            component: StaffGroupPermissions,
+            nav: 3,
+          },
         ],
       },
       // {

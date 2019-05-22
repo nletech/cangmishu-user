@@ -86,11 +86,19 @@
         :label="$t('operation')">
         <template slot-scope="scope">
           <el-button size="mini"
-          @click="checkCommodity(scope.row.id, scope.row.warehouse_id)">详情</el-button>
+                     @click="checkCommodity(scope.row.id, scope.row.warehouse_id)">
+                     详情
+          </el-button>
           <el-button size="mini"
-          type="danger" v-if="scope.row.owner.email === email"
-          @click="editCommodity(scope.row.id, scope.row.warehouse_id)">
-          {{$t('edit')}}</el-button>
+                     type="danger"
+                     v-if="scope.row.owner.email === email"
+                     @click="editCommodity(scope.row.id, scope.row.warehouse_id)">
+                     {{$t('edit')}}
+          </el-button>
+          <el-button size="mini"
+                     @click="delCommodity(scope.row.id, scope.row.warehouse_id)">
+                     删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -301,6 +309,9 @@ export default {
           warehouse_id: wID,
         },
       });
+    },
+    delCommodity(idVal, wID) {
+      console.log('1');
     },
     // 查看货品
     checkCommodity(idVal, wID) {

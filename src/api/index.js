@@ -57,6 +57,51 @@ const $http = {
   getWarning() {
     return Axios.get('/warning');
   }, // 获取库存报警详情
+  //                                                          员工
+  //                                                员工-员工列表
+  addStaff(data) {
+    return Axios.post('/employee', data);
+  }, // 添加员工
+  getStaffs(data) {
+    return Axios.get('/employee', { params: data });
+  }, // 获取员工列表
+  editStaffInfo(id, data) {
+    return Axios.put(`/employee/${id}`, data);
+  }, // 编辑员工资料
+  modifyStaffPsw(id, data) {
+    return Axios.post(`/user/${id}/password`, data);
+  }, // 修改员工密码
+  delStaff(id) {
+    return Axios.delete(`/employee/${id}`);
+  }, // 删除员工
+  forbidStaff(id, data) {
+    return Axios.post(`/employee/${id}/lock`, data);
+  }, // 禁止员工登录
+  //                                                员工-员工组列表
+  addStaffGroup(data) {
+    return Axios.post('/group', data);
+  }, // 添加员工组
+  editStaffGroup(id, data) {
+    return Axios.put(`/group/${id}`, data);
+  }, // 编辑员工组
+  deleteStaffGroup(id) {
+    return Axios.delete(`/group/${id}`);
+  }, // 删除员工组
+  getStaffGroups(data) {
+    return Axios.get('/group', { params: data });
+  }, // 获取员工组列表(耦合了分页查询接口)
+  addStaffTo(data) {
+    return Axios.post('/relation', data);
+  }, // 添加员工至分组
+  getStaffDetail(id) {
+    return Axios.get(`/group/${id}`);
+  }, // 获取员工分组详情(权限)
+  addStaffGroupDetail(data) {
+    return Axios.post('/privilege', data);
+  }, // 添加员工分组权限
+  deleteStaffInGroup(data) {
+    return Axios.delete('/relation', { params: data });
+  }, // 从分组删除员工
   //                                                          设置-仓库管理
   warehouses() {
     return Axios.get('/warehouses');

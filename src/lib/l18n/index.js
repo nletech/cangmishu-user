@@ -24,6 +24,13 @@ export default {
     basicSetting: '基础配置',
     categoryManagement: '货品分类',
     record: '出入库单分类',
+    staff: '员工',
+    editStaffData: '编辑员工资料',
+    modifyStaffPsw: '修改员工密码',
+    staffGroupBasicInfo: '员工组基本信息',
+    staffGroupShowEmployee: '当前分组员工',
+    staffGroupAddEmployee: '添加员工',
+    staffGroupPermissions: '员工权限',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',
