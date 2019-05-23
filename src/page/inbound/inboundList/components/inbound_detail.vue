@@ -1,11 +1,10 @@
 <template>
-  <el-dialog
-  title="查看入库单"
-  width="80%"
-  @close="close"
-  @update:visible="$emit('update:visible', $event)"
-  :visible="visible">
-  <el-row :gutter="10">
+  <el-dialog  title="查看入库单"
+              width="60%"
+              @close="close"
+              @update:visible="$emit('update:visible', $event)"
+              :visible="visible">
+  <!-- <el-row :gutter="10">
     <el-col :span="9" :offset="9">
       <h2>({{warehouse_name}})入库单</h2>
     </el-col>
@@ -14,7 +13,6 @@
     <el-col :span="13" style="margin-top:42px;">入库单分类:
       <span class="inbound_info">{{category_name}}</span>
     </el-col>
-    <!-- <el-col :span="10">{{category_name}}</el-col> -->
     <el-col :span="4" :offset="3">
       <img
         v-if="inboundInfo.batch_code_barcode"
@@ -27,26 +25,22 @@
     <el-col :span="13">入库单编号:
       <span class="inbound_info">{{inboundInfo.batch_code}}</span>
     </el-col>
-    <!-- <el-col :span="10">{{inboundInfo.batch_code}}</el-col> -->
     <el-col :span="4" :offset="5">{{inboundInfo.batch_code}}</el-col>
   </el-row>
   <el-row :gutter="10">
     <el-col :span="13">确认单编号:
       <span class="inbound_info">{{inboundInfo.confirmation_number}}</span>
     </el-col>
-    <!-- <el-col :span="10">{{inboundInfo.confirmation_number}}</el-col> -->
   </el-row>
   <el-row :gutter="10">
     <el-col :span="13">入库供应商:
       <span class="inbound_info">{{distributor_name}}</span>
     </el-col>
-    <!-- <el-col :span="10">{{distributor_name}}</el-col> -->
   </el-row>
   <el-row :gutter="10">
     <el-col :span="3">备注:
       <span class="inbound_info">{{inboundInfo.remark}}</span>
     </el-col>
-    <!-- <el-col :span="10">{{inboundInfo.remark}}</el-col> -->
   </el-row>
 
   <h3>货品列表</h3>
@@ -93,7 +87,6 @@
 
     <button-pagination :pageParams="params"></button-pagination>
 
-    <!-- <pagination :page-params="page_params"></pagination> -->
 
     <el-row>
       <el-col :span="6" :offset="18">
@@ -127,14 +120,26 @@
       <el-col :span="10" :offset="10">
         <el-button round plain type="primary" @click="onDownload()">下载入库单</el-button>
       </el-col>
-    </el-row>
-
-    <iframe style="display: none;" id="downloadIframe"></iframe>
+    </el-row> -->
+    <!-- <div  v-html="pdfUrl"
+          width="100%"
+          height="500px">
+          <a href="/helloWorld.pdf">Download PDF</a>
+    </div> -->
+    <div v-html="content" v-if="visible">
+    </div>
+    <el-button @clicl="onDownload"
+               :class="$style.btn"
+               type="success">
+              下载入库单
+    </el-button>
+    <!-- <iframe style="display: none;" id="downloadIframe"></iframe> -->
 
   </el-dialog>
 </template>
 
 <script>
+import Axios from 'axios';
 /* eslint-disable */
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api'
@@ -147,8 +152,13 @@ export default {
     // inboundInfo: Object,
     id: Number,
   },
+  mounted() {
+    // console.log(this.pdfUrl, 'pdfUrl');
+  },
   data() {
     return {
+      content: '',
+      pdfUrl: `${Axios}/batch/${this.id}/pdf.pdf`,
       inboundInfo: {},
       inboundList: [],
       batch_id: '',
@@ -166,7 +176,7 @@ export default {
   mixins: [getListData],
   computed: {
     warehouseId() {
-      return this.$store.state.config.setWarehouseId;
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
     api() {
       return this.$store.state.token.token.substring(7) ;
@@ -191,27 +201,38 @@ export default {
     getList() {
       if (!this.id || !this.warehouseId) return;
       this.params.warehouse_id = this.warehouseId
-      $http.inboundDetail(this.id, this.params).then((res) => {
-        this.inboundInfo = res.data;
-        this.params.data_count = res.data.product.total;
-        this.inboundList = res.data.product.data;
-        this.warehouse_name = res.data.warehouse.name_cn;
-        this.distributor_name = res.data.distributor.name_cn;
-        this.category_name = res.data.batch_type.name;
-        this.total_need_num = res.data.total_num.total_need_num;
+      $http.previewInbound(this.id).then((res) => {
+        this.content = res;
+        // console.log(res, 'previewInbound');
+        // this.inboundInfo = res.data;
+        // this.params.data_count = res.data.product.total;
+        // this.inboundList = res.data.product.data;
+        // this.warehouse_name = res.data.warehouse.name_cn;
+        // this.distributor_name = res.data.distributor.name_cn;
+        // this.category_name = res.data.batch_type.name;
+        // this.total_need_num = res.data.total_num.total_need_num;
       });
+      // $http.inboundDetail(this.id, this.params).then((res) => {
+      //   this.inboundInfo = res.data;
+      //   this.params.data_count = res.data.product.total;
+      //   this.inboundList = res.data.product.data;
+      //   this.warehouse_name = res.data.warehouse.name_cn;
+      //   this.distributor_name = res.data.distributor.name_cn;
+      //   this.category_name = res.data.batch_type.name;
+      //   this.total_need_num = res.data.total_num.total_need_num;
+      // });
     },
     onDownload() {
       // const w = window.open();
-      $http.inboundDownload(this.id, this.api, this.warehouseId).then((res) => {
-        this.$message({
-          message: '下载成功!',
-          type: 'success',
-          showClose: true,
-        });
-        window.location = `${baseApi}batch/${this.id}/download?api_token=${this.api}`;
+      // $http.downloadInbound(this.id).then((res) => {
+      //   this.$message({
+      //     message: '下载成功!',
+      //     type: 'success',
+      //     showClose: true,
+      //   });
+      window.open(`${Axios}batch/${this.id}/download`);
         // document.getElementById('downloadIframe').src = `https://dev-wms-api-v2.nle-tech.com/batch/${this.id}/download?api_token=${this.api}`;
-      });
+      // });
     },
   },
 };
@@ -236,5 +257,10 @@ export default {
 <style lang="less" scoped>
 .inbound_info {
   padding-left: 20px;
+}
+.btn {
+  width: 100%;
+  float: right;
+  margin: 0 auto;
 }
 </style>

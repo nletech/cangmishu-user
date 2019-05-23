@@ -107,7 +107,6 @@
                                           </el-button>
                                           <el-button  size="mini"
                                                       @click="inboundDelete(scope.row.id)"
-                                                      v-if="scope.row.status === 1"
                                                       type="danger">
                                                       删除
                                           </el-button>
@@ -166,7 +165,7 @@ export default {
   mixins: [getListData],
   computed: {
     warehouseId() {
-      return this.$store.state.config.setWarehouseId;
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
   watch: {
@@ -179,6 +178,16 @@ export default {
     this.getTypeList();
   },
   methods: {
+    getList() {
+      if (!this.warehouseId) return;
+      this.params.warehouse_id = this.warehouseId;
+      $http.getInbounds({ warehouse_id: this.warehouseId })
+        .then((res) => {
+          console.log(res, 'getInbounds');
+          this.inbound_list_data = res.data.data;
+          this.params.data_count = res.data.total;
+        });
+    }, // 获取入库单列表
     getTypeList() {
       if (!this.warehouseId) return;
       const SelcetParams = {
@@ -186,13 +195,13 @@ export default {
         page_size: 200,
         warehouse_id: this.warehouseId,
       };
-      $http.batchType(SelcetParams).then((res) => {
+      $http.getBatchType(SelcetParams).then((res) => {
         this.typeList = res.data.data;
       });
-      $http.distributorList(SelcetParams).then((res) => {
+      $http.getDistributor().then((res) => {
         this.distributorList = res.data.data;
       });
-    },
+    }, // 入库单分类和供应商
     // 添加入库单
     addInbound() {
       this.$router.push({
@@ -210,15 +219,6 @@ export default {
     //     this.boundList = res.data.data;
     //   });
     // },
-    // 获取入库单列表
-    getList() {
-      if (!this.warehouseId) return;
-      this.params.warehouse_id = this.warehouseId;
-      $http.inboundList(this.params).then((res) => {
-        this.inbound_list_data = res.data.data;
-        this.params.data_count = res.data.total;
-      });
-    },
     // 入库单详情弹框
     viewDetails(row) {
       this.inboundDialogVisible = true;
@@ -231,16 +231,15 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        $http.inboundDel({
-          batch_id: id,
-        }).then(() => {
-          this.$message({
-            message: '删除成功',
-            type: 'success',
-            showClose: true,
+        $http.deleteInbound(id)
+          .then(() => {
+            this.$message({
+              message: '删除成功',
+              type: 'success',
+              showClose: true,
+            });
+            this.getList();
           });
-          this.getList();
-        });
       }).catch(() => {});
     },
   },

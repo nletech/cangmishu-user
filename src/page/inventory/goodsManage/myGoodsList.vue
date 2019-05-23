@@ -95,10 +95,6 @@
                      @click="editCommodity(scope.row.id, scope.row.warehouse_id)">
                      {{$t('edit')}}
           </el-button>
-          <el-button size="mini"
-                     @click="delCommodity(scope.row.id, scope.row.warehouse_id)">
-                     删除
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -309,9 +305,6 @@ export default {
           warehouse_id: wID,
         },
       });
-    },
-    delCommodity(idVal, wID) {
-      console.log('1');
     },
     // 查看货品
     checkCommodity(idVal, wID) {

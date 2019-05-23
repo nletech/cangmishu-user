@@ -269,7 +269,9 @@ export default {
 };
 </script>
 
-<style module>
+<style lang="less" module>
+  @import '../../../less/public_variable.less';
+
 .content_box{
   overflow: hidden;
   text-overflow: ellipsis;

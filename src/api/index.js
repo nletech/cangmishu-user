@@ -15,6 +15,27 @@ const $http = {
   }, // 登出
   //                                                          入库
   //                                    入库单列表
+  addInbound(data) {
+    return Axios.post('/batch', data);
+  }, // 添加入库单
+  getInbounds(data) {
+    return Axios.get('/batch', { params: data });
+  }, // 获取入库单列表
+  deleteInbound(id) {
+    return Axios.delete(`/batch/${id}`);
+  }, // 删除入库单
+  editInbound(id, data) {
+    return Axios.put(`/batch/${id}`, data);
+  }, // 编辑入库单
+  toInbound(data) {
+    return Axios.post('/batch/shelf', data);
+  }, // 入库单上架
+  downloadInbound(id) {
+    return Axios.get(`/batch/${id}/download`);
+  }, // 入库单下载
+  previewInbound(id) {
+    return Axios.get(`/batch/${id}/pdf`);
+  }, // 入库单预览(查看详情)
   //                                    添加入库单
   //                                                          出库
   //                                    出库单列表
@@ -198,19 +219,19 @@ const $http = {
   //                                                            设置-货品分类管理
   getCategoryManagement() {
     return Axios.get('/categories');
-  }, // 获取分类列表
+  }, // 获取货品分类列表
   addCategoryManagement(data) {
     return Axios.post('/categories', data);
-  }, // 添加分类列表
+  }, // 添加货品分类列表
   checkCategoryManagement(data) {
     return Axios.get('/categories', { params: data });
-  }, // 分页查询分类列表
+  }, // 分页查询货品分类列表
   editCategoryManagement(id, data) {
     return Axios.put(`/categories/${id}`, data);
-  }, // 编辑分类信息
+  }, // 编辑货品分类信息
   deleteCategoryManagement(id) {
     return Axios.delete(`/categories/${id}`);
-  }, // 删除分类信息
+  }, // 删除货品分类信息
   //                                                            设置-出入库分类
   //                               入库单分类
   getBatchType() {
