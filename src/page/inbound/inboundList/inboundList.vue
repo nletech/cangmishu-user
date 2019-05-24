@@ -98,14 +98,21 @@
               </el-table-column>
               <!-- 操作 -->
               <el-table-column  label="操作"
-                                width="180">
+                                width="240">
                                 <template slot-scope="scope">
-                                          <el-button size="mini"
+                                          <el-button size="small"
+                                                    style="margin: 0; padding: 10px;"
                                                     @click="viewDetails(scope.row)"
                                                     :loading="$store.state.config.button_loading">
                                                       查看详情
                                           </el-button>
-                                          <el-button  size="mini"
+                                          <el-button  size="small"
+                                                      style="margin: 0; padding: 10px;"
+                                                      @click="toInbound(scope.row)">
+                                                      入库&上架
+                                          </el-button>
+                                          <el-button  size="small"
+                                                      style="margin: 0; padding: 10px;"
                                                       @click="inboundDelete(scope.row.id)"
                                                       type="danger">
                                                       删除
@@ -178,9 +185,20 @@ export default {
     this.getTypeList();
   },
   methods: {
+    toInbound(info) {
+      // eslint-disable-next-line
+      const batch_id = info.id;
+      this.$router.push({
+        name: 'inboundShelf',
+        query: {
+          warehouse_id: this.warehouse_id, // 仓库 id
+          batch_id, // 入库单 id
+        },
+      });
+    }, // 入库上架
     getList() {
       if (!this.warehouseId) return;
-      this.params.warehouse_id = this.warehouseId;
+      this.params.warehouse_id = this.warehouse_id;
       $http.getInbounds({ warehouse_id: this.warehouseId })
         .then((res) => {
           console.log(res, 'getInbounds');

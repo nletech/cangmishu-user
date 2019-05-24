@@ -21,6 +21,9 @@ const $http = {
   getInbounds(data) {
     return Axios.get('/batch', { params: data });
   }, // 获取入库单列表
+  getInboundDetail(id, data) {
+    return Axios.get(`/batch/${id}`, { params: data });
+  }, // 获取单个入库单
   deleteInbound(id) {
     return Axios.delete(`/batch/${id}`);
   }, // 删除入库单
@@ -36,10 +39,26 @@ const $http = {
   previewInbound(id) {
     return Axios.get(`/batch/${id}/pdf`);
   }, // 入库单预览(查看详情)
-  //                                    添加入库单
+  checkSku(skuId, data) {
+    return Axios.get(`/stock/sku/${skuId}`, { params: data });
+  }, // 扫描sku获取库存详情
   //                                                          出库
+  addOutbound(data) {
+    return Axios.post('/order', data);
+  }, // 新增出库单
+  getOutbound(data) {
+    return Axios.get('/order', { params: data });
+  }, // 获取出库单列表
+  cancelOutbound(id, data) {
+    return Axios.put(`/order/status/${id}`, { params: data });
+  }, // 取消出库单
+  outbound(data) {
+    return Axios.post('/order/out', data);
+  }, // 出库单出库
+  editOutbound(id, data) {
+    return Axios.put(`/order/data/${id}`, data);
+  }, // 编辑出库单
   //                                    出库单列表
-  //                                    添加出库单
   //                                                          库存
   //                                    货品管理
   getProducts(data) {

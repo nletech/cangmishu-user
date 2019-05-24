@@ -18,6 +18,7 @@ const Home = loadOnDemand('initPage/home');
 // 入库
 const InboundList = loadOnDemand('inbound/inboundList/inboundList');// 入库单列表
 const AddInbound = loadOnDemand('inbound/addInbound/addInbound');// 添加入库单
+const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf');// 入库上架
 
 // 出库
 const OutboundList = loadOnDemand('outbound/outboundList/outboundList');// 出库单列表
@@ -111,6 +112,12 @@ export const routerMap = [
             path: 'inbound/addInbound',
             component: AddInbound,
             nav: 2,
+          },
+          {
+            name: 'inboundShelf', // 组件-入库上架
+            path: 'inboundList/inboundShelf',
+            component: InboundShelf,
+            nav: 3,
           },
         ],
       },

@@ -31,6 +31,7 @@ export default {
     staffGroupShowEmployee: '当前分组员工',
     staffGroupAddEmployee: '添加员工',
     staffGroupPermissions: '员工权限',
+    inboundShelf: '入库&上架',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',
