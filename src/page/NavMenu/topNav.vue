@@ -130,16 +130,23 @@ export default {
   },
   watch: {
     default_warehouse_name(val) {
+      // console.log(val, '监听仓库id');
       const arr = this.all_warehouse;
       // 监听当前选择的仓库名称，如果选中的名称改变，则缓存改仓库的 id
       for (let i = 0; i < arr.length; i += 1) {
         if (val === arr[i].name_cn) {
           this.currentWarehouseId = +arr[i].id;
+          // console.log(this.currentWarehouseId, 'this.currentWarehouseId');
+          this.$store.commit('config/setWarehouseId', +arr[i].id); // 设置仓库 id
+          this.$store.commit('config/setWarehouseName', this.selectWarehouse); // 设置仓库名
         }
       }
     },
   },
   methods: {
+    init_warehouse(
+      //
+    ) {}, // 初始化登陆后的默认仓库
     to_store_management() {
       this.$router.replace({ name: 'storeManage' });
     }, // 跳转到仓库管理
@@ -165,11 +172,10 @@ export default {
       });
     }, // 获取仓库列表
     handleConfirm() {
-      console.log(this.currentWarehouseId, 'this.currentWarehouseId');
+      console.log(this.currentWarehouseId, '当前仓库id', this.selectWarehouse, '当前仓库name');
       this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
       this.showWarehousesSwitch = false; // 关闭对话框
-      // 以上仓
     },
     toggleWarehouseIcon() {
       if (this.warehouseList.length === 1) { return; }

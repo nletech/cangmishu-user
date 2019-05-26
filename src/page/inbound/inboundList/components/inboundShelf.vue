@@ -97,7 +97,7 @@
                   <el-table-column  label="供应商货号"
                                     prop="distributor_code">
                   </el-table-column>
-                  <!-- 每箱件数 -->
+                  <!-- 箱子条码 -->
                   <el-table-column  label="箱子条码"
                                     align="center"
                                     header-align="center"
@@ -136,7 +136,7 @@
       <el-row :gutter="10">
         <el-col :span="10">
           <span :class="$style.classify_title">备注:</span>
-          <span>{{inboundInfo.remark}}</span>
+          <span>{{remark}}</span>
         </el-col>
       </el-row>
       <!-- 编辑规格信息弹框 -->
@@ -144,57 +144,59 @@
                   :visible.sync="dialogVisible"
                   width="36%">
                   <el-form  ref="form"
+                            :rules="rules"
                             :model="form"
                             size="small"
                             label-width="120px">
-                            <el-form-item label="商品名称">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="商品名称">
+                                           {{form.product_name_cn}}
                             </el-form-item>
-                            <el-form-item label="SKU">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="SKU">
+                                           {{form.sku}}
                             </el-form-item>
-                            <el-form-item label="预入库数量(个)">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="预入库数量(个)">
+                                           {{form.need_num}}
                             </el-form-item>
-                            <el-form-item label="供应商货号">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="供应商货号">
+                                           {{form.distributor_code}}
                             </el-form-item>
-                            <el-form-item label="备注">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="备注">
+                                           {{form.remark}}
                             </el-form-item>
-                            <el-form-item label="箱子条码信息">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="箱子条码信息" prop="box_code">
+                                           <el-input v-model="form.box_code" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="ENA码信息">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="ENA码信息" prop="ean">
+                                           <el-input v-model="form.ean" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="商品保质期至">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="商品保质期至" prop="expiration_date">
+                                           <el-input v-model="form.expiration_date" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="出产批次号">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="出产批次号" prop="production_batch_number">
+                                           <el-input v-model="form.production_batch_number" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="最佳食用期">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="最佳食用期" prop="best_before_date">
+                                           <el-input v-model="form.best_before_date" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="入库数量">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
+                            <el-form-item  label="实际入库数量" prop="stockin_num">
+                                           <el-input v-model="form.stockin_num" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="ENA码信息">
-                                          <el-input v-model="form.name" style="width: 310px;"></el-input>
-                            </el-form-item>
-                            <el-form-item label="货位">
-                                          <el-select  v-model="form.region"
+                            <el-form-item  label="货位" prop="code">
+                                           <el-select  v-model="form.code"
                                                       style="width: 310px;"
                                                       placeholder="请选择货位">
-                                                      <el-option label="区域一" value="shanghai" style="width: 310px;"></el-option>
-                                          </el-select>
+                                                      <el-option  v-for="(item, index) in warehouse_shelfs"
+                                                                  :key="index"
+                                                                  :label="item.code"
+                                                                  :value="item.code"
+                                                                  style="width: 310px;"></el-option>
+                                           </el-select>
                             </el-form-item>
                   </el-form>
                   <span slot="footer"
                         class="dialog-footer">
                         <el-button @click="dialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                        <el-button type="primary" @click="handleEditComfir">确 定</el-button>
                   </span>
       </el-dialog>
 
@@ -214,12 +216,27 @@ import getListData from '@/mixin/list';
 import buttonPagination from '@/components/pagination_and_buttons';
 
 export default {
-  props: {
-    visible: Boolean,
-    id: Number,
-  },
+  name: 'inboundShelf',
   data() {
     return {
+      rules: {
+        expiration_date: [
+          {required: true, message: '请输入活动名称', trigger: 'blur'},
+        ],
+        production_batch_number: [
+          {required: true, message: '请输入出产批次号', trigger: 'blur'},
+        ],
+        best_before_date: [
+          {required: true, message: '请输入最佳食用期', trigger: 'blur'},
+        ],
+        stockin_num: [
+          {required: true, message: '请输入实际入库数量', trigger: 'blur'},
+        ],
+        code: [
+          {required: true, message: '请选择货位', trigger: 'blur'},
+        ],
+      }, // 验证规则
+      warehouse_shelfs: [], // 当前仓库的货位列表
       form: {},
       dialogVisible: false, // 对话框
       sku_input: '', // sku 输入
@@ -259,7 +276,8 @@ export default {
         },
         created_at: '',
         remark: '',
-      },
+      }, // 入库单信息
+      remark: '', // 备注
       inboundList: [],
       batch_id: '',
       tableLoading: false,
@@ -296,6 +314,29 @@ export default {
     this.getData();
   },
   methods: {
+    handleEditComfir() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.dialogVisible = true;
+        } else {
+          this.$message({
+            type: 'error',
+            message: '请填写完整',
+          });
+          return false;
+        }
+      });
+    },
+    get_warehouse_shelf() {
+      const whId = this.warehouseId;
+      $http.getWarehouseshelf({ warehouse_id: whId })
+        .then((res) => {
+          if (res.status) return;
+          this.warehouse_shelfs = res.data.data;
+          console.log(res, 'getWarehouseshelf');
+        })
+        .catch(() => {});
+    }, // 获取货位列表(用于编辑)
     check_sku() {
       const skuId = +this.sku_input;
       const whId = this.warehouseId;
@@ -313,6 +354,9 @@ export default {
           const data =  res.data;
           this.inboundInfo = data;
           this.inboundList = data.batch_products; //货品列表
+          console.log(data.batch_products, 'data.batch_products');
+          // this.remark = data.batch_products.remark; // 备注
+          // 编辑
           // this.inboundData = data.stocks;
           // this.inbound_list_data = res.data.data;
           // this.params.data_count = res.data.total;
@@ -320,7 +364,10 @@ export default {
     }, // 获取单个入库单信息
     handleEdit(row) {
       this.dialogVisible = true;
-    }, // 编辑
+      this.form = row;
+      console.log(row, 'row');
+      this.get_warehouse_shelf();
+    }, // 编辑货品列表
     // getList() {
     //   if (!this.id || !this.warehouseId) return;
     //   this.params.warehouse_id = this.warehouseId
