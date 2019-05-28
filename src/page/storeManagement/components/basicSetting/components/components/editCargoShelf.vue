@@ -20,13 +20,13 @@
                                        size="small">
                                         <el-option  v-for="item in area_list_data"
                                                     :key="item.id"
-                                                    :value="item.id"
-                                                    :label="item.code + '-' + item.name_cn">
+                                                    :value="item.id">
+                                                    {{`${item.code}-${item.name_cn}`}}
                                         </el-option>
                             </el-select>
               </el-form-item>
               <el-form-item label="是否启用">
-                             <el-switch  v-model="is_enabled"
+                             <el-switch  v-model="form.is_enabled"
                                          active-value="1"
                                          inactive-value="0"
                                          active-color="#13ce66"
@@ -87,6 +87,13 @@ export default {
     this.get_area_data();
     this.get_data();
   },
+  // mounted() {
+  //   console.log(this.form.warehouse_area_id, '------------------');
+  // },
+  // updated() {
+  //   console.log(this.form.warehouse_area_id, 'val');
+  //   console.log(this.form.is_enabled, 'form.is_enabled', this.is_enabled, 'isen');
+  // },
   data() {
     return {
       form: {
@@ -122,9 +129,10 @@ export default {
       $http.getWarehouseArea({ warehouse_id: this.$route.params.warehouse_id })
         .then((res) => {
           this.area_list_data = res.data.data;
+          // console.log(this.area_list_data, 'this.area_list_data');
         })
         .catch(() => {});
-    },
+    }, // 获取货区列表
     get_data() {
       let allData = {}; // 缓存拿到的数据
       if (this.$route.params.edit) {
@@ -140,7 +148,7 @@ export default {
               for (let i = 0; i < allData.length; i += 1) {
                 if (allData[i].id === this.$route.params.shelfId) {
                   this.form.code = allData[i].code;
-                  this.form.warehouse_area_id = allData[i].warehouse_area.name_cn;
+                  this.form.warehouse_area_id = allData[i].warehouse_area.id;
                   this.is_enabled = `${allData[i].is_enabled}`; // 这里必须是字符串
                   // 可选信息
                   this.form.passage = allData[i].passage;
@@ -159,8 +167,9 @@ export default {
               for (let i = 0; i < allData.length; i += 1) {
                 if (allData[i].id === this.$route.params.shelfId) {
                   this.form.code = allData[i].code;
-                  this.form.warehouse_area_id = allData[i].warehouse_area.name_cn;
+                  this.form.warehouse_area_id = allData[i].warehouse_area.id;
                   this.is_enabled = `${allData[i].is_enabled}`; // 这里必须是字符串
+                  this.form.is_enabled = `${allData[i].is_enabled}`;
                   // 可选信息
                   this.form.passage = allData[i].passage;
                   this.form.row = allData[i].row;
@@ -174,6 +183,7 @@ export default {
       }
     }, // 获取当前货位信息
     onSubmit() {
+      console.log(this.form, 'this.form11111');
       this.$refs.ShelfReference.validate((valid) => {
         if (!valid) return;
         this.$confirm('确认提交?', '提示', {
@@ -182,7 +192,7 @@ export default {
           type: 'warning',
         })
           .then(() => {
-            $http.addWarehouseshelf(this.form)
+            $http.editWarehouseshelf(this.$route.params.shelfId, this.form)
               .then((res) => {
                 if (res.status) return;
                 this.$message({

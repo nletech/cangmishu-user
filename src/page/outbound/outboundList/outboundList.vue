@@ -2,106 +2,98 @@
 <div class="storeManage">
 
   <wms-tags>
-    <my-group
-      v-model="params"
-      @submit="onSubmit">
-      <el-col :span="4">
-        <my-date :begin.sync="params.created_at_b"
-          :end.sync="params.created_at_e"></my-date>
-      </el-col>
-       <el-col :span="3"  :offset="4">
-        <el-date-picker
-          v-model="params.delivery_date"
-          type="date"
-          size="small"
-          value-format="yyyy-MM-dd"
-          @change="onSubmit"
-          placeholder="选择预计出库日期">
-        </el-date-picker>
-      </el-col>
-      <el-col :span="4" :offset="2">
-        <my-select keyName="status" placeholder="请选择出库单状态">
-          <el-option
-            v-for="item in typeList"
-            :label="item.name"
-            :value="item.id" :key="item.id">
-          </el-option>
-        </my-select>
-      </el-col>
-      <el-col :span="5" :offset="2">
-        <my-input keyName="keywords"></my-input>
-      </el-col>
-      <!-- <el-col :span="2" :offset="6">
-        <el-button
-        type="text"
-        @click="addoutbound"
-        icon="el-icon-plus">
-          {{$t('addOutbound')}}
-        </el-button>
-      </el-col> -->
+    <my-group  v-model="params"
+               @submit="onSubmit">
+               <el-col :span="4">
+                        <my-date  :begin.sync="params.created_at_b"
+                                  :end.sync="params.created_at_e">
+                        </my-date>
+               </el-col>
+               <el-col  :span="3"
+                        :offset="4">
+                        <el-date-picker  v-model="params.delivery_date"
+                                         type="date"
+                                         size="small"
+                                         value-format="yyyy-MM-dd"
+                                         @change="onSubmit"
+                                         placeholder="选择预计出库日期">
+                        </el-date-picker>
+               </el-col>
+               <el-col  :span="4"
+                        :offset="2">
+                        <my-select  keyName="status"
+                                    placeholder="请选择出库单状态">
+                                    <el-option  v-for="item in typeList"
+                                                :label="item.name"
+                                                :value="item.id" :key="item.id">
+                                    </el-option>
+                        </my-select>
+               </el-col>
+               <el-col  :span="5"
+                        :offset="2">
+                        <my-input keyName="keywords"></my-input>
+               </el-col>
+               <!-- 添加出库单 -->
+               <el-col  :span="2"
+                        :offset="20">
+                        <el-button  type="text"
+                                    @click="addoutbound"
+                                    icon="el-icon-plus">
+                                    {{$t('addOutbound')}}
+                        </el-button>
+               </el-col>
     </my-group>
-    <el-table
-      :data="outbound_list_data"
-      border
-      style="width:100%;">
-      <el-table-column
-        type="index"
-        label="#">
-      </el-table-column>
-      <el-table-column
-        prop="status_name"
-        label="状态">
-      </el-table-column>
-      <!-- <el-table-column
-        prop="order_code"
-        label="出库单号">
-      </el-table-column> -->
-      <el-table-column
-        prop="out_sn"
-        label="外部订单号">
-      </el-table-column>
-      <el-table-column
-        prop="order_type.name"
-        label="出库单类型">
-      </el-table-column>
-      <!-- <el-table-column
-        prop="warehouse.name_cn"
-        label="所属仓库">
-      </el-table-column> -->
-      <el-table-column
-        prop="sum"
-        label="出库数量">
-      </el-table-column>
-      <el-table-column
-        prop="created_at"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        prop="delivery_date"
-        label="预计出库日期">
-      </el-table-column>
-      <el-table-column
-        label="操作" width="200">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="viewDetails(scope.row)">查看详情</el-button>
-          <el-button
-          size="mini"
-          v-if="(scope.row.status == 2 )
-          || (scope.row.status ==  3 )
-          ||(scope.row.status == 4)"
-          @click="synchronousOrder(scope.row)">
-          同步订单</el-button>
-        </template>
-      </el-table-column>
+    <el-table  :data="outbound_list_data"
+               border
+               style="width:100%;">
+               <el-table-column  label="#"
+                                type="index">
+               </el-table-column>
+               <el-table-column  label="状态"
+                                prop="status_name">
+               </el-table-column>
+               <el-table-column  label="出库单号"
+                                prop="order_code">
+               </el-table-column>
+               <el-table-column  label="运单号"
+                                prop="order_code">
+               </el-table-column>
+               <el-table-column  label="出库单类型"
+                                prop="order_type.name">
+               </el-table-column>
+               <el-table-column  label="出库数量"
+                                prop="sum">
+               </el-table-column>
+               <el-table-column  label="创建时间"
+                                prop="created_at">
+               </el-table-column>
+               <el-table-column  label="预计出库日期"
+                                prop="delivery_date">
+               </el-table-column>
+               <el-table-column  label="操作"
+                                width="200">
+                                <template slot-scope="scope">
+                                          <el-button  size="mini"
+                                                      @click="viewDetails(scope.row)">
+                                                      查看详情
+                                          </el-button>
+                                          <el-button  size="mini"
+                                                      v-if="(scope.row.status == 2 )
+                                                      || (scope.row.status ==  3 )
+                                                      ||(scope.row.status == 4)"
+                                                      @click="synchronousOrder(scope.row)">
+                                                      同步订单
+                                          </el-button>
+                                </template>
+               </el-table-column>
     </el-table>
 
     <button-pagination :pageParams="params"></button-pagination>
   </wms-tags>
 
   <!-- 入库单详情弹框 -->
-    <DetailDialog
-      :visible.sync="outboundDialogVisible"
-      :id="id">
+    <DetailDialog  :visible.sync="outboundDialogVisible"
+                   :id="id">
     </DetailDialog>
 
 </div>

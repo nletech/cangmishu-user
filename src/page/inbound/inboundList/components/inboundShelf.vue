@@ -23,7 +23,7 @@
       <el-row :gutter="10">
               <el-col :span="13">
                       <span :class="$style.classify_title">供应商:</span>
-                      <span class="inbound_info">{{inboundInfo.distributor.name_cn}}</span>
+                      <span class="inbound_info">{{inboundInfo.distributor['name_cn']}}</span>
               </el-col>
       </el-row>
       <!-- 创建日期 -->
@@ -34,7 +34,7 @@
               </el-col>
               <el-col :span="6"
                       :offset="8">
-                      <span :class="$style.classify_title">{{'仓库:'}}&nbsp;&nbsp;&nbsp;{{inboundInfo.warehouse.name_cn}}</span>
+                      <span :class="$style.classify_title">{{'仓库:'}}&nbsp;&nbsp;&nbsp;{{inboundInfo.warehouse['name_cn']}}</span>
               </el-col>
       </el-row>
 
@@ -42,13 +42,13 @@
       <el-row :gutter="10"
               :class="$style.sku_input">
               <el-col :span="4">
-                      <el-input placeholder="请输入或扫描SKU"
-                                v-model="sku_input"
-                                size="mini">
-                            <i slot="suffix"  class="iconfont"
-                                              style="display: inline-block; margin: 8px 0 0 0;">
-                                              &#xe60b;
-                            </i>
+                      <el-input  placeholder="请输入或扫描SKU"
+                                 v-model="sku_input"
+                                 size="mini">
+                                  <i slot="suffix"  class="iconfont"
+                                                    style="display: inline-block; margin: 8px 0 0 0;">
+                                                    &#xe60b;
+                                  </i>
                       </el-input>
               </el-col>
               <el-col :span="2">
@@ -163,33 +163,51 @@
                             <el-form-item  label="备注">
                                            {{form.remark}}
                             </el-form-item>
-                            <el-form-item  label="箱子条码信息" prop="box_code">
+                            <el-form-item  label="箱子条码信息"
+                                           prop="box_code">
                                            <el-input v-model="form.box_code" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item  label="ENA码信息" prop="ean">
+                            <el-form-item  label="ENA码信息"
+                                           prop="ean">
                                            <el-input v-model="form.ean" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item  label="商品保质期至" prop="expiration_date">
-                                           <el-input v-model="form.expiration_date" style="width: 310px;"></el-input>
+                            <el-form-item  label="商品保质期至"
+                                           prop="expiration_date">
+                                           <el-date-picker v-model="form.expiration_date"
+                                                           style="width: 310px;"
+                                                           value-format="yyyy-MM-dd"
+                                                           format="yyyy - MM - dd"
+                                                           placeholder="选择日期">
+                                           </el-date-picker>
                             </el-form-item>
-                            <el-form-item  label="出产批次号" prop="production_batch_number">
+                            <el-form-item  label="出产批次号"
+                                           prop="production_batch_number">
                                            <el-input v-model="form.production_batch_number" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item  label="最佳食用期" prop="best_before_date">
-                                           <el-input v-model="form.best_before_date" style="width: 310px;"></el-input>
+                            <el-form-item  label="最佳食用期"
+                                           prop="best_before_date">
+                                           <el-date-picker v-model="form.best_before_date"
+                                                           style="width: 310px;"
+                                                           value-format="yyyy-MM-dd"
+                                                           format="yyyy - MM - dd"
+                                                           placeholder="选择日期">
+                                           </el-date-picker>
                             </el-form-item>
-                            <el-form-item  label="实际入库数量" prop="stockin_num">
+                            <el-form-item  label="实际入库数量"
+                                           prop="stockin_num">
                                            <el-input v-model="form.stockin_num" style="width: 310px;"></el-input>
                             </el-form-item>
-                            <el-form-item  label="货位" prop="code">
+                            <el-form-item  label="货位"
+                                           prop="code">
                                            <el-select  v-model="form.code"
-                                                      style="width: 310px;"
-                                                      placeholder="请选择货位">
-                                                      <el-option  v-for="(item, index) in warehouse_shelfs"
-                                                                  :key="index"
-                                                                  :label="item.code"
-                                                                  :value="item.code"
-                                                                  style="width: 310px;"></el-option>
+                                                       style="width: 310px;"
+                                                       placeholder="请选择货位">
+                                                       <el-option  v-for="(item, index) in warehouse_shelfs"
+                                                                   :key="index"
+                                                                   :value="item.code"
+                                                                   style="width: 310px;">
+                                                                   {{item.code}}
+                                                       </el-option>
                                            </el-select>
                             </el-form-item>
                   </el-form>
@@ -233,13 +251,14 @@ export default {
           {required: true, message: '请输入实际入库数量', trigger: 'blur'},
         ],
         code: [
-          {required: true, message: '请选择货位', trigger: 'blur'},
+          {required: true, message: '请选择货位', trigger: 'change'},
         ],
       }, // 验证规则
       warehouse_shelfs: [], // 当前仓库的货位列表
       form: {},
       dialogVisible: false, // 对话框
       sku_input: '', // sku 输入
+      total: 20, // 列表总条数
       //
       batch_id: '', // 入库单 id
       warehouse_id: '', // 仓库 id
@@ -265,9 +284,9 @@ export default {
       inboundInfo: {
         batch_type: {
           name: '',
-        },
-        batch_code_barcode: '',
-        batch_code: '',
+        }, // 中文名称
+        batch_code_barcode: '', // 二维码链接
+        batch_code: '', // 箱子条吗
         distributor: {
           name_cn: '',
         },
@@ -299,7 +318,8 @@ export default {
   },
   watch: {
     warehouseId() {
-      this.getList();
+      // this.getList();
+      this.getData();
       // this.getTypeList();
     },
     id: {
@@ -308,22 +328,28 @@ export default {
       },
       deep: true,
     },
-    // 监听sku输入
   },
-  created() {
+  mounted() {
     this.getData();
   },
   methods: {
     handleEditComfir() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.dialogVisible = true;
+          this.inboundInfo.batch_code = this.form.box_code; // 箱子条码
+          this.inboundInfo.batch_code = this.form.ean; // ean
+          this.inboundInfo.expiration_date = this.form.expiration_date; // 保质期至
+          this.inboundInfo.production_batch_number = this.form.production_batch_number; // 出产批次号
+          this.inboundInfo.best_before_date = this.form.best_before_date; // 最佳食用期
+          this.inboundInfo.stockin_num = this.form.stockin_num; // 实际入库数量
+          this.inboundInfo.code = this.form.code; // 货位
+          // this.inboundInfo.total_stockin_num = this.form.stockin_num; // 已入库数量
+          this.dialogVisible = false;
         } else {
           this.$message({
             type: 'error',
             message: '请填写完整',
           });
-          return false;
         }
       });
     },
@@ -333,28 +359,32 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.warehouse_shelfs = res.data.data;
-          console.log(res, 'getWarehouseshelf');
         })
         .catch(() => {});
     }, // 获取货位列表(用于编辑)
     check_sku() {
-      const skuId = +this.sku_input;
-      const whId = this.warehouseId;
+      const skuId = this.sku_input; // 输入的 sku
+      const whId = this.warehouseId; // 当前仓库 id
+      // const temp_batch_id = this.$route.query.batch_id; // 临时变量
+      if (!skuId) return;
       $http.checkSku(skuId, { warehouse_id: whId })
         .then((res) => {
           if (res.status) return;
-          console.log(res, 'checkSk res');
+          const data =  res.data;
+          this.dialogVisible = true;
+          this.get_warehouse_shelf();
+          this.form = data; //货品(规格)列表
         })
         .catch(() => {});
     }, // 提交输入的SKU
     getData() {
       $http.getInboundDetail(this.$route.query.batch_id, { warehouse_id: this.warehouseId })
         .then((res) => {
-          console.log(res, 'getInboundDetail');
           const data =  res.data;
           this.inboundInfo = data;
-          this.inboundList = data.batch_products; //货品列表
-          console.log(data.batch_products, 'data.batch_products');
+          this.inboundList = data.batch_products; //货品(规格)列表
+          // console.log(this.params, 'this.params');
+          console.log(res, 'getData');
           // this.remark = data.batch_products.remark; // 备注
           // 编辑
           // this.inboundData = data.stocks;
@@ -365,7 +395,6 @@ export default {
     handleEdit(row) {
       this.dialogVisible = true;
       this.form = row;
-      console.log(row, 'row');
       this.get_warehouse_shelf();
     }, // 编辑货品列表
     // getList() {
@@ -384,14 +413,38 @@ export default {
     //     });
     // },
     toInbound() {
-      // $http.inboundDownload(this.id, this.api, this.warehouseId).then((res) => {
-      //   console.log(res, 'res');
-      //   this.$message({
-      //     message: '下载成功!',
-      //     type: 'success',
-      //     showClose: true,
-      //   });
-      // });
+      const arr = this.inboundInfo.batch_products;
+      const perStock = []; // 临时处理变量
+      for (let i = 0; i < arr.length; i += 1) {
+        let obj  = new Object();
+        obj.stock_id = arr[i].id;
+        obj.stockin_num = arr[i].stockin_num;
+        obj.distributor_code = arr[i].distributor_code;
+        obj.ean = arr[i].ean;
+        obj.expiration_date = arr[i].expiration_date;
+        obj.best_before_date = arr[i].best_before_date;
+        obj.production_batch_number = arr[i].production_batch_number;
+        obj.remark = arr[i].remark;
+        obj.code = arr[i].code;
+        obj.box_code = arr[i].box_code;
+        perStock.push(obj);
+      }
+      console.log(perStock, 'perStock');
+      const perInfo = {
+        warehouse_id: this.warehouseId,
+        batch_id: this.inboundInfo.id,
+        stock: perStock,
+      }
+      $http.toInbound(perInfo).then((res) => {
+        if (res.status) return; 
+        console.log(res, 'res');
+        this.$message({
+          message: '操作成功!',
+          type: 'success',
+          showClose: true,
+        });
+        this.$router.push({ name: 'inboundList' });
+      });
     },
   },
 };
