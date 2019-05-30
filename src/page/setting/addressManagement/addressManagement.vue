@@ -1,99 +1,91 @@
 <template>
   <div class="addressManagement">
-    <div :class="$style.addressManagement">
-      <div :class="$style.am_main">
-        <!-- 标签页 -->
-        <el-row
-        >
-          <!-- 点击按键 -->
-          <div :class="$style.am_operation_btn">
-            <span @click="info_add_btn">
-              <i class="iconfont">&#xe618;</i>
-              {{`${active_add_text}`}}
-            </span>
-          </div>
-          <!-- 标签页 -->
-          <el-tabs
-            :class="$style.am_tabs"
-            v-model="active_tab_item"
-            >
-            <el-tab-pane
-              :class="$style.am_tabs_item"
-              v-for="item in tabs"
-              :key="item.id"
-              :label="item.name"
-              :name="item.name">
-              <!-- 对应的标签页内容 -->
-                <el-table
-                  :class="$style.table_main"
-                  :data="info_data"
-                  border
-                >
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    type="index"
-                    width="80"
-                    label="#">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    prop="fullname"
-                    label="姓名">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    prop="phone"
-                    label="电话">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    prop="full_address"
-                    label="地址">
-                  </el-table-column>
-                  <el-table-column
-                    header-align="center"
-                    width="240"
-                    label="操作">
-                    <template slot-scope="scope">
-                      <el-button size="mini"
-                                 @click="edit(scope.row)">
-                                  编辑
-                      </el-button>
-                      <el-button size="mini"
-                                 type="danger"
-                                 @click="delete_data(scope.row)">
-                                  删除
-                      </el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-                <el-pagination  :class="$style.pagination"
-                                v-show="+total"
-                                @current-change="handleCurrentChange"
-                                :current-page="currentPage"
-                                layout="total, prev, pager, next, jumper"
-                                :total="+total">
-                </el-pagination>
-            </el-tab-pane>
-          </el-tabs>
-        </el-row>
-      </div>
-    </div>
-    <!-- 添加收发人信息 -->
-    <add-info
-      :visible.sync = "switchFlag"
-      :tabs="tabs"
-      :active_tab_item="active_tab_item"
-      :active_add_text="active_add_text"
-      :row_data="row_data"
-      @updata_data="handle_updata_data"
-      @updata_data_list="handle_updata_data_list"
-    >
-    </add-info>
+       <div :class="$style.addressManagement">
+            <div :class="$style.am_main">
+              <!-- 标签页 -->
+              <el-row>
+                    <!-- 点击按键 -->
+                    <div :class="$style.am_operation_btn">
+                        <span @click="info_add_btn">
+                              <i class="iconfont">&#xe618;</i>
+                              {{`${active_add_text}`}}
+                        </span>
+                    </div>
+                    <!-- 标签页 -->
+                    <el-tabs  :class="$style.am_tabs"
+                              v-model="active_tab_item">
+                              <el-tab-pane  :class="$style.am_tabs_item"
+                                            v-for="item in tabs"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :name="item.name">
+                                            <!-- 对应的标签页内容 -->
+                                            <el-table  :class="$style.table_main"
+                                                      :data="info_data"
+                                                      border>
+                                              <el-table-column
+                                                header-align="center"
+                                                align="center"
+                                                type="index"
+                                                width="80"
+                                                label="#">
+                                              </el-table-column>
+                                              <el-table-column
+                                                header-align="center"
+                                                align="center"
+                                                prop="fullname"
+                                                label="姓名">
+                                              </el-table-column>
+                                              <el-table-column
+                                                header-align="center"
+                                                align="center"
+                                                prop="phone"
+                                                label="电话">
+                                              </el-table-column>
+                                              <el-table-column
+                                                header-align="center"
+                                                align="center"
+                                                prop="full_address"
+                                                label="地址">
+                                              </el-table-column>
+                                              <el-table-column
+                                                header-align="center"
+                                                width="240"
+                                                label="操作">
+                                                <template slot-scope="scope">
+                                                  <el-button size="mini"
+                                                            @click="edit(scope.row)">
+                                                              编辑
+                                                  </el-button>
+                                                  <el-button size="mini"
+                                                            type="danger"
+                                                            @click="delete_data(scope.row)">
+                                                              删除
+                                                  </el-button>
+                                                </template>
+                                              </el-table-column>
+                                            </el-table>
+                                            <el-pagination  :class="$style.pagination"
+                                                            v-show="+total"
+                                                            @current-change="handleCurrentChange"
+                                                            :current-page="currentPage"
+                                                            layout="total, prev, pager, next, jumper"
+                                                            :total="+total">
+                                            </el-pagination>
+                              </el-tab-pane>
+                    </el-tabs>
+              </el-row>
+            </div>
+       </div>
+       <!-- 添加收发人信息 -->
+       <add-info  :visible.sync = "switchFlag"
+                 :tabs="tabs"
+                 :active_tab_item="active_tab_item"
+                 :active_add_text="active_add_text"
+                 :row_data="row_data"
+                 @updata_data="handle_updata_data"
+                 @updata_data_list="handle_updata_data_list">
+       </add-info>
   </div>
 </template>
 <script>
@@ -157,6 +149,7 @@ export default {
       ? $http.getSenderAddress()
           .then((re) => {
             if (re.status) return;
+            console.log(re, '发件人信息');
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
@@ -168,6 +161,7 @@ export default {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
+            console.log(re, '收件人信息');
           })
           .catch(() => {});
     }, // 检测选中的标签页

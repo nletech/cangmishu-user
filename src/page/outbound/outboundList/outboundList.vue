@@ -147,7 +147,7 @@ export default {
   // },
   computed: {
     warehouseId() {
-      return this.$store.state.config.setWarehouseId;
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
   watch: {

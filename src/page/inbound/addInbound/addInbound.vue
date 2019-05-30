@@ -19,11 +19,6 @@
                                       </el-option>
                             </el-select>
               </el-form-item>
-              <!-- 入库单编号 -->
-              <!-- <el-form-item :label="$t('inboundNumber')"
-                            prop="batch_code">
-                            <el-input v-model="form.batch_code" size="small" :disabled="true"></el-input>
-              </el-form-item> -->
               <!-- 确认入库单编号 -->
               <el-form-item label="入库单编号"
                             prop="confirmation_number">
@@ -97,19 +92,6 @@
               </el-table>
               <!-- 运输方式 -->
               <label class="label"> {{$t('notNecessaryInfo')}} </label>
-              <!-- <el-form-item :label="$t('transportWay')">
-                            <el-select v-model="form.transportation_type">
-                              <el-option
-                                v-for="item in expressList"
-                                :label="item.name"
-                                :value="item.id" :key="item.id">
-                              </el-option>
-                            </el-select>
-              </el-form-item> -->
-              <!-- 运单号 -->
-              <!-- <el-form-item :label="$t('expressNumber')">
-                            <el-input v-model="form.waybill_number" size="small" prop="waybill_number"></el-input>
-              </el-form-item> -->
               <el-form-item :label="$t('planInboundTime')">
                             <div class="start-time">
                               <el-col :span="10"
@@ -213,33 +195,6 @@
                           border
                           @selection-change="handleSelectionChange"
                           style="width: 100%">
-                          <!-- <el-table-column type="expand">
-                                            <template slot-scope="props">
-                                                      <el-table :data="props.row.specs"
-                                                                border
-                                                                @row-click="rowClickGoods">
-                                                                <el-table-column  width="55">
-                                                                                  <template slot-scope="scope">
-                                                                                            <label class="el-checkbox">
-                                                                                                    <span  class="el-checkbox__input"
-                                                                                                            :class="scope.row.checked && 'is-checked'">
-                                                                                                            <span class="el-checkbox__inner"></span>
-                                                                                                    </span>
-                                                                                            </label>
-                                                                                  </template>
-                                                                </el-table-column>
-                                                                <el-table-column  prop="relevance_code"
-                                                                                  label="外部编码">
-                                                                </el-table-column>
-                                                                <el-table-column  prop="name_cn"
-                                                                                  label="规格中文名">
-                                                                </el-table-column>
-                                                                <el-table-column  prop="name_en"
-                                                                                  label="规格外文名">
-                                                                </el-table-column>
-                                                      </el-table>
-                                            </template>
-                          </el-table-column> -->
                           <el-table-column
                             type="selection"
                             width="55">

@@ -23,6 +23,8 @@ const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf')
 // 出库
 const OutboundList = loadOnDemand('outbound/outboundList/outboundList');// 出库单列表
 const AddOutbound = loadOnDemand('outbound/addOutbound/addOutbound');// 添加出库单
+const EditSender = loadOnDemand('outbound/addOutbound/components/editSender');// 编辑发件人信息
+const EditRecevier = loadOnDemand('outbound/addOutbound/components/editRecevier');// 编辑收件人信息
 
 // 库存
 // const MyGoodsList = loadOnDemand('inventory/goodsManage/myGoodsList');// 货品管理
@@ -137,9 +139,21 @@ export const routerMap = [
           },
           {
             name: 'addOutbound', // 子菜单-添加出库单
-            path: 'outboundList/addOutbound',
+            path: 'addOutbound',
             component: AddOutbound,
             nav: 2,
+          },
+          {
+            name: 'editSender', // 子菜单-添加出库单
+            path: 'editSender',
+            component: EditSender,
+            nav: 3,
+          },
+          {
+            name: 'editRecevier', // 子菜单-添加出库单
+            path: 'editRecevier',
+            component: EditRecevier,
+            nav: 3,
           },
         ],
       },

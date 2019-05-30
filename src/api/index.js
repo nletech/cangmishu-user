@@ -62,8 +62,11 @@ const $http = {
   //                                                          库存
   //                                    货品管理
   getProducts(data) {
-    return Axios.post('/products', { params: data });
+    return Axios.get('/products', { params: data });
   }, // 获取货品列表
+  getProductsPage(data) {
+    return Axios.get('/products', { params: data });
+  }, // 分页
   getAProducts(id, data) {
     return Axios.get(`/products/${id}`, { params: data });
   }, // 获取单个货品
@@ -195,6 +198,9 @@ const $http = {
   getSenderAddress() {
     return Axios.get('/senderAddress');
   }, // 获取发件人信息列表
+  getASenderAddress(id) {
+    return Axios.get(`/senderAddress/${id}`);
+  }, // 获取单个发件人信息
   editSenderAddress(id, data) {
     return Axios.put(`/senderAddress/${id}`, data);
   }, // 编辑发件人
@@ -210,6 +216,9 @@ const $http = {
   getReceiverAddress() {
     return Axios.get('/receiverAddress');
   }, // 获取收件人信息列表
+  getAReceiverAddress(id) {
+    return Axios.get(`/receiverAddress/${id}`);
+  }, // 获取单个收件人信息
   editReceiverAddress(id, data) {
     return Axios.put(`/receiverAddress/${id}`, data);
   }, // 编辑收件人
