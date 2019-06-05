@@ -137,7 +137,9 @@ export default {
       $http.addOutbound(this.form)
         .then((res) => {
           if (res.status) return;
-          console.log(res, 'res');
+          this.$router.push({
+            name: 'outboundList',
+          });
         })
         .catch();
     },

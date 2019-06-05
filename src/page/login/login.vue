@@ -102,6 +102,7 @@ export default {
         $http.login(this.form)
           .then((res) => {
             if (res.status) return;
+            console.log(res, '登录信息');
             // 将token保存到本地
             this.$store.commit('token/addToken', {
               token: res.data.token.token_value,
@@ -111,6 +112,7 @@ export default {
             // 存入用户信息
             this.$store.commit('config/setWarehouseName', res.data.user.default_warehouse.name_cn);
             this.$store.commit('config/setWarehouseId', res.data.user.default_warehouse.id);
+            localStorage.setItem('setUser', res.data.user.id); // 存入用户 id
             // 跳转到首页
             this.$router.push({
               name: 'home',

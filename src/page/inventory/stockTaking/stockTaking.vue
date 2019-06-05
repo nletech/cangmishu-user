@@ -1,180 +1,187 @@
 <template>
-<div class="inboundList">
-  <wms-tags>
-    <my-group
-      v-model="params"
-      @submit="onSubmit">
-      <el-col
-       :span="6"
-      >
-        <el-input
-          placeholder="请扫描货位或者SKU"
-        >
-        <i
-          style="color: #000;"
-          class="iconfont el-input__icon"
-          slot="suffix"
-        >
-          &#xe623;
-        </i>
-        </el-input>
-      </el-col>
-    </my-group>
-    <el-table
-      :data="inbound_list_data_mock"
-      border
-      style="width:100%"
-    >
-      <el-table-column
-        header-align="center"
-        align="center"
-        type="index"
-        label="#">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="goodsName"
-        label="货品名（规格）"
-      >
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="sku"
-        label="SKU"
-      >
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="locationInventory"
-        label="货位库存"
-      >
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="notOnShelvesNumber"
-        label="未上架数"
-      >
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        align="center"
-        prop="EAN"
-        label="EAN码">
-      </el-table-column>
-      <el-table-column
-        header-align="center"
-        width="180"
-        label="操作"
-      >
-        <template slot-scope="scope">
-          <el-button size="mini"
-            @click="handleCheck(scope.row)"
-            :loading="$store.state.config.button_loading"
-          >
-            盘点
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <button-pagination :pageParams="params"></button-pagination>
-  </wms-tags>
-  <!-- 盘点弹框 -->
-  <stock-taking-check
-    :showCheck.sync="showCheckSwitch"
-  >
-  </stock-taking-check>
-</div>
+        <div :class="$style.stockTaking">
+            <div :class="$style.stockTaking_main">
+                 <el-row>
+                        <el-col  :span="6">
+                                <el-input placeholder="请扫描货位或者SKU"
+                                          v-model="code"
+                                          size="small">
+                                          <i  style="color: #000;"
+                                              class="iconfont el-input__icon"
+                                              slot="suffix">
+                                              &#xe623;
+                                          </i>
+                                </el-input>
+                        </el-col>
+                        <el-col :span="1">
+                                <el-button size="small"
+                                           @click="handleSearch">
+                                           确定
+                                </el-button>
+                        </el-col>
+                 </el-row>
+                 <el-table  :data="outbound_list_data"
+                            :class="$style.stockTaking_table"
+                            border
+                            style="width:100%">
+                            <el-table-column  label="#"
+                                              type="index"
+                                              header-align="center"
+                                              align="center">
+                            </el-table-column>
+                            <el-table-column  label="入库批次"
+                                              prop="sku"
+                                              header-align="center"
+                                              align="center">
+                            </el-table-column>
+                            <el-table-column  label="SKU"
+                                              prop="relevance_code"
+                                              header-align="center"
+                                              align="center">
+                            </el-table-column>
+                            <el-table-column  label="商品名(规格)"
+                                              prop="product_name"
+                                              header-align="center"
+                                              align="center">
+                            </el-table-column>
+                            <el-table-column  label="货位库存"
+                                              prop="shelf_num"
+                                              header-align="center"
+                                              align="center">
+                            </el-table-column>
+                            <el-table-column  label="EAN码"
+                                              prop="ean"
+                                              header-align="center"
+                                              align="center">
+                            </el-table-column>
+                            <el-table-column  label="操作"
+                                              header-align="center"
+                                              width="180">
+                                              <template slot-scope="scope">
+                                                        <el-button  size="mini"
+                                                                    @click="handleCheck(scope.row)"
+                                                                    :loading="$store.state.config.button_loading">
+                                                                    盘点
+                                                        </el-button>
+                                                        <el-button  size="mini"
+                                                                    @click="handleRecord(scope.row)"
+                                                                    :loading="$store.state.config.button_loading">
+                                                                    记录
+                                                        </el-button>
+                                              </template>
+                            </el-table-column>
+                 </el-table>
+                 <el-pagination  v-show="+total"
+                                 :class="$style.pagination"
+                                 layout=" total, prev, pager, next, jumper"
+                                 @current-change="handleCurrentChange"
+                                 :current-page="currentPage"
+                                 :total="+total">
+                 </el-pagination>
+                 <!-- 盘点弹框 -->
+                 <stock-taking-check  :visible.sync="showCheckSwitch"
+                                      :row_data="row_data"
+                                      @success="handleSuccess"
+                                      @close="handleClose">
+                 </stock-taking-check>
+                 <!-- 记录 -->
+                 <record :row="row"
+                         :visible.sync="record_visible">
+                 </record>
+            </div>
+        </div>
 </template>
 
 <script>
-import buttonPagination from '@/components/pagination_and_buttons';
-import getListData from '@/mixin/list';
 import $http from '@/api';
-import WmsTags from '@/components/wms_tags';
-import MyGroup from '@/components/my_group';
 import stockTakingCheck from './components/stockTakingCheck'; // 盘点弹框
+import Record from './components/record'; // 记录弹框
 
 export default {
   name: 'stockTaking',
+  components: {
+    stockTakingCheck,
+    Record,
+  },
   data() {
     return {
-      showCheckSwitch: false,
-      inbound_list_data_mock: [
-        {
-          goodsName: '货品名称mock11',
-          sku: 'skuMock111',
-          locationInventory: '货位库存mock111',
-          notOnShelvesNumber: '111111',
-          EAN: 'EANmock1111',
-        }, {
-          goodsName: '货品名称mock22',
-          sku: 'skuMock22',
-          locationInventory: '货位库存mock22',
-          notOnShelvesNumber: '22',
-          EAN: 'EANmock22',
-        },
-      ],
-      inbound_list_data: [], // 入库单列表
-      inbound_info: {},
+      row: {},
+      record_visible: false, // 记录
+      row_data: {},
+      code: '302318000070003', // sku 号
+      showCheckSwitch: false, // 开关
+      stock_list_data: [], // 商品列表
       id: 0,
       typeList: [],
       distributorList: [],
+      outbound_list_data: [], // 表格数组
+      //
+      total: '1', // 列表总条数
+      currentPage: 1, // 当前页
     };
   },
-  components: {
-    WmsTags,
-    MyGroup,
-    buttonPagination,
-    stockTakingCheck,
-  },
-  mixins: [getListData],
   computed: {
     warehouseId() {
-      return this.$store.state.config.setWarehouseId;
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
-  },
-  watch: {
-    warehouseId() {
-      this.getList();
-    },
-  },
-  created() {
-    // this.getBoundList();
-    this.getTypeList();
   },
   methods: {
-    handleCheck(rowInfo) {
-      console.log(rowInfo, 'rowInfo');
-      this.showCheckSwitch = !this.showCheckSwitch;
+    handleSuccess(val, sku) {
+      if (val) {
+        $http.queryInventory({
+          warehouse_id: this.warehouseId,
+          code: sku,
+        })
+          .then((res) => {
+            this.code = ''; // 初始化
+            if (res.status) return;
+            this.outbound_list_data = res.data.data;
+            this.total = res.data.total;
+            this.currentPage = res.data.current_page;
+          });
+      }
     },
-    getTypeList() {
-      if (!this.warehouseId) return;
-      const SelcetParams = {
-        page: 1,
-        page_size: 200,
+    handleClose(val) {
+      this.showCheckSwitch = val;
+    },
+    handleCurrentChange(val) {
+      $http.checkOrder({
         warehouse_id: this.warehouseId,
-      };
-      $http.batchType(SelcetParams).then((res) => {
-        this.typeList = res.data.data;
-      });
-      $http.distributorList(SelcetParams).then((res) => {
-        this.distributorList = res.data.data;
-      });
+        page: val,
+      })
+        .then((res) => {
+          if (res.status) return;
+          this.outbound_list_data = res.data.data;
+          this.total = res.data.total;
+          this.currentPage = res.data.current_page;
+        });
+    },
+    handleCheck(rowInfo) {
+      this.showCheckSwitch = true;
+      this.row_data = rowInfo;
+    },
+    handleRecord(rowInfo) {
+      this.record_visible = true;
+      this.row = rowInfo;
+      this.row.warehouseId = this.warehouseId;
+      console.log(rowInfo, 'handleRecord');
+    },
+    handleSearch() {
+      if (this.code) {
+        $http.queryInventory({
+          warehouse_id: this.warehouseId,
+          code: this.code,
+        })
+          .then((res) => {
+            this.code = ''; // 初始化
+            if (res.status) return;
+            this.outbound_list_data = res.data.data;
+            this.total = res.data.total;
+            this.currentPage = res.data.current_page;
+          });
+      }
     },
     // 获取入库单列表
-    getList() {
-      if (!this.warehouseId) return;
-      this.params.warehouse_id = this.warehouseId;
-      $http.inboundList(this.params).then((res) => {
-        this.inbound_list_data = res.data.data;
-        this.params.data_count = res.data.total;
-      });
-    },
   },
 };
 </script>
@@ -182,11 +189,18 @@ export default {
 <style lang="less" module>
 @import '../../../less/public_variable.less';
 
-.util {
-  text-align: right;
-  margin: 20px;
-}
-.el-col {
-  margin-bottom: 20px;
+.stockTaking {
+  margin: 20px 0 0 0 ;
+  .stockTaking_main {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .stockTaking_table {
+    margin: 10px 0 0 0;
+  }
+  .pagination {
+    margin: 10px 0 0 0;
+    float: right;
+  }
 }
 </style>

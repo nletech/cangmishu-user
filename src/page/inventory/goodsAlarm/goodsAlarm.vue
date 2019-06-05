@@ -8,19 +8,24 @@
                  ref="form">
                 <el-form-item :label="$t('warningEmail')">
                               <el-row>
-                                <el-col :span="5">
+                                <el-col :span="8">
                                         <el-input v-model="form.warning_email"
-                                                  size="small"
-                                                  style="width:250px">
+                                                  placeholder="请输入报警邮箱"
+                                                  size="small">
                                         </el-input>
                                 </el-col>
-                                <el-col :span="5"
-                                        :offset="10">
-                                        <el-input v-model="form.warning_email"
-                                                  size="mini"
-                                                  style="width:250px">
+                                <el-col :span="6"
+                                        :offset="8">
+                                        <el-input v-model="Search_Classification"
+                                                  placeholder="请输入分类名"
+                                                  size="small">
                                         </el-input>
-                                        <el-button size="mini" style="position: relative; top: -40px; right: -270px;">搜索</el-button>
+                                </el-col>
+                                <el-col :span="2">
+                                        <el-button size="small"
+                                                   @click="search_btn">
+                                                   搜索
+                                        </el-button>
                                 </el-col>
                               </el-row>
                 </el-form-item>
@@ -74,6 +79,7 @@ export default {
         default_warning_stock: '',
         warning_email: '',
       },
+      Search_Classification: '', // 搜索分类名
       stockList: [], // 预警表格
       search_text: '', // 搜索按钮
       rules: {
@@ -89,6 +95,9 @@ export default {
     this.getGoods();
   },
   methods: {
+    search_btn() {
+      //
+    }, // 搜索货品分类
     // 获取货品分类名称列表
     getGoods() {
       $http.getCategoryManagement()

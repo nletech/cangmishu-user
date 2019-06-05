@@ -5,18 +5,14 @@
     class="top_nav"
   >
     <div :class="$style.nav">
-       <div
-        :class="$style.top_nav_logo"
-        :style="{ width: sideNavStatus ? '80px' : '231px' }"
-      >
-        <span v-if="!sideNavStatus">仓秘书</span>
-        <img v-else src="../../assets/img/cang.png" alt="仓秘书">
+       <div  :class="$style.top_nav_logo"
+             :style="{ width: sideNavStatus ? '80px' : '231px' }">
+             <span v-if="!sideNavStatus">仓秘书</span>
+             <img v-else src="../../assets/img/cang.png" alt="仓秘书">
       </div>
-      <div
-        @click="closeSideNav"
-        :class="$style.side_nav_switch"
-      >
-        <i class="iconfont">&#xe622;</i>
+      <div  @click="closeSideNav"
+            :class="$style.side_nav_switch">
+            <i class="iconfont">&#xe622;</i>
       </div>
       <!-- <div :class="$style.lang_switch">
         <el-dropdown>
@@ -29,89 +25,96 @@
         </el-dropdown>
       </div> -->
       <!-- 以上是wms旧代码 -->
-      <!-- 选择按钮 -->
-      <div
-        :class="$style.selectedTag"
-      >
-        <el-dropdown :class="$style.selectedTag_main">
-          <el-button :class="$style.selectedTag_main_btn">
-            <span>{{default_warehouse_name}}</span>
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu
-            slot="dropdown"
-            :class="$style.selectedTag_main_dropdown"
-            style="width: 200px; text-align: center;">
-            <el-dropdown-item>
-              <span @click="to_store_management">仓库管理</span>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <span @click="to_create_store">创建仓库</span>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <span @click="shift_warehouse">切换仓库</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+      <!-- 切换仓库 选择按钮 -->
+      <div  :class="$style.selectedTag">
+            <el-dropdown  :class="$style.selectedTag_main">
+                          <el-button :class="$style.selectedTag_main_btn">
+                                    <span>{{default_warehouse_name}}</span>
+                                    <i class="el-icon-arrow-down el-icon--right"></i>
+                          </el-button>
+                          <el-dropdown-menu  slot="dropdown"
+                                            :class="$style.selectedTag_main_dropdown"
+                                            style="width: 200px; text-align: center;">
+                                            <el-dropdown-item>
+                                                              <span @click="to_store_management">仓库管理</span>
+                                            </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                            <span @click="to_create_store">创建仓库</span>
+                                            </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                            <span @click="shift_warehouse">切换仓库</span>
+                                            </el-dropdown-item>
+                          </el-dropdown-menu>
+            </el-dropdown>
       </div>
     </div>
     <!-- 用户信息 -->
     <div :class="$style.user_info">
-      <div v-if="isShowSelectWarehouseIcon" @click="toggleWarehouseIcon"
-          :class="$style.warehouse">
-          <i v-show="iconShow" class="iconfont">&#xe6bf;</i>
-          <span>{{selectWarehouse}}</span>
-      </div>
-      <div :class="$style.user">
-        <el-dropdown>
-          <div :class="$style.img">
-            管
-          </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>{{email}}</el-dropdown-item>
-            <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
+         <div  v-if="isShowSelectWarehouseIcon"
+               @click="toggleWarehouseIcon"
+               :class="$style.warehouse">
+               <i v-show="iconShow" class="iconfont">&#xe6bf;</i>
+               <span>{{selectWarehouse}}</span>
+         </div>
+         <div :class="$style.user">
+              <el-dropdown>
+                          <div  :class="$style.img"
+                                @click="handleChangeUserinfo">
+                            <span>管</span>
+                            <!-- <img src="#" alt="管理员"> -->
+                          </div>
+                          <el-dropdown-menu slot="dropdown">
+                                            <el-dropdown-item @click.native="handleChangePassWord">{{'修改密码'}}</el-dropdown-item>
+                                            <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                          </el-dropdown-menu>
+              </el-dropdown>
+         </div>
     </div>
   </div>
-  <!-- 切换仓库 -->
- <el-dialog
-   :visible="showWarehousesSwitch"
-   width="30%"
-   :show-close="false"
-   :close-on-click-modal="false"
-   center
-  >
-   <div :class="$style.dialogcentered">
-     <p>请选择仓库</p>
-    <el-radio-group
-      :class="$style.radio_group"
-      v-model="selectWarehouse">
-      <el-radio-button
-        :class="$style.selectline"
-        v-for="item in all_warehouse"
-        :key="item.id"
-        :label="item.name_cn"
-        :value="item.id"
-      >
-      </el-radio-button>
-    </el-radio-group>
-   </div>
-   <span slot="footer" class="dialog-footer">
-     <el-button type="primary" @click="handleConfirm">确 定</el-button>
-   </span>
- </el-dialog>
+    <!-- 切换仓库 -->
+    <el-dialog  :visible="showWarehousesSwitch"
+                width="30%"
+                :show-close="false"
+                :close-on-click-modal="false"
+                center>
+                <div :class="$style.dialogcentered">
+                      <p>请选择仓库</p>
+                      <el-radio-group  :class="$style.radio_group"
+                                      v-model="selectWarehouse">
+                                      <el-radio-button  :class="$style.selectline"
+                                                        v-for="item in all_warehouse"
+                                                        :key="item.id"
+                                                        :label="item.name_cn"
+                                                        :value="item.id">
+                                      </el-radio-button>
+                      </el-radio-group>
+                </div>
+                <span slot="footer"
+                      class="dialog-footer">
+                      <el-button type="primary" @click="handleConfirm">确 定</el-button>
+                </span>
+    </el-dialog>
+    <!-- 修改密码 -->
+    <change-pass-word :visible.sync="show_psw_flag"></change-pass-word>
+    <user-info :visible.sync="show_user_info_flag"></user-info>
 </div>
 </template>
 
 <script>
 import $http from '@/api';
+import ChangePassWord from './components/changePassWord'; // 修改密码
+import UserInfo from './components/userInfo'; // 修改个人资料
 
 export default {
   name: 'topNav',
+  components: {
+    ChangePassWord,
+    UserInfo,
+  },
   data() {
     return {
+      show_user_info_flag: false,
+      show_psw_flag: false,
       all_warehouse: '', // 仓库列表
       selectWarehouse: '', // 切换仓库选择的仓库
       showWarehousesSwitch: false, // 切换仓库弹窗开关
@@ -144,6 +147,12 @@ export default {
     },
   },
   methods: {
+    handleChangeUserinfo() {
+      this.show_user_info_flag = true;
+    }, // 修改个人资料
+    handleChangePassWord() {
+      this.show_psw_flag = true;
+    }, // 修改密码
     init_warehouse(
       //
     ) {}, // 初始化登陆后的默认仓库

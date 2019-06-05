@@ -84,7 +84,7 @@ export default {
       for (let i = 0; i < arr.length; i += 1) {
         this.selected.push(arr[i]);
       }
-    },
+    }, // 将选中项缓存起来
     getGoodsList() {
       // eslint-disable-next-line
       const warehouse_data = {
@@ -108,7 +108,7 @@ export default {
       for (let i = 0; i < this.selected.length; i += 1) {
         this.all_selected.push(this.selected[i]);
       }
-      // 这是一个对包含对象的数组进行去重（根据对象的id属性）
+      // 这里对包含对象的数组进行去重（根据对象的id属性）
       function removeArrObj(arr) {
         const obj = {}; // 用作记录的对象
         const result = []; // 接收去重后的数组
@@ -124,14 +124,13 @@ export default {
       }
       const result = removeArrObj(this.all_selected);
       this.all_selected = []; // 初始化
-      this.$emit('select-goods_data', result);
+      this.$emit('select-goods_data', result); // 回传给父组件
       this.$emit('update:visible_goods', false);
     }, // 提交
     handleCurrentChange(val) {
       for (let i = 0; i < this.selected.length; i += 1) {
         this.all_selected.push(this.selected[i]);
       } // 缓存当前页的选中项
-      // console.log(this.all_selected, 'this.all_selected');
       // 分页请求
       $http.getProductsPage({
         page: val,

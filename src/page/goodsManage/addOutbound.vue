@@ -246,23 +246,6 @@
       width="80%"
       :before-close="CloseAddressee"
       :visible.sync="addressDialog">
-
-      <!-- <my-group
-        v-model="params"
-        @submit="onSubmit">
-        <el-col :span="4" :class="$style.myselect">
-          <my-select keyName="category_id">
-            <el-option
-              v-for="item in typeList"
-              :label="item.name_cn"
-              :value="item.id" :key="item.id">
-            </el-option>
-          </my-select>
-        </el-col>
-        <el-col :span="4" :offset="16">
-          <my-input keyName="keywords"></my-input>
-        </el-col>
-      </my-group> -->
       <div class="add_button">
         <el-button
         icon="el-icon-plus"
