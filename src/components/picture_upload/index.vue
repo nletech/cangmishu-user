@@ -8,8 +8,8 @@
     :on-exceed="handleExceed"
     :action=api
     :limit="1"
-    :file-list="fileList"
-    name="image">
+    name="image"
+    :file-list="fileList">
     <img v-if="this.photo"
     :src="this.photo"
     class="avatar">
@@ -54,8 +54,7 @@ export default {
       });
     },
     // 上传截图成功回调
-    handleAvatarSuccess(res, fileList) {
-      console.log(fileList);
+    handleAvatarSuccess(res) {
       if (res.status === 0) {
         // this.myPhoto = res.data.url.substring(1);
         this.$emit('update:photo', res.data.url);

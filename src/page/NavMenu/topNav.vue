@@ -60,7 +60,7 @@
               <el-dropdown>
                           <div  :class="$style.img"
                                 @click="handleChangeUserinfo">
-                            <span>管</span>
+                                <span>管</span>
                             <!-- <img src="#" alt="管理员"> -->
                           </div>
                           <el-dropdown-menu slot="dropdown">
@@ -102,6 +102,7 @@
 
 <script>
 import $http from '@/api';
+import PictureUpload from '@/components/picture_upload';
 import ChangePassWord from './components/changePassWord'; // 修改密码
 import UserInfo from './components/userInfo'; // 修改个人资料
 
@@ -110,6 +111,7 @@ export default {
   components: {
     ChangePassWord,
     UserInfo,
+    PictureUpload,
   },
   data() {
     return {

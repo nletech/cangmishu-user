@@ -113,6 +113,7 @@ export default {
             this.$store.commit('config/setWarehouseName', res.data.user.default_warehouse.name_cn);
             this.$store.commit('config/setWarehouseId', res.data.user.default_warehouse.id);
             localStorage.setItem('setUser', res.data.user.id); // 存入用户 id
+            localStorage.setItem('setUEmail', res.data.user.email); // 存入用户 id
             // 跳转到首页
             this.$router.push({
               name: 'home',
