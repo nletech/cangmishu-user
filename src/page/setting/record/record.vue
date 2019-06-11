@@ -1,91 +1,86 @@
 <template>
-  <div class="addressManagement">
-    <div :class="$style.addressManagement">
-      <div :class="$style.am_main">
-        <!-- 标签页 -->
-        <el-row>
-          <!-- 点击按键 -->
-          <div :class="$style.am_operation_btn">
-            <span @click="info_add_btn">
-              <i class="iconfont">&#xe618;</i>
-              {{`${active_add_text}`}}
-            </span>
+          <div  class="addressManagement">
+                <div  :class="$style.addressManagement">
+                      <div :class="$style.am_main">
+                            <!-- 标签页 -->
+                            <el-row>
+                                    <!-- 点击按键 -->
+                                    <div  :class="$style.am_operation_btn">
+                                          <span @click="info_add_btn">
+                                            <i class="iconfont">&#xe618;</i>
+                                            {{`${active_add_text}`}}
+                                          </span>
+                                    </div>
+                                    <!-- 标签页 -->
+                                    <el-tabs  v-model="active_tab_item"
+                                              :class="$style.am_tabs">
+                                              <el-tab-pane  :class="$style.am_tabs_item"
+                                                            v-for="item in tabs"
+                                                            :key="item.id"
+                                                            :label="item.name"
+                                                            :name="item.name">
+                                                            <!-- 对应的标签页内容 -->
+                                                            <el-table  :data="info_data"
+                                                                      :class="$style.table_main"
+                                                                      border>
+                                                                      <el-table-column  label="#"
+                                                                                        header-align="center"
+                                                                                        align="center"
+                                                                                        type="index"
+                                                                                        width="80">
+                                                                      </el-table-column>
+                                                                      <el-table-column  label="类型名称"
+                                                                                        header-align="center"
+                                                                                        align="center"
+                                                                                        prop="name">
+                                                                      </el-table-column>
+                                                                      <el-table-column  label="启用状态"
+                                                                                        header-align="center"
+                                                                                        align="center">
+                                                                                        <template slot-scope="scope">
+                                                                                                  <span v-if="scope.row.is_enabled==1">是</span>
+                                                                                                  <span v-if="scope.row.is_enabled==0">否</span>
+                                                                                        </template>
+                                                                      </el-table-column>
+                                                                      <el-table-column  label="操作"
+                                                                                        header-align="center"
+                                                                                        width="240">
+                                                                                        <template slot-scope="scope">
+                                                                                                  <el-button  size="mini"
+                                                                                                              @click="edit(scope.row)">
+                                                                                                              编辑
+                                                                                                  </el-button>
+                                                                                                  <el-button  size="mini"
+                                                                                                              type="danger"
+                                                                                                              @click="delete_data(scope.row)">
+                                                                                                              删除
+                                                                                                  </el-button>
+                                                                                        </template>
+                                                                      </el-table-column>
+                                                            </el-table>
+                                                            <el-pagination  :class="$style.pagination"
+                                                                            v-show="+total"
+                                                                            @current-change="handleCurrentChange"
+                                                                            :current-page="currentPage"
+                                                                            layout="total, prev, pager, next, jumper"
+                                                                            :total="+total">
+                                                            </el-pagination>
+                                              </el-tab-pane>
+                                    </el-tabs>
+                            </el-row>
+                      </div>
+                </div>
+                <!-- 添加收发人信息 -->
+                <add-record-info  :visible.sync = "switchFlag"
+                                  :tabs="tabs"
+                                  :active_tab_item="active_tab_item"
+                                  :active_add_text="active_add_text"
+                                  :row_data="row_data"
+                                  @updata_data="handle_updata_data"
+                                  @updata_data_list="handle_updata_data_list"
+                                  :clear_is_enabled="clear_is_enabled">
+                </add-record-info>
           </div>
-          <!-- 标签页 -->
-          <el-tabs  v-model="active_tab_item"
-                    :class="$style.am_tabs">
-                    <el-tab-pane  :class="$style.am_tabs_item"
-                                  v-for="item in tabs"
-                                  :key="item.id"
-                                  :label="item.name"
-                                  :name="item.name">
-                                  <!-- 对应的标签页内容 -->
-                                  <el-table  :data="info_data"
-                                             :class="$style.table_main"
-                                             border>
-                                             <el-table-column
-                                              header-align="center"
-                                              align="center"
-                                              type="index"
-                                              width="80"
-                                              label="#">
-                                             </el-table-column>
-                                             <el-table-column
-                                              header-align="center"
-                                              align="center"
-                                              prop="name"
-                                              label="类型名称">
-                                             </el-table-column>
-                                             <el-table-column  label="启用状态"
-                                                              header-align="center"
-                                                              align="center">
-                                                              <template slot-scope="scope">
-                                                                        <span v-if="scope.row.is_enabled==1">是</span>
-                                                                        <span v-if="scope.row.is_enabled==0">否</span>
-                                                              </template>
-                                             </el-table-column>
-                                             <el-table-column
-                                              header-align="center"
-                                              width="240"
-                                              label="操作">
-                                              <template slot-scope="scope">
-                                                <el-button size="mini"
-                                                          @click="edit(scope.row)">
-                                                            编辑
-                                                </el-button>
-                                                <el-button size="mini"
-                                                          type="danger"
-                                                          @click="delete_data(scope.row)">
-                                                            删除
-                                                </el-button>
-                                              </template>
-                                             </el-table-column>
-                                  </el-table>
-                                  <el-pagination  :class="$style.pagination"
-                                                  v-show="+total"
-                                                  @current-change="handleCurrentChange"
-                                                  :current-page="currentPage"
-                                                  layout="total, prev, pager, next, jumper"
-                                                  :total="+total">
-                                  </el-pagination>
-                    </el-tab-pane>
-          </el-tabs>
-        </el-row>
-      </div>
-    </div>
-    <!-- 添加收发人信息 -->
-    <add-record-info
-      :visible.sync = "switchFlag"
-      :tabs="tabs"
-      :active_tab_item="active_tab_item"
-      :active_add_text="active_add_text"
-      :row_data="row_data"
-      @updata_data="handle_updata_data"
-      @updata_data_list="handle_updata_data_list"
-      :clear_is_enabled="clear_is_enabled"
-    >
-    </add-record-info>
-  </div>
 </template>
 <script>
 import $http from '@/api';

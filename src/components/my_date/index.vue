@@ -1,22 +1,20 @@
 <template>
-  <el-date-picker
-    v-model="date_value"
-    :type="type || 'daterange'"
-    v-bind="$attrs"
-    size="small"
-    @change="updateValue"
-    :picker-options="dateData"
-    value-format="yyyy-MM-dd"
-    range-separator= '至'
-    start-placeholder="开始日期"
-    end-placeholder="结束日期"
-    align="right">
-  </el-date-picker>
+          <el-date-picker  v-model="date_value"
+                           :type="type || 'daterange'"
+                           v-bind="$attrs"
+                           size="small"
+                           @change="updateValue"
+                           :picker-options="dateData"
+                           value-format="yyyy-MM-dd"
+                           range-separator= '至'
+                           start-placeholder="开始日期"
+                           end-placeholder="结束日期"
+                           align="right">
+          </el-date-picker>
 </template>
 
 <script>
 import mixin from '../mixin';
-// import { log } from 'util';
 
 export default {
   mixins: [mixin],

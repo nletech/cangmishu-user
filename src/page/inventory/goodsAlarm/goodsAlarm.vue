@@ -6,7 +6,24 @@
                  :rules="rules"
                  :model="form"
                  ref="form">
-                <el-form-item :label="$t('warningEmail')">
+                 <!-- <el-form-item>
+                              <el-row>
+                                      <el-col :span="8">
+                                              <el-input v-model="Search_Classification"
+                                                        placeholder="请输入分类名"
+                                                        size="small">
+                                              </el-input>
+                                      </el-col>
+                                      <el-col :span="2">
+                                              <el-button size="small"
+                                                          @click="search_btn">
+                                                          搜索
+                                              </el-button>
+                                      </el-col>
+                              </el-row>
+                 </el-form-item> -->
+                <el-form-item :label="$t('warningEmail')"
+                              prop="warning_email">
                               <el-row>
                                 <el-col :span="8">
                                         <el-input v-model="form.warning_email"
@@ -14,19 +31,16 @@
                                                   size="small">
                                         </el-input>
                                 </el-col>
-                                <el-col :span="6"
-                                        :offset="8">
-                                        <el-input v-model="Search_Classification"
-                                                  placeholder="请输入分类名"
-                                                  size="small">
-                                        </el-input>
-                                </el-col>
-                                <el-col :span="2">
-                                        <el-button size="small"
-                                                   @click="search_btn">
-                                                   搜索
-                                        </el-button>
-                                </el-col>
+                              </el-row>
+                </el-form-item>
+                <el-form-item label="最低默认库存">
+                              <el-row>
+                                      <el-col  :span="4">
+                                               <el-input-number  :min="1"
+                                                                 v-model="form.default_warning_stock"
+                                                                  size="small">
+                                               </el-input-number>
+                                      </el-col>
                               </el-row>
                 </el-form-item>
                 <el-form-item>
@@ -37,10 +51,10 @@
                             </el-table-column>
                             <!-- 货品分类名称 -->
                             <el-table-column  label="货品分类名称"
-                                              prop="name_cn">
+                                              prop="category.name_cn">
                             </el-table-column>
                             <!-- 最低库存 -->
-                            <el-table-column :label="$t('minStock')"
+                            <el-table-column label="最小库存"
                                               width="180px;">
                                               <template  slot-scope="scope">
                                                          <el-input-number  :min="1"
@@ -52,11 +66,11 @@
                   </el-table>
                 </el-form-item>
                 <el-form-item>
-                  <el-button  @click="onStock('form')"
-                              type="primary"
-                              :loading="$store.state.config.button_loading">
-                              保存
-                  </el-button>
+                              <el-button  @click="onStock"
+                                          type="primary"
+                                          :loading="$store.state.config.button_loading">
+                                          保存
+                              </el-button>
                 </el-form-item>
         </el-form>
       </mdoel-form>
@@ -78,10 +92,13 @@ export default {
       form: {
         default_warning_stock: '',
         warning_email: '',
+        warning_data: [],
       },
-      Search_Classification: '', // 搜索分类名
+      stocks: {
+        category_id: '', // 分类 id
+        warning_stock: '', // 报警库存
+      },
       stockList: [], // 预警表格
-      search_text: '', // 搜索按钮
       rules: {
         warning_email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' },
@@ -91,40 +108,32 @@ export default {
     };
   },
   created() {
-    this.getStockWarn();
-    this.getGoods();
+    this.Warning();
   },
   methods: {
-    search_btn() {
-      //
-    }, // 搜索货品分类
-    // 获取货品分类名称列表
-    getGoods() {
-      $http.getCategoryManagement()
+    Warning() {
+      $http.Warning()
         .then((res) => {
           if (res.status) return;
-          this.stockList = res.data.data;
+          this.stockList = res.data.warning_data;
+          this.form.default_warning_stock = res.data.default_warning_stock;
+          this.form.warning_email = res.data.warning_email;
+          console.log(res, 'warning');
         })
         .catch();
     },
-    // 获得库存预警
-    getStockWarn() {
-      $http.getWarning()
-        .then((res) => {
-          console.log(res, 'getWarning');
-          // this.stockList = res.data.warning_data;
-        });
-    },
-    // 编辑库存预警
-    onStock(formName) {
+    search_btn() {
+      //
+    }, // 搜索货品分类
+    onStock() {
       this.form.warning_data = [];
       this.stockList.forEach((item) => {
         this.form.warning_data.push({
-          category_id: item.id,
+          category_id: item.category_id,
           warning_stock: item.warning_stock,
         });
       });
-      this.$refs[formName].validate((valid) => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           console.log(this.form, 'this.form');
           $http.addWarning(this.form).then(() => {
@@ -132,12 +141,9 @@ export default {
               message: '修改成功',
               type: 'success',
             });
+            this.Warning();
           });
-        } else {
-          console.log('error submit!!');
-          return false;
         }
-        return true;
       });
     },
   },

@@ -1,151 +1,117 @@
 <template>
-<div class="inboundList">
-  <wms-tags>
-    <my-group  v-model="params"
-               @submit="onSubmit">
-               <!-- 选择时间 -->
-              <el-col :span="8"
-                      style="margin-bottom:10px;">
-                      <my-date :begin.sync="params.created_at_b"
-                               :end.sync="params.created_at_e">
-                      </my-date>
-              </el-col>
-              <!-- 入库单状态 -->
-              <el-col :span="6" :offset="2" style="margin-bottom:10px;">
-                <my-select keyName="status"
-                          placeholder="请选择入库单状态">
-                          <el-option
-                            v-for="item in statusList"
-                            :label="item.name"
-                            :value="item.id" :key="item.id">
-                          </el-option>
-                </my-select>
-              </el-col>
-              <!-- 入库单类型 -->
-              <el-col :span="6"
-                      :offset="2"
-                      style="margin-bottom:10px;">
-                      <my-select keyName="type_id"
-                                 placeholder="请选择入库单类型">
-                                <el-option
-                                  v-for="item in typeList"
-                                  :label="item.name"
-                                  :value="item.id" :key="item.id">
-                                </el-option>
-                      </my-select>
-              </el-col>
-              <!-- 选择供应商 -->
-              <el-col :span="8">
-                      <my-select keyName="distributor_id"
-                                  placeholder="请选择供应商"
-                                  style="max-width:350px;">
-                                  <el-option  v-for="item in distributorList"
-                                              :label="item.name_cn"
-                                              :value="item.id" :key="item.id">
-                                  </el-option>
-                      </my-select>
-              </el-col>
-              <!-- 搜索框 -->
-              <el-col :offset="2" :span="6">
-                      <my-input keyName="keywords">
-                      </my-input>
-              </el-col>
-              <!-- 添加入库单 -->
-              <el-col :span="3" :offset="4">
-                      <el-button  type="text"
-                                  @click="addInbound"
-                                  icon="el-icon-plus">
-                                  {{$t('addInbound')}}
-                      </el-button>
-              </el-col>
-    </my-group>
-    <!-- 数据表格 -->
-    <el-table  :data="inbound_list_data"
-              border
-              style="width:100%">
-              <el-table-column  type="index"
-                                label="#">
-              </el-table-column>
-              <!-- 状态 -->
-              <el-table-column  prop="status_name"
-                                label="状态">
-              </el-table-column>
-              <!-- 入库单分类 -->
-              <el-table-column  prop="batch_type.name"
-                                :label="$t('inboundType')">
-              </el-table-column>
-              <!-- 入库单编号 -->
-              <el-table-column  prop="batch_code"
-                                :label="$t('inboundNumber')">
-              </el-table-column>
-              <!-- 供应商 -->
-              <el-table-column  prop="distributor.name_cn"
-                                label="供应商">
-              </el-table-column>
-              <!-- 确认订单编号 -->
-              <el-table-column  prop="confirmation_number"
-                                :label="$t('confirmationNumber')">
-              </el-table-column>
-              <!-- 预/已入库数量 -->
-              <el-table-column label="预/已入库数量">
-                                <template slot-scope="scope">
-                                  {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
-                                </template>
-              </el-table-column>
-              <!-- 创建时间 -->
-              <el-table-column  prop="created_at"
-                                label="创建时间">
-              </el-table-column>
-              <!-- 操作 -->
-              <el-table-column  label="操作"
-                                width="240">
-                                <template slot-scope="scope">
-                                          <el-button size="small"
-                                                    style="margin: 0; padding: 10px;"
-                                                    @click="viewDetails(scope.row)"
-                                                    :loading="$store.state.config.button_loading">
-                                                      查看详情
-                                          </el-button>
-                                          <el-button  size="small"
-                                                      style="margin: 0; padding: 10px;"
-                                                      @click="toInbound(scope.row)">
-                                                      入库&上架
-                                          </el-button>
-                                          <el-button  size="small"
-                                                      style="margin: 0; padding: 10px;"
-                                                      @click="inboundDelete(scope.row.id)"
-                                                      type="danger">
-                                                      删除
-                                          </el-button>
-                                </template>
-              </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <button-pagination :pageParams="params"></button-pagination>
-  </wms-tags>
-
-  <!-- 入库单详情弹框 -->
-  <DetailDialog  :visible.sync="inboundDialogVisible"
-                 :id="id">
-  </DetailDialog>
-
-</div>
+          <div :class="$style.page">
+                <div  :class="$style.main">
+                      <div  :class="$style.header">
+                            <el-row>
+                                    <el-col :span="4">
+                                            <date-picker-public @select_data="handlerSelect_data"></date-picker-public>
+                                    </el-col>
+                                    <el-col :span="3"
+                                            :offset="2">
+                                            <select-public></select-public>
+                                    </el-col>
+                                    <el-col :span="3"
+                                            :offset="2">
+                                            <select-public></select-public>
+                                    </el-col>
+                                    <el-col :span="3"
+                                            :offset="2">
+                                            <select-public></select-public>
+                                    </el-col>
+                                    <el-col :span="3"
+                                            :offset="1">
+                                            <input-public></input-public>
+                                    </el-col>
+                            </el-row>
+                            <el-row :class="$style.header_btn">
+                                    <el-col :span="2"
+                                            :offset="22">
+                                            <el-button  type="text"
+                                                        size="small"
+                                                        @click="addInbound"
+                                                        icon="el-icon-plus">
+                                                        {{$t('addInbound')}}
+                                            </el-button>
+                                    </el-col>
+                            </el-row>
+                      </div>
+                      <div  :class="$style.tab">
+                            <el-table  :data="inbound_list_data"
+                                       border
+                                       style="width:100%">
+                                       <el-table-column  type="index"
+                                                         label="#">
+                                       </el-table-column>
+                                       <el-table-column  prop="status_name"
+                                                         label="状态">
+                                       </el-table-column>
+                                       <el-table-column  prop="batch_type.name"
+                                                         :label="$t('inboundType')">
+                                       </el-table-column>
+                                       <el-table-column  prop="batch_code"
+                                                         :label="$t('inboundNumber')">
+                                       </el-table-column>
+                                       <el-table-column  prop="distributor.name_cn"
+                                                         label="供应商">
+                                       </el-table-column>
+                                       <el-table-column  prop="confirmation_number"
+                                                         :label="$t('confirmationNumber')">
+                                       </el-table-column>
+                                       <el-table-column label="预/已入库数量">
+                                                        <template slot-scope="scope">
+                                                                   {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
+                                                        </template>
+                                       </el-table-column>
+                                       <el-table-column  prop="created_at"
+                                                         label="创建时间">
+                                       </el-table-column>
+                                       <el-table-column  label="操作"
+                                                         width="240">
+                                                         <template slot-scope="scope">
+                                                                   <el-button size="small"
+                                                                              style="margin: 0; padding: 10px;"
+                                                                              @click="viewDetails(scope.row)"
+                                                                              :loading="$store.state.config.button_loading">
+                                                                              查看详情
+                                                                   </el-button>
+                                                                   <el-button  size="small"
+                                                                               style="margin: 0; padding: 10px;"
+                                                                               @click="toInbound(scope.row)">
+                                                                               入库&上架
+                                                                   </el-button>
+                                                                   <el-button  size="small"
+                                                                               style="margin: 0; padding: 10px;"
+                                                                               @click="inboundDelete(scope.row.id)"
+                                                                               type="danger">
+                                                                               删除
+                                                                   </el-button>
+                                                        </template>
+                                      </el-table-column>
+                            </el-table>
+                      </div>
+                      <div  :class="$style.pagination">
+                            <pagination-public :params="params"></pagination-public>
+                      </div>
+                </div>
+                <!-- 入库单详情弹框 -->
+                <detail-dialog  :visible.sync="inboundDialogVisible"
+                                :id="id">
+                </detail-dialog>
+          </div>
 </template>
 
 <script>
-import buttonPagination from '@/components/pagination_and_buttons';
-import getListData from '@/mixin/list';
+import datePickerPublic from '@/components/date-picker-public';
+import paginationPublic from '@/components/pagination-public';
+import selectPublic from '@/components/select-public';
+import inputPublic from '@/components/input-public';
 import $http from '@/api';
-import WmsTags from '@/components/wms_tags';
-import MyInput from '@/components/my_input';
-import MySelect from '@/components/my_select';
-import MyGroup from '@/components/my_group';
-import MyDate from '@/components/my_date';
-import DetailDialog from './components/inbound_detail';
+import detailDialog from './components/inbound_detail';
 
 export default {
   data() {
     return {
+      params: {}, // 分页数据
       inbound_list_data: [], // 入库单列表
       inboundDialogVisible: false, // 入库单详情弹框
       inbound_info: {},
@@ -161,15 +127,12 @@ export default {
     };
   },
   components: {
-    DetailDialog,
-    WmsTags,
-    MyInput,
-    MyGroup,
-    MyDate,
-    MySelect,
-    buttonPagination,
+    detailDialog,
+    datePickerPublic,
+    selectPublic,
+    inputPublic,
+    paginationPublic,
   },
-  mixins: [getListData],
   computed: {
     warehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
@@ -177,14 +140,40 @@ export default {
   },
   watch: {
     warehouseId() {
-      this.getList();
+      this.getData();
     },
   },
   created() {
-    // this.getBoundList();
+    this.getData();
     this.getTypeList();
   },
   methods: {
+    handlerSelect_data(val) {
+      if (val && val.length === 2) {
+        this.getData(val);
+      } else {
+        // 刷新列表
+        this.getData();
+      }
+    },
+    getData(query) {
+      if (!this.warehouseId) return;
+      const obj = {};
+      obj.warehouse_id = this.warehouseId; // 仓库 id 必填
+      // query有几种形式
+      if (Array.isArray(query)) {
+        // 查询时间段
+        obj.created_at_b = query[0]; // 开始时间
+        obj.created_at_e = query[1]; // 结束时间
+      }
+      $http.getInbounds(obj)
+        .then((res) => {
+          this.inbound_list_data = res.data.data;
+          this.params.total = res.data.total;
+          // this.params.currentPage = res.data.current_page;
+        });
+    }, // 获取列表
+    // 以上重写
     toInbound(info) {
       // eslint-disable-next-line
       const batch_id = info.id;
@@ -196,16 +185,6 @@ export default {
         },
       });
     }, // 入库上架
-    getList() {
-      if (!this.warehouseId) return;
-      this.params.warehouse_id = this.warehouse_id;
-      $http.getInbounds({ warehouse_id: this.warehouseId })
-        .then((res) => {
-          console.log(res, 'getInbounds');
-          this.inbound_list_data = res.data.data;
-          this.params.data_count = res.data.total;
-        });
-    }, // 获取入库单列表
     getTypeList() {
       if (!this.warehouseId) return;
       const SelcetParams = {
@@ -224,19 +203,11 @@ export default {
     addInbound() {
       this.$router.push({
         name: 'addInbound',
+        query: {
+          warehouse_id: this.warehouse_id, // 仓库 id
+        },
       });
     },
-    // 获取仓库列表
-    // getBoundList() {
-    //   const warehouseParams = {
-    //     page: 1,
-    //     page_size: 100,
-    //     from: 1,
-    //   };
-    //   $http.warehouse(warehouseParams).then((res) => {
-    //     this.boundList = res.data.data;
-    //   });
-    // },
     // 入库单详情弹框
     viewDetails(row) {
       this.inboundDialogVisible = true;
@@ -267,11 +238,25 @@ export default {
 <style lang="less" module>
 @import '../../../less/public_variable.less';
 
-.util {
-  text-align: right;
-  margin: 20px;
+.page {
+  margin: 30px;
+  .main {
+    width: 90%;
+    margin: 0 auto;
+    .header {
+      margin: 10px 0 10px 0;
+      .header_btn {
+        margin: 10px 0 10px 0;
+        font-size: 1.1rem;
+      }
+    }
+  }
 }
-.el-col {
-  margin-bottom: 20px;
+.table {
+  background-color: red;
+}
+.pagination {
+  margin: 10px  0 10px 0;
+  float: right;
 }
 </style>

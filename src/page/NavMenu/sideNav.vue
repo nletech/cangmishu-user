@@ -1,58 +1,44 @@
 <template>
   <div :class="$style.side_nav" class="side_nav">
-    <!-- 菜单列表 -->
-    <transition name="fade">
-      <!-- 仓秘书 -->
-      <div v-if="!sideNavStatus"
-        :class="$style.nav"
-        @mouseleave="handleLeave()"
-      >
-      <!-- 侧边栏导航 -->
-        <ul
-          :class="$style.side_nav_ul"
-        >
-          <li
-            :class="$style.side_nav_li"
-            v-for="(item, index) in sideList"
-            :key="index"
-            @mouseover="showItem(item.name, index)"
-          >
-            <i
-              :class="$style.li_icon"
-              class="iconfont"
-              v-html="item.icon"
-            >
-            </i>
-            <span
-              :class="$style.li_title"
-              @click="handleHomeClick(item.name)"
-            >
-              {{$t(item.name)}}
-            </span>
-          </li>
-        </ul>
-        <!-- 对应的子菜单 -->
-        <ul
-          :class="$style.NavChild"
-          ref="NavChild"
-          v-show="li_show_switch"
-          @click="handleClickCloseNavChild"
-        >
-          <li
-            :class="$style.NavChild_li"
-            v-for="item in li_NavChild"
-            :key="item.name"
-          >
-            <router-link :to="{ name: item.name }"
-              style="text-decoration: none;
-                    color: #fff;"
-            >
-              {{$t(item.name)}}
-            </router-link>
-          </li>
-        </ul>
-      </div>
-    </transition>
+      <!-- 菜单列表 -->
+      <transition name="fade">
+                  <!-- 仓秘书 -->
+                  <div  v-if="!sideNavStatus"
+                        :class="$style.nav"
+                        @mouseleave="handleLeave()">
+                        <!-- 侧边栏导航 -->
+                        <ul  :class="$style.side_nav_ul">
+                              <li  :class="$style.side_nav_li"
+                                  v-for="(item, index) in sideList"
+                                  :key="index"
+                                  @mouseover="showItem(item.name, index)">
+                                  <i  :class="$style.li_icon"
+                                        class="iconfont"
+                                        v-html="item.icon">
+                                  </i>
+                                  <span   :class="$style.li_title"
+                                          @click="handleHomeClick(item.name)">
+                                          {{$t(item.name)}}
+                                  </span>
+                              </li>
+                        </ul>
+                        <!-- 对应的子菜单 -->
+                        <ul  :class="$style.NavChild"
+                            ref="NavChild"
+                            v-show="li_show_switch"
+                            @click="handleClickCloseNavChild">
+                              <li  :class="$style.NavChild_li"
+                                  v-for="item in li_NavChild"
+                                  :key="item.name">
+                                  <router-link :to="{ name: item.name }"
+                                                style="text-decoration: none;
+                                                      color: #fff;">
+                                                {{$t(item.name)}}
+                                  </router-link>
+                              </li>
+                        </ul>
+                  </div>
+      </transition>
     <!-- 隐藏后的菜单列表（先不做）-->
     <!-- <el-menu
       background-color="#444154"

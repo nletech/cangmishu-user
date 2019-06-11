@@ -83,21 +83,21 @@
                                                   <table-function  label="操作"
                                                                    :disabled="!!$route.query.isCheck"
                                                                    width="160px">
-                                                                   <template slot="edit"
-                                                                            slot-scope="scope">
-                                                                            <el-button  :disabled="!!$route.query.isCheck"
-                                                                                        @click="saveSpec(scope.row, scope.index, scope.row.is_add)"
-                                                                                        type="text">
-                                                                                        {{$t('save')}}
-                                                                            </el-button>
+                                                                   <template  slot="edit"
+                                                                              slot-scope="scope">
+                                                                              <el-button  :disabled="!!$route.query.isCheck"
+                                                                                          @click="saveSpec(scope.row, scope.index, scope.row.is_add)"
+                                                                                          type="text">
+                                                                                          {{$t('save')}}
+                                                                              </el-button>
                                                                    </template>
-                                                                  <template slot-scope="scope">
-                                                                            <el-button  @click="delScpe(scope.row, scope.index)"
-                                                                                        :disabled="!!$route.query.isCheck"
-                                                                                        type="danger"
-                                                                                        size="mini">
-                                                                                        {{$t('remove')}}
-                                                                            </el-button>
+                                                                  <template  slot-scope="scope">
+                                                                             <el-button  @click="delScpe(scope.row, scope.index)"
+                                                                                         :disabled="!!$route.query.isCheck"
+                                                                                         type="danger"
+                                                                                         size="mini">
+                                                                                         {{$t('remove')}}
+                                                                             </el-button>
                                                                   </template>
                                                   </table-function>
                                       </el-table>
@@ -106,9 +106,9 @@
                         <el-form-item :label="$t('goodsRemark')"
                                       style="width:70%">
                                       <el-input  v-model="form.remark"
-                                                :disabled="!!$route.query.isCheck"
-                                                type="textarea"
-                                                :autosize="{ minRows: 4, maxRows: 6}">
+                                                 :disabled="!!$route.query.isCheck"
+                                                 type="textarea"
+                                                 :autosize="{ minRows: 4, maxRows: 6}">
                                       </el-input>
                         </el-form-item>
                         <el-form-item :label="$t('goodsPhoto')">
@@ -124,8 +124,6 @@
                                                   v-if="!$route.query.isCheck">
                                                   提交
                                       </el-button>
-                                      <!-- <cancel-button v-if="!$route.query.isCheck"></cancel-button>
-                                      <cancel-button v-else>返回</cancel-button> -->
                         </el-form-item>
               </el-form>
     </mdoel-form>
@@ -384,6 +382,8 @@ export default {
             }
             this.form.warehouse_id = this.warehouseId || this.$route.query.warehouseId;
             this.form.specs = this.skuList.filter(res => res.name_cn);
+            this.form.specs[0].is_warning = this.form.is_send_email;
+            console.log(this.form, 'this.form');
             $http.addProducts(this.form, this.$route.query.warehouseId)
               .then(() => {
                 this.successTips(this.$route.query.id);

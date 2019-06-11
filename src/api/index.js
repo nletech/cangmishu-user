@@ -312,14 +312,19 @@ const $http = {
   checkOrderType(data) {
     return Axios.get('/orderType', { params: data });
   }, // 分页查询--出库单分类
-
   // 辅助功能
   modifyPsw(id, data) {
     return Axios.post(`user/${id}/password`, data);
   }, // 修改密码
   modifyUserInfo(id, data) {
     return Axios.post(`user/${id}/info`, data);
-  }, // 修改密码
+  }, // 修改用户信息
+  modifyUserAvatar(id, data) {
+    return Axios.post(`user/${id}/avatar`, data);
+  }, // 修改头像
+  Warning() {
+    return Axios.get('warning');
+  }, // 已设置的库存报警信息
   // =========== 以上是仓秘书
 };
 

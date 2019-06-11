@@ -186,7 +186,9 @@
                           </el-col>
                           <!-- 添加商品 -->
                           <el-col :span="2" :offset="8">
-                                  <el-button>{{'添加商品'}}</el-button>
+                                  <el-button @click="handlerAddGoods">
+                                    {{'添加商品'}}
+                                  </el-button>
                           </el-col>
                 </my-group>
                 <!-- 数据表 -->
@@ -349,12 +351,6 @@ export default {
       startTime: '',
       endTime: '',
       endDate: '',
-      // expressList: [
-      //   { name: '海运', id: 1 },
-      //   { name: '空运', id: 2 },
-      //   { name: '快递', id: 3 },
-      //   { name: '自行送货', id: 4 },
-      // ],
       recomendShelfList: [
         { value: 's02-01-21' },
         { value: 's02-01-22' },
@@ -383,7 +379,6 @@ export default {
     this.getBatchCode();
     this.getDistributorList();
     this.getDistributorListSelect();
-    // this.InitInboundNumber();
   },
   watch: {
     warehouseId() {
@@ -433,6 +428,12 @@ export default {
     },
   },
   methods: {
+    handlerAddGoods() {
+      this.$router.push({
+        name: 'goodsAdd',
+        query: { warehouse_id: this.$route.query.warehouse_id },
+      });
+    },
     getBatchTypeList() {
       if (!this.warehouseId) return;
       this.form.type_id = '';
@@ -465,52 +466,13 @@ export default {
       this.Paramss.page = val;
       this.getDistributorList();
     },
-    // // 初始化入库单编号
-    // InitInboundNumber() {
-    //   const date = new Date();
-    //   let month = date.getMonth() + 1;
-    //   if (month >= 1 && month <= 9) {
-    //     month = `0${month}`;
-    //   }
-    //   let datenow = date.getDate();
-    //   if (datenow >= 1 && datenow <= 9) {
-    //     datenow = `0${datenow}`;
-    //   }
-    //   let hournow = date.getHours();
-    //   if (hournow >= 0 && hournow <= 9) {
-    //     hournow = `0${hournow}`;
-    //   }
-    //   let minutesnow = date.getMinutes();
-    //   if (minutesnow >= 0 && minutesnow <= 9) {
-    //     minutesnow = `0${minutesnow}`;
-    //   }
-    //   this.form.batch_code = `${date.getFullYear()}${month}${datenow}${hournow}${minutesnow}`;
-    // },
-    // 货品分类列表
     getTypeList() {
-      // if (!this.warehouseId) return;
-      // $http.categoryList({
-      //   page: 1, page_size: 100, warehouse_id: this.warehouseId }).then((res) => {
-      //   this.typeList = res.data.data;
-      // });
     },
     // 获取入库单编号
     getBatchCode() {
-      // if (!this.warehouseId) return;
-      // $http.batchCode({ warehouse_id: this.warehouseId }).then((res) => {
-      //   this.form.batch_code = res.data.batch_code;
-      // });
     },
     // 获取仓库列表
     getBoundList() {
-      // const warehouseParams = {
-      //   page: 1,
-      //   page_size: 100,
-      //   from: 1,
-      // };
-      // $http.warehouse(warehouseParams).then((res) => {
-      //   this.boundList = res.data.data;
-      // });
     },
     // 待入库货品弹出框
     showDialog() {
@@ -525,31 +487,13 @@ export default {
       this.params.warehouse_id = this.warehouseId;
       this.goods = [];
       // 获取商品列表(商品是规格)
-      $http.goodsList({ warehouse_id: this.warehouseId })
+      $http.getProducts({ warehouse_id: this.warehouseId })
         .then((res) => {
           this.arr = this.goodsSelected.length ? this.goodsSelected : [...this.goodsList];
           this.goodsSelected = this.arr;
           this.goods = res.data.data;
-          console.log(res, 'getProducts');
-          console.log(this.goods, 'this.goods');
-          // this.goods.forEach((item) => {
-          //   item.specs.forEach((subitem) => {
-          //     subitem.name_parent = item.name_cn;
-          //   });
-          // });
+          console.log(res, 'getProducts', this.goods, 'this.goods');
           this.params.data_count = res.data.total;
-          // for (const row of this.goodsSelected) {
-          //   this.goods.forEach((data) => {
-          //     if (Number(row.product_id) === Number(data.id)) {
-          //       data.specs.forEach((subdata) => {
-          //         if (Number(row.id) === Number(subdata.id)) {
-          //           // subdata.checked = true;
-          //           this.$set(subdata, 'checked', true);
-          //         }
-          //       });
-          //     }
-          //   });
-          // }
         });
     },
     // 货品列表行点击
@@ -628,9 +572,6 @@ export default {
         }
         return true;
       });
-      // $http.inboundAdd(this.form).then(() => {
-      //   this.successTips();
-      // });
     },
     // 供应商管理弹出框
     onDistributor() {

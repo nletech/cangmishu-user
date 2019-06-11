@@ -108,7 +108,6 @@ export default {
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
-
       if (!isJPG) {
         this.$message.error('上传头像图片只能是 JPG 格式!');
       }
@@ -120,14 +119,18 @@ export default {
     submit() {
       this.$refs.validator.validate((valid) => {
         if (valid) {
-          $http.modifyUserInfo(this.user_id, this.form)
-            .then((res) => {
-              if (res.status) return;
-              this.$emit('update:visible', false);
-              this.$message({
-                type: 'success',
-                message: '操作成功',
-              });
+          $http.modifyUserAvatar(this.user_id, { avatar: this.imageUrl })
+            .then((re) => {
+              if (re.status) return;
+              $http.modifyUserInfo(this.user_id, this.form)
+                .then((res) => {
+                  if (res.status) return;
+                  this.$emit('update:visible', false);
+                  this.$message({
+                    type: 'success',
+                    message: '操作成功',
+                  });
+                });
             });
         }
       });

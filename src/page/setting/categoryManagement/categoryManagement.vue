@@ -83,7 +83,7 @@
                         <!-- 分页 -->
                         <el-pagination  :class="$style.pagination"
                                         v-show="+total"
-                                        :page-size="15"
+                                        :page-size="10"
                                         @current-change="handleCurrentChange"
                                         :current-page="currentPage"
                                         layout="total, prev, pager, next, jumper"
@@ -216,7 +216,7 @@ export default {
       $http.getCategoryManagement()
         .then((re) => {
           if (re.status) return;
-          // console.log(re.data, 'data');
+          console.log(re.data, 'data   getCategoryManagement');
           this.category_list_data = re.data.data;
           this.total = re.data.total;
         })

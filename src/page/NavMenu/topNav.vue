@@ -57,17 +57,27 @@
                <span>{{selectWarehouse}}</span>
          </div>
          <div :class="$style.user">
-              <el-dropdown>
-                          <div  :class="$style.img"
-                                @click="handleChangeUserinfo">
-                                <span>管</span>
-                            <!-- <img src="#" alt="管理员"> -->
-                          </div>
-                          <el-dropdown-menu slot="dropdown">
-                                            <el-dropdown-item @click.native="handleChangePassWord">{{'修改密码'}}</el-dropdown-item>
-                                            <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
-                          </el-dropdown-menu>
-              </el-dropdown>
+              <div  :class="$style.img"
+                    @click="handleChangeUserinfo">
+                    <span v-if="!Uavatar" style="border: 1px solid;">管</span>
+                    <img  v-else :class="$style.avatar"
+                                  style="display: inline-block; width: 100%;
+                                        height: 100%;
+                                        border-radius: 50%;"
+                                  :src="Uavatar">
+              </div>
+              <div :class="$style.UnickName">
+                   <span v-html="UnickName"></span>
+              </div>
+              <div :class="$style.logout">
+                   <el-dropdown>
+                               <span class="iconfont">&#xe60e;</span>
+                               <el-dropdown-menu slot="dropdown">
+                                                 <el-dropdown-item @click.native="handleChangePassWord">{{'修改密码'}}</el-dropdown-item>
+                                                 <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                               </el-dropdown-menu>
+                   </el-dropdown>
+              </div>
          </div>
     </div>
   </div>
@@ -102,7 +112,6 @@
 
 <script>
 import $http from '@/api';
-import PictureUpload from '@/components/picture_upload';
 import ChangePassWord from './components/changePassWord'; // 修改密码
 import UserInfo from './components/userInfo'; // 修改个人资料
 
@@ -111,7 +120,6 @@ export default {
   components: {
     ChangePassWord,
     UserInfo,
-    PictureUpload,
   },
   data() {
     return {
@@ -232,6 +240,12 @@ export default {
     sideNavStatus() {
       return +this.$store.state.config.shutdown_status;
     }, // 隐藏侧边栏标志
+    Uavatar() {
+      return localStorage.getItem('setUAvatar');
+    },
+    UnickName() {
+      return localStorage.getItem('setUnickName');
+    },
   },
 };
 </script>
@@ -286,9 +300,7 @@ export default {
       .selectedTag_main {
         width: 100%;
         height: 100%;
-        // background-color: orange;
         display: flex;
-        justify-content: center;
         align-items: center;
         .selectedTag_main_btn {
           border: none;
@@ -363,18 +375,38 @@ export default {
       flex-flow: row wrap;
       border-right: 1px solid;
       border-color: @separateLine;
-      min-width: 180px;
+      min-width: 240px;
       height: 80px;
       text-align: center;
       .img {
         width: 41px;
         height: 41px;
         border-radius: 50%;
-        border: 1px solid;
+        // border: 1px solid;
         cursor: pointer;
         line-height: 41px;
         color: @ThemeColor;
         margin: 20px 15px 28px 37px;
+      }
+      .UnickName {
+        width: 80px;
+        height: 100%;
+        display: flex; // 文字垂直居中
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; // 以下样式 单行超出用 省略号代替
+        span {
+          white-space: nowrap;
+          text-overflow:ellipsis;
+          font-size: 1.1rem;
+        }
+      }
+      .logout {
+        width: 80px;
+        height: 100%;
+        display: flex; // 文字垂直居中
+        justify-content: center;
+        align-items: center;
       }
     }
     .model_color(@color) {
