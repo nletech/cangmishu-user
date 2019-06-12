@@ -7,15 +7,15 @@
                                             <date-picker-public @select_data="handlerSelect_data"></date-picker-public>
                                     </el-col>
                                     <el-col :span="3"
-                                            :offset="2">
+                                            :offset="4">
                                             <select-public></select-public>
                                     </el-col>
                                     <el-col :span="3"
-                                            :offset="2">
+                                            :offset="1">
                                             <select-public></select-public>
                                     </el-col>
                                     <el-col :span="3"
-                                            :offset="2">
+                                            :offset="1">
                                             <select-public></select-public>
                                     </el-col>
                                     <el-col :span="3"
@@ -23,10 +23,11 @@
                                             <input-public></input-public>
                                     </el-col>
                             </el-row>
-                            <el-row :class="$style.header_btn">
+                            <el-row>
                                     <el-col :span="2"
-                                            :offset="22">
+                                            :offset="21">
                                             <el-button  type="text"
+                                                        :class="$style.header_btn"
                                                         size="small"
                                                         @click="addInbound"
                                                         icon="el-icon-plus">
@@ -51,11 +52,11 @@
                                        <el-table-column  prop="batch_code"
                                                          :label="$t('inboundNumber')">
                                        </el-table-column>
-                                       <el-table-column  prop="distributor.name_cn"
-                                                         label="供应商">
-                                       </el-table-column>
                                        <el-table-column  prop="confirmation_number"
                                                          :label="$t('confirmationNumber')">
+                                       </el-table-column>
+                                       <el-table-column  prop="distributor.name_cn"
+                                                         label="供应商">
                                        </el-table-column>
                                        <el-table-column label="预/已入库数量">
                                                         <template slot-scope="scope">
@@ -90,7 +91,9 @@
                             </el-table>
                       </div>
                       <div  :class="$style.pagination">
-                            <pagination-public :params="params"></pagination-public>
+                            <pagination-public  :params="params"
+                                                @changePage="handlerChangePage">
+                            </pagination-public>
                       </div>
                 </div>
                 <!-- 入库单详情弹框 -->
@@ -148,6 +151,14 @@ export default {
     this.getTypeList();
   },
   methods: {
+    handlerChangePage(val) {
+      $http.getInboundPage({ page: val })
+        .then((res) => {
+          this.inbound_list_data = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
+    },
     handlerSelect_data(val) {
       if (val && val.length === 2) {
         this.getData(val);
@@ -170,6 +181,8 @@ export default {
         .then((res) => {
           this.inbound_list_data = res.data.data;
           this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+          console.log(this.params, 'this.params');
           // this.params.currentPage = res.data.current_page;
         });
     }, // 获取列表
@@ -247,7 +260,7 @@ export default {
       margin: 10px 0 10px 0;
       .header_btn {
         margin: 10px 0 10px 0;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
       }
     }
   }

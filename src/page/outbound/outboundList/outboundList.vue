@@ -45,6 +45,7 @@
                               <el-row>
                                        <el-col>
                                                <el-button  type="text"
+                                                           :class="$style.btn"
                                                            @click="addOutbound"
                                                            icon="el-icon-plus">
                                                            {{$t('addOutbound')}}
@@ -266,6 +267,9 @@ export default {
     margin: 0 auto;
     .outboundList_tags {
       margin: 0 0 10px 0;
+      .btn {
+        font-size: 1.2rem;
+      }
     }
     .outboundList_table {
       margin: 10px 0 0 0;

@@ -159,7 +159,7 @@ export default {
         name_en: '', // 仓库外文
         hs_code: '',
         display_link: '',
-        photos: '',
+        photos: '', // 图片
         remark: '',
         is_send_email: '1', // 是否发送邮件
       },
@@ -384,7 +384,7 @@ export default {
             this.form.specs = this.skuList.filter(res => res.name_cn);
             this.form.specs[0].is_warning = this.form.is_send_email;
             console.log(this.form, 'this.form');
-            $http.addProducts(this.form, this.$route.query.warehouseId)
+            $http.addProducts(this.form)
               .then(() => {
                 this.successTips(this.$route.query.id);
                 this.$router.replace({ name: 'myGoodsList' });
@@ -401,18 +401,6 @@ export default {
       }
     },
     // 获取商品单条信息
-    getInfo() {
-      // $http.editProducts(
-      //   this.$route.query.id,
-      //   {
-      //     warehouse_id: this.$route.query.warehouse_id,
-      //   },
-      // ).then((res) => {
-      //   this.skuList = this.specsForm();
-      //   this.form = res.data;
-      //   this.skuList = res.data.specs.concat(this.skuList);
-      // });
-    },
   },
 };
 </script>

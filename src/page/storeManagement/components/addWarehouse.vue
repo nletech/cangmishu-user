@@ -38,7 +38,7 @@
           <!-- 地址 -->
           <el-form-item
             prop="address"
-            label="地址"
+            label="省市区"
             size="middle">
               <el-cascader
                 :props="props"
@@ -49,7 +49,7 @@
           </el-form-item>
           <el-form-item
             prop="addressDetail"
-            label="(详细地址)"
+            label="详细地址"
             size="middle">
             <el-input
               type="textarea"

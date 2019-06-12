@@ -21,6 +21,9 @@ const $http = {
   getInbounds(data) {
     return Axios.get('/batch', { params: data });
   }, // 获取入库单列表
+  getInboundPage(data) {
+    return Axios.get('/batch', { params: data });
+  }, // 入库单列表(分页查询)
   getInboundDetail(id, data) {
     return Axios.get(`/batch/${id}`, { params: data });
   }, // 获取单个入库单
@@ -92,7 +95,7 @@ const $http = {
     return Axios.delete(`/specs/${id}`);
   }, // 删除货品规格
 
-  // 库存盘点
+  //                                    库存盘点
   queryInventory(data) {
     return Axios.get('stock/code', { params: data });
   }, // 通过输入 sku 查询商品

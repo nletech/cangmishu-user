@@ -7,7 +7,7 @@
               :model="form"
               ref="form">
              <!-- 基本信息 -->
-              <label class="label"> {{$t('EssentialInformation')}} </label>
+              <label class="label"> {{$t('EssentialInformation')}}</label>
               <!-- 入库单分类 -->
               <el-form-item :label="$t('inboundType')"
                             prop="type_id">

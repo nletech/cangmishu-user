@@ -34,7 +34,7 @@
                                                       </el-cascader>
                                         </el-form-item>
                                         <el-form-item  prop="addressDetail"
-                                                      label="(详细地址)"
+                                                      label="详细地址"
                                                       size="middle">
                                                       <el-input  type="textarea"
                                                                   v-model="form.addressDetail">

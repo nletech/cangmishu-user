@@ -205,7 +205,7 @@ export default {
     categoryName: '分类名称',
     minStock: '最低库存',
     inboundWarehouse: '入库仓库',
-    inboundType: '入库单分类',
+    inboundType: '入库单类型',
     inboundNumber: '入库单编号',
     confirmationNumber: '确认单编号',
     distributor: '供应商',

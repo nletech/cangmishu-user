@@ -111,6 +111,7 @@ export default {
             localStorage.setItem('setUser', res.data.user.id); // 存入用户 id
             localStorage.setItem('setUAvatar', res.data.user.avatar); // 存入用户 头像
             localStorage.setItem('setUnickName', res.data.user.nickname); // 存入用户 昵称
+            localStorage.setItem('setUEmail', res.data.user.email); // 存入用户 昵称
             // 跳转到首页
             this.$router.push({
               name: 'home',

@@ -116,7 +116,7 @@ export default {
       distributorList: [],
       outbound_list_data: [], // 表格数组
       //
-      total: '1', // 列表总条数
+      total: '', // 列表总条数
       currentPage: 1, // 当前页
     };
   },

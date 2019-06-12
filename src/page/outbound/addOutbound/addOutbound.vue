@@ -134,14 +134,51 @@ export default {
       }
       this.form.goods_data = arr;
       this.form.warehouse_id = this.warehouse_id;
+      // 以下是验证表单
+      // eslint-disable-next-line
+      let newArr = this.form.goods_data;
+      let flag = false;
+      if (!this.form.goods_data.length) {
+        this.$message({
+          message: '商品不能为空',
+          type: 'warning',
+        });
+        return;
+      } // 拦截商品未填写
+      for (let i = 0; i < newArr.length; i += 1) {
+        if (!newArr[i].num) {
+          this.$message({
+            message: '商品的数量必填',
+            type: 'warning',
+          });
+          flag = true;
+        }
+      } // 拦截商品数量未填写
+      // eslint-disable-next-line
+      for (const item in this.form) {
+        if (this.form[item] === '') {
+          this.$message({
+            message: '请将信息填写完整',
+            type: 'warning',
+          });
+          flag = true;
+        }
+      } // 验证所有提交的数据
+      // eslint-disable-next-line
+      if (flag) return;
+      // console.log(this.form, 'this.formthis.form');
       $http.addOutbound(this.form)
         .then((res) => {
           if (res.status) return;
+          this.$message({
+            message: '添加成功',
+            type: 'success',
+          });
           this.$router.push({
             name: 'outboundList',
           });
         })
-        .catch();
+        .catch(() => {});
     },
   },
 };

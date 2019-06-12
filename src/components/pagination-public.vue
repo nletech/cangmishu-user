@@ -1,8 +1,6 @@
 <template>
   <div>
-    <el-pagination
-                    v-show="+params.total"
-                    @current-change="handleCurrentChange"
+    <el-pagination  @current-change="handleCurrentChange"
                     :current-page="params.currentPage"
                     layout="total, prev, pager, next, jumper"
                     :total="+params.total">
@@ -17,7 +15,7 @@ export default {
       type: Object,
       default() {
         return {
-          total: 1,
+          total: this.params.total,
           currentPage: 1,
         };
       },
@@ -25,7 +23,7 @@ export default {
   },
   methods: {
     handleCurrentChange(val) {
-      console.log(val, '分页组件');
+      this.$emit('changePage', val);
     },
   },
   watch: {

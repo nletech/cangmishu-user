@@ -1,82 +1,70 @@
 <template>
   <div :class="$style.storeManage">
-    <div :class="$style.body_main">
-      <div :class="$style.btn">
-        <i class="el-icon-plus"></i>
-        <span @click="handleClick">
-          添加仓库
-        </span>
-      </div>
-      <!-- 表格 -->
-      <el-table
-        :class="$style.table_main"
-        :data="warehouses"
-        border
-      >
-        <el-table-column
-          header-align="center"
-          align="center"
-          type="index"
-          width="80"
-          label="#">
-        </el-table-column>
-        <el-table-column
-          header-align="center"
-          align="center"
-          prop="name_cn"
-          label="仓库名称">
-        </el-table-column>
-        <el-table-column
-          header-align="center"
-          align="center"
-          prop="code"
-          label="仓库编号">
-        </el-table-column>
-        <el-table-column
-          header-align="center"
-          align="center"
-          prop="warehouse_address"
-          label="地址">
-        </el-table-column>
-        <el-table-column
-          header-align="center"
-          align="center"
-          prop="area"
-          label="仓库面积(㎡)">
-        </el-table-column>
-        <el-table-column
-          header-align="center"
-          width="240"
-          label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini"
-                       @click="edit(scope.row)">
-                       查看编辑
-            </el-button>
-            <el-button size="mini"
-                       @click="config(scope.row)">
-                       基础配置
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 分页 -->
-      <el-pagination
-        :class="$style.pagination"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        layout="total, prev, pager, next, jumper"
-        :total="+this.total"
-      >
-      </el-pagination>
-    </div>
-    <!-- 添加仓库 -->
-    <add-warehouse
-      :visible.sync = "switchFlag"
-      :row_data="row_data"
-      @updata_data="handle_updata_data"
-    >
-    </add-warehouse>
+        <div :class="$style.body_main">
+              <div :class="$style.btn">
+                <i class="el-icon-plus"></i>
+                <span @click="handleClick">
+                  添加仓库
+                </span>
+              </div>
+              <!-- 表格 -->
+              <el-table  :class="$style.table_main"
+                         :data="warehouses"
+                          border>
+                          <el-table-column  header-align="center"
+                                            align="center"
+                                            type="index"
+                                            width="80"
+                                            label="#">
+                          </el-table-column>
+                          <el-table-column  header-align="center"
+                                            align="center"
+                                            prop="name_cn"
+                                            label="仓库名称">
+                          </el-table-column>
+                          <el-table-column  header-align="center"
+                                            align="center"
+                                            prop="code"
+                                            label="仓库编号">
+                          </el-table-column>
+                          <el-table-column  header-align="center"
+                                            align="center"
+                                            prop="warehouse_address"
+                                            label="省市区">
+                          </el-table-column>
+                          <el-table-column  header-align="center"
+                                            align="center"
+                                            prop="area"
+                                            label="仓库面积(㎡)">
+                          </el-table-column>
+                          <el-table-column  header-align="center"
+                                            width="240"
+                                            label="操作">
+                                            <template slot-scope="scope">
+                                                      <el-button size="mini"
+                                                                 @click="edit(scope.row)">
+                                                                 查看编辑
+                                                      </el-button>
+                                                      <el-button size="mini"
+                                                                 @click="config(scope.row)">
+                                                                 基础配置
+                                                      </el-button>
+                                            </template>
+                          </el-table-column>
+              </el-table>
+              <!-- 分页 -->
+              <el-pagination  :class="$style.pagination"
+                              @current-change="handleCurrentChange"
+                              :current-page="currentPage"
+                              layout="total, prev, pager, next, jumper"
+                              :total="+this.total">
+              </el-pagination>
+        </div>
+        <!-- 添加仓库 -->
+        <add-warehouse  :visible.sync = "switchFlag"
+                        :row_data="row_data"
+                        @updata_data="handle_updata_data">
+        </add-warehouse>
   </div>
 </template>
 

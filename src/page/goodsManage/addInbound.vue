@@ -3,15 +3,6 @@
   <mdoel-form :colValue="20">
     <el-form slot="left" label-width="120px" :rules="formValidator" :model="form" ref="form">
       <label class="label"> {{$t('EssentialInformation')}} </label>
-      <!-- <el-form-item :label="$t('inboundWarehouse')" prop="warehouse_id">
-        <el-select v-model="form.warehouse_id" @change="getBatchTypeList()">
-          <el-option
-            v-for="item in boundList"
-            :label="item.name_cn"
-            :value="item.id" :key="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item> -->
       <el-form-item :label="$t('inboundType')" prop="type_id">
         <el-select v-model="form.type_id">
           <el-option

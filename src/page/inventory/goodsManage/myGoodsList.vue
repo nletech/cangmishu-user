@@ -86,14 +86,14 @@
         :label="$t('operation')">
         <template slot-scope="scope">
           <el-button size="mini"
-                     @click="checkCommodity(scope.row.id, scope.row.warehouse_id)">
-                     详情
-          </el-button>
-          <el-button size="mini"
                      type="danger"
                      v-if="scope.row.owner.email === email"
                      @click="editCommodity(scope.row.id, scope.row.warehouse_id)">
                      {{$t('edit')}}
+          </el-button>
+          <el-button size="mini"
+                     @click="checkCommodity(scope.row.id, scope.row.warehouse_id)">
+                     //版本
           </el-button>
         </template>
       </el-table-column>
@@ -292,7 +292,7 @@ export default {
       this.$router.push({
         name: 'goodsAdd',
         query: {
-          warehouse_id: this.warehouseId,
+          warehouseId: this.warehouseId,
         },
       });
     },

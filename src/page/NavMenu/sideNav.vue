@@ -28,13 +28,10 @@
                             v-show="li_show_switch"
                             @click="handleClickCloseNavChild">
                               <li  :class="$style.NavChild_li"
-                                  v-for="item in li_NavChild"
-                                  :key="item.name">
-                                  <router-link :to="{ name: item.name }"
-                                                style="text-decoration: none;
-                                                      color: #fff;">
-                                                {{$t(item.name)}}
-                                  </router-link>
+                                   v-for="item in li_NavChild"
+                                   @click.self="handlerClick(item.name)"
+                                   :key="item.name">
+                                   {{$t(item.name)}}
                               </li>
                         </ul>
                   </div>
@@ -83,6 +80,9 @@ export default {
     };
   },
   methods: {
+    handlerClick(name) {
+      this.$router.push({ name: `${name}` });
+    },
     // 子菜单操作
     showItem(itemName, index) {
       /* eslint-disable */
@@ -212,13 +212,13 @@ export default {
     top: 0;
     left: 231px;
     .NavChild_li {
+      color: #fff;
       background-color: #444154;
       padding: 20px 0 0 0;
       width: 100%;
       height: 40px;
       font-size: 1.1rem;
       &:hover {
-        color: #6E5DD5;
         background: #463F74;
       }
     }

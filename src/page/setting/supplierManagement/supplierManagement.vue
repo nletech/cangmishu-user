@@ -6,10 +6,10 @@
         <el-row>
           <!-- 点击按键 -->
           <div :class="$style.am_operation_btn">
-            <span @click="info_add_btn">
-              <i class="iconfont">&#xe618;</i>
-              {{'添加供应商'}}
-            </span>
+              <span @click="info_add_btn">
+                <i class="iconfont">&#xe618;</i>
+                {{'添加供应商'}}
+              </span>
           </div>
         <!-- 对应的标签页内容 -->
           <el-table
@@ -78,7 +78,7 @@
           <el-input v-model="distributor.name_cn"></el-input>
         </el-form-item>
         <el-form-item label="供应商英文名:"
-                      prop="name_cn">
+                      prop="name_en">
           <el-input v-model="distributor.name_en"></el-input>
         </el-form-item>
       </el-form>
@@ -104,10 +104,10 @@ export default {
       id: '', // 供应商的id（编辑）
       rules: {
         name_cn: [
-          { required: true, message: '供应商中文名', trigger: 'blur' },
+          { required: true, message: '请输入供应商中文名', trigger: 'blur' },
         ],
         name_en: [
-          { required: true, message: '供应商英文名', trigger: 'blur' },
+          { required: true, message: '请输入供应商英文名', trigger: 'blur' },
         ],
       },
       //
@@ -217,7 +217,7 @@ export default {
       z-index: 3;
       border: none;
       font-size: 1.2rem;
-      background-color: #fff;
+      color: @ThemeColor;
     }
   }
 }

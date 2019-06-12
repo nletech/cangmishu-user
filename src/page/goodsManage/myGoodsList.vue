@@ -144,13 +144,13 @@
                                       width="170">
                                     <template slot-scope="scope">
                                               <el-button  size="mini"
-                                                          @click="checkCommodity(scope.row.id, scope.row.warehouse_id)">
-                                                          详情
-                                              </el-button>
-                                              <el-button  size="mini"
                                                           type="danger"
                                                           @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)">
                                                           {{$t('edit')}}
+                                              </el-button>
+                                              <el-button  size="mini"
+                                                          @click="deleteCommodity(scope.row.id)">
+                                                          删除
                                               </el-button>
                                     </template>
                     </el-table-column>
@@ -261,23 +261,6 @@ export default {
       }
       return true;
     },
-    // 权限屏蔽
-    // show(row) {
-    //   // 权限屏蔽操作
-    //   const role = +localStorage.getItem('role');
-    //   // 员工的 boss_id
-    //   const bossId = +localStorage.getItem('normalAccount');
-    //   // 父级账号
-    //   if (bossId === 0 && +localStorage.getItem('user_id') === +row.owner_id) {
-    //     return true;
-    //     // 以下是员工判断
-    //   } else if (bossId !== 0 && role === 4) {
-    //     return false;
-    //   } else if (bossId !== 0 && bossId === row.owner_id) {
-    //     return true;
-    //   }
-    //   return false;
-    // },
     handleSelectionChange(val) {
       // console.log(val);
       this.selectGoods = [];
@@ -376,26 +359,19 @@ export default {
       });
     },
     // 查看货品
-    checkCommodity(idVal, wID) {
-      this.$router.push({
-        name: 'goodsEdit',
-        query: {
-          id: idVal,
-          isCheck: true,
-          warehouse_id: wID,
-        },
-      });
+    deleteCommodity(id) {
+      $http.deleteProducts(id)
+        .then((res) => {
+          if (res.status) return;
+          this.getList();
+        });
     },
-    // 获取货品列表
     getList() {
       if (!this.warehouseId) return;
       this.params.warehouse_id = this.warehouseId;
       $http.getProducts(this.params)
         .then((res) => {
-          if (res.status) {
-            console.log(res.status);
-          }
-          console.log(res, 'res货品列表');
+          if (res.status) return;
           this.goods_list_data = res.data.data;
           this.params.data_count = res.data.total;
         })
