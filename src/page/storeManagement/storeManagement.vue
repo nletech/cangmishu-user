@@ -133,8 +133,7 @@ export default {
         .catch(() => {});
     },
     handleClick() {
-      this.row_data = {};
-      this.switchFlag = true;
+      this.$router.push({ name: 'addWarehouse1' });
     },
     edit(info) {
       this.row_data = info;
@@ -167,6 +166,7 @@ export default {
       display: block;
       font-size: 1.2rem;
       color: @ThemeColor;
+      cursor: pointer;
       position: relative;
       top: 0;
       left: 90%;

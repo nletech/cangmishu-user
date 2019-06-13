@@ -23,14 +23,8 @@
       </div>
       <div :class="$style.model_footer">
         <div :class="$style.footer_main">
-          <span :class="$style.mian_copyRight">
-            Copyright © 2017 NLE ERP . All rights reserved.(v1.5.8)
-          </span>
-          <span :class="$style.main_tecSupport">
-            技术支持
-          </span>
-          <i :class="$style.mian_NLELogo">
-          </i>
+          <span>Copyright © 2019 EU Techne B.V.（2.0.1）技术支持</span>
+          <i :class="$style.footer_main_logo"></i>
         </div>
       </div>
     </div>
@@ -146,10 +140,17 @@ export default {
       }
       .model_footer {
         width: 1432px;
-        margin-top: 80px;
+        margin-top: 20px;
         text-align: center;
         background-color: RGBA(50, 50, 50, 1);
         color: @white;
+        .footer_main_logo {
+          background-image: url('../../../assets/img/homeLogin.png');
+          display: inline-block;
+          width: 72px;
+          height: 15px;
+          vertical-align: middle;
+        }
       }
       .model_footer_main {
         padding: 80px;
@@ -163,13 +164,6 @@ export default {
         display: inline-block;
         width: 60px;
         text-align: center;
-      }
-      .mian_NLELogo {
-        background-image: url('../../../assets/img/logoHome.png');
-        display: inline-block;
-        width: 72px;
-        height: 14px;
-        vertical-align: middle;
       }
     }
   }

@@ -218,6 +218,7 @@ export default {
       border: none;
       font-size: 1.2rem;
       color: @ThemeColor;
+      cursor: pointer;
     }
   }
 }

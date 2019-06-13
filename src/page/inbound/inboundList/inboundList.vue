@@ -3,11 +3,11 @@
                 <div  :class="$style.main">
                       <div  :class="$style.header">
                             <el-row>
-                                    <el-col :span="4">
+                                    <el-col :span="3">
                                             <date-picker-public @select_data="handlerSelect_data"></date-picker-public>
                                     </el-col>
                                     <el-col :span="3"
-                                            :offset="4">
+                                            :offset="6">
                                             <select-public></select-public>
                                     </el-col>
                                     <el-col :span="3"
@@ -112,6 +112,13 @@ import $http from '@/api';
 import detailDialog from './components/inbound_detail';
 
 export default {
+  components: {
+    detailDialog,
+    datePickerPublic,
+    selectPublic,
+    inputPublic,
+    paginationPublic,
+  },
   data() {
     return {
       params: {}, // 分页数据
@@ -128,13 +135,6 @@ export default {
       typeList: [],
       distributorList: [],
     };
-  },
-  components: {
-    detailDialog,
-    datePickerPublic,
-    selectPublic,
-    inputPublic,
-    paginationPublic,
   },
   computed: {
     warehouseId() {
@@ -182,6 +182,7 @@ export default {
           this.inbound_list_data = res.data.data;
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;
+          this.$set(this.params);
           console.log(this.params, 'this.params');
           // this.params.currentPage = res.data.current_page;
         });
@@ -252,14 +253,14 @@ export default {
 @import '../../../less/public_variable.less';
 
 .page {
-  margin: 30px;
+  margin: 20px 0 0 0;
   .main {
     width: 90%;
     margin: 0 auto;
     .header {
       margin: 10px 0 10px 0;
       .header_btn {
-        margin: 10px 0 10px 0;
+        margin: 0 0 10px 0;
         font-size: 1.2rem;
       }
     }

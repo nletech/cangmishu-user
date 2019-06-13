@@ -1,116 +1,93 @@
 <template>
   <page-model title="一步注册为用户" :type="tips">
-    <!-- 注册表单 -->
-    <el-form ref="refelogin" :model="form" :class="$style.input_item">
-      <el-form-item
-        :class="$style.item_email"
-        class="login_model_form"
-        prop="email"
-      >
-        <el-input
-          placeholder="请输入您的邮箱"
-          v-model="form.email"
-          size="small"
-        >
-        </el-input>
-      </el-form-item>
-      <el-form-item
-        :class="$style.item_verificationCode"
-        class="login_model_form"
-        prop="verificationCode"
-      >
-        <el-input
-          type="text"
-          placeholder="请输入验证码"
-          v-model="form.code"
-          size="small"
-        >
-        </el-input>
-      </el-form-item>
-      <el-form-item :class="$style.item_password" class="login_model_form" prop="password">
-        <el-input
-          :type="input_type ? 'password' : 'text'"
-          placeholder="请输入你的登陆密码"
-          v-model="form.password"
-          size="small"
-        >
-        </el-input>
-      </el-form-item>
-      <el-form-item
-        :class="$style.item_passwordConfirmation"
-        class="login_model_form"
-        prop="password_confirmation"
-      >
-        <el-input
-          :type="input_type ? 'password' : 'text'"
-          placeholder="请再次输入你的登陆密码"
-          v-model="form.password_confirmation"
-          size="small"
-        >
-        <i
-          slot="suffix"
-          @click="input_type = !input_type"
-          class="el-input__icon el-icon-view"
-        >
-        </i>
-        </el-input>
-      </el-form-item>
-      <el-form-item
-        :class="$style.item_warehouseName"
-        class="login_model_form"
-        prop="warehouse_name"
-      >
-        <el-input
-          type="text"
-          placeholder="请输入仓库名称"
-          v-model="form.warehouse_name"
-          size="small"
-        >
-        </el-input>
-      </el-form-item>
-      <el-form-item
-        :class="$style.item_warehouseSpace"
-        class="login_model_form"
-        prop="warehouse_area"
-      >
-        <el-input
-          type="text"
-          placeholder="请输入仓库面积"
-          v-model="form.warehouse_area"
-          size="small"
-        >
-        </el-input>
-      </el-form-item>
-      <span class="warehouseSpaece_desc">
-        平方米
-      </span>
-      <el-form-item :class="$style.save_user_info">
-        <div :class="$style.item_user_info">
-              <el-checkbox v-model="keep">
-                <p>我同意<span>用户协议</span></p>
-              </el-checkbox>
-        </div>
-      </el-form-item>
-      <el-form-item class="user_login_button">
-        <el-button
-          type="primary"
-          @click="goRegister"
-        >
-          注册
-        </el-button>
-      </el-form-item>
-      <div class="user_account_exist"
-        @click="$router.push({name: 'login'})"
-      >
-        我有账号
-      </div>
-      <span
-        class="sendVerifCode"
-        @click="flag && sendVerificationCode()"
-      >
-        {{sendVerCode}}
-      </span>
-    </el-form>
+              <!-- 注册表单 -->
+              <el-form ref="register"
+                      :model="form"
+                      :rules="rules"
+                      :class="$style.input_item">
+                      <el-form-item  prop="email"
+                                    :class="$style.item_email"
+                                    class="login_model_form">
+                                    <el-input  placeholder="请输入邮箱"
+                                                v-model="form.email"
+                                                size="small">
+                                    </el-input>
+                      </el-form-item>
+                      <el-form-item  prop="verificationCode"
+                                     :class="$style.item_verificationCode"
+                                     class="login_model_form">
+                        <el-input  v-model="form.code"
+                                   type="text"
+                                   placeholder="请输入验证码"
+                                   size="small">
+                        </el-input>
+                      </el-form-item>
+                      <el-form-item  :class="$style.item_password"
+                                     class="login_model_form"
+                                     prop="password">
+                                     <el-input  v-model="form.password"
+                                                :type="input_type ? 'password' : 'text'"
+                                                placeholder="请输入登录密码"
+                                                size="small">
+                                     </el-input>
+                      </el-form-item>
+                      <el-form-item  prop="password_confirmation"
+                                     :class="$style.item_passwordConfirmation"
+                                     class="login_model_form">
+                                    <el-input  v-model="form.password_confirmation"
+                                              :type="input_type ? 'password' : 'text'"
+                                              placeholder="请再次输入登录密码"
+                                              size="small">
+                                              <i  @click="input_type = !input_type"
+                                                  slot="suffix"
+                                                  class="el-input__icon el-icon-view">
+                                              </i>
+                                    </el-input>
+                      </el-form-item>
+                      <el-form-item  prop="warehouse_name"
+                                     :class="$style.item_warehouseName"
+                                     class="login_model_form">
+                                     <el-input  placeholder="请输入仓库名称"
+                                                type="text"
+                                                v-model="form.warehouse_name"
+                                                size="small">
+                                     </el-input>
+                      </el-form-item>
+                      <el-form-item  prop="warehouse_area"
+                                     :class="$style.item_warehouseSpace"
+                                     class="login_model_form">
+                                     <el-input  v-model="form.warehouse_area"
+                                                type="text"
+                                                placeholder="请输入仓库面积"
+                                                size="small">
+                                     </el-input>
+                      </el-form-item>
+                      <span class="warehouseSpaece_desc">
+                        平方米
+                      </span>
+                      <el-form-item :class="$style.save_user_info">
+                                    <div :class="$style.item_user_info">
+                                         <el-checkbox  v-model="keep"
+                                                       @click="user_agreement_dialog">
+                                                       <p>我同意<span>用户协议</span></p>
+                                         </el-checkbox>
+                                    </div>
+                      </el-form-item>
+                      <el-form-item class="user_login_button">
+                                    <el-button  @click="goRegister"
+                                                type="primary">
+                                                注册
+                                    </el-button>
+                      </el-form-item>
+                      <div  class="user_account_exist"
+                            @click="$router.push({name: 'login'})">
+                            我有账号
+                      </div>
+                      <span  class="sendVerifCode"
+                             @click="flag && sendVerificationCode()">
+                             {{sendVerCode}}
+                      </span>
+                </el-form>
   </page-model>
 </template>
 <script>
@@ -120,6 +97,49 @@ import PageModel from './components/page_model';
 export default {
   components: {
     PageModel,
+  },
+  computed: {
+    rules() {
+      const validatorCode = (rule, value, callback) => {
+        const length = value.split().length;
+        if (length < 4) {
+          return callback(Error('仓库名称必须包含4个字符以上'));
+        }
+        return callback();
+      };
+      const validatorUserAgreement = (rule, value, callback) => {
+        console.log(value, 'ruleeeee');
+        // if (length < 4) {
+        //   return callback(Error('仓库名称必须包含4个字符以上'));
+        // }
+        return callback(Error(value, '我是val'));
+      };
+      return {
+        email: [
+          { required: true, message: '邮箱不能为空', tigger: 'bulr' },
+        ],
+        verificationCode: [
+          { required: true, message: '验证码不能为空', tigger: 'bulr' },
+        ],
+        password: [
+          { required: true, message: '密码不能为空', tigger: 'bulr' },
+        ],
+        password_confirmation: [
+          { required: true, message: '密码不能为空', tigger: 'bulr' },
+        ],
+        warehouse_name: [
+          { required: true, message: '仓库名称不能为空', tigger: 'bulr' },
+          { validator: validatorCode, trigger: 'blur' },
+        ],
+        warehouse_area: [
+          { required: true, message: '仓库面积不能为空', tigger: 'bulr' },
+        ],
+        user_agreement: [
+          { required: true, message: '必须勾选用户协议', tigger: 'bulr' },
+          { validator: validatorUserAgreement, trigger: 'bulr' },
+        ],
+      };
+    },
   },
   data() {
     return {
@@ -139,24 +159,30 @@ export default {
     };
   },
   methods: {
-    // 登陆
+    user_agreement_dialog() {
+
+    }, // 处理用户协议弹窗
     goRegister() {
-      $http.register(this.form)
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '注册成功!',
-          });
-          // 跳转到登陆页
-          this.$router.replace({
-            name: 'login',
-          });
-          // this.tips = true;
-        })
-        .catch(() => {
-          console.log('表单请求错误');
-        });
-    },
+      this.$refs.register.validate((valid) => {
+        if (valid) {
+          $http.register(this.form)
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '注册成功!',
+              });
+              // 跳转到登陆页
+              this.$router.replace({
+                name: 'login',
+              });
+              // this.tips = true;
+            })
+            .catch(() => {
+              console.log('表单请求错误');
+            });
+        }
+      });
+    }, // 登录
     /**
      * 发送验证码
      * 大致思路：

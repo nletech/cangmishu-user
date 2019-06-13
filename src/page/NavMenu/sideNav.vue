@@ -219,6 +219,7 @@ export default {
       height: 40px;
       font-size: 1.1rem;
       &:hover {
+        cursor: pointer;
         background: #463F74;
       }
     }

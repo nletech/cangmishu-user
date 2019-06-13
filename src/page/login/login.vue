@@ -2,6 +2,7 @@
         <page-model>
                     <el-form  ref="refelogin"
                               :model="form"
+                              :rules="rules"
                               :class="$style.input_item">
                               <el-form-item  prop="email"
                                              class="login_model_form">
@@ -11,9 +12,9 @@
                                                         size="small">
                                              </el-input>
                               </el-form-item>
-                              <el-form-item :class="$style.item_password"
-                                            class="login_model_form"
-                                            prop="password">
+                              <el-form-item prop="password"
+                                            :class="$style.item_password"
+                                            class="login_model_form">
                                             <el-input  v-model="form.password"
                                                        @keyup.enter.native="goLogin"
                                                        :type="input_type ? 'password' : 'text'"
@@ -65,6 +66,14 @@ export default {
     return {
       input_type: true, // 密码显示开关
       keep: false, // 保存用户信息开关
+      rules: {
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+        ],
+      },
       form: {
         email: '', // 用户邮箱
         password: '', // 用户密码

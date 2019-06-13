@@ -35,14 +35,14 @@
                           <el-dropdown-menu  slot="dropdown"
                                             :class="$style.selectedTag_main_dropdown"
                                             style="width: 200px; text-align: center;">
-                                            <el-dropdown-item>
-                                                              <span @click="to_store_management">仓库管理</span>
+                                            <el-dropdown-item @click.native="to_store_management">
+                                                              <span>仓库管理</span>
                                             </el-dropdown-item>
-                                            <el-dropdown-item>
-                                                            <span @click="to_create_store">创建仓库</span>
+                                            <el-dropdown-item @click.native="to_create_store">
+                                                            <span>创建仓库</span>
                                             </el-dropdown-item>
-                                            <el-dropdown-item>
-                                                            <span @click="shift_warehouse">切换仓库</span>
+                                            <el-dropdown-item @click.native="shift_warehouse">
+                                                            <span>切换仓库</span>
                                             </el-dropdown-item>
                           </el-dropdown-menu>
             </el-dropdown>

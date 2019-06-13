@@ -9,26 +9,16 @@
 </template>
 <script>
 export default {
+  // 二次封装分页公共组件
   name: 'paginationPublic',
   props: {
     params: {
       type: Object,
-      default() {
-        return {
-          total: this.params.total,
-          currentPage: 1,
-        };
-      },
     },
   },
   methods: {
     handleCurrentChange(val) {
       this.$emit('changePage', val);
-    },
-  },
-  watch: {
-    params() {
-      console.log(this.params, 'parmas');
     },
   },
 };
