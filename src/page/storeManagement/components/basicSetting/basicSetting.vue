@@ -6,8 +6,8 @@
                 @add_callback="handle_add_callback">
                 <!-- 货区数据 -->
                 <warehouse-area  v-show="show_data === '货区'"
-                                 :show_data_flag="show_data"
-                                 :warehouse_id="warehouse_id">
+                                :show_data_flag="show_data"
+                                :warehouse_id="warehouse_id">
                 </warehouse-area>
                 <!-- 货位数据 -->
                 <warehouse-shelf  v-show="show_data === '货位'"
@@ -89,3 +89,4 @@ export default {
   background: #ccc;
 }
 </style>
+

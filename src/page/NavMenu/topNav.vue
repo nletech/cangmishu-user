@@ -83,7 +83,7 @@
   </div>
     <!-- 切换仓库 -->
     <el-dialog  :visible="showWarehousesSwitch"
-                width="30%"
+                width="26%"
                 :show-close="false"
                 :close-on-click-modal="false"
                 center>
@@ -163,25 +163,14 @@ export default {
     handleChangePassWord() {
       this.show_psw_flag = true;
     }, // 修改密码
-    init_warehouse(
-      //
-    ) {}, // 初始化登陆后的默认仓库
     to_store_management() {
       this.$router.replace({ name: 'storeManage' });
-    }, // 跳转到仓库管理
+    }, // 跳转到-----仓库管理
     to_create_store() {
-      sessionStorage.setItem('show_create_warehouse', true);
-      const timer1 = setTimeout(() => {
-        this.$router.replace({ name: 'storeManage' });
-        clearTimeout(timer1);
-      }, 500);
-    }, // 跳转到创建仓库
+      this.$router.replace({ name: 'addWarehouse' });
+    }, // 跳转到-----创建仓库
     shift_warehouse() {
       this.showWarehousesSwitch = true;
-      // const timer = setTimeout(() => {
-      //   this.showWarehousesSwitch = true;
-      //   clearTimeout(timer);
-      // }, 300);
     }, // 切换仓库--确定按钮
     getWarehouses() {
       $http.warehouses().then((re) => {
@@ -268,7 +257,7 @@ export default {
   margin-top: 20px;
   span {
     display: inline-block;
-    width: 200px;
+    width: 40%;
     border-left: 1px solid #ccc;
     border-radius: 4px;
   }
@@ -292,11 +281,6 @@ export default {
       width: 200px;
       height: 80px;
       border-right: 1px solid #d8d3f4;
-      // background-color:#ccc;
-      // .el-dropdown {
-      //   width: 100%;
-      //   height: 80px;
-      // }
       .selectedTag_main {
         width: 100%;
         height: 100%;

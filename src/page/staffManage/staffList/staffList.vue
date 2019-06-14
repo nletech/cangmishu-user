@@ -11,6 +11,7 @@
       <!-- 添加员工 -->
       <el-col   :span="2" :offset="1">
                 <el-button  type="text"
+                            :class="$style.add_btn"
                             @click="$router.push({name: 'staffAdd'})"
                             icon="el-icon-plus">
                             {{$t('staffAdd')}}
@@ -188,14 +189,11 @@ export default {
     getList() {
       $http.getStaffs(this.params)
         .then((res) => {
-          console.log(res, 'staffList');
           // 员工信息
           this.staff_data = res.data.data;
           this.params.data_count = res.data.total;
         })
-        .catch(() => {
-          console.log('get staffList_info error');
-        });
+        .catch(() => {});
     },
     // 模块--编辑资料
     edit_staff_info(userInfo) {
@@ -244,7 +242,7 @@ export default {
         .then((res) => {
           if (res.status === 0) {
             // 刷新员工列表数据
-            $http.staffList()
+            $http.getStaffs()
               .then((re) => {
                 // 员工信息
                 this.staff_data = re.data.data;
@@ -311,6 +309,11 @@ export default {
     margin: 0 5px 0 0;
     padding: 2px;
     border: 1px solid #ccc;
+  }
+  .add_btn {
+    display: inline-block;
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
   }
 </style>
 <style scoped>

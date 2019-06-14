@@ -1,47 +1,40 @@
 <template>
-<div>
-  <el-table
-    :data="Area_data"
-    border
-    style="width: 100%"
-  >
-    <el-table-column
-      type="index"
-      label="#">
-    </el-table-column>
-    <el-table-column
-      prop="code"
-      label="编号">
-    </el-table-column>
-    <el-table-column
-      prop="name_cn"
-      label="名称">
-    </el-table-column>
-    <el-table-column
-      prop="functions"
-      label="启用状态">
-      <template slot-scope="scope">
-        {{scope.row.is_enabled | switchTypeCn}}
-      </template>
-    </el-table-column>
-    <el-table-column
-      width="320"
-      label="操作">
-      <template slot-scope="scope">
-        <el-button size="mini" @click="edit(scope.row.id)">编辑</el-button>
-        <el-button  type="danger" @click="del(scope.row.id)" size="mini">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-  <!-- 分页组件 -->
-  <el-pagination  :class="$style.pagination"
-                  v-show="+total"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  layout="total, prev, pager, next, jumper"
-                  :total="+total">
-  </el-pagination>
-</div>
+          <div>
+              <el-table  :data="Area_data"
+                         border
+                         style="width: 100%">
+                         <el-table-column  type="index"
+                                          label="#">
+                         </el-table-column>
+                         <el-table-column  prop="code"
+                                          label="编号">
+                         </el-table-column>
+                         <el-table-column  prop="name_cn"
+                                          label="名称">
+                         </el-table-column>
+                         <el-table-column  prop="functions"
+                                          label="启用状态">
+                                          <template slot-scope="scope">
+                                            {{scope.row.is_enabled | switchTypeCn}}
+                                          </template>
+                         </el-table-column>
+                         <el-table-column  label="操作"
+                                          width="320">
+                                          <template slot-scope="scope">
+                                                    <el-button size="mini" @click="edit(scope.row.id)">编辑</el-button>
+                                                    <el-button  type="danger" @click="del(scope.row.id)" size="mini">删除</el-button>
+                                          </template>
+                         </el-table-column>
+              </el-table>
+              <!-- 分页组件 -->
+              <el-pagination  :class="$style.pagination"
+                              v-show="+total"
+                              @current-change="handleCurrentChange"
+                              :current-page="currentPage"
+                              layout="total, prev, pager, next, jumper"
+                              :total="+total">
+              </el-pagination>
+          </div>
 </template>
 
 <script>

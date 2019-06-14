@@ -1,113 +1,82 @@
 <template>
-  <div>
-    <el-row :class="$style.staffAdd_main">
-      <!-- 上传用户头像 -->
-      <!-- <el-col :span="4" :offset="1">
-        <span :class="$style.avatar_name">头像</span>
-          <el-upload
-            class="avatar-uploader"
-            :show-file-list="false"
-            action="#"
-          >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-      </el-col> -->
-      <!-- 新增员工信息列表 -->
-      <el-col :span="10" :offset="7">
-        <el-form
-          :class="$style.staff_form"
-          label-width="80px"
-          size="mini"
-          label-position="left"
-          :model="staff_info_form"
-          :rules="info_Verify_rules"
-        >
-          <label :class="$style.staff_title"> 基本信息 </label>
-          <el-form-item
-            label="用户名"
-            prop="nickname"
-          >
-            <el-input
-              v-model="staff_info_form.nickname"
-              placeholder="用户名不能修改"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item
-            label="姓名"
-            prop="name"
-          >
-            <el-input
-              v-model="staff_info_form.name"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="密码"
-            prop="password"
-          >
-            <el-input
-              type="password"
-              v-model="staff_info_form.password"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="确认密码"
-            prop="password_confirmation"
-          >
-            <el-input
-              type="password"
-              v-model="staff_info_form.password_confirmation"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="邮箱"
-            prop="email"
-          >
-            <el-input v-model="staff_info_form.email"></el-input>
-          </el-form-item>
-          <label :class="$style.staff_title">
-            选填信息
-          </label>
-          <el-form-item
-            label="手机号"
-            prop="phone"
-          >
-            <el-input
-              v-model="staff_info_form.phone"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="备注"
-            prop="remark"
-          >
-            <el-input
-              type="textarea"
-              v-model="staff_info_form.remark"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-col :span="2" :offset="8">
-              <el-button
-                type="success"
-                @click="submit_staff_info"
-              >
-                保存
-              </el-button>
-            </el-col>
-            <el-col :span="2" :offset="8">
-              <el-button
-                plain
-                @click="delete_staff_info"
-              >
-                清空
-              </el-button>
-            </el-col>
-          </el-form-item>
-        </el-form>
-      </el-col>
-    </el-row>
-  </div>
+          <div>
+              <el-row :class="$style.staffAdd_main">
+                      <!-- 上传用户头像 -->
+                      <!-- <el-col :span="4" :offset="1">
+                        <span :class="$style.avatar_name">头像</span>
+                          <el-upload
+                            class="avatar-uploader"
+                            :show-file-list="false"
+                            action="#"
+                          >
+                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                          </el-upload>
+                      </el-col> -->
+                      <!-- 新增员工信息列表 -->
+                      <el-col :span="10" :offset="7">
+                              <el-form  :class="$style.staff_form"
+                                        label-width="80px"
+                                        label-position="left"
+                                        :model="staff_info_form"
+                                        :rules="info_Verify_rules">
+                                        <label :class="$style.staff_title"> 基本信息 </label>
+                                        <el-form-item  label="用户名"
+                                                      prop="nickname">
+                                                      <el-input  v-model="staff_info_form.nickname"
+                                                                  placeholder="用户名不能修改">
+                                                      </el-input>
+                                        </el-form-item>
+                                        <el-form-item  label="姓名"
+                                                      prop="name">
+                                                      <el-input  v-model="staff_info_form.name"></el-input>
+                                        </el-form-item>
+                                        <el-form-item  label="密码"
+                                                      prop="password">
+                                                      <el-input  type="password"
+                                                                  v-model="staff_info_form.password">
+                                                      </el-input>
+                                        </el-form-item>
+                                        <el-form-item  label="确认密码"
+                                                      prop="password_confirmation">
+                                                      <el-input  type="password"
+                                                                  v-model="staff_info_form.password_confirmation">
+                                                      </el-input>
+                                        </el-form-item>
+                                        <el-form-item  label="邮箱"
+                                                      prop="email">
+                                                      <el-input v-model="staff_info_form.email"></el-input>
+                                        </el-form-item>
+                                        <label :class="$style.staff_title">
+                                          选填信息
+                                        </label>
+                                        <el-form-item  label="手机号"
+                                                      prop="phone">
+                                                      <el-input  v-model="staff_info_form.phone"></el-input>
+                                        </el-form-item>
+                                        <el-form-item  label="备注"
+                                                      prop="remark">
+                                                      <el-input  type="textarea"
+                                                                  v-model="staff_info_form.remark">
+                                                      </el-input>
+                                        </el-form-item>
+                                        <el-form-item>
+                                                      <el-col :span="2" :offset="6">
+                                                              <el-button  :class="$style.submit_btn"
+                                                                          @click="submit_staff_info">
+                                                                          保存
+                                                              </el-button>
+                                                      </el-col>
+                                                      <el-col :span="2" :offset="8">
+                                                              <el-button  @click="delete_staff_info">
+                                                                清空
+                                                              </el-button>
+                                                      </el-col>
+                                        </el-form-item>
+                              </el-form>
+                      </el-col>
+              </el-row>
+          </div>
 </template>
 
 <script>
@@ -211,19 +180,23 @@ export default {
 <style lang="less" module>
 @import '../../../../less/public_variable.less';
 .staffAdd_main {
-  width: 800px;
-  height: 600px;
+  width: 92%;
+  min-height: 507px;
   background-color: white;
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 20px 0 0 0;
   .avatar_name {
     display: inline-block;
     margin: 20px 0 10px 20px;
-}
+  }
 }
 .staff_form {
   width: 360px;
-  height: 600px;
+  min-height: 507px;
+  .submit_btn {
+    background-color: @ThemeColor;
+    color: @white;
+  }
 }
 .staff_title {
   display: inline-block;

@@ -1,105 +1,84 @@
 <template>
-<div class="storeManage">
-  <wms-tags>
-    <my-group>
-      <!-- 添加员工组 -->
-      <el-col :span="4" :offset="22">
-        <el-button
-          type="text"
-          @click="$router.push({name: 'staffGroupAdd'})"
-          icon="el-icon-plus"
-        >
-          {{$t('staffGroupAdd')}}
-        </el-button>
-      </el-col>
-    </my-group>
-    <!-- 员工组数据表格 -->
-    <el-table
-      :data="staffGroupData"
-      border
-    >
-    <!-- #序号 -->
-      <el-table-column
-        align="center"
-        header-align="center"
-        type="index"
-        label="#"
-        width="120"
-      >
-      </el-table-column>
-    <!-- 员工组名称 -->
-      <el-table-column
-        align="center"
-        header-align="center"
-        prop="nickname"
-        label="员工组名称"
-      >
-        <template slot-scope="scope">
-          {{scope.row.name}}
-        </template>
-      </el-table-column>
-      <!-- 员工数 -->
-      <el-table-column
-        align="center"
-        prop="staff_name"
-        label="员工数"
-      >
-        <template slot-scope="scope">
-          {{scope.row.user_amount}}
-        </template>
-      </el-table-column>
-      <!-- 操作 -->
-      <el-table-column
-        header-align="center"
-        prop="staff_operations"
-        label="操作"
-        width="360"
-      >
-        <template slot-scope="scope">
-          <!-- 基本信息 -->
-          <el-button
-            type="primary"
-            plain
-            size="mini"
-            @click="handleBasicInfo(scope.row)"
-          >
-            基本信息
-          </el-button>
-          <!-- 限权 -->
-          <el-button
-            type="success"
-            plain
-            size="mini"
-            @click="handlePermissions(scope.row)"
-          >
-            权限
-          </el-button>
-           <!-- 查看员工 -->
-          <el-button
-            type="danger"
-            plain
-            size="mini"
-            @click="showStaff(scope.row)"
-          >
-            查看员工
-          </el-button>
-           <!-- 删除 -->
-          <el-button
-            type="danger"
-            plain
-            size="mini"
-            @click="deleteStaffGroup(scope.row)"
-          >
-            删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <button-pagination :pageParams="params"></button-pagination>
-
-  </wms-tags>
-</div>
+          <div class="storeManage">
+               <wms-tags>
+                        <my-group>
+                                  <!-- 添加员工组 -->
+                                  <el-col :span="4" :offset="21">
+                                          <el-button  type="text"
+                                                      :class="$style.add_btn"
+                                                      @click="$router.push({name: 'staffGroupAdd'})"
+                                                      icon="el-icon-plus">
+                                                      {{$t('staffGroupAdd')}}
+                                          </el-button>
+                                  </el-col>
+                        </my-group>
+                        <!-- 员工组数据表格 -->
+                        <el-table  :data="staffGroupData"
+                                   border>
+                                   <!-- #序号 -->
+                                   <el-table-column  type="index"
+                                                     align="center"
+                                                     header-align="center"
+                                                     label="#"
+                                                     width="120">
+                                   </el-table-column>
+                                   <!-- 员工组名称 -->
+                                   <el-table-column  prop="nickname"
+                                                     align="center"
+                                                     header-align="center"
+                                                     label="员工组名称">
+                                                     <template slot-scope="scope">
+                                                                {{scope.row.name}}
+                                                     </template>
+                                    </el-table-column>
+                                    <!-- 员工数 -->
+                                    <el-table-column  prop="staff_name"
+                                                      align="center"
+                                                      label="员工数">
+                                                      <template slot-scope="scope">
+                                                                {{scope.row.user_amount}}
+                                                      </template>
+                                    </el-table-column>
+                                    <!-- 操作 -->
+                                    <el-table-column  prop="staff_operations"
+                                                      header-align="center"
+                                                      label="操作"
+                                                      width="360">
+                                                      <template slot-scope="scope">
+                                                        <!-- 基本信息 -->
+                                                        <el-button  type="primary"
+                                                                    plain
+                                                                    size="mini"
+                                                                    @click="handleBasicInfo(scope.row)">
+                                                                    基本信息
+                                                        </el-button>
+                                                        <!-- 限权 -->
+                                                        <el-button  type="success"
+                                                                    plain
+                                                                    size="mini"
+                                                                    @click="handlePermissions(scope.row)">
+                                                                    权限
+                                                        </el-button>
+                                                        <!-- 查看员工 -->
+                                                        <el-button  type="danger"
+                                                                    plain
+                                                                    size="mini"
+                                                                    @click="showStaff(scope.row)">
+                                                                    查看员工
+                                                        </el-button>
+                                                        <!-- 删除 -->
+                                                        <el-button  type="danger"
+                                                                    plain
+                                                                    size="mini"
+                                                                    @click="deleteStaffGroup(scope.row)">
+                                                                    删除
+                                                        </el-button>
+                                                      </template>
+                                    </el-table-column>
+                        </el-table>
+                        <button-pagination :pageParams="params"></button-pagination>
+               </wms-tags>
+          </div>
 </template>
 
 <script>
@@ -165,7 +144,7 @@ export default {
     showStaff(staffGroupInfo) {
       this.$router.push({
         name: 'staffGroupShowEmployee',
-        params: {
+        query: {
           groupId: staffGroupInfo.id,
         },
       });
@@ -225,8 +204,13 @@ export default {
 <style lang="less" module>
 @import '../../../less/public_variable.less';
 
-.util {
-  text-align: right;
-  margin: 20px;
-}
+  .add_btn {
+    display: inline-block;
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+  }
+  .util {
+    text-align: right;
+    margin: 20px;
+  }
 </style>

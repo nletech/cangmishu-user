@@ -167,6 +167,9 @@ const $http = {
   deleteStaffInGroup(data) {
     return Axios.delete('/relation', { params: data });
   }, // 从分组删除员工
+  getThisGroupStaffs(data) {
+    return Axios.get('/employee', { params: data });
+  }, // 获取该分组下的员工列表
   //                                                          设置-仓库管理
   warehouses() {
     return Axios.get('/warehouses');

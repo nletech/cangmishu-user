@@ -1,38 +1,32 @@
 <template>
-<div>
-  <el-row :class="$style.staffGroupAdd_main">
-    <el-col :span="12" :offset="6">
-        <el-form
-          label-width="80px"
-          :model="staffGroupBasicInfo_form"
-        >
-          <el-form-item
-            label="员工组名"
-          >
-            <el-input
-              v-model="staffGroupBasicInfo_form.name"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="备注"
-          >
-            <el-input
-              type="textarea"
-              v-model="staffGroupBasicInfo_form.remark"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              type="success"
-              @click="submit_staffGroupBasicInfo_form"
-            >
-              保存
-            </el-button>
-          </el-form-item>
-        </el-form>
-    </el-col>
-  </el-row>
-</div>
+          <div>
+              <el-row :class="$style.staffGroupAdd_main">
+                      <el-col :span="12" :offset="6">
+                              <el-form  label-width="80px"
+                                        :model="staffGroupBasicInfo_form">
+                                        <el-form-item  label="员工组名">
+                                                      <el-input  v-model="staffGroupBasicInfo_form.name"></el-input>
+                                        </el-form-item>
+                                        <el-form-item  label="备注">
+                                                      <el-input  type="textarea"
+                                                                 v-model="staffGroupBasicInfo_form.remark">
+                                                      </el-input>
+                                        </el-form-item>
+                                        <el-form-item>
+                                                      <el-row>
+                                                              <el-col :span="2"
+                                                                      :offset="10">
+                                                                      <el-button  :class="$style.submit_btn"
+                                                                                  @click="submit_staffGroupBasicInfo_form">
+                                                                                  保存
+                                                                      </el-button>
+                                                              </el-col>
+                                                      </el-row>
+                                        </el-form-item>
+                              </el-form>
+                      </el-col>
+                </el-row>
+          </div>
 </template>
 
 <script>
@@ -127,11 +121,15 @@ export default {
 @import '../../../../less/public_variable.less';
 
 .staffGroupAdd_main {
-  width: 80%;
-  height: 640px;
+  width: 92%;
+  min-height: 607px;
   background-color: white;
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 80px 0 0 0;
+  .submit_btn {
+    background-color: @ThemeColor;
+    color: @white;
+  }
 }
 .label {
   font-size: 18px;

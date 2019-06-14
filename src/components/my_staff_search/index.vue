@@ -49,7 +49,7 @@ export default {
       if (this.componentFlag === 'AddEmployee') {
         requestInfo.rm = 1;
       }
-      $http.staffList(requestInfo)
+      $http.getStaffs(requestInfo)
         .then((res) => {
           // 员工信息
           this.$emit('searchStaff', res.data.data);

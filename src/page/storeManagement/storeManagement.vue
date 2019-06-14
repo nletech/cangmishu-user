@@ -72,7 +72,7 @@
 import cms from '@/components/cms';
 import PaginationAndButtons from '@/components/pagination_and_buttons';
 import $http from '@/api';
-import AddWarehouse from './components/addWarehouse';
+import AddWarehouse from './components/editWarehouse';
 
 export default {
   name: 'storeManage',
@@ -133,7 +133,7 @@ export default {
         .catch(() => {});
     },
     handleClick() {
-      this.$router.push({ name: 'addWarehouse1' });
+      this.$router.push({ name: 'addWarehouse' });
     },
     edit(info) {
       this.row_data = info;

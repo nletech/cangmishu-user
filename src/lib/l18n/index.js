@@ -32,6 +32,7 @@ export default {
     staffGroupAddEmployee: '添加员工',
     staffGroupPermissions: '员工权限',
     inboundShelf: '入库&上架',
+    addWarehouse: '添加仓库',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',
@@ -67,7 +68,6 @@ export default {
     PleaseEnterTheMailbox: '请输入您的邮箱',
     PleaseInputApassword: '请输入您的密码',
     authenticationForm: '创建认证',
-    addWarehouse: '创建仓库',
     uploadFile: '上传合同',
     viewEdit: '查看编辑',
     storeName: '仓库名称',

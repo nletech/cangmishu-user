@@ -1,83 +1,64 @@
 <template>
-  <div>
-    <el-row :class="$style.staffAdd_main">
-      <!-- 上传用户头像 -->
-      <!-- <el-col :span="4" :offset="1">
-        <span :class="$style.avatar_name">头像</span>
-          <el-upload
-            class="avatar-uploader"
-            :show-file-list="false"
-            action="#"
-          >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-      </el-col> -->
-      <!-- 新增员工信息列表 -->
-      <el-col :span="10" :offset="6">
-        <el-form
-          :class="$style.staff_form"
-          label-width="80px"
-          size="mini"
-          label-position="left"
-          :model="staff_info_form_changed"
-          :rules="info_Verify_rules"
-        >
-          <label :class="$style.staff_title"> 基本信息 </label>
-          <el-form-item
-            label="用户名"
-            prop="nickname"
-          >
-            <span>{{staff_info_form_changed.nickname}}</span>
-          </el-form-item>
-          <el-form-item
-            label="邮箱"
-            prop="email"
-          >
-            {{this.staff_info_form_changed.email}}
-          </el-form-item>
-          <el-form-item
-            label="姓名"
-            prop="name"
-          >
-            <el-input
-              v-model="staff_info_form_changed.name"
-            ></el-input>
-          </el-form-item>
-          <label :class="$style.staff_title">
-            选填信息
-          </label>
-          <el-form-item
-            label="手机号"
-            prop="phone"
-          >
-            <el-input
-              v-model="staff_info_form_changed.phone"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="备注"
-            prop="remark"
-          >
-            <el-input
-              type="textarea"
-              v-model="staff_info_form_changed.remark"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-col :span="2" :offset="8">
-              <el-button
-                type="success"
-                @click="submit_staff_info_changed"
-              >
-                保存
-              </el-button>
-            </el-col>
-          </el-form-item>
-        </el-form>
-      </el-col>
-    </el-row>
-  </div>
+        <div>
+            <el-row :class="$style.staffAdd_main">
+                    <!-- 上传用户头像 -->
+                    <!-- <el-col :span="4" :offset="1">
+                      <span :class="$style.avatar_name">头像</span>
+                        <el-upload
+                          class="avatar-uploader"
+                          :show-file-list="false"
+                          action="#"
+                        >
+                          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </el-col> -->
+                    <!-- 新增员工信息列表 -->
+                    <el-col :span="10" :offset="6">
+                            <el-form  :class="$style.staff_form"
+                                      label-width="80px"
+                                      label-position="left"
+                                      :model="staff_info_form_changed"
+                                      :rules="info_Verify_rules">
+                                      <label :class="$style.staff_title"> 基本信息 </label>
+                                      <el-form-item  label="用户名"
+                                                    prop="nickname">
+                                                    <span>{{staff_info_form_changed.nickname}}</span>
+                                      </el-form-item>
+                                      <el-form-item  label="邮箱"
+                                                    prop="email">
+                                                    {{this.staff_info_form_changed.email}}
+                                      </el-form-item>
+                                      <el-form-item   label="姓名"
+                                                      prop="name">
+                                                      <el-input  v-model="staff_info_form_changed.name"></el-input>
+                                      </el-form-item>
+                                      <label :class="$style.staff_title">
+                                        选填信息
+                                      </label>
+                                      <el-form-item  label="手机号"
+                                                    prop="phone">
+                                                    <el-input  v-model="staff_info_form_changed.phone"></el-input>
+                                      </el-form-item>
+                                      <el-form-item  label="备注"
+                                                    prop="remark">
+                                                    <el-input  type="textarea"
+                                                                v-model="staff_info_form_changed.remark">
+                                                    </el-input>
+                                      </el-form-item>
+                                      <el-form-item>
+                                                    <el-col :span="2" :offset="8">
+                                                            <el-button
+                                                                        :class="$style.submit_btn"
+                                                                        @click="submit_staff_info_changed">
+                                                                        保存
+                                                            </el-button>
+                                                    </el-col>
+                                      </el-form-item>
+                            </el-form>
+                    </el-col>
+            </el-row>
+        </div>
 </template>
 
 <script>
@@ -179,9 +160,9 @@ export default {
 <style lang="less" module>
 @import '../../../../less/public_variable.less';
 .staffAdd_main {
-  width: 70%;
-  height: 640px;
-  margin: 0 auto;
+  width: 92%;
+  min-height: 507px;
+  margin: 10px auto;
   padding: 30px 0 0 0;
   background-color: white;
   .avatar_name {
@@ -194,6 +175,10 @@ export default {
   height: 560px;
   margin: 0 auto;
   background-color: #fff;
+  .submit_btn {
+    background-color: @ThemeColor;
+    color: @white;
+  }
 }
 .staff_title {
   display: inline-block;

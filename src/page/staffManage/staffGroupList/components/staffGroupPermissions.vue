@@ -1,75 +1,66 @@
 <template>
-  <div>
-    <el-row :class="$style.Permissions_main">
-      <el-col :span="20">
-        <el-form
-          label-width="200"
-          :model="permission_form"
-          :class="$style.form_main"
-        >
-        <el-row :gutter="30">
-          <el-col :span="10">
-            <!-- 请选择仓库 -->
-            <el-form-item
-              :label="is_init ? '当前仓库:' : '请选择仓库:'"
-            >
-              <el-radio-group
-                v-model="form.warehouse_id"
-                @change="handleChange"
-              >
-                <el-radio
-                  style="dispaly: inline-block;
-                  width: 120px;
-                  margin: 10px 24px 0 0;
-                  height: 20px;
-                  overflow:hidden;
-                  text-overflow:ellipsis;
-                  white-space:nowrap; "
-                  v-for="(item, index) in warehouse"
-                  :key="index"
-                  :label="item.id"
-                >
-                  {{item.name_cn}}
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10" :offset="4">
-            <!-- 请选择操作权限 -->
-            <el-form-item label="请选择操作权限:">
-                          <el-checkbox :indeterminate="isIndeterminate"
-                                       v-model="checkAll"
-                                       @change="handleCheckAllChange">
-                                       全选
-                          </el-checkbox>
-                          <div style="margin: 15px 0;"></div>
-                          <el-checkbox-group v-model="checkedArray"
-                                             @change="handleCheckedChange">
-                                             <el-checkbox v-for="item in modules"
-                                                          :label="item.id"
-                                                          :key="item.name">
-                                                          {{item.name}}
-                                             </el-checkbox>
-                          </el-checkbox-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        </el-form>
-        <el-row>
-          <el-col>
-            <!-- 保存 -->
-            <el-button  :class="$style.submit_form_icon"
-                        size="great"
-                        type="success"
-                        round
-                        @click="submit_form">
-                        保存
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-  </div>
+          <div>
+                <el-row :class="$style.Permissions_main">
+                        <el-col :span="20">
+                          <el-form  label-width="200"
+                                    :model="permission_form"
+                                    :class="$style.form_main">
+                                    <el-row :gutter="30">
+                                            <el-col :span="10">
+                                                    <!-- 请选择仓库 -->
+                                                    <el-form-item  :label="is_init ? '当前仓库:' : '请选择仓库:'">
+                                                                  <el-radio-group  v-model="form.warehouse_id"
+                                                                                  @change="handleChange">
+                                                                                  <el-radio  style="dispaly: inline-block;
+                                                                                              width: 120px;
+                                                                                              margin: 10px 24px 0 0;
+                                                                                              height: 20px;
+                                                                                              overflow:hidden;
+                                                                                              text-overflow:ellipsis;
+                                                                                              white-space:nowrap; "
+                                                                                              v-for="(item, index) in warehouse"
+                                                                                              :key="index"
+                                                                                              :label="item.id">
+                                                                                              {{item.name_cn}}
+                                                                                  </el-radio>
+                                                                  </el-radio-group>
+                                                    </el-form-item>
+                                            </el-col>
+                                            <el-col :span="10" :offset="4">
+                                                    <!-- 请选择操作权限 -->
+                                                    <el-form-item label="请选择操作权限:">
+                                                                  <el-checkbox :indeterminate="isIndeterminate"
+                                                                               v-model="checkAll"
+                                                                               @change="handleCheckAllChange">
+                                                                               全选
+                                                                  </el-checkbox>
+                                                                  <div style="margin: 15px 0;"></div>
+                                                                  <el-checkbox-group  v-model="checkedArray"
+                                                                                      @change="handleCheckedChange">
+                                                                                      <el-checkbox  v-for="item in modules"
+                                                                                                    :label="item.id"
+                                                                                                    :key="item.name">
+                                                                                                    {{item.name}}
+                                                                                      </el-checkbox>
+                                                                  </el-checkbox-group>
+                                                    </el-form-item>
+                                            </el-col>
+                                    </el-row>
+                          </el-form>
+                          <el-row>
+                            <el-col>
+                              <!-- 保存 -->
+                              <el-button  :class="$style.submit_form_icon"
+                                          size="great"
+                                          round
+                                          @click="submit_form">
+                                          保存
+                              </el-button>
+                            </el-col>
+                          </el-row>
+                        </el-col>
+                </el-row>
+          </div>
 </template>
 
 <script>
@@ -219,14 +210,14 @@ export default {
 <style lang="less" module>
 @import '../../../../less/public_variable.less';
 .Permissions_main {
-  width: 90%;
-  height: 640px;
+  width: 92%;
+  min-height: 607px;
   background-color: white;
   margin: 15px 0 50px 15px;
   padding: 20px 0 0 40px;
   .form_main {
     width: 100%;
-    height: 580px;
+    min-height: 507px;
   }
   .owner_main_name {
     display: inline-block;
@@ -235,7 +226,9 @@ export default {
   .submit_form_icon {
     position: relative;
     left: 500px;
-    bottom: -4px;
+    bottom: 20px;
+    background-color: @ThemeColor;
+    color: @white;
   }
   .permission_tree {
     margin: 0 0 0 100px;

@@ -141,6 +141,7 @@ export default {
       this.switchFlag = true;
     }, // 添加信息按钮
     active_item_check(item) {
+      this.info_data = [];
       item === '入库单分类'
       ? $http.getBatchType()
           .then((re) => {

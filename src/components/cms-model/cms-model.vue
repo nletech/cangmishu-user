@@ -73,9 +73,10 @@ export default {
       position: relative;
       top: 0;
       left: 90%;
-      margin: 0 0 5px 0;
+      margin: 0 0 15px 0;
       border: none;
       font-size: 1.2rem;
+      // font-weight: bold;
       color: @ThemeColor;
     }
   }

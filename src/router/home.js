@@ -59,7 +59,7 @@ const StaffGroupPermissions = loadOnDemand('staffManage/staffGroupList/component
 // 设置
 const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓库管理
 const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - demo
-const addWarehouse1 = loadOnDemand('storeManagement/components/addWarehouse1'); // 添加仓库
+const AddWarehouse = loadOnDemand('storeManagement/components/addWarehouse'); // 添加仓库
 
 /* eslint-disable */
 const basic_setting = 'storeManagement/components/basicSetting/components';
@@ -335,9 +335,9 @@ export const routerMap = [
             nav: 3,
           },
           {
-            name: 'addWarehouse1', // 仓库管理-添加仓库
-            path: 'storeManage/addWarehouse1',
-            component: addWarehouse1,
+            name: 'addWarehouse', // 仓库管理-添加仓库
+            path: 'storeManage/addWarehouse',
+            component: AddWarehouse,
             nav: 3,
           },
           {

@@ -1,59 +1,61 @@
 <template>
-          <div  :class="$style.add_warehouse">
-                <div  :class="$style.main">
-                      <el-row  :class="$style.add_warehouse_main">
-                                <el-col :span="10" :offset="6">
-                                        <el-form  ref="rule_form"
-                                                  :class="$style.staff_form"
-                                                  label-width="140px"
-                                                  size="middle"
-                                                  :rules="rules"
-                                                  label-position="left"
-                                                  :model="warehouseInfo">
-                                                  <el-form-item  prop="name_cn"
-                                                                label="仓库名称"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.name_cn"></el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="code"
-                                                                label="仓库编码"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.code"></el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="address"
-                                                                label="省市区"
-                                                                size="middle">
-                                                                <el-cascader  :props="props"
-                                                                              :options="addressInfo"
-                                                                              v-model="warehouseInfo.address"
-                                                                              style="width: 100%;">
-                                                                </el-cascader>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="addressDetail"
-                                                                label="详细地址"
-                                                                size="middle">
-                                                                <el-input  type="textarea"
-                                                                            v-model="warehouseInfo.addressDetail">
-                                                                </el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="area"
-                                                                label="面积 (平方米)"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.area"></el-input>
-                                                  </el-form-item>
-                                        </el-form>
-                                        <el-row>
-                                                <el-col :span="2" :offset="13">
-                                                  <el-button  :class="$style.submit_btn"
-                                                              @click="warehouseInfoSubmit">
-                                                              提交
-                                                  </el-button>
-                                                </el-col>
-                                        </el-row>
-                                </el-col>
+          <el-dialog  title="编辑仓库信息"
+                      :center="true"
+                      @update:visible="$emit('update:visible', $event)"
+                      :visible="visible"
+                      width="60%">
+                      <el-row :class="$style.add_warehouse_main">
+                              <el-col :span="10" :offset="6">
+                                      <el-form  :class="$style.staff_form"
+                                                label-width="140px"
+                                                size="middle"
+                                                :rules="rules"
+                                                ref="rule_form"
+                                                label-position="left"
+                                                :model="warehouseInfo">
+                                                <el-form-item  prop="name_cn"
+                                                               label="仓库名称"
+                                                               size="middle">
+                                                               <el-input  v-model="warehouseInfo.name_cn"></el-input>
+                                                </el-form-item>
+                                                <el-form-item  prop="code"
+                                                               label="仓库编码"
+                                                               size="middle">
+                                                               <el-input  v-model="warehouseInfo.code"></el-input>
+                                                </el-form-item>
+                                                <el-form-item  prop="address"
+                                                               label="省市区"
+                                                               size="middle">
+                                                               <el-cascader  :props="props"
+                                                                             :options="addressInfo"
+                                                                             v-model="warehouseInfo.address"
+                                                                             style="width: 100%;">
+                                                               </el-cascader>
+                                                </el-form-item>
+                                                <el-form-item  prop="addressDetail"
+                                                               label="详细地址"
+                                                               size="middle">
+                                                               <el-input  type="textarea"
+                                                                          v-model="warehouseInfo.addressDetail">
+                                                               </el-input>
+                                                </el-form-item>
+                                                <el-form-item  prop="area"
+                                                               label="面积 (平方米)"
+                                                               size="middle">
+                                                               <el-input  v-model="warehouseInfo.area"></el-input>
+                                                </el-form-item>
+                                      </el-form>
+                                      <el-row>
+                                              <el-col :span="2" :offset="13">
+                                                      <el-button  :class="$style.submit_btn"
+                                                                  @click="warehouseInfoSubmit">
+                                                                  提交
+                                                      </el-button>
+                                              </el-col>
+                                      </el-row>
+                              </el-col>
                       </el-row>
-                </div>
-          </div>
+          </el-dialog>
 </template>
 
 <script>
@@ -61,7 +63,11 @@ import $http from '@/api';
 import Options from '@/assets/address.json';
 
 export default {
-  name: 'addWarehouse1',
+  name: 'editWarehouse',
+  props: {
+    visible: [Boolean],
+    row_data: [Object],
+  },
   data() {
     // 自定义的验证规则
     const check = {
@@ -211,17 +217,9 @@ export default {
             .then(() => {
               let id = this.row_data.id; // 用于编辑
               if (id) {
-                $http.modifyWarehouse(id, this.formInfo)
-                  .then((re) => {
-                    if (re.status) return;
-                    this.$emit('updata_data', true); // 更新数据列表
-                  })
-                  .catch();
-              } else {
                 $http.addWarehouse(this.formInfo)
                   .then((res) => {
                     if (res.status) return;
-                    // this.message(res.status, '添加成功!', '添加失败!')
                     this.$emit('updata_data', true); // 更新数据列表
                   })
                   .catch(() => {
@@ -242,36 +240,31 @@ export default {
 
 <style lang="less" module>
 @import '../../../less/public_variable.less';
-
-.add_warehouse {
-  margin: 20px 0 0 0;
-  .main {
-    height: 100%;
-    .add_warehouse_main {
-      width: 90%;
-      height: 100%;
-      background-color: white;
-      margin: 0 auto;
-      .avatar_name {
-        display: inline-block;
-        margin: 20px 0 10px 20px;
-      }
-      .submit_btn {
-        background-color: @ThemeColor;
-        color: @white;
-      }
-    }
-    .staff_form {
-      width: 120%;
-      height: 120%;
-      margin: 0 auto;
-    }
-    .staff_title {
-      display: inline-block;
-      margin: 10px 0 40px 0;
-      font-size: 16px;
-      font-weight: 400;
-    }
+.add_warehouse_main {
+  width: 90%;
+  height: 50%;
+  margin: 0 auto;
+  padding: 30px 0 0 0;
+  background-color: white;
+  .avatar_name {
+    display: inline-block;
+    margin: 20px 0 10px 20px;
   }
+  .submit_btn {
+    background-color: @ThemeColor;
+    color: @white;
+  }
+}
+.staff_form {
+  width: 120%;
+  height: 120%;
+  margin: 0 auto;
+  background-color: white;
+}
+.staff_title {
+  display: inline-block;
+  margin: 10px 0 40px 0;
+  font-size: 16px;
+  font-weight: 400;
 }
 </style>

@@ -1,94 +1,67 @@
 <template>
-  <el-dialog
-    :title="this.text_flag ? '编辑仓库信息' : '新增仓库信息'"
-    :center="true"
-    @update:visible="$emit('update:visible', $event)"
-    :visible="visible"
-    width="60%"
-  >
-    <el-row :class="$style.add_warehouse_main">
-      <el-col :span="10" :offset="6">
-        <el-form
-          :class="$style.staff_form"
-          label-width="140px"
-          size="middle"
-          :rules="rules"
-          ref="rule_form"
-          label-position="left"
-          :model="warehouseInfo"
-        >
-          <el-form-item
-            prop="name_cn"
-            label="仓库名称"
-            size="middle">
-            <el-input
-              v-model="warehouseInfo.name_cn"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item
-            prop="code"
-            label="仓库编码"
-            size="middle"
-          >
-            <el-input
-              v-model="warehouseInfo.code">
-            </el-input>
-          </el-form-item>
-          <!-- 地址 -->
-          <el-form-item
-            prop="address"
-            label="省市区"
-            size="middle">
-              <el-cascader
-                :props="props"
-                :options="addressInfo"
-                v-model="warehouseInfo.address"
-                style="width: 100%;">
-              </el-cascader>
-          </el-form-item>
-          <el-form-item
-            prop="addressDetail"
-            label="详细地址"
-            size="middle">
-            <el-input
-              type="textarea"
-              v-model="warehouseInfo.addressDetail">
-            </el-input>
-          </el-form-item>
-          <el-form-item
-            prop="area"
-            label="面积 (平方米)"
-            size="middle">
-            <el-input
-              v-model="warehouseInfo.area">
-            </el-input>
-          </el-form-item>
-        </el-form>
-        <el-row>
-          <el-col :span="2" :offset="13">
-            <el-button  :class="$style.submit_btn"
-                        @click="warehouseInfoSubmit">
-                        提交
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-  </el-dialog>
+          <div  :class="$style.add_warehouse">
+                <div  :class="$style.main">
+                      <el-row  :class="$style.add_warehouse_main">
+                                <el-col :span="10" :offset="6">
+                                        <el-form  ref="rule_form"
+                                                  :class="$style.staff_form"
+                                                  label-width="140px"
+                                                  size="middle"
+                                                  :rules="rules"
+                                                  label-position="left"
+                                                  :model="warehouseInfo">
+                                                  <el-form-item  prop="name_cn"
+                                                                label="仓库名称"
+                                                                size="middle">
+                                                                <el-input  v-model="warehouseInfo.name_cn"></el-input>
+                                                  </el-form-item>
+                                                  <el-form-item  prop="code"
+                                                                label="仓库编码"
+                                                                size="middle">
+                                                                <el-input  v-model="warehouseInfo.code"></el-input>
+                                                  </el-form-item>
+                                                  <el-form-item  prop="address"
+                                                                label="省市区"
+                                                                size="middle">
+                                                                <el-cascader  :props="props"
+                                                                              :options="addressInfo"
+                                                                              v-model="warehouseInfo.address"
+                                                                              style="width: 100%;">
+                                                                </el-cascader>
+                                                  </el-form-item>
+                                                  <el-form-item  prop="addressDetail"
+                                                                label="详细地址"
+                                                                size="middle">
+                                                                <el-input  type="textarea"
+                                                                            v-model="warehouseInfo.addressDetail">
+                                                                </el-input>
+                                                  </el-form-item>
+                                                  <el-form-item  prop="area"
+                                                                label="面积 (平方米)"
+                                                                size="middle">
+                                                                <el-input  v-model="warehouseInfo.area"></el-input>
+                                                  </el-form-item>
+                                        </el-form>
+                                        <el-row>
+                                                <el-col :span="2" :offset="13">
+                                                  <el-button  :class="$style.submit_btn"
+                                                              @click="warehouseInfoSubmit">
+                                                              提交
+                                                  </el-button>
+                                                </el-col>
+                                        </el-row>
+                                </el-col>
+                      </el-row>
+                </div>
+          </div>
 </template>
 
 <script>
-// import Axios from 'axios';
 import $http from '@/api';
 import Options from '@/assets/address.json';
 
 export default {
   name: 'addWarehouse',
-  props: {
-    visible: [Boolean],
-    row_data: [Object],
-  },
   data() {
     // 自定义的验证规则
     const check = {
@@ -236,26 +209,15 @@ export default {
             type: 'warning',
           })
             .then(() => {
-              let id = this.row_data.id; // 用于编辑
-              if (id) {
-                $http.modifyWarehouse(id, this.formInfo)
-                  .then((re) => {
-                    if (re.status) return;
-                    this.$emit('updata_data', true); // 更新数据列表
-                  })
-                  .catch();
-              } else {
-                $http.addWarehouse(this.formInfo)
-                  .then((res) => {
-                    if (res.status) return;
-                    // this.message(res.status, '添加成功!', '添加失败!')
-                    this.$emit('updata_data', true); // 更新数据列表
-                  })
-                  .catch(() => {
-                    console.log('添加出错');
-                  });
-              }
-              this.$emit('update:visible', false); // 关闭弹窗
+              console.log('addWWWW');
+              $http.addWarehouse(this.formInfo)
+                .then((res) => {
+                  if (res.status) return;
+                  this.$router.push({ name: 'storeManage'});
+                })
+                .catch(() => {
+                  console.log('添加出错');
+                });
             })
             .catch(() => {});
         } else {
@@ -269,31 +231,27 @@ export default {
 
 <style lang="less" module>
 @import '../../../less/public_variable.less';
-.add_warehouse_main {
-  width: 90%;
-  height: 50%;
-  margin: 0 auto;
-  padding: 30px 0 0 0;
-  background-color: white;
-  .avatar_name {
-    display: inline-block;
-    margin: 20px 0 10px 20px;
+
+.add_warehouse {
+  .main {
+    width: 88%;
+    min-height: 507px;
+    margin: 20px auto;
+    padding: 45px;
+    background: @white;
+    .add_warehouse_main {
+      margin: 0 auto;
+      height: 100%;
+      .submit_btn {
+        background-color: @ThemeColor;
+        color: @white;
+      }
+      .staff_form {
+        width: 120%;
+        height: 120%;
+        margin: 0 auto;
+      }
+    }
   }
-  .submit_btn {
-    background-color: @ThemeColor;
-    color: @white;
-  }
-}
-.staff_form {
-  width: 120%;
-  height: 120%;
-  margin: 0 auto;
-  background-color: white;
-}
-.staff_title {
-  display: inline-block;
-  margin: 10px 0 40px 0;
-  font-size: 16px;
-  font-weight: 400;
 }
 </style>

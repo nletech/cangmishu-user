@@ -4,9 +4,6 @@ export default {
     if (!this.$route.query.type) return;
     this.params.type = this.$route.query.type;
   },
-  // beforeUpdate() {
-  //   this.extendParams();
-  // },
   mounted() {
     if (this.getList) this.getList();
   },

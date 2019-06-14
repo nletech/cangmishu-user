@@ -145,17 +145,19 @@ export default {
       this.switchFlag = true;
     }, // 添加信息按钮
     active_item_check(item) {
-      item === '发件人信息'
-      ? $http.getSenderAddress()
-          .then((re) => {
-            if (re.status) return;
-            console.log(re, '发件人信息');
-            this.info_data = re.data.data;
-            this.total = re.data.total;
-            this.current_page = re.data.current_page;
-          })
-          .catch(() => {})
-      : $http.getReceiverAddress()
+      this.info_data = [];
+      if (item === '发件人信息') {
+        $http.getSenderAddress()
+            .then((re) => {
+              if (re.status) return;
+              console.log(re, '发件人信息');
+              this.info_data = re.data.data;
+              this.total = re.data.total;
+              this.current_page = re.data.current_page;
+            })
+            .catch(() => {});
+      } else {
+        $http.getReceiverAddress()
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -164,6 +166,7 @@ export default {
             console.log(re, '收件人信息');
           })
           .catch(() => {});
+      }
     }, // 检测选中的标签页
     handleCurrentChange(val) {
       this.current_page = val;
@@ -232,7 +235,7 @@ export default {
       border: none;
       font-size: 1.2rem;
       color: @ThemeColor;
-        cursor: pointer;
+      cursor: pointer;
     }
   }
 }
