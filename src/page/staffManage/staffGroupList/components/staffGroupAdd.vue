@@ -80,9 +80,6 @@ export default {
                   message: '添加失败',
                 });
               }
-            })
-            .catch(() => {
-              console.log('add staffGroup is wrong!');
             });
         })
         .catch(() => {

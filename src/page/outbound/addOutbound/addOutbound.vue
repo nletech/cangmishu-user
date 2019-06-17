@@ -184,8 +184,6 @@ export default {
 };
 </script>
 
-<style lang="less" module>
-</style>
 <style lang="less" scoped>
 .address {
   border: 1px solid #ccc;

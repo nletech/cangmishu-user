@@ -120,7 +120,7 @@ export default {
   },
   computed: {
     warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('selectWareHouseId');
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
   methods: {
@@ -141,15 +141,6 @@ export default {
     },
     // 获取员工列表
     getList() {
-      // $http.getStaffs(this.params)
-      //   .then((res) => {
-      //     // 员工信息
-      //     this.staff_data = res.data.data;
-      //     this.params.data_count = res.data.total;
-      //   })
-      //   .catch(() => {
-      //     console.log('get staffList_info error');
-      //   });
       // 获取该分组下的员工列表
       const info = {
         warehouse_id: this.warehouseId,
@@ -160,9 +151,6 @@ export default {
           // 员工信息
           this.staff_data = res.data.data;
           this.params.data_count = res.data.total;
-        })
-        .catch(() => {
-          console.log('get staffList_info error');
         });
     },
     deleteStaff(userInfo) {
@@ -184,19 +172,8 @@ export default {
                   type: 'success',
                   message: '移除成功',
                 });
-                $http.getStaffs(this.params)
-                  .then((re) => {
-                    // 员工信息
-                    this.staff_data = re.data.data;
-                    this.params.data_count = re.data.total;
-                  })
-                  .catch(() => {
-                    console.log('get staffList_info error');
-                  });
+                this.getList();
               }
-            })
-            .catch(() => {
-              console.log('移除员工失败');
             });
         })
         .catch(() => {

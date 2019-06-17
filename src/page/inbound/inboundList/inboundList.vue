@@ -7,20 +7,28 @@
                                             <date-picker-public @select_data="handlerSelect_data"></date-picker-public>
                                     </el-col>
                                     <el-col :span="3"
-                                            :offset="6">
-                                            <select-public></select-public>
+                                            :offset="5">
+                                            <select-public :select="select_data_type"
+                                                           @data_cb="handlerQuery">
+                                            </select-public>
                                     </el-col>
                                     <el-col :span="3"
                                             :offset="1">
-                                            <select-public></select-public>
+                                            <select-public :select="select_data_status"
+                                                           @data_cb="handlerQuery">
+                                            </select-public>
                                     </el-col>
                                     <el-col :span="3"
                                             :offset="1">
-                                            <select-public></select-public>
+                                            <select-public :select="select_data_distributor"
+                                                           @data_cb="handlerQuery">
+                                            </select-public>
                                     </el-col>
                                     <el-col :span="3"
                                             :offset="1">
-                                            <input-public></input-public>
+                                            <input-public :select="select_batch_code"
+                                                          @data_cb="handlerInputQuery">
+                                            </input-public>
                                     </el-col>
                             </el-row>
                             <el-row>
@@ -134,7 +142,33 @@ export default {
       ],
       typeList: [],
       distributorList: [],
+      // 子组件数据
+      select_data_type: {
+        placeholder: '入库单分类',
+        options: [],
+        cb_flag: 0,
+      },
+      select_data_status: {
+        placeholder: '入库单状态',
+        options: [],
+        cb_flag: 1,
+      },
+      select_data_distributor: {
+        placeholder: '供应商',
+        options: [],
+        cb_flag: 2,
+      },
+      select_batch_code: {
+        placeholder: '入库单号或确认单号',
+      },
     };
+  },
+  created() {
+    this.getBatchType();
+    this.getData();
+    this.getTypeList();
+    this.getBatchStatus();
+    this.getDistributors();
   },
   computed: {
     warehouseId() {
@@ -146,11 +180,34 @@ export default {
       this.getData();
     },
   },
-  created() {
-    this.getData();
-    this.getTypeList();
-  },
   methods: {
+    handlerQuery(res) {
+      this.inbound_list_data = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+    }, // 选择框回调
+    handlerInputQuery(res) {
+      this.inbound_list_data = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+    }, // 输入框回调
+    getBatchType() {
+      $http.getBatchType()
+        .then((res) => {
+          if (res.status) return;
+          this.select_data_type.options = res.data.data;
+        });
+    }, // 入库单分类列表
+    getBatchStatus() {
+      this.select_data_status.options = this.statusList;
+    }, // 入库单状态列表
+    getDistributors() {
+      $http.getDistributor()
+        .then((res) => {
+          if (res.status) return;
+          this.select_data_distributor.options = res.data.data;
+        });
+    }, // 供应商列表
     handlerChangePage(val) {
       $http.getInboundPage({ page: val })
         .then((res) => {
@@ -183,8 +240,6 @@ export default {
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;
           this.$set(this.params);
-          console.log(this.params, 'this.params');
-          // this.params.currentPage = res.data.current_page;
         });
     }, // 获取列表
     // 以上重写
@@ -241,7 +296,7 @@ export default {
               type: 'success',
               showClose: true,
             });
-            this.getList();
+            this.getData();
           });
       }).catch(() => {});
     },
@@ -260,7 +315,7 @@ export default {
     .header {
       margin: 10px 0 10px 0;
       .header_btn {
-        margin: 0 0 10px 0;
+        margin: 10px 0 10px 0;
         font-size: 1.2rem;
       }
     }

@@ -147,9 +147,6 @@ export default {
           this.staff_data = res.data.data;
           this.params.data_count = res.data.total;
           console.log(res, 'showEE');
-        })
-        .catch(() => {
-          console.log('get staffList_info error');
         });
     },
     // 提交员工添加
@@ -168,15 +165,12 @@ export default {
             });
             this.$router.push({
               name: 'staffGroupShowEmployee',
-              params: {
+              query: {
                 groupId: this.$route.query.groupId,
               },
             });
             this.getList();
           }
-        })
-        .catch((err) => {
-          console.log(err, '添加员工失败');
         });
     },
   },

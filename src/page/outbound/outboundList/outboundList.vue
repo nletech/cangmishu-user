@@ -70,7 +70,7 @@
                                  <el-table-column  label="出库单号"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="order_code">
+                                                   prop="out_sn">
                                  </el-table-column>
                                  <el-table-column  label="运单号"
                                                    header-align="center"
@@ -127,7 +127,8 @@
                       </el-pagination>
                      <!-- 入库单详情弹框 -->
                      <DetailDialog  :visible.sync="outboundDialogVisible"
-                                    :id="id">
+                                    :id="id"
+                                    :row_data="row_data">
                      </DetailDialog>
                 </div>
           </div>
@@ -154,6 +155,7 @@ export default {
       params: {
         delivery_date: '',
       },
+      row_data: {},
       typeList: [
         { id: 0, name: '订单被取消' },
         { id: 1, name: '待拣货' },
@@ -212,29 +214,36 @@ export default {
         });
     }, // 获取出库单列表
     checkedOutbound(row) {
-      const itemsArr = [];
-      for (let i = 0; i < row.order_items.length; i += 1) {
-        // eslint-disable-next-line
-        let obj = new Object();
-        obj.order_item_id = row.order_items[i].id;
-        obj.pick_num = row.order_items[i].amount;
-        itemsArr.push(obj);
-      } // 这段代码是用于处理提交的数据
-      const perForm = {
-        order_id: row.id,
-        warehouse_id: row.warehouse_id,
-        items: itemsArr,
-      }; // 与提交的表单
-      $http.checkedOutbound(perForm)
-        .then((res) => {
-          if (res.status) return;
-          console.log(res, 'checkedOutbound');
-        });
+      this.$router.push({
+        name: 'setOutbound',
+        query: {
+          order_id: row.id,
+        },
+      });
+      // const itemsArr = [];
+      // for (let i = 0; i < row.order_items.length; i += 1) {
+      //   // eslint-disable-next-line
+      //   let obj = new Object();
+      //   obj.order_item_id = row.order_items[i].id;
+      //   obj.pick_num = row.order_items[i].amount;
+      //   itemsArr.push(obj);
+      // } // 这段代码是用于处理提交的数据
+      // const perForm = {
+      //   order_id: row.id,
+      //   warehouse_id: row.warehouse_id,
+      //   items: itemsArr,
+      // }; // 与提交的表单
+      // $http.checkedOutbound(perForm)
+      //   .then((res) => {
+      //     if (res.status) return;
+      //     console.log(res, 'checkedOutbound');
+      //   });
     }, // 设为出库
     // 出库单详情弹框
     viewDetails(row) {
       this.outboundDialogVisible = true;
       this.id = row.id;
+      this.row_data = row;
     },
     // 取消订单
     cancelOrder(row) {

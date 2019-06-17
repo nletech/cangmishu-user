@@ -23,7 +23,7 @@ const $http = {
   }, // 获取入库单列表
   getInboundPage(data) {
     return Axios.get('/batch', { params: data });
-  }, // 入库单列表(分页查询)
+  }, // 入库单列表(分页查询和其他查询符合接口)
   getInboundDetail(id, data) {
     return Axios.get(`/batch/${id}`, { params: data });
   }, // 获取单个入库单
@@ -305,7 +305,7 @@ const $http = {
   //                               出库单分类
   getOrderType() {
     return Axios.get('/orderType');
-  }, // 获取出库单分类
+  }, // 获取出库单分类列表
   addOrderType(data) {
     return Axios.post('/orderType', data);
   }, // 添加出库单分类

@@ -23,6 +23,7 @@ const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf')
 // 出库
 const OutboundList = loadOnDemand('outbound/outboundList/outboundList');// 出库单列表
 const AddOutbound = loadOnDemand('outbound/addOutbound/addOutbound');// 添加出库单
+const SetOutbound = loadOnDemand('outbound/outboundList/components/setOutbound');// 设为出库
 const EditSender = loadOnDemand('outbound/addOutbound/components/editSender');// 编辑发件人信息
 const EditRecevier = loadOnDemand('outbound/addOutbound/components/editRecevier');// 编辑收件人信息
 
@@ -145,15 +146,21 @@ export const routerMap = [
             nav: 2,
           },
           {
-            name: 'editSender', // 子菜单-添加出库单
+            name: 'editSender', // 子菜单-添加出库单-编辑发件人
             path: 'editSender',
             component: EditSender,
             nav: 3,
           },
           {
-            name: 'editRecevier', // 子菜单-添加出库单
+            name: 'editRecevier', // 子菜单-添加出库单-编辑收件人
             path: 'editRecevier',
             component: EditRecevier,
+            nav: 3,
+          },
+          {
+            name: 'setOutbound', // 子菜单-添加出库单-编辑收件人
+            path: 'setOutbound',
+            component: SetOutbound,
             nav: 3,
           },
         ],

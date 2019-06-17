@@ -190,9 +190,6 @@ export default {
                   message: '保存失败',
                 });
               }
-            })
-            .catch(() => {
-              console.log('permissions Changeed was wrong!');
             });
         })
         .catch(() => {

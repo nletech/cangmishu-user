@@ -181,13 +181,8 @@ export default {
                   .then((re) => {
                     this.staffGroupData = re.data.data;
                     this.params.data_count = re.data.total; // 页面总数
-                  })
-                  .catch(() => {
                   });
               }
-            })
-            .catch(() => {
-              console.log('删除失败');
             });
         })
         .catch(() => {
