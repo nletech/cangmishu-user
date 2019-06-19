@@ -3,43 +3,26 @@
                 <div  :class="$style.outboundList_main">
                       <el-row :class="$style.outboundList_tags">
                               <el-row  :class="$style.outboundList_tags">
-                                       <el-col :span="4">
-                                              <el-date-picker  v-model="date"
-                                                               size="small"
-                                                               type="date"
-                                                               placeholder="选择日期">
-                                              </el-date-picker>
+                                       <el-col  :span="4">
+                                                <date-picker-public @select_data="handlerSelect_data">
+                                                </date-picker-public>
+                                       </el-col>
+                                       <el-col  :span="4"
+                                                :offset="4">
+                                                <date-picker-singe-public @select_data="handlerSelect_data">
+                                                </date-picker-singe-public>
                                        </el-col>
                                        <el-col  :span="4"
                                                 :offset="2">
-                                                <el-date-picker  v-model="outbound_date"
-                                                                size="small"
-                                                                type="date"
-                                                                placeholder="预计出库日期">
-                                               </el-date-picker>
+                                                <select-public :select="select_data_distributor"
+                                                               @data_cb="handlerQuery">
+                                                </select-public>
                                        </el-col>
                                        <el-col  :span="4"
                                                 :offset="2">
-                                                <el-select  v-model="outbound_status"
-                                                            size="small"
-                                                            placeholder="请选择出库单状态">
-                                                            <el-option  v-for="item in outbound_status_options"
-                                                                        :key="item.value"
-                                                                        :label="item.label"
-                                                                        :value="item.value">
-                                                            </el-option>
-                                              </el-select>
-                                       </el-col>
-                                       <el-col  :span="6"
-                                                :offset="2">
-                                                <el-input  v-model="outbound_number_search"
-                                                           size="small"
-                                                           placeholder="请输入库单号">
-                                                           <i  slot="suffix"
-                                                               @click="handleOutboundSearch"
-                                                               class="el-input__icon el-icon-search">
-                                                           </i>
-                                                </el-input>
+                                                <input-public :select="select_batch_code"
+                                                              @data_cb="handlerInputQuery">
+                                                </input-public>
                                        </el-col>
                               </el-row>
                               <el-row>
@@ -108,6 +91,7 @@
                                                              </el-button>
                                                              <el-button  size="mini"
                                                                          style="margin: 0; pading: 0;"
+                                                                         :disabled="scope.row.status === 0 || scope.row.status === 4 "
                                                                          @click="checkedOutbound(scope.row)">
                                                                          设为出库
                                                              </el-button>
@@ -136,6 +120,10 @@
 
 <script>
 import $http from '@/api';
+import datePickerPublic from '@/components/date-picker-public';
+import selectPublic from '@/components/select-public';
+import inputPublic from '@/components/input-public';
+import datePickerSingePublic from '@/components/date-picker-singe-public';
 import DetailDialog from './components/outbound_detail';
 
 export default {
@@ -156,19 +144,27 @@ export default {
         delivery_date: '',
       },
       row_data: {},
-      typeList: [
-        { id: 0, name: '订单被取消' },
-        { id: 1, name: '待拣货' },
-        { id: 2, name: '拣货中' },
-        { id: 3, name: '已拣货' },
-        { id: 4, name: '待出库' },
-        { id: 5, name: '配送中' },
-        { id: 6, name: '已收货' },
-      ],
+      select_data_distributor: {
+        placeholder: '请选择状态',
+        options: [
+          { id: 0, name: '订单已取消' },
+          { id: 1, name: '待拣货' },
+          { id: 4, name: '待出库' },
+        ],
+        cb_flag: 3,
+      },
+      select_batch_code: {
+        placeholder: '出库单号',
+        flag: 1,
+      },
     };
   },
   components: {
     DetailDialog,
+    datePickerPublic,
+    datePickerSingePublic,
+    selectPublic,
+    inputPublic,
   },
   created() {
     this.getOutbounds();
@@ -184,6 +180,25 @@ export default {
     },
   },
   methods: {
+    handlerQuery(res) {
+      this.outbound_list_data = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+    }, // 选择框回调
+    handlerInputQuery(res) {
+      this.outbound_list_data = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+    }, // 输入框回调
+    handlerSelect_data(val) {
+      console.log(val, '出入库');
+      if (val && (Array.isArray(val) || typeof val === 'string')) {
+        this.getOutbounds(val);
+      } else {
+        // 刷新列表
+        this.getOutbounds();
+      }
+    }, // 创建时间筛选
     handleCurrentChange(val) {
       $http.checkOrder({
         warehouse_id: this.warehouseId,
@@ -204,8 +219,19 @@ export default {
         name: 'addOutbound',
       });
     }, // 添加出库单
-    getOutbounds() {
-      $http.getOutbound({ warehouse_id: this.warehouseId })
+    getOutbounds(query) {
+      if (!this.warehouseId) return;
+      const obj = {};
+      obj.warehouse_id = this.warehouseId; // 仓库 id 必填
+      // query有几种形式,这里查询时间范围是一个数组
+      if (Array.isArray(query)) {
+        obj.created_at_b = query[0]; // 开始时间
+        obj.created_at_e = query[1]; // 结束时间
+      } // 查询时间段
+      if (typeof query === 'string') {
+        obj.delivery_date = query;
+      } // 查询单个时间
+      $http.getOutbound(obj)
         .then((res) => {
           if (res.status) return;
           this.outbound_list_data = res.data.data;
@@ -220,24 +246,6 @@ export default {
           order_id: row.id,
         },
       });
-      // const itemsArr = [];
-      // for (let i = 0; i < row.order_items.length; i += 1) {
-      //   // eslint-disable-next-line
-      //   let obj = new Object();
-      //   obj.order_item_id = row.order_items[i].id;
-      //   obj.pick_num = row.order_items[i].amount;
-      //   itemsArr.push(obj);
-      // } // 这段代码是用于处理提交的数据
-      // const perForm = {
-      //   order_id: row.id,
-      //   warehouse_id: row.warehouse_id,
-      //   items: itemsArr,
-      // }; // 与提交的表单
-      // $http.checkedOutbound(perForm)
-      //   .then((res) => {
-      //     if (res.status) return;
-      //     console.log(res, 'checkedOutbound');
-      //   });
     }, // 设为出库
     // 出库单详情弹框
     viewDetails(row) {

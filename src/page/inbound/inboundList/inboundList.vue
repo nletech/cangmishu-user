@@ -4,7 +4,8 @@
                       <div  :class="$style.header">
                             <el-row>
                                     <el-col :span="3">
-                                            <date-picker-public @select_data="handlerSelect_data"></date-picker-public>
+                                            <date-picker-public @select_data="handlerSelect_data">
+                                            </date-picker-public>
                                     </el-col>
                                     <el-col :span="3"
                                             :offset="5">
@@ -24,7 +25,7 @@
                                                            @data_cb="handlerQuery">
                                             </select-public>
                                     </el-col>
-                                    <el-col :span="3"
+                                    <el-col :span="4"
                                             :offset="1">
                                             <input-public :select="select_batch_code"
                                                           @data_cb="handlerInputQuery">
@@ -160,6 +161,7 @@ export default {
       },
       select_batch_code: {
         placeholder: '入库单号或确认单号',
+        flag: 2,
       },
     };
   },

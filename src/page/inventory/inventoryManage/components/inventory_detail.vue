@@ -35,16 +35,10 @@
           {{statusMap[scope.row.type_id]}}
         </template>
       </el-table-column>
-      <el-table-column label="SKU" prop="sku">
+      <el-table-column label="入库批次" prop="sku">
       </el-table-column>
       <el-table-column label="操作数量" prop="operation_num">
       </el-table-column>
-      <!-- <el-table-column label="上架数量">
-        <template slot-scope="scope">
-          <span v-if="scope.row.type_id === 2">{{scope.row.operation_num}}</span>
-          <span v-else>/</span>
-        </template>
-      </el-table-column> -->
       <el-table-column prop="spec_total_stockin_num" label="总仓库库存">
       </el-table-column>
       <el-table-column prop="spec_total_shelf_num" label="总上架库存">
@@ -55,8 +49,6 @@
       </el-table-column>
       <el-table-column prop="remark" label="备注">
       </el-table-column>
-      <!-- <el-table-column prop="operator" label="操作人">
-      </el-table-column> -->
     </el-table>
 
     <button-pagination :pageParams="params"></button-pagination>
@@ -65,6 +57,7 @@
 
 <script>
 import buttonPagination from '@/components/pagination_and_buttons';
+// eslint-disable-next-line
 import $http from '@/api';
 import getListData from '@/mixin/list';
 import MyDate from '@/components/my_date';
@@ -77,7 +70,7 @@ export default {
     visible: Boolean,
     id: Number,
     rowInfo: Object,
-    warehouseId: String,
+    warehouseId: Number,
     warehouseName: String,
   },
   components: {
@@ -124,13 +117,14 @@ export default {
       if (!this.id) return;
       this.params.spec_id = this.id;
       this.params.warehouse_id = this.warehouseId;
-      $http.inventoryDetail(this.params).then((res) => {
-        this.inventoryList = res.data.data;
-        this.params.data_count = res.data.total;
-        // this.warehouse_name = res.data.warehouse.name_cn;
-        // this.distributor_name = res.data.distributor.name_cn;
-        // this.category_name = res.data.batch_type.name;
-      }).catch(() => {});
+      // $http.inventoryDetail(this.params).then((res) => {
+      //   console.log(res, 'res这个');
+      //   this.inventoryList = res.data.data;
+      //   this.params.data_count = res.data.total;
+      //   // this.warehouse_name = res.data.warehouse.name_cn;
+      //   // this.distributor_name = res.data.distributor.name_cn;
+      //   // this.category_name = res.data.batch_type.name;
+      // }).catch(() => {});
     },
   },
   watch: {

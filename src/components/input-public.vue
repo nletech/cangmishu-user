@@ -26,11 +26,6 @@ export default {
   props: {
     select: {
       type: Object,
-      default() {
-        return {
-          placeholder: '',
-        };
-      },
     },
   },
   data() {
@@ -46,21 +41,55 @@ export default {
   methods: {
     handlerSearch() {
       if (!this.value) return;
-      $http.getInboundPage({
-        warehouse_id: this.warehouseId,
-        keywords: this.value,
-      })
-        .then((res) => {
-          this.$emit('data_cb', res);
-        });
+      if (this.select.flag === 1) {
+        $http.getOutbound({ // 搜索出库单
+          warehouse_id: this.warehouseId,
+          keywords: this.value,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.flag === 2) { // 搜索入库单
+        $http.getInboundPage({
+          warehouse_id: this.warehouseId,
+          keywords: this.value,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.flag === 3) {
+        $http.queryProducts({ // 查询货品（通过货品和sku）
+          warehouse_id: this.warehouseId,
+          keywords: this.value,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      }
     },
     handlerClear() {
-      $http.getInbounds({
-        warehouse_id: this.warehouseId,
-      })
-        .then((res) => {
-          this.$emit('data_cb', res);
-        });
+      if (this.select.flag === 1) {
+        $http.getOutbound({
+          warehouse_id: this.warehouseId,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.flag === 2) {
+        $http.getInbounds({
+          warehouse_id: this.warehouseId,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.flag === 3) {
+        $http.getProducts({
+          warehouse_id: this.warehouseId,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      }
     }, // 清空的时候重新拉取列表
   },
 };

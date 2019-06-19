@@ -65,6 +65,9 @@ const $http = {
   checkOrder(data) {
     return Axios.get('/order', { params: data });
   }, // 分页查询--出库单分类
+  getOutboundDetail(id) {
+    return Axios.get(`/order/${id}`);
+  }, // 编辑出库单
   //                                                          库存
   //                                    货品管理
   getProducts(data) {
@@ -73,6 +76,9 @@ const $http = {
   getProductsPage(data) {
     return Axios.get('/products', { params: data });
   }, // 分页
+  queryProducts(data) {
+    return Axios.get('/products', { params: data });
+  }, // 查询货品
   getAProducts(id, data) {
     return Axios.get(`/products/${id}`, { params: data });
   }, // 获取单个货品

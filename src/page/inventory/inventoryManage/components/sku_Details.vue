@@ -35,12 +35,6 @@
       </el-table-column>
       <el-table-column label="操作数量" prop="operation_num">
       </el-table-column>
-      <!-- <el-table-column label="上架数量">
-        <template slot-scope="scope">
-          <span v-if="scope.row.type_id === 2">{{scope.row.operation_num}}</span>
-          <span v-else>/</span>
-        </template>
-      </el-table-column> -->
       <el-table-column prop="sku_total_stockin_num" label="仓库库存">
       </el-table-column>
       <el-table-column prop="sku_total_shelf_num" label="上架库存">
@@ -51,8 +45,6 @@
       </el-table-column>
       <el-table-column prop="remark" label="备注">
       </el-table-column>
-      <!-- <el-table-column prop="operator" label="操作人">
-      </el-table-column> -->
     </el-table>
 
     <button-pagination :pageParams="params"></button-pagination>
@@ -72,7 +64,7 @@ export default {
   props: {
     value: Boolean,
     skuId: Number,
-    warehouseId: String,
+    warehouseId: Number,
     warehouseName: String,
     rowInfo: Object,
   },

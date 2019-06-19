@@ -68,12 +68,12 @@
                                                                   width="80"
                                                                   prop="gross_weight">
                                                   </my-edit-table>
-                                                  <el-table-column  prop="send_email"
+                                                  <el-table-column  prop="is_warning"
                                                                     label="是否发送库存报警邮件"
                                                                     width="80">
                                                                     <template slot-scope="scope">
                                                                                 <el-switch
-                                                                                  v-model="form.is_send_email"
+                                                                                  v-model="scope.row.is_warning"
                                                                                   active-value="1"
                                                                                   inactive-value="0"
                                                                                   active-color="#13ce66"
@@ -162,7 +162,7 @@ export default {
         display_link: '',
         photos: '',
         remark: '',
-        is_send_email: '1', // 是否发送邮件
+        is_warning: '', // 是否发送邮件
       },
       en: true,
       tips: '',
@@ -182,7 +182,6 @@ export default {
   created() {
     this.getTypeList(); // 获取货品分类
     this.getGoodsData(); // 获取单个货品信息（用于编辑）
-    // console.log(this.$route.query, 'query');
   },
   computed: {
     warehouseId() {
@@ -321,6 +320,7 @@ export default {
     },
     // 提交商品信息
     onSubmitGoods(formName) {
+      console.log(formName, 'formNameformNameformNameformName');
       let ctr = true;
       this.skuList.filter(res => res.name_cn).forEach((val) => {
         if (!val.name_en) {

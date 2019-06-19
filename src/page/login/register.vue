@@ -100,44 +100,44 @@ export default {
   },
   computed: {
     rules() {
-      const validatorCode = (rule, value, callback) => {
-        const length = value.split().length;
-        if (length < 4) {
-          return callback(Error('仓库名称必须包含4个字符以上'));
-        }
-        return callback();
-      };
-      const validatorUserAgreement = (rule, value, callback) => {
-        console.log(value, 'ruleeeee');
-        // if (length < 4) {
-        //   return callback(Error('仓库名称必须包含4个字符以上'));
-        // }
-        return callback(Error(value, '我是val'));
-      };
+      // const validatorCode = (rule, value, callback) => {
+      //   const length = value.split().length;
+      //   if (length < 4) {
+      //     return callback(Error('仓库名称必须包含4个字符以上'));
+      //   }
+      //   return callback();
+      // };
+      // const validatorUserAgreement = (rule, value, callback) => {
+      //   console.log(value, 'ruleeeee');
+      //   // if (length < 4) {
+      //   //   return callback(Error('仓库名称必须包含4个字符以上'));
+      //   // }
+      //   return callback(Error(value, '我是val'));
+      // };
       return {
-        email: [
-          { required: true, message: '邮箱不能为空', tigger: 'bulr' },
-        ],
-        verificationCode: [
-          { required: true, message: '验证码不能为空', tigger: 'bulr' },
-        ],
-        password: [
-          { required: true, message: '密码不能为空', tigger: 'bulr' },
-        ],
-        password_confirmation: [
-          { required: true, message: '密码不能为空', tigger: 'bulr' },
-        ],
-        warehouse_name: [
-          { required: true, message: '仓库名称不能为空', tigger: 'bulr' },
-          { validator: validatorCode, trigger: 'blur' },
-        ],
-        warehouse_area: [
-          { required: true, message: '仓库面积不能为空', tigger: 'bulr' },
-        ],
-        user_agreement: [
-          { required: true, message: '必须勾选用户协议', tigger: 'bulr' },
-          { validator: validatorUserAgreement, trigger: 'bulr' },
-        ],
+        // email: [
+        //   { required: true, message: '邮箱不能为空', tigger: 'bulr' },
+        // ],
+        // verificationCode: [
+        //   { required: true, message: '验证码不能为空', tigger: 'bulr' },
+        // ],
+        // password: [
+        //   { required: true, message: '密码不能为空', tigger: 'bulr' },
+        // ],
+        // password_confirmation: [
+        //   { required: true, message: '密码不能为空', tigger: 'bulr' },
+        // ],
+        // warehouse_name: [
+        //   { required: true, message: '仓库名称不能为空', tigger: 'bulr' },
+        //   { validator: validatorCode, trigger: 'blur' },
+        // ],
+        // warehouse_area: [
+        //   { required: true, message: '仓库面积不能为空', tigger: 'bulr' },
+        // ],
+        // user_agreement: [
+        //   { required: true, message: '必须勾选用户协议', tigger: 'bulr' },
+        //   { validator: validatorUserAgreement, trigger: 'bulr' },
+        // ],
       };
     },
   },

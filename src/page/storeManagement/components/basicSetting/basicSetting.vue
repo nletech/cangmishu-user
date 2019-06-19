@@ -54,8 +54,13 @@ export default {
       ],
       active_tab_name: '货区',
       show_data: '',
-      warehouse_id: +localStorage.getItem('warehouseId'),
+      // warehouse_id: +localStorage.getItem('warehouseId'),
     };
+  },
+  computed: {
+    warehouse_id() {
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
+    },
   },
   methods: {
     handle_add_callback(val) {

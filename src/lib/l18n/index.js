@@ -33,6 +33,7 @@ export default {
     staffGroupPermissions: '员工权限',
     inboundShelf: '入库&上架',
     addWarehouse: '添加仓库',
+    setOutbound: '设为出库',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',

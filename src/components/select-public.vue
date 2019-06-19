@@ -60,15 +60,32 @@ export default {
           .then((res) => {
             this.$emit('data_cb', res);
           });
+      } else if (this.select.cb_flag === 3) { // 出库单状态
+        $http.getOutbound({
+          warehouse_id: this.warehouseId,
+          status: val,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
       }
     },
     handlerClear() {
-      $http.getInbounds({
-        warehouse_id: this.warehouseId,
-      })
-        .then((res) => {
-          this.$emit('data_cb', res);
-        });
+      if (this.select.cb_flag !== 3) {
+        $http.getInbounds({
+          warehouse_id: this.warehouseId,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else {
+        $http.getOutbound({
+          warehouse_id: this.warehouseId,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      }
     }, // 清空的时候重新拉取列表
   },
 };

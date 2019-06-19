@@ -4,7 +4,7 @@
           <my-group  v-model="params"
                      @submit="onSubmit">
                     <!-- 请选择分类 -->
-                    <el-col :span="5">
+                    <el-col :span="4">
                             <my-select  keyName="category_id"
                                         placeholder="请选择分类">
                                         <el-option  v-for="item in typeList"
@@ -15,16 +15,20 @@
                             </my-select>
                     </el-col>
                     <!-- 搜索框 -->
-                    <el-col  :offset="2"
-                             :span="6">
-                             <my-input keyName="keywords"></my-input>
+                    <el-col  :offset="12"
+                             :span="4">
+                                      <input-public :select="select_batch_code"
+                                                    @data_cb="handlerInputQuery">
+                                      </input-public>
                     </el-col>
                     <!-- 添加货品 -->
                     <el-col :span="2"
-                            :offset="6">
+                            :offset="2">
                             <el-button  v-if="isRole()"
+                                        icon="el-icon-plus"
+                                        type="text"
                                         @click="dialogVisible = true"
-                                        size="medium">
+                                        size="large">
                                         {{$t('addGoods')}}
                             </el-button>
                             <!-- 弹窗 -->
@@ -83,31 +87,30 @@
                      style="margin:10px auto 0;">
                      <!-- 右箭头 -->
                     <el-table-column  type="expand">
-                                      <template slot-scope="props">
-                                        <el-table :data="props.row.specs" border style="width:80%;">
-                                          <el-table-column
-                                            prop="relevance_code"
-                                            :label="$t('relevanceCode')">
-                                          </el-table-column>
-                                          <el-table-column
-                                            prop="name_cn"
-                                            :label="$t('specificationChineseName')">
-                                          </el-table-column>
-                                          <el-table-column
-                                            prop="name_en"
-                                            :label="$t('specificationEnglishName')">
-                                          </el-table-column>
-                                          <el-table-column
-                                            prop="net_weight"
-                                            :label="$t('netWeight') + '(g)'"
-                                          >
-                                          </el-table-column>
-                                          <el-table-column
-                                            prop="gross_weight"
-                                            :label="$t('grossWeight') + '(g)'"
-                                          >
-                                          </el-table-column>
-                                        </el-table>
+                                      <template   slot-scope="props">
+                                                  <el-table   :data="props.row.specs" border style="width:80%;">
+                                                              <el-table-column  prop="relevance_code"
+                                                                                :label="$t('relevanceCode')">
+                                                              </el-table-column>
+                                                              <el-table-column  prop="name_cn"
+                                                                                :label="$t('specificationChineseName')">
+                                                              </el-table-column>
+                                                              <el-table-column  prop="name_en"
+                                                                                :label="$t('specificationEnglishName')">
+                                                              </el-table-column>
+                                                              <el-table-column  prop="net_weight"
+                                                                                :label="$t('netWeight') + '(g)'">
+                                                              </el-table-column>
+                                                              <el-table-column  prop="gross_weight"
+                                                                                :label="$t('grossWeight') + '(g)'">
+                                                              </el-table-column>
+                                                              <el-table-column  prop="is_warning"
+                                                                                label="是否发送库存报警邮件">
+                                                                                <template slot-scope="scope">
+                                                                                          {{scope.row.is_warning | is_warning_filter}}
+                                                                                </template>
+                                                              </el-table-column>
+                                                  </el-table>
                                       </template>
                     </el-table-column>
                     <!-- 中文名称 -->
@@ -197,6 +200,8 @@ import MyDate from '@/components/my_date';
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import buttonPagination from '@/components/pagination_and_buttons';
+import inputPublic from '@/components/input-public';
+
 
 export default {
   data() {
@@ -210,6 +215,10 @@ export default {
       selectCategory_id: '',
       uploadData: {},
       dialogVisible: false,
+      select_batch_code: {
+        placeholder: '货品名或SKU',
+        flag: 3,
+      },
     };
   },
   components: {
@@ -219,8 +228,20 @@ export default {
     MyDate,
     MySelect,
     buttonPagination,
+    inputPublic,
   },
   mixins: [getListData],
+  filters: {
+    is_warning_filter(val) {
+      // eslint-disable-next-line
+      switch (+val) {
+        case 1:
+          return '是';
+        case 0:
+          return '否';
+      }
+    },
+  },
   created() {
     this.getTypeList();
   },
@@ -252,6 +273,11 @@ export default {
     },
   },
   methods: {
+    handlerInputQuery(res) {
+      this.goods_list_data = res.data.data;
+      this.params.data_count = res.data.total;
+      this.params.currentPage = res.data.current_page;
+    }, // 输入框回调
     addCommodity1() {
       console.log('添加货品');
     },
@@ -363,6 +389,10 @@ export default {
       $http.deleteProducts(id)
         .then((res) => {
           if (res.status) return;
+          this.$message({
+            message: '操作成功',
+            type: 'success',
+          });
           this.getList();
         });
     },
