@@ -169,8 +169,7 @@ export default {
           if (res.status) return;
           this.address_list_data = res.data.data;
           console.log(res, 'getSenders');
-        })
-        .catch();
+        });
     }, // 获取发件人列表
     getReceivers() {
       $http.getReceiverAddress()
@@ -178,8 +177,7 @@ export default {
           if (res.status) return;
           this.address_list_data = res.data.data;
           console.log(res, 'getReceivers');
-        })
-        .catch();
+        });
     }, // 获取收件人列表
     handle_confirm_btn(row) {
       // this.AddressType 为 0 信息填入发件人, 否则填入收件人

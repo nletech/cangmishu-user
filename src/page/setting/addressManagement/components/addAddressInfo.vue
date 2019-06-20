@@ -197,15 +197,13 @@ export default {
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 } else if(this.active_tab_item === '收件人信息') {
                   $http.editReceiverAddress(id, this.formInfo)
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 }
               } else {
                 if (this.active_tab_item === '发件人信息') {
@@ -213,20 +211,17 @@ export default {
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data_list', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 } else if(this.active_tab_item === '收件人信息') {
                   $http.addReceiverAddress(this.formInfo)
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data_list', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 }
               }
               this.$emit('update:visible', false); // 关闭弹窗
-            })
-            .catch(() => {});
+            });
         }
       });
     },

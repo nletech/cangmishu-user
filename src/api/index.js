@@ -2,7 +2,7 @@ import Axios from '@/lib/axios/config';
 
 const $http = {
   getVerificationCode(data) {
-    return Axios.post('/user/activateCode', data);
+    return Axios.post('/code', data);
   }, // 获取验证码
   register(data) {
     return Axios.post('/register', data);
@@ -69,7 +69,7 @@ const $http = {
     return Axios.get(`/order/${id}`);
   }, // 编辑出库单
   //                                                          库存
-  //                                    货品管理
+  //                                                 货品管理
   getProducts(data) {
     return Axios.get('/products', { params: data });
   }, // 获取货品列表
@@ -100,8 +100,7 @@ const $http = {
   deleteSpecs(id) {
     return Axios.delete(`/specs/${id}`);
   }, // 删除货品规格
-
-  //                                    库存盘点
+  //                                               库存盘点
   queryInventory(data) {
     return Axios.get('stock/code', { params: data });
   }, // 通过输入 sku 查询商品
@@ -111,14 +110,20 @@ const $http = {
   editInventory(id, data) {
     return Axios.put(`/stock/${id}`, data);
   },
-  // 库存管理
+  //                                               库存管理
   getStocks(data) {
     return Axios.get('/stock', { params: data });
   }, // 获取库存列表
   editStock(id, data) {
     return Axios.put(`/stock/${id}`, { params: data });
   }, // 编辑库存(盘点)
-  // 库存报警
+  getStockLogs(id, data) {
+    return Axios.get(`/stock/spec/log/${id}`, { params: data });
+  }, // 获取库存列表(复合分页查询)
+  queryGoodsRecord(id, data) {
+    return Axios.get(`stock/sku/log/${id}`, { params: data });
+  }, // 特定sku出入库记录(规格详情)
+  //                                               库存报警
   addWarning(data) {
     return Axios.post('/warning', data);
   }, // 添加库存报警

@@ -144,13 +144,6 @@ export default {
             .catch(() => {
               console.log('add staff is wrong!');
             });
-        })
-        .catch(() => {
-          // 显示取消消息
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
         });
     },
   },

@@ -52,7 +52,7 @@ export default {
           .then((res) => {
             this.$emit('data_cb', res);
           });
-      } else if (this.select.cb_flag === 2) { // 供应商
+      } else if (this.select.cb_flag === 2) { // 搜索供应商
         $http.getInboundPage({
           warehouse_id: this.warehouseId,
           distributor_id: val,
@@ -60,7 +60,7 @@ export default {
           .then((res) => {
             this.$emit('data_cb', res);
           });
-      } else if (this.select.cb_flag === 3) { // 出库单状态
+      } else if (this.select.cb_flag === 3) { // 搜索出库单状态
         $http.getOutbound({
           warehouse_id: this.warehouseId,
           status: val,
@@ -68,20 +68,63 @@ export default {
           .then((res) => {
             this.$emit('data_cb', res);
           });
+      } else if (this.select.cb_flag === 4) { // 搜索出入库记录类型
+        $http.getStockLogs(
+          this.select.goods_id,
+          {
+            warehouse_id: this.warehouseId,
+            type_id: val,
+          },
+        )
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.cb_flag === 5) { // 搜索SKU入库记录类型
+        $http.queryGoodsRecord(
+          this.select.stock_id,
+          {
+            warehouse_id: this.warehouseId,
+            type_id: val,
+          },
+        )
+          .then((res) => {
+            this.$emit('data_cb', res);
+            console.log(res, '5555号');
+          });
       }
     },
     handlerClear() {
-      if (this.select.cb_flag !== 3) {
+      if (this.select.cb_flag === 1 || this.select.cb_flag === 2) { // 入库单回调
         $http.getInbounds({
           warehouse_id: this.warehouseId,
         })
           .then((res) => {
             this.$emit('data_cb', res);
           });
-      } else {
+      } else if (this.select.cb_flag === 3) { // 出库单回调
         $http.getOutbound({
           warehouse_id: this.warehouseId,
         })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.cb_flag === 4) { // 出入库记录回调
+        $http.getStockLogs(
+          this.select.goods_id,
+          {
+            warehouse_id: this.warehouseId,
+          },
+        )
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.cb_flag === 5) { // 搜索SKU入库记录类型
+        $http.queryGoodsRecord(
+          this.select.stock_id,
+          {
+            warehouse_id: this.warehouseId,
+          },
+        )
           .then((res) => {
             this.$emit('data_cb', res);
           });

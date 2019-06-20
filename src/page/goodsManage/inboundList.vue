@@ -318,8 +318,7 @@ export default {
             .catch(() => {
               console.log('删除入库单出错');
             });
-        })
-        .catch(() => {});
+        });
     },
   },
 };

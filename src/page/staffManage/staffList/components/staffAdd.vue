@@ -142,13 +142,13 @@ export default {
               // 显示成功消息
               this.$message({
                 type: 'success',
-                message: '提交成功!',
+                message: '操作成功!',
               });
               this.$router.replace({ name: 'staffList' });
             } else {
               this.$message({
                 type: 'info',
-                message: '添加失败',
+                message: '操作失败!',
               });
             }
           }).catch(() => {

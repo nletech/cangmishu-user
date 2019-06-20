@@ -132,8 +132,7 @@ export default {
       $http.getWarehouseArea({ warehouse_id: this.$route.params.warehouse_id })
         .then((res) => {
           this.area_list_data = res.data.data;
-        })
-        .catch(() => {});
+        });
     },
     onSubmit() {
       this.$refs.ShelfReference.validate((valid) => {
@@ -158,10 +157,8 @@ export default {
                   name: 'basicSetting',
                   params: { add_shelf_back: true },
                 });
-              })
-              .catch(() => {});
-          })
-          .catch(() => {});
+              });
+          });
       });
     },
   },

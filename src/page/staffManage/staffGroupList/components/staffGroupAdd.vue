@@ -70,24 +70,17 @@ export default {
                 // 显示成功消息
                 this.$message({
                   type: 'success',
-                  message: '提交成功!',
+                  message: '操作成功!',
                 });
                 // 跳转
                 this.$router.push({ name: 'staffGroupList' });
               } else {
                 this.$message({
                   type: 'info',
-                  message: '添加失败',
+                  message: '操作失败!',
                 });
               }
             });
-        })
-        .catch(() => {
-          // 显示取消消息
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
         });
     },
   },

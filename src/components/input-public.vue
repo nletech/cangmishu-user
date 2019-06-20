@@ -65,6 +65,14 @@ export default {
           .then((res) => {
             this.$emit('data_cb', res);
           });
+      } else if (this.select.flag === 4) {
+        $http.getStocks({ // 查询货品（通过货品和sku）
+          warehouse_id: this.warehouseId,
+          keywords: this.value,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
       }
     },
     handlerClear() {
@@ -84,6 +92,13 @@ export default {
           });
       } else if (this.select.flag === 3) {
         $http.getProducts({
+          warehouse_id: this.warehouseId,
+        })
+          .then((res) => {
+            this.$emit('data_cb', res);
+          });
+      } else if (this.select.flag === 4) {
+        $http.getStocks({
           warehouse_id: this.warehouseId,
         })
           .then((res) => {

@@ -241,8 +241,7 @@ export default {
           this.skuList = res.data.specs;
           console.log(res, 'getAGoods');
           console.log(this.form, 'this.form');
-        })
-        .catch();
+        });
     },
     // 规格取消
     ScpeCancel(row) {

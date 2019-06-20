@@ -10,19 +10,13 @@
                                                     <!-- 请选择仓库 -->
                                                     <el-form-item  :label="is_init ? '当前仓库:' : '请选择仓库:'">
                                                                   <el-radio-group  v-model="form.warehouse_id"
-                                                                                  @change="handleChange">
-                                                                                  <el-radio  style="dispaly: inline-block;
-                                                                                              width: 120px;
-                                                                                              margin: 10px 24px 0 0;
-                                                                                              height: 20px;
-                                                                                              overflow:hidden;
-                                                                                              text-overflow:ellipsis;
-                                                                                              white-space:nowrap; "
+                                                                                   @change="handleChange">
+                                                                                   <el-radio  :disabled="is_init"
                                                                                               v-for="(item, index) in warehouse"
                                                                                               :key="index"
                                                                                               :label="item.id">
-                                                                                              {{item.name_cn}}
-                                                                                  </el-radio>
+                                                                                              <span style="color: #000;">{{item.name_cn}}</span>
+                                                                                   </el-radio>
                                                                   </el-radio-group>
                                                     </el-form-item>
                                             </el-col>
@@ -84,6 +78,7 @@ export default {
       temp_warehouse_id: '', // 暂存 仓库 id
       default_warehouse_id: '', // 缓存分组已有仓库id
       default_checkedArray: [], //  缓存分组已有权限模块
+      default_warehouse: {}, //  缓存分组已有仓库
       warehouse: [],
       checkAll: false, // 是否全选
       modules: [], // 权限模块
@@ -129,14 +124,20 @@ export default {
         .then((res) => {
           const data = res.data;
           // 总模块
-          this.warehouse = data.authorize.warehouse;
-          this.modules = data.authorize.modules;
+          const WAREHOUSE = data.authorize.warehouse; // 总的仓库列表
+          const MODULES = data.authorize.modules; // 总的权限模块列表
+          const GROUP_MODULES = data.group.module; // 属于用户组的权限模块列表
+          const GROUP_WAREHOUSE = data.group.warehouse; // 属于用户组的仓库信息
+          this.warehouse = WAREHOUSE;
+          this.modules = MODULES;
           // 分情况处理(初次选择权限和已选择两种情况)
-          if (res.data.group.warehouse_id) { // 已选择仓库的情况
-            this.form.warehouse_id = data.group.warehouse_id;
-            this.checkedArray = data.group.module;
-            this.default_warehouse_id = data.group.warehouse_id; // 缓存默认数据
-            this.default_checkedArray = data.group.module;
+          if (res.data.group.warehouse_id && GROUP_MODULES.length > 0) { // 已选择仓库的情况
+            this.form.warehouse_id = GROUP_WAREHOUSE.id; // 表单 warehouse_id
+            this.checkedArray = GROUP_MODULES; // 用户组已拥有的权限模块
+            this.default_warehouse_id = GROUP_WAREHOUSE.id; // 缓存默认数据
+            this.default_checkedArray = GROUP_MODULES;
+            this.warehouse = [];
+            this.warehouse.push(GROUP_WAREHOUSE);
             this.is_init = true;
           }
         });
@@ -191,13 +192,6 @@ export default {
                 });
               }
             });
-        })
-        .catch(() => {
-          // 显示取消消息
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
         });
     },
   },

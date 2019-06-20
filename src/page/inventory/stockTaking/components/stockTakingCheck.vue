@@ -44,9 +44,14 @@
                         </el-form-item>
                         <el-form-item label="保质期"
                                       prop="expiration_date">
-                                      <el-input v-model="form.expiration_date"
-                                                size="small">
-                                      </el-input>
+                                      <el-date-picker  v-model="form.expiration_date"
+                                                       type="date"
+                                                       size="small"
+                                                       format="yyyy 年 MM 月 dd 日"
+                                                       value-format="yyyy-MM-dd"
+                                                       placeholder="请输入保质期"
+                                                       :default-time="['00:00:00', '23:59:59']">
+                                      </el-date-picker>
                         </el-form-item>
                         <el-form-item label="备注"
                                       prop="remark">

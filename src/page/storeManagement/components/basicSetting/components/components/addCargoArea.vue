@@ -117,8 +117,7 @@ export default {
                   params: { add_shelf_back: false },
                 });
               });
-          })
-          .catch(() => {});
+          });
       });
     },
   },

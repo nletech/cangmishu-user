@@ -128,15 +128,13 @@ export default {
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 } else if(this.active_tab_item === '出库单分类') {
                   $http.editOrderType(id, this.formInfo)
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 }
               } else { // 添加信息
                 if (this.active_tab_item === '入库单分类') {
@@ -144,20 +142,17 @@ export default {
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data_list', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 } else if(this.active_tab_item === '出库单分类') {
                   $http.addOrderType(this.formInfo)
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data_list', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 }
               }
               this.$emit('update:visible', false); // 关闭弹窗
-            })
-            .catch(() => {});
+            });
         }
       });
     },

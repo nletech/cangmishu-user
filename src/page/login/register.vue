@@ -9,8 +9,8 @@
                                     :class="$style.item_email"
                                     class="login_model_form">
                                     <el-input  placeholder="请输入邮箱"
-                                                v-model="form.email"
-                                                size="small">
+                                               v-model="form.email"
+                                               size="small">
                                     </el-input>
                       </el-form-item>
                       <el-form-item  prop="verificationCode"
@@ -100,30 +100,23 @@ export default {
   },
   computed: {
     rules() {
-      // const validatorCode = (rule, value, callback) => {
-      //   const length = value.split().length;
-      //   if (length < 4) {
-      //     return callback(Error('仓库名称必须包含4个字符以上'));
-      //   }
-      //   return callback();
-      // };
-      // const validatorUserAgreement = (rule, value, callback) => {
-      //   console.log(value, 'ruleeeee');
-      //   // if (length < 4) {
-      //   //   return callback(Error('仓库名称必须包含4个字符以上'));
-      //   // }
-      //   return callback(Error(value, '我是val'));
-      // };
+      const validatorCode = (rule, value, callback) => {
+        const length = value.split().length;
+        if (length < 4) {
+          return callback(Error('仓库名称必须包含4个字符以上'));
+        }
+        return callback();
+      };
       return {
-        // email: [
-        //   { required: true, message: '邮箱不能为空', tigger: 'bulr' },
-        // ],
-        // verificationCode: [
-        //   { required: true, message: '验证码不能为空', tigger: 'bulr' },
-        // ],
-        // password: [
-        //   { required: true, message: '密码不能为空', tigger: 'bulr' },
-        // ],
+        email: [
+          { type: 'email', required: true, message: '邮箱不能为空', tigger: 'change' },
+        ],
+        verificationCode: [
+          { validator: validatorCode, required: true, message: '验证码不能为空', tigger: 'change' },
+        ],
+        password: [
+          { required: true, message: '密码不能为空', tigger: 'change' },
+        ],
         // password_confirmation: [
         //   { required: true, message: '密码不能为空', tigger: 'bulr' },
         // ],
@@ -176,9 +169,6 @@ export default {
                 name: 'login',
               });
               // this.tips = true;
-            })
-            .catch(() => {
-              console.log('表单请求错误');
             });
         }
       });
@@ -189,7 +179,7 @@ export default {
      * post表单请求,获取响应之后判断 status值，然后进行定时操作
      */
     sendVerificationCode() {
-      $http.getVerificationCode(this.form)
+      $http.getVerificationCode({ email: this.form.email })
         .then((res) => {
           // 计时函数
           function timer60s(that) {
@@ -214,14 +204,11 @@ export default {
             }, 1000);
           }
           // 验证码发送成功
-          if (res.status === 0) {
+          if (+res.status === 0) {
             // 开始计时
             const that = this;
             timer60s(that);
           }
-        })
-        .catch(() => {
-          console.log('邮箱不能为空');
         });
     },
   },

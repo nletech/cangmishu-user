@@ -173,8 +173,7 @@ export default {
                   .then((res) => {
                     if (res.status) return;
                     this.$emit('update:visibleFlag', false);
-                  })
-                  .catch(() => {});
+                  });
               } else if (this.addressText === '收件人') {
                   $http.editReceiverAddress(this.row_data.id, this.formInfo)
                     .then((re) => {
@@ -182,8 +181,7 @@ export default {
                       this.$emit('update:visibleFlag', false);
                     })
               }
-            })
-            .catch(() => {});
+            });
         }
       });
     },
@@ -197,8 +195,7 @@ export default {
           this.form.phone           = data.phone; // 电话
           this.form.address         = [data.province, data.city, data.district]; // 地址
           this.form.addressDetail   = data.address; // 详细地址
-        })
-        .catch(() => {});
+        });
     },
   },
 };

@@ -154,8 +154,7 @@ export default {
               this.info_data = re.data.data;
               this.total = re.data.total;
               this.current_page = re.data.current_page;
-            })
-            .catch(() => {});
+            });
       } else {
         $http.getReceiverAddress()
           .then((re) => {
@@ -164,8 +163,7 @@ export default {
             this.total = re.data.total;
             this.current_page = re.data.current_page;
             console.log(re, '收件人信息');
-          })
-          .catch(() => {});
+          });
       }
     }, // 检测选中的标签页
     handleCurrentChange(val) {
@@ -177,43 +175,48 @@ export default {
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
-          .catch(() => {})
       : $http.checkReceiverAddress({ page: val })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
-          })
-          .catch(() => {});
+          });
     }, // 分页查询
     edit(info) {
       this.row_data = info;
       this.switchFlag = true;
     },
     delete_data(info) {
-      const active_item = this.active_tab_item;
-      active_item === '发件人信息'
-      ? $http.deleteSender(info.id)
-          .then(() => {
-            if (status) return;
-            this.$message({
-              type: 'success',
-              message: '删除发件人成功',
-            });
-            this.active_item_check(active_item);
-          })
-          .catch(() => {})
-      : $http.deleteReceiver(info.id)
-          .then(() => {
-            if (status) return;
-            this.$message({
-              type: 'success',
-              message: '删除收件人成功',
-            });
-            this.active_item_check(active_item);
-          })
-          .catch(() => {});
-    },
+      this.$confirm('此操作将永久删除，是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          const active_item = this.active_tab_item;
+          if (active_item === '发件人信息') {
+            $http.deleteSender(info.id)
+                .then(() => {
+                  if (status) return;
+                  this.$message({
+                    type: 'success',
+                    message: '操作成功',
+                  });
+                  this.active_item_check(active_item);
+                });
+          } else {
+            $http.deleteReceiver(info.id)
+              .then(() => {
+                if (status) return;
+                this.$message({
+                  type: 'success',
+                  message: '操作成功',
+                });
+                this.active_item_check(active_item);
+              });
+          }
+        });
+    }, // 删除操作
   },
 };
 </script>

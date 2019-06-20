@@ -118,7 +118,7 @@ export default {
         // this.warehouse_name = res.data.warehouse.name_cn;
         // this.distributor_name = res.data.distributor.name_cn;
         // this.category_name = res.data.batch_type.name;
-      }).catch(() => {});
+      });
     },
   },
   watch: {

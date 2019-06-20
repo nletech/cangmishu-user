@@ -177,8 +177,7 @@ export default {
           this.$router.push({
             name: 'outboundList',
           });
-        })
-        .catch(() => {});
+        });
     },
   },
 };

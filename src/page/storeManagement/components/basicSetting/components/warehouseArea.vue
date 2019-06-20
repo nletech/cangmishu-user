@@ -83,8 +83,7 @@ export default {
           this.Area_data = res.data.data;
           this.total = res.data.total;
           this.current_page = res.data.current_page;
-        })
-        .catch(() => {});
+        });
     },
     del(areaId) {
       this.$confirm('此操作将永久删除该货区, 是否继续?', '提示', {

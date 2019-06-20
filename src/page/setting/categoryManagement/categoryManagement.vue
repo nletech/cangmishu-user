@@ -209,8 +209,7 @@ export default {
         .then((re) => {
           if (re.status) return;
           this.get_category_list_data();
-        })
-        .catch(() => {});
+        });
     }, // 删除信息按钮
     get_category_list_data() {
       $http.getCategoryManagement()
@@ -219,8 +218,7 @@ export default {
           console.log(re.data, 'data   getCategoryManagement');
           this.category_list_data = re.data.data;
           this.total = re.data.total;
-        })
-        .catch(() => {});
+        });
     }, // 获取货品分类信息
     submit_form() {
       this.$refs.form.validate((validate) => {
@@ -259,8 +257,7 @@ export default {
                     this.id = '';
                     // 更新数据
                     this.handleCurrentChange(this.current_page);
-                  })
-                  .catch(() => {});
+                  });
               } else {
                 // 添加信息
                 $http.addCategoryManagement(this.form_info)
@@ -273,11 +270,9 @@ export default {
                     this.id = '';
                     // 更新数据
                     this.get_category_list_data();
-                  })
-                  .catch(() => {});
+                  });
               }
-            })
-            .catch(() => {});
+            });
           // 编辑信息
           this.dialogVisible = false;
         }
@@ -292,8 +287,7 @@ export default {
           this.category_list_data = re.data.data;
           this.total = re.data.total;
           this.currentPage = re.data.current_page;
-        })
-        .catch(() => {});
+        });
     }, // 分页查询--货品分类信息
   },
 };

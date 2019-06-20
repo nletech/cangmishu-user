@@ -159,8 +159,7 @@ export default {
                   .then((res) => {
                     if (res.status) return;
                     this.$emit('update:visible_add', false);
-                  })
-                  .catch(() => {});
+                  });
               } else if (this.addressText === '收件人') {
                   $http.addReceiverAddress(this.formInfo)
                     .then((res) => {

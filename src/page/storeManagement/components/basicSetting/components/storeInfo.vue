@@ -239,15 +239,13 @@ export default {
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 } else if(this.active_tab_item === '货位') {
                   $http.editWarehouseshelf(id, this.formInfo)
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 }
               } else { // 添加信息
                 if (this.active_tab_item === '货区') {
@@ -255,21 +253,18 @@ export default {
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data_list', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 } else if(this.active_tab_item === '货位') {
                   console.log(this.formInfo, 'this.fo货位');
                   $http.addWarehouseshelf(this.formInfo)
                     .then((re) => {
                       if (re.status) return;
                       this.$emit('updata_data_list', active_item); // 更新数据列表
-                    })
-                    .catch(() => {});
+                    });
                 }
               }
               this.$emit('update:visible', false); // 关闭弹窗
-            })
-            .catch(() => {});
+            });
         }
       });
     },

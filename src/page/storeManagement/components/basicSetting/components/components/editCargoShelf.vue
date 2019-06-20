@@ -130,8 +130,7 @@ export default {
         .then((res) => {
           this.area_list_data = res.data.data;
           // console.log(this.area_list_data, 'this.area_list_data');
-        })
-        .catch(() => {});
+        });
     }, // 获取货区列表
     get_data() {
       let allData = {}; // 缓存拿到的数据
@@ -204,10 +203,8 @@ export default {
                   name: 'basicSetting',
                   params: { add_shelf_back: true },
                 });
-              })
-              .catch(() => {});
-          })
-          .catch(() => {});
+              });
+          });
       });
     },
   },

@@ -118,8 +118,7 @@ export default {
       $http.checkWarehouses({ page: val })
         .then((res) => {
           this.warehouses = res.data.data;
-        })
-        .catch(() => {});
+        });
     },
     getWarehouse() {
       $http.warehouses()
@@ -129,8 +128,7 @@ export default {
           this.total = res.data.total;
           this.current_page = res.data.current_page;
           this.all_warehouses_data = res.data;
-        })
-        .catch(() => {});
+        });
     },
     handleClick() {
       this.$router.push({ name: 'addWarehouse' });

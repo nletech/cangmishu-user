@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <el-pagination  @current-change="handleCurrentChange"
-                    :current-page="params.currentPage"
-                    layout="total, prev, pager, next, jumper"
-                    :total="+params.total">
-    </el-pagination>
-  </div>
+        <div  v-if="+total > 0">
+              <el-pagination  @current-change="handleCurrentChange"
+                              :current-page="params.currentPage"
+                              layout="total, prev, pager, next, jumper"
+                              :total="+params.total">
+              </el-pagination>
+        </div>
 </template>
 <script>
 export default {
@@ -14,6 +14,13 @@ export default {
   props: {
     params: {
       type: Object,
+    },
+  },
+  computed: {
+    total() {
+      if (this.params.total) {
+        return this.params.total;
+      }
     },
   },
   methods: {

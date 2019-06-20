@@ -300,7 +300,7 @@ export default {
             });
             this.getData();
           });
-      }).catch(() => {});
+      });
     },
   },
 };

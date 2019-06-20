@@ -1,131 +1,157 @@
 <template>
-  <el-dialog
-    width="80%"
-    @close="close"
-    @update:visible="$emit('update:visible', $event)"
-    :visible="value">
-    <h1 class="details-h1">
-      {{SkuList[0] && SkuList[0].sku}} 出入库记录
-    </h1>
-    <my-group
-      v-model="params"
-      @submit="getList">
-      <el-col :span="7">
-        <my-date :begin.sync="params.created_at_b"
-          :end.sync="params.created_at_e"></my-date>
-      </el-col>
-      <el-col :span="6" :offset="11">
-        <el-select
-        clearable
-        size="small"
-        @change="typeChange"
-        style="width: 100%" v-model="params.type_id">
-          <el-option :value="1" label="入库"></el-option>
-          <el-option :value="2" label="上架"></el-option>
-          <el-option :value="3" label="拣货"></el-option>
-          <el-option :value="4" label="出库"></el-option>
-          <el-option :value="5" label="盘点"></el-option>
-        </el-select>
-      </el-col>
-    </my-group>
-    <el-table :data="SkuList" border style="width: 100%">
-      <el-table-column type="index" width="60">
-      </el-table-column>
-      <el-table-column label="类型" prop="type">
-      </el-table-column>
-      <el-table-column label="操作数量" prop="operation_num">
-      </el-table-column>
-      <el-table-column prop="sku_total_stockin_num" label="仓库库存">
-      </el-table-column>
-      <el-table-column prop="sku_total_shelf_num" label="上架库存">
-      </el-table-column>
-      <el-table-column prop="created_at" label="操作时间">
-      </el-table-column>
-      <el-table-column prop="order_sn" label="相关单号">
-      </el-table-column>
-      <el-table-column prop="remark" label="备注">
-      </el-table-column>
-    </el-table>
-
-    <button-pagination :pageParams="params"></button-pagination>
-  </el-dialog>
+          <el-dialog  width="80%"
+                      @update:visible="$emit('update:visible', $event)"
+                      :visible="visible">
+                      <div  :class="$style.main">
+                            <h1  :class="$style.details_h1">
+                                {{rowInfo.sku}}出入库记录
+                            </h1>
+                            <el-row  :class="$style.header">
+                                    <el-col :span="6">
+                                            <date-picker-public @select_data="handlerSelect_data">
+                                            </date-picker-public>
+                                    </el-col>
+                                    <el-col  :span="4" :offset="14">
+                                            <select-public  :select="select_data_status"
+                                                            @data_cb="handlerQuery">
+                                            </select-public>
+                                    </el-col>
+                            </el-row>
+                            <el-table   :data="SkuList" border style="width: 100%">
+                                        <el-table-column type="index" width="60">
+                                        </el-table-column>
+                                        <el-table-column label="类型" prop="type">
+                                        </el-table-column>
+                                        <el-table-column label="操作数量" prop="operation_num">
+                                        </el-table-column>
+                                        <el-table-column prop="sku_total_stockin_num" label="仓库库存">
+                                        </el-table-column>
+                                        <el-table-column prop="sku_total_shelf_num" label="上架库存">
+                                        </el-table-column>
+                                        <el-table-column prop="created_at" label="操作时间">
+                                        </el-table-column>
+                                        <el-table-column prop="order_sn" label="相关单号">
+                                        </el-table-column>
+                                        <el-table-column prop="remark" label="备注">
+                                        </el-table-column>
+                            </el-table>
+                            <pagination-public  :params="params"
+                                                :class="$style.pagination"
+                                                @changePage="handlerChangePage">
+                            </pagination-public>
+                      </div>
+          </el-dialog>
 </template>
 
 <script>
+import selectPublic from '@/components/select-public';
+import datePickerPublic from '@/components/date-picker-public';
+import paginationPublic from '@/components/pagination-public';
 import buttonPagination from '@/components/pagination_and_buttons';
 import $http from '@/api';
-import getListData from '@/mixin/list';
-import MyDate from '@/components/my_date';
-import MyInput from '@/components/my_input';
-import MySelect from '@/components/my_select';
 import MyGroup from '@/components/my_group';
 
 export default {
   props: {
-    value: Boolean,
-    skuId: Number,
+    visible: Boolean,
+    stock_id: Number,
     warehouseId: Number,
     warehouseName: String,
     rowInfo: Object,
   },
   components: {
     buttonPagination,
-    MyDate,
-    MyInput,
-    MySelect,
     MyGroup,
+    selectPublic,
+    datePickerPublic,
+    paginationPublic,
   },
-  mixins: [getListData],
+  created() {
+    this.getDatas();
+  },
   data() {
     return {
+      params: {}, // 分页数据
+      select_data_status: {
+        placeholder: '类型',
+        options: [
+          { id: 1, name: '入库上架' },
+          { id: 2, name: '出库' },
+          { id: 3, name: '盘点' },
+        ],
+        cb_flag: 5,
+        stock_id: this.rowInfo.stock_id,
+      },
       SkuList: [],
       date: [],
-      params: {
-        type_id: '',
-        created_at_b: '',
-        created_at_e: '',
-      },
     };
   },
-  methods: {
-    close() {
-      this.params.page = 1;
-      this.params.type_id = '';
-      this.params.created_at_b = '';
-      this.params.created_at_e = '';
-      this.$emit('input', false);
-    },
-    typeChange() {
-      this.getList();
-    },
-    // 拉取单个货品出入库记录
-    getList() {
-      this.SkuList = [];
-      if (!this.skuId || !this.warehouseId) return;
-      this.params.warehouse_id = this.warehouseId;
-      this.params.stock_id = this.skuId;
-      console.log(this.date[0]);
-      console.log(this.params, 1);
-      $http.skuInfo(this.params).then((res) => {
-        this.SkuList = res.data.data;
-        this.params.data_count = res.data.total;
-        // this.warehouse_name = res.data.warehouse.name_cn;
-        // this.distributor_name = res.data.distributor.name_cn;
-        // this.category_name = res.data.batch_type.name;
-      }).catch(() => {});
-    },
-  },
   watch: {
-    // 如果ID发生变化则重新拉取记录
-    skuId(val) {
+    stock_id(val) {
       if (!val) return;
-      this.getList();
+      this.getDatas();
+    }, // 如果ID发生变化则重新拉取记录
+  },
+  methods: {
+    handlerSelect_data(val) {
+      if (val && val.length === 2) {
+        this.getDatas(val);
+      } else {
+        this.getDatas(); // 刷新列表
+      }
     },
+    handlerChangePage(val) {
+      // console.log(val, 'pagination val');
+      $http.getStocks({
+        warehouse_id: this.warehouseId,
+        page: val,
+      })
+        .then((res) => {
+          this.stockList = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
+    }, // 分页响应
+    handlerQuery(res) {
+      this.SkuList = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+    }, // 选择框回调
+    getDatas(query) {
+      this.SkuList = [];
+      const obj = {};
+      obj.warehouse_id = this.warehouseId; // 仓库 id 必填
+      // query有几种形式
+      if (Array.isArray(query)) {
+        // 查询时间段
+        obj.created_at_b = query[0]; // 开始时间
+        obj.created_at_e = query[1]; // 结束时间
+      }
+      if (!this.stock_id || !this.warehouseId) return;
+      $http.queryGoodsRecord(this.stock_id, obj)
+        .then((res) => {
+          this.SkuList = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
+    }, // 拉取单个货品出入库记录
   },
 };
 </script>
-<style lang="less">
-.details-h1 {
-  text-align: center;
+<style lang="less" module>
+.main {
+  position: relative;
+  margin: 0 0 40px 0;
+  .details_h1 {
+    text-align: center;
+  }
+  .header {
+    margin: 30px 0 30px 0;
+  }
+  .pagination {
+    position: absolute;
+    bottom: -40px;
+    right: 0;
+  }
 }
 </style>

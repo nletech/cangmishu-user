@@ -6,11 +6,10 @@
               :visible="visible">
               <div v-html="content" v-if="visible">
               </div>
-                  <el-button @click="handleDownload"
-                            :class="$style.btn"
-                            type="success">
-                            下载入库单
-                  </el-button>
+              <el-button  @click="handleDownload"
+                          :class="$style.btn">
+                          下载入库单
+              </el-button>
   </el-dialog>
 </template>
 
@@ -115,12 +114,14 @@ export default {
 </style>
 
 <style lang="less" scoped>
+@import '../../../../less/public_variable.less';
+
 .inbound_info {
   padding-left: 20px;
 }
 .btn {
-  width: 100%;
-  float: right;
-  margin: 0 auto;
+  .el-button {
+    background-color: @ThemeColor;
+  }
 }
 </style>

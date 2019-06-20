@@ -175,12 +175,6 @@ export default {
                 this.getList();
               }
             });
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
         });
     },
     // 添加员工

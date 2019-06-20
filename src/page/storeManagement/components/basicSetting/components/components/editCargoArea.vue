@@ -117,8 +117,7 @@ export default {
                 if (res.status) return;
                 this.$router.go(-1);
               });
-          })
-          .catch(() => {});
+          });
       });
     },
   },

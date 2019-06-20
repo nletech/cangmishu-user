@@ -260,7 +260,7 @@ export default {
       warehouse_shelfs: [], // 当前仓库的货位列表
       form: {},
       dialogVisible: false, // 对话框
-      sku_input: 'A0300200001002a', // sku 输入
+      sku_input: '', // sku 输入
       total: 20, // 列表总条数
       //
       batch_id: '', // 入库单 id
@@ -358,8 +358,7 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.warehouse_shelfs = res.data.data;
-        })
-        .catch(() => {});
+        });
     }, // 获取货位列表(用于编辑)
     check_sku() {
       const skuId = this.sku_input; // 输入的 sku
@@ -373,8 +372,7 @@ export default {
           this.get_warehouse_shelf(); // 获取货位列表
           this.form = data; //货品(规格)列表
           console.log(data, ' SKU拿到的');
-        })
-        .catch(() => {});
+        });
     }, // 提交输入的SKU
     getData() {
       $http.getInboundDetail(this.$route.query.batch_id, { warehouse_id: this.warehouseId })

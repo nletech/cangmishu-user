@@ -191,10 +191,8 @@ export default {
     //           //   console.log(item, 'item');
     //           // }
     //           // this.addressInfo = res.children;
-    //         })
-    //         .catch();
-    //     })
-    //     .catch();
+    //         });
+    //     });
     // },
     // 提交修改信息
     warehouseInfoSubmit() {
@@ -227,8 +225,7 @@ export default {
                   });
               }
               this.$emit('update:visible', false); // 关闭弹窗
-            })
-            .catch(() => {});
+            });
         } else {
           return false;
         }

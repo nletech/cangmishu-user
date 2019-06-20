@@ -108,7 +108,7 @@ export default {
       row: {},
       record_visible: false, // 记录
       row_data: {},
-      code: 'A0300200001002a', // sku码
+      code: '', // sku码
       showCheckSwitch: false, // 开关
       stock_list_data: [], // 商品列表
       id: 0,

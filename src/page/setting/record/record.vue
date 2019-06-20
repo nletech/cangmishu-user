@@ -150,15 +150,13 @@ export default {
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
-          .catch(() => {})
       : $http.getOrderType()
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
-          })
-          .catch(() => {});
+          });
     }, // 检测选中的标签页
     handleCurrentChange(val) {
       this.current_page = val;
@@ -169,14 +167,12 @@ export default {
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
-          .catch(() => {})
       : $http.checkOrderType({ page: val })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
-          })
-          .catch(() => {});
+          });
     }, // 分页查询
     edit(info) {
       this.row_data = info;
@@ -194,7 +190,6 @@ export default {
             });
             this.active_item_check(active_item);
           })
-          .catch(() => {})
       : $http.delOrderType(info.id)
           .then(() => {
             if (status) return;
@@ -203,8 +198,7 @@ export default {
               message: '删除出库单分类成功',
             });
             this.active_item_check(active_item);
-          })
-          .catch(() => {});
+          });
     },
   },
 };

@@ -101,13 +101,6 @@ export default {
                 });
               }
             });
-        })
-        .catch(() => {
-          // 显示取消消息
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
         });
     },
   },

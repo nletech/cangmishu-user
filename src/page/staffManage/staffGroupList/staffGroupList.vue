@@ -103,11 +103,21 @@ export default {
       staffGroupData: [], // 员工组列表信息
     };
   },
+  computed: {
+    warehouseId() {
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
+    },
+  },
+  watch: {
+    warehouseId() {
+      this.getList();
+    },
+  },
   methods: {
     // 获取员工组列表数据
     getList() {
       // params 携带的当前页的和当前页显示数目的条数
-      $http.getStaffGroups(this.params)
+      $http.getStaffGroups({ warehouse_id: this.warehouseId })
         .then((res) => {
           console.log('员工列表');
           this.staffGroupData = res.data.data;
@@ -184,12 +194,6 @@ export default {
                   });
               }
             });
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
         });
     },
   },

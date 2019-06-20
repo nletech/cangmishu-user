@@ -185,10 +185,8 @@ export default {
     //           //   console.log(item, 'item');
     //           // }
     //           // this.addressInfo = res.children;
-    //         })
-    //         .catch();
-    //     })
-    //     .catch();
+    //         });
+    //     });
     // },
     // 提交修改信息
     warehouseInfoSubmit() {
@@ -218,8 +216,7 @@ export default {
                 .catch(() => {
                   console.log('添加出错');
                 });
-            })
-            .catch(() => {});
+            });
         } else {
           return false;
         }

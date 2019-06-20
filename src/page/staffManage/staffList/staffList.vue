@@ -192,8 +192,7 @@ export default {
           // 员工信息
           this.staff_data = res.data.data;
           this.params.data_count = res.data.total;
-        })
-        .catch(() => {});
+        });
     },
     // 模块--编辑资料
     edit_staff_info(userInfo) {
@@ -266,36 +265,18 @@ export default {
         .then(() => {
           $http.delStaff(copyInfo.user_id)
             .then((res) => {
-              if (res.status === 0) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功',
-                });
-                // 刷新员工列表数据
-                $http.staffList()
-                  .then((re) => {
-                    // 员工信息
-                    this.staff_data = re.data.data;
-                    this.params.data_count = res.data.total; // 更新分页
-                  })
-                  .catch(() => {
-                    console.log('get staffList_info error');
-                  });
-              }
-            })
-            .catch(() => {
+              if (res.status) return;
               this.$message({
-                type: 'info',
-                message: '删除失败',
+                type: 'success',
+                message: '删除成功',
               });
-              console.log('delete employee  error');
+              $http.getStaffs()
+                .then((re) => { // 刷新员工列表数据
+                  // 员工信息
+                  this.staff_data = re.data.data;
+                  this.params.data_count = re.data.total; // 更新分页
+                });
             });
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          });
         });
     },
   },

@@ -119,8 +119,7 @@ export default {
           this.form.default_warning_stock = res.data.default_warning_stock;
           this.form.warning_email = res.data.warning_email;
           console.log(res, 'warning');
-        })
-        .catch();
+        });
     },
     search_btn() {
       //
