@@ -13,6 +13,15 @@ const $http = {
   logout(data) {
     return Axios.post('/logout', data);
   }, // 登出
+  //                                                          首页
+  // 首页仓库数据
+  homeWarehouseData(data) {
+    return Axios.get('home/analyze', { params: data });
+  },
+  // 首页图表数据
+  echartsData(data) {
+    return Axios.get('home/analyzeTable', { params: data });
+  },
   //                                                          入库
   //                                    入库单列表
   addInbound(data) {

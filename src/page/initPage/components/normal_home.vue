@@ -1,161 +1,155 @@
 <template>
-  <div :class="$style.no_authentication">
-    <el-row style="min-width:1140px;">
-      <el-col :span="10">
-        <div class="home_left">
-          <div class="notice">
-            <el-tabs v-model="activeLabel">
-              <el-tab-pane label="通知" name="1" type="card" class="message">
-                <p v-for="(item, index) in noticeList" :key="index">
-                  {{item.notice_time.slice(0, 10)}}
-                  {{item.notice_info}}
-                </p>
-                <span v-if="noticeList.length === 0">暂无通知</span>
-              </el-tab-pane>
-              <el-tab-pane label="公告" name="2" class="announcement">
-                <p>欢迎使用EUT仓储共享平台!</p>
-              </el-tab-pane>
-            </el-tabs>
-          </div>
-          <div class="kuaijie">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="router_card newin">
-                   <i class="iconfont">&#xe7aa;</i>
-                   <el-button
-                    type="text"
-                    @click="$router.push({name: 'addInbound'})"
-                    icon="el-icon-plus">
-                    新建入库单
-                  </el-button>
-                </div>
-              </el-col>
-              <!-- <el-col :span="12">
-                <div class="router_card newout">
-                  <i class="iconfont">&#xe7aa;</i>
-                  <el-button
-                    type="text"
-                    @click="$router.push({name: 'addOutbound'})"
-                    @click="handlePanelClick('outboundList')"
-                    icon="el-icon-plus">
-                    新建出库单
-                  </el-button>
-                </div>
-              </el-col> -->
-            <el-col :span="12">
-                <div class="router_card">
-                  <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe600;</i>
-                  <el-button
-                    type="text"
-                    @click="$router.push({name: 'outboundList'})"
-                    icon="el-icon-tickets">
-                    出库单列表
-                  </el-button>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="router_card">
-                  <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe633;</i>
-                  <el-button
-                    type="text"
-                    @click="$router.push({name: 'inventoryManage'})"
-                    icon="el-icon-tickets">
-                    库存管理
-                  </el-button>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="router_card">
-                  <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe671;</i>
-                  <el-button
-                    type="text"
-                    @click="$router.push({name: 'logisticsQuery'})"
-                    icon="el-icon-zoom-in">
-                    物流查询
-                  </el-button>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="14">
-        <div class="home_right">
-          <header>
-            数据栏
-            <el-select
-              v-model="warehouse_id"
-              size="small"
-              @change="gethomeWarehouseData" style="float:right;">
-              <el-option
-                v-for="item in boundList"
-                :label="item.name_cn"
-                :value="item.id" :key="item.id">
-              </el-option>
-            </el-select>
-          </header>
-          <el-row :gutter="20">
-            <el-col :span="8">
-              <div class="data_card">
-                <p>今日出库次数</p>
-                <p class="card_number">{{homedata.order_count}}</p>
-                <p class="colorchange">本月出库次数：{{homedata.month_order_count}}</p>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="data_card">
-                <p>今日入库次数</p>
-                <p class="card_number">{{homedata.batch_count}}</p>
-                <p class="colorchange">本月入库次数：{{homedata.month_batch_count}}</p>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="data_card">
-                <p>可用库存数</p>
-                <p class="card_number">{{homedata.product_total | num_is_no}}</p>
-              </div>
-            </el-col>
-          </el-row>
+          <div :class="$style.no_authentication">
+                <el-row style="min-width:1140px;">
+                  <!-- <el-col :span="10">
+                    <div class="home_left">
+                      <div class="notice">
+                        <el-tabs v-model="activeLabel">
+                          <el-tab-pane label="通知" name="1" type="card" class="message">
+                            <p v-for="(item, index) in noticeList" :key="index">
+                              {{item.notice_time.slice(0, 10)}}
+                              {{item.notice_info}}
+                            </p>
+                            <span v-if="noticeList.length === 0">暂无通知</span>
+                          </el-tab-pane>
+                          <el-tab-pane label="公告" name="2" class="announcement">
+                            <p>欢迎使用EUT仓储共享平台!</p>
+                          </el-tab-pane>
+                        </el-tabs>
+                      </div>
+                      <div class="kuaijie">
+                        <el-row :gutter="20">
+                          <el-col :span="12">
+                                  <div class="router_card newin">
+                                    <i class="iconfont">&#xe7aa;</i>
+                                    <el-button  type="text"
+                                                @click="$router.push({name: 'addInbound'})"
+                                                icon="el-icon-plus">
+                                                新建入库单
+                                    </el-button>
+                                  </div>
+                          </el-col>
+                          <el-col :span="12">
+                            <div class="router_card newout">
+                              <i class="iconfont">&#xe7aa;</i>
+                              <el-button
+                                type="text"
+                                @click="$router.push({name: 'addOutbound'})"
+                                icon="el-icon-plus">
+                                新建出库单
+                              </el-button>
+                            </div>
+                          </el-col>
+                        <el-col :span="12">
+                            <div class="router_card">
+                              <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe600;</i>
+                              <el-button
+                                type="text"
+                                @click="$router.push({name: 'outboundList'})"
+                                icon="el-icon-tickets">
+                                出库单列表
+                              </el-button>
+                            </div>
+                          </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
+                          <el-col :span="12">
+                            <div class="router_card">
+                              <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe633;</i>
+                              <el-button
+                                type="text"
+                                @click="$router.push({name: 'inventoryManage'})"
+                                icon="el-icon-tickets">
+                                库存管理
+                              </el-button>
+                            </div>
+                          </el-col>
+                          <el-col :span="12">
+                            <div class="router_card">
+                              <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe671;</i>
+                              <el-button
+                                type="text"
+                                @click="$router.push({name: 'logisticsQuery'})"
+                                icon="el-icon-zoom-in">
+                                物流查询
+                              </el-button>
+                            </div>
+                          </el-col>
+                        </el-row>
+                      </div>
+                    </div>
+                  </el-col> -->
+                  <el-col :span="22" :offset="1">
+                          <div class="home_right">
+                            <header>
+                              数据栏
+                                    <el-select  v-model="warehouse_id"
+                                                size="small"
+                                                @change="gethomeWarehouseData" style="float:right;">
+                                                <el-option  v-for="item in boundList"
+                                                            :label="item.name_cn"
+                                                            :value="item.id" :key="item.id">
+                                                </el-option>
+                                    </el-select>
+                            </header>
+                            <el-row :gutter="20">
+                                    <el-col :span="8">
+                                      <div class="data_card">
+                                        <p>今日出库次数</p>
+                                        <p class="card_number">{{homedata.order_count}}</p>
+                                        <p class="colorchange">本月出库次数：{{homedata.month_order_count}}</p>
+                                      </div>
+                                    </el-col>
+                                    <el-col :span="8">
+                                      <div class="data_card">
+                                        <p>今日入库次数</p>
+                                        <p class="card_number">{{homedata.batch_count}}</p>
+                                        <p class="colorchange">本月入库次数：{{homedata.month_batch_count}}</p>
+                                      </div>
+                                    </el-col>
+                                    <el-col :span="8">
+                                      <div class="data_card">
+                                        <p>可用库存数</p>
+                                        <p class="card_number">{{homedata.product_total | num_is_no}}</p>
+                                      </div>
+                                    </el-col>
+                            </el-row>
 
-          <div style="margin:20px auto;">
-            <el-date-picker
-              :clearable=false
-              size="mini"
-              @change="getEchartsData"
-              v-model="chart_time"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="yyyy-MM-dd">
-            </el-date-picker>
+                            <div  style="margin:20px auto;">
+                                  <el-date-picker  :clearable=false
+                                                  size="mini"
+                                                  @change="getEchartsData"
+                                                  v-model="chart_time"
+                                                  type="daterange"
+                                                  range-separator="至"
+                                                  start-placeholder="开始日期"
+                                                  end-placeholder="结束日期"
+                                                  value-format="yyyy-MM-dd">
+                                  </el-date-picker>
+                            </div>
+                            <div  class="data_box">
+                                  <div id="myCharts" style="width: 100%;height: 400px;"></div>
+                            </div>
+                          </div>
+                  </el-col>
+                </el-row>
+                <el-dialog  :visible.sync="centerDialogVisible"
+                            width="30%"
+                            center>
+                            <div :class="$style.dialogcentered">
+                              <p>请选择仓库</p>
+                              <el-radio-group v-model="selectWarehouse">
+                                <el-radio-button :class="$style.selectline"
+                                                v-for="item in warehouseList"
+                                                :label="item.warehouse.name_cn" :key="item.warehouse.id">
+                                </el-radio-button>
+                              </el-radio-group>
+                            </div>
+                            <span slot="footer" class="dialog-footer">
+                              <el-button type="primary" @click="handleConfirm">确 定</el-button>
+                            </span>
+                </el-dialog>
           </div>
-          <div class="data_box">
-            <div id="myCharts" style="width: 100%;height: 400px;"></div>
-          </div>
-        </div>
-      </el-col>
-    </el-row>
-    <el-dialog
-   :visible.sync="centerDialogVisible"
-   width="30%"
-   center>
-   <div :class="$style.dialogcentered">
-     <p>请选择仓库</p>
-    <el-radio-group v-model="selectWarehouse">
-      <el-radio-button :class="$style.selectline"
-                       v-for="item in warehouseList"
-                       :label="item.warehouse.name_cn" :key="item.warehouse.id">
-      </el-radio-button>
-    </el-radio-group>
-   </div>
-   <span slot="footer" class="dialog-footer">
-     <el-button type="primary" @click="handleConfirm">确 定</el-button>
-   </span>
- </el-dialog>
-  </div>
 </template>
 
 <script>
@@ -197,12 +191,15 @@ export default {
   },
   created() {
     this.activeLabel = '1';
-    this.getNoticeList();
+    // this.getNoticeList();
     this.getBoundList();
   },
   computed: {
     warehouseList() {
       return this.$store.state.warehouseList;
+    },
+    warehouseId() {
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
   mounted() {
@@ -240,19 +237,19 @@ export default {
       window.onresize = this.myCharts.resize;
     },
     // 获取通知列表
-    getNoticeList() {
-      $http.noticeList().then((res) => {
-        this.noticeList = res.data;
-      });
-    },
+    // getNoticeList() {
+    //   $http.noticeList().then((res) => {
+    //     this.noticeList = res.data;
+    //   });
+    // },
     // 获取仓库列表
     getBoundList() {
-      const warehouseParams = {
-        page: 1,
-        page_size: 100,
-        from: 1,
-      };
-      $http.warehouse(warehouseParams).then((res) => {
+      // const warehouseParams = {
+      //   page: 1,
+      //   page_size: 100,
+      //   from: 1,
+      // };
+      $http.warehouses().then((res) => {
         this.boundList = res.data.data;
         if (!res.data.data.length) return;
         if (!this.warehouse_id) {
@@ -305,7 +302,7 @@ export default {
           end_time: this.chart_time[1],
         };
       }
-      echartsdate.warehouse_id = this.warehouse_id || '';
+      echartsdate.warehouse_id = this.warehouseId || '';
       $http.echartsData(echartsdate).then((res) => {
         if (res.data.length !== 0) {
           this.echartsdata = res.data.data.reverse();
@@ -401,7 +398,7 @@ export default {
   background-color: white;
   margin: 20px 20px 20px 0;
   padding: 20px;
-  height: 650px;
+  height: 600px;
   border:  @border;
   box-shadow: @box-shadow;
   header {

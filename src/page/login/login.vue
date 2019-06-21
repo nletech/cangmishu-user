@@ -7,6 +7,7 @@
                               <el-form-item  prop="email"
                                              class="login_model_form">
                                              <el-input  :placeholder="$t('PleaseEnterTheMailbox')"
+                                                        clearable
                                                         v-model="form.email"
                                                         @keyup.enter.native="goLogin"
                                                         size="small">
@@ -107,7 +108,7 @@ export default {
         $http.login(this.form)
           .then((res) => {
             if (res.status) return;
-            console.log(res, '登录信息');
+            // console.log(res, '登录信息');
             // 将token保存到本地
             this.$store.commit('token/addToken', {
               token: res.data.token.token_value,
@@ -125,9 +126,6 @@ export default {
             this.$router.push({
               name: 'home',
             });
-          })
-          .catch((e) => {
-            console.log(e, '登录信息有误');
           });
       });
     },
