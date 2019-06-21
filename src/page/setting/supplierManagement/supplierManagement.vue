@@ -121,11 +121,10 @@ export default {
   methods: {
     get_distributor_data() {
       $http.getDistributor()
-        .then((re) => {
-          if (re.status) return;
-          // console.log(re.data, 'data');
-          this.info_data = re.data.data;
-          this.total = re.data.total;
+        .then((res) => {
+          if (res.status) return;
+          this.info_data = res.data.data;
+          this.total = res.data.total;
         });
     },
     submit_form() {
@@ -159,8 +158,8 @@ export default {
       $http.checkDistributor({ page: val })
         .then((res) => {
           this.info_data = res.data.data;
-          // this.total = res.data.total;
-          // this.current_page = res.data.current_page;
+          this.total = res.data.total;
+          this.current_page = res.data.current_page;
         });
     }, // 分页查询
     edit(info) {
@@ -183,7 +182,8 @@ export default {
                   type: 'success',
                   message: '操作成功!',
                 });
-                this.get_distributor_data();
+                // this.get_distributor_data();
+                this.handleCurrentChange(this.current_page); // 更新数据
               }
             });
         });
