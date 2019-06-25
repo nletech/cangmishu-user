@@ -187,35 +187,28 @@ export default {
       this.switchFlag = true;
     },
     delete_data(info) {
-      this.$confirm('此操作将永久删除，是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          const active_item = this.active_tab_item;
-          if (active_item === '发件人信息') {
-            $http.deleteSender(info.id)
-                .then(() => {
-                  if (status) return;
-                  this.$message({
-                    type: 'success',
-                    message: '操作成功',
-                  });
-                  this.active_item_check(active_item);
-                });
-          } else {
-            $http.deleteReceiver(info.id)
-              .then(() => {
-                if (status) return;
-                this.$message({
-                  type: 'success',
-                  message: '操作成功',
-                });
-                this.active_item_check(active_item);
+      const active_item = this.active_tab_item;
+      if (active_item === '发件人信息') {
+        $http.deleteSender(info.id)
+            .then(() => {
+              if (status) return;
+              this.$message({
+                type: 'success',
+                message: '操作成功',
               });
-          }
-        });
+              this.active_item_check(active_item);
+            });
+      } else {
+        $http.deleteReceiver(info.id)
+          .then(() => {
+            if (status) return;
+            this.$message({
+              type: 'success',
+              message: '操作成功',
+            });
+            this.active_item_check(active_item);
+          });
+      }
     }, // 删除操作
   },
 };

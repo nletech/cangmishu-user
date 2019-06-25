@@ -74,6 +74,9 @@ const $http = {
   checkOrder(data) {
     return Axios.get('/order', { params: data });
   }, // 分页查询--出库单分类
+  queryOrder(data) {
+    return Axios.get('/order', { params: data });
+  }, // 出库单查询接口
   getOutboundDetail(id) {
     return Axios.get(`/order/${id}`);
   }, // 编辑出库单
@@ -281,6 +284,9 @@ const $http = {
     return Axios.get('/distributor');
   }, // 获取供应商列表
   checkDistributor(data) {
+    return Axios.get('/distributor', { params: data });
+  }, // 分页查询供应商
+  queryDistributor(data) {
     return Axios.get('/distributor', { params: data });
   }, // 分页查询供应商
   deleteDistributor(id) {

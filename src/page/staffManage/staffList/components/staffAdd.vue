@@ -17,6 +17,7 @@
                       <el-col :span="10" :offset="7">
                               <el-form  :class="$style.staff_form"
                                         label-width="80px"
+                                        ref="addStaff"
                                         label-position="left"
                                         :model="staff_info_form"
                                         :rules="info_Verify_rules">
@@ -110,10 +111,9 @@ export default {
         ],
         password_confirmation: [{ required: true, message: '请再次输入密码' }],
         email: [
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', required: true, message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] },
         ],
-        remark: '',
       },
     };
   },
@@ -121,15 +121,16 @@ export default {
     // 提交员工信息
     submit_staff_info() {
       // 检验表单必填信息
-      const arr = Object.values(this.staff_info_form);
-      for (let i = 0; i < arr.length - 2; i += 1) {
-        // 必填项有空，无法弹出保存选项框
-        if (arr[i] !== '') {
-          this.form_submit_blank = true;
-        }
-      }
-      // 必选项全部填写
-      if (this.form_submit_blank) {
+      // const arr = Object.values(this.staff_info_form);
+      // for (let i = 0; i < arr.length - 2; i += 1) {
+      //   // 必填项有空，无法弹出保存选项框
+      //   if (arr[i] !== '') {
+      //     this.form_submit_blank = true;
+      //   }
+      // }
+      this.$refs.addStaff.validate((valid) => {
+        if (!valid) return;
+        // 必选项全部填写
         this.$confirm('确认添加员工', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -145,26 +146,10 @@ export default {
                 message: '操作成功!',
               });
               this.$router.replace({ name: 'staffList' });
-            } else {
-              this.$message({
-                type: 'info',
-                message: '操作失败!',
-              });
             }
-          }).catch(() => {
-            console.log('add staff is wrong!');
-          });
-        }).catch(() => {
-          // 显示取消消息
-          this.$message({
-            type: 'info',
-            message: '已取消',
           });
         });
-        // 初始化
-        this.form_submit_blank = !this.form_submit_blank;
-        console.log(this.form_submit_blank);
-      }
+      });
     },
     delete_staff_info() {
       Object.keys(this.staff_info_form).forEach((item) => {

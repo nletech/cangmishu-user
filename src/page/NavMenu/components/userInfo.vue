@@ -23,19 +23,18 @@
                                 </el-form-item>
                                 <el-form-item label="头像"
                                               prop="avatar">
-                                <el-upload  class="avatar-uploader"
-                                            :action="api"
-                                            :headers="Authorization"
-                                            :show-file-list="false"
-                                            :limit="1"
-                                            name="image"
-                                            :on-exceed="handleExceed"
-                                            :file-list="fileList"
-                                            :on-success="handleAvatarSuccess"
-                                            :before-upload="beforeAvatarUpload">
-                                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
+                                              <el-upload  class="avatar-uploader"
+                                                          :action="api"
+                                                          :headers="Authorization"
+                                                          :show-file-list="false"
+                                                          name="image"
+                                                          :on-exceed="handleExceed"
+                                                          :file-list="fileList"
+                                                          :on-success="handleAvatarSuccess"
+                                                          :before-upload="beforeAvatarUpload">
+                                                          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                              </el-upload>
                                 </el-form-item>
                       </el-form>
                       <span slot="footer"
@@ -76,6 +75,8 @@ export default {
   },
   mounted() {
     this.userEmail = this.user_email;
+    this.imageUrl = localStorage.getItem('setUAvatar');
+    this.form.nickname = localStorage.getItem('setUnickName');
   },
   computed: {
     Authorization() {
@@ -95,6 +96,7 @@ export default {
     handleAvatarSuccess(res) {
       if (res.status === 0) {
         this.imageUrl = res.data.url;
+        console.log(res, '图片链接');
       } else if (res.status === 1) {
         this.$notify({
           message: res.msg,
@@ -122,6 +124,7 @@ export default {
           $http.modifyUserAvatar(this.user_id, { avatar: this.imageUrl })
             .then((re) => {
               if (re.status) return;
+              this.form.photos = this.imageUrl;
               $http.modifyUserInfo(this.user_id, this.form)
                 .then((res) => {
                   if (res.status) return;

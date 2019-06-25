@@ -31,7 +31,7 @@
                                                       <el-col :span="4" :offset="4" v-if="row_data">{{row_data.send_phone}}</el-col>
                                               </el-row>
                                               <el-row :class="$style.address_detail">
-                                                      <el-col :span="8" v-if="row_data">{{row_data.send_full_address}}</el-col>
+                                                      <el-col :span="8" v-if="row_data" :class="$style.address_text">{{row_data.send_full_address}}</el-col>
                                               </el-row>
                                       </el-col>
                                       <el-col :span="10" :class="$style.address">
@@ -43,7 +43,7 @@
                                                       <el-col :span="4" :offset="4" v-if="row_data">{{row_data.receiver_phone}}</el-col>
                                               </el-row>
                                               <el-row :class="$style.address_detail">
-                                                      <el-col :span="8" v-if="row_data">{{row_data.receiver_full_address}}</el-col>
+                                                      <el-col :span="8" v-if="row_data"  :class="$style.address_text">{{row_data.receiver_full_address}}</el-col>
                                               </el-row>
                                       </el-col>
                                 </el-row>
@@ -78,50 +78,26 @@
                     </el-row>
                     <el-row :class="$style.desc_detail">
                             <el-col>
-                                    <el-row>
-                                            <el-col :span="4">
-                                                    <span v-if="row_data">
-                                                          备注:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                          {{row_data.remark}}
-                                                    </span>
-                                            </el-col>
-                                    </el-row>
-                                    <el-row>
-                                            <el-col :span="4">
-                                                    <span v-if="row_data">
-                                                          仓库:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                          {{row_data.warehouse.name_cn}}
-                                                    </span>
-                                            </el-col>
-                                    </el-row>
-                                    <el-row>
-                                            <el-col :span="6">
-                                                    <span v-if="row_data">
-                                                          创建日期:&nbsp;&nbsp;
-                                                          {{row_data.created_at}}
-                                                    </span>
-                                            </el-col>
-                                    </el-row>
-                                    <el-row>
-                                            <el-col :span="6">
-                                                    出库日期:&nbsp;&nbsp;
-                                                    <el-date-picker  v-model="delivery_date"
-                                                                     size="mini"
-                                                                     type="date"
-                                                                     value-format="yyyy-MM-dd"
-                                                                     placeholder="出库日期">
-                                                    </el-date-picker>
-                                            </el-col>
-                                    </el-row>
+                                    <div  :class="$style.desc_main">
+                                          <div  :class="$style.desc_item">
+                                                <span>备注:</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.remark}}</span>
+                                          </div>
+                                          <div  :class="$style.desc_item">
+                                                <span>仓库:</span><span v-if="row_data.warehouse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
+                                          </div>
+                                          <div  :class="$style.desc_item">
+                                                <span>创建日期:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
+                                          </div>
+                                    </div>
                                     <el-row>
                                             <hr />
                                     </el-row>
                                     <el-row>
-                                            <el-col :span="3" v-if="row_data">运输方式:{{row_data.delivery_type}}</el-col>
-                                            <el-col :span="3" :offset="3" v-if="row_data">运单号:{{row_data.express_num}}</el-col>
+                                            <el-col :span="6">运输方式:{{row_data.delivery_type}}</el-col>
+                                            <el-col :span="6" :offset="1">运单号:{{row_data.express_num}}</el-col>
                                     </el-row>
                                     <el-row>
-                                            <el-col :span="10" :offset="15">
+                                            <el-col :span="10" :offset="14">
                                                     <span>仓秘书免费的共享仓储管理系统  http://www.cangmishu.com</span>
                                             </el-col>
                                     </el-row>
@@ -250,6 +226,7 @@ export default {
       margin: 20px 0 20px 40px;
       .address {
         width: 48%;
+        min-height: 200px;
         border: 1px solid #ccc;
         margin: 0 5px 0 0;
         padding: 10px 0 30px 30px;
@@ -263,6 +240,11 @@ export default {
         }
         .address_detail {
           margin: 20px 0 4px 0;
+          .address_text {
+            min-width: 500px;
+            text-align: left;
+            word-wrap: none;
+          }
         }
       }
     }

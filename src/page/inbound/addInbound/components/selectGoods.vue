@@ -11,9 +11,8 @@
                                      style="width: 100%"
                                      @selection-change="handleSelected"
                                      :row-style="{cursor: 'pointer'}">
-                                    <el-table-column
-                                      type="selection"
-                                      width="55">
+                                    <el-table-column  type="selection"
+                                                      width="55">
                                     </el-table-column>
                                     <el-table-column  label="商品名称"
                                                       prop="name_cn">
@@ -32,16 +31,12 @@
                           </el-pagination>
                           <span slot="footer"
                                 class="dialog-footer">
-                                <el-row>
-                                        <el-col :span="2" :offset="22">
-                                                <el-button  type="primary"
-                                                            @click="confirmSelected"
-                                                            :class="$style.submit_btn"
-                                                            :loading="$store.state.btn_loading">
-                                                            {{$t('submit')}}
-                                                </el-button>
-                                        </el-col>
-                                </el-row>
+                                <el-button  type="primary"
+                                            @click="confirmSelected"
+                                            :class="$style.submit_btn"
+                                            :loading="$store.state.btn_loading">
+                                            {{$t('submit')}}
+                                </el-button>
                           </span>
               </el-dialog>
         </div>

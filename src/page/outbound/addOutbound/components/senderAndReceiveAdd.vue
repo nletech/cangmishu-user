@@ -14,37 +14,37 @@
                                                 :model="form"
                                                 ref="form"
                                                 :rules="info_Verify_rules">
-                                        <el-form-item  prop="full_name"
-                                                      label="姓名"
-                                                      size="middle">
-                                                      <el-input  v-model="form.full_name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item  prop="phone"
-                                                      label="电话"
-                                                      size="middle">
-                                                      <el-input  v-model="form.phone"></el-input>
-                                        </el-form-item>
-                                        <el-form-item  prop="address"
-                                                      label="省市区"
-                                                      size="middle">
-                                                      <el-cascader  :props="props"
-                                                                    :options="addressInfo"
-                                                                    v-model="form.address"
-                                                                    style="width: 260px;">
-                                                      </el-cascader>
-                                        </el-form-item>
-                                        <el-form-item  prop="addressDetail"
-                                                      label="详细地址"
-                                                      size="middle">
-                                                      <el-input  type="textarea"
-                                                                  v-model="form.addressDetail">
-                                                      </el-input>
-                                        </el-form-item>
+                                                <el-form-item  prop="full_name"
+                                                              label="姓名"
+                                                              size="middle">
+                                                              <el-input  v-model="form.full_name"></el-input>
+                                                </el-form-item>
+                                                <el-form-item  prop="phone"
+                                                              label="电话"
+                                                              size="middle">
+                                                              <el-input  v-model="form.phone"></el-input>
+                                                </el-form-item>
+                                                <el-form-item  prop="address"
+                                                              label="省市区"
+                                                              size="middle">
+                                                              <el-cascader  :props="props"
+                                                                            :options="addressInfo"
+                                                                            v-model="form.address"
+                                                                            style="width: 260px;">
+                                                              </el-cascader>
+                                                </el-form-item>
+                                                <el-form-item  prop="addressDetail"
+                                                              label="详细地址"
+                                                              size="middle">
+                                                              <el-input  type="textarea"
+                                                                          v-model="form.addressDetail">
+                                                              </el-input>
+                                                </el-form-item>
                                       </el-form>
-                                      <el-row  :class="$style.submit_btn">
+                                      <el-row>
                                               <el-col  :span="2"
                                                         :offset="13">
-                                                        <el-button  type="success"
+                                                        <el-button  :class="$style.submit_btn"
                                                                     @click="infoSubmit">
                                                                     提交
                                                         </el-button>
@@ -207,6 +207,10 @@ export default {
       margin: 10px 0 40px 0;
       font-size: 16px;
       font-weight: 400;
+    }
+    .submit_btn {
+      background-color: @ThemeColor;
+      color: #fff;
     }
   }
 </style>

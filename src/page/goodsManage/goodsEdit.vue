@@ -33,16 +33,14 @@
                                        prop="name_cn"
                                        style="width:70%">
                                        <el-input v-model="form.name_cn"
-                                                 size="small"
-                                                 :disabled="!!$route.query.isCheck">
+                                                 size="small">
                                        </el-input>
                         </el-form-item>
                         <el-form-item  label="外文名称"
                                        prop="name_en"
                                        style="width:70%">
                                        <el-input  v-model="form.name_en"
-                                                  size="small"
-                                                  :disabled="!!$route.query.isCheck">
+                                                  size="small">
                                        </el-input>
                         </el-form-item>
                         <!-- 货品规格 -->
@@ -58,7 +56,7 @@
                                                   </my-edit-table>
                                                   <my-edit-table  label="SKU*"
                                                                   prop="relevance_code"
-                                                                  :isDisabled="!!this.$route.query.isCheck">
+                                                                  :isDisabled="this.$route.query.isCheck">
                                                   </my-edit-table>
                                                   <my-edit-table  label="净重(g)"
                                                                   width="80"
@@ -106,14 +104,12 @@
                         <el-form-item :label="$t('goodsRemark')"
                                       style="width:70%">
                                       <el-input  v-model="form.remark"
-                                                :disabled="!!$route.query.isCheck"
                                                 type="textarea"
                                                 :autosize="{ minRows: 4, maxRows: 6}">
                                       </el-input>
                         </el-form-item>
                         <el-form-item :label="$t('goodsPhoto')">
-                                      <picture-upload :photo.sync="form.photos"
-                                                      :disabled="!!$route.query.isCheck">
+                                      <picture-upload :photo.sync="form.photos">
                                       </picture-upload>
                                       <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
                         </el-form-item>
@@ -239,8 +235,8 @@ export default {
         .then((res) => {
           this.form = res.data;
           this.skuList = res.data.specs;
-          console.log(res, 'getAGoods');
-          console.log(this.form, 'this.form');
+          // console.log(res, 'getAGoods');
+          // console.log(this.form, 'this.form');
         });
     },
     // 规格取消

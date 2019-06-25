@@ -49,11 +49,11 @@
                                            </el-form-item>
                                  </el-form>
                                  <!-- 提交 -->
-                                 <el-row  :class="$style.submit_btn">
+                                 <el-row>
                                           <el-col  :span="2"
                                                   :offset="13">
                                                   <el-button  @click="infoSubmit"
-                                                              type="success">
+                                                              :class="$style.submit_btn">
                                                               提交
                                                   </el-button>
                                           </el-col>
@@ -129,7 +129,7 @@
                                                 <el-col  :span="2"
                                                         :offset="13">
                                                         <el-button  @click="infoSubmit"
-                                                                    type="success">
+                                                                    :class="$style.submit_btn">
                                                                     提交
                                                         </el-button>
                                                 </el-col>
@@ -297,5 +297,9 @@ export default {
   margin: 10px 0 40px 0;
   font-size: 16px;
   font-weight: 400;
+}
+.submit_btn {
+  background-color: @ThemeColor;
+  color: #fff;
 }
 </style>

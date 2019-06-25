@@ -1,17 +1,17 @@
 <template>
-          <div class="storeManage">
-               <wms-tags>
-                        <my-group>
-                                  <!-- 添加员工组 -->
-                                  <el-col :span="4" :offset="21">
-                                          <el-button  type="text"
-                                                      :class="$style.add_btn"
-                                                      @click="$router.push({name: 'staffGroupAdd'})"
-                                                      icon="el-icon-plus">
-                                                      {{$t('staffGroupAdd')}}
-                                          </el-button>
-                                  </el-col>
-                        </my-group>
+          <div :class="$style.storeManage">
+                <div :class="$style.main">
+                  <el-row>
+                          <!-- 添加员工组 -->
+                          <el-col :span="4" :offset="21">
+                                  <el-button  type="text"
+                                              :class="$style.add_btn"
+                                              @click="$router.push({name: 'staffGroupAdd'})"
+                                              icon="el-icon-plus">
+                                              {{$t('staffGroupAdd')}}
+                                  </el-button>
+                          </el-col>
+                  </el-row>
                         <!-- 员工组数据表格 -->
                         <el-table  :data="staffGroupData"
                                    border>
@@ -76,32 +76,39 @@
                                                       </template>
                                     </el-table-column>
                         </el-table>
-                        <button-pagination :pageParams="params"></button-pagination>
-               </wms-tags>
+                        <el-row>
+                                <el-col :span="6" :offset="18">
+                                        <pagination-public  :class="$style.pagination"
+                                                            :params="params"
+                                                            @changePage="handlerChangePage">
+                                        </pagination-public>
+                                </el-col>
+                        </el-row>
+                </div>
           </div>
 </template>
 
 <script>
-import WmsTags from '@/components/wms_tags';
-import MyInput from '@/components/my_input';
 import MyGroup from '@/components/my_group';
 import $http from '@/api';
-// buttonPagination 和 getStaffGroupList 是一起的
-import buttonPagination from '@/components/pagination_and_buttons';
-import getStaffGroupList from '@/mixin/staffGroupList';
+import paginationPublic from '@/components/pagination-public';
 
 export default {
   components: {
-    WmsTags,
-    MyInput,
     MyGroup,
-    buttonPagination,
+    paginationPublic,
   },
-  mixins: [getStaffGroupList],
   data() {
     return {
       staffGroupData: [], // 员工组列表信息
+      params: {
+        total: 0,
+        currentPage: 1,
+      }, // 分页数据
     };
+  },
+  mounted() {
+    this.getList();
   },
   computed: {
     warehouseId() {
@@ -114,17 +121,23 @@ export default {
     },
   },
   methods: {
+    handlerChangePage(val) {
+      $http.getStaffGroups({ page: val })
+        .then((res) => {
+          this.staffGroupData = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
+    },
     // 获取员工组列表数据
     getList() {
       // params 携带的当前页的和当前页显示数目的条数
-      $http.getStaffGroups({ warehouse_id: this.warehouseId })
+      $http.getStaffGroups()
         .then((res) => {
-          console.log('员工列表');
           this.staffGroupData = res.data.data;
-          this.params.data_count = res.data.total; // 页面总数
-        })
-        .catch(() => {
-          console.log('获取员工数据出错');
+          this.params.total = res.data.total; // 页面总数
+          this.params.currentPage = res.data.current_page;
+          console.log(this.params, res, '员工列表');
         });
     },
     // 模块--基本信息
@@ -190,7 +203,7 @@ export default {
                 $http.getStaffGroups(this.params)
                   .then((re) => {
                     this.staffGroupData = re.data.data;
-                    this.params.data_count = re.data.total; // 页面总数
+                    this.params.total = re.data.total; // 页面总数
                   });
               }
             });
@@ -203,13 +216,19 @@ export default {
 <style lang="less" module>
 @import '../../../less/public_variable.less';
 
-  .add_btn {
-    display: inline-block;
-    margin: 0 0 10px 0;
-    font-size: 1.2rem;
-  }
-  .util {
-    text-align: right;
-    margin: 20px;
+  .storeManage {
+    margin: 20px 10px 10px 10px;
+    .main {
+      width: 92%;
+      margin: 0 auto;
+      .add_btn {
+        display: inline-block;
+        margin: 0 0 10px 0;
+        font-size: 1.2rem;
+      }
+      .pagination {
+        margin: 10px  0 30px 0;
+      }
+    }
   }
 </style>

@@ -1,15 +1,20 @@
 <template>
   <el-dialog  title="查看入库单"
-              width="60%"
+              width="80%"
               @close="close"
               @update:visible="$emit('update:visible', $event)"
               :visible="visible">
               <div v-html="content" v-if="visible">
               </div>
-              <el-button  @click="handleDownload"
-                          :class="$style.btn">
-                          下载入库单
-              </el-button>
+              <el-row>
+                      <el-col :span="4" :offset="10">
+                              <el-button  @click="handleDownload"
+                                          style="background-color: #5745c5;
+                                          color: #fff;">
+                                          下载入库单
+                              </el-button>
+                      </el-col>
+              </el-row>
   </el-dialog>
 </template>
 
@@ -84,7 +89,7 @@ export default {
     },
     handleDownload() {
       $http.downloadInbound(this.id).then((res) => {
-        console.log(res, 'res');
+        // console.log(res, 'res');
         this.$message({
           message: '下载成功!',
           type: 'success',
@@ -118,10 +123,5 @@ export default {
 
 .inbound_info {
   padding-left: 20px;
-}
-.btn {
-  .el-button {
-    background-color: @ThemeColor;
-  }
 }
 </style>

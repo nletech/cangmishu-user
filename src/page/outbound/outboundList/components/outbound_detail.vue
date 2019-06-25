@@ -73,30 +73,26 @@
               </el-row>
               <el-row :class="$style.desc_detail">
                       <el-col>
-                              <el-row>
-                                      <el-col :span="4">
-                                              <span>备注:&nbsp;&nbsp;{{row_data.remark}}</span>
-                                      </el-col>
-                              </el-row>
-                              <el-row>
-                                      <el-col :span="4">
-                                              <span v-if="row_data.warehouse">仓库:&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
-                                      </el-col>
-                              </el-row>
-                              <el-row>
-                                      <el-col :span="6">
-                                              <span>创建日期:{{row_data.created_at}}</span>
-                                      </el-col>
-                              </el-row>
+                              <div  :class="$style.desc_main">
+                                    <div  :class="$style.desc_item">
+                                          <span>备注:</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.remark}}</span>
+                                    </div>
+                                    <div  :class="$style.desc_item">
+                                          <span>仓库:</span><span v-if="row_data.warehouse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
+                                    </div>
+                                    <div  :class="$style.desc_item">
+                                          <span>创建日期:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
+                                    </div>
+                              </div>
                               <el-row>
                                       <hr />
                               </el-row>
                               <el-row>
-                                      <el-col :span="3">运输方式:{{row_data.delivery_type}}</el-col>
-                                      <el-col :span="3" :offset="3">运单号:{{row_data.express_num}}</el-col>
+                                      <el-col :span="6">运输方式:{{row_data.delivery_type}}</el-col>
+                                      <el-col :span="6" :offset="1">运单号:{{row_data.express_num}}</el-col>
                               </el-row>
                               <el-row>
-                                      <el-col :span="10" :offset="15">
+                                      <el-col :span="10" :offset="14">
                                               <span>仓秘书免费的共享仓储管理系统  http://www.cangmishu.com</span>
                                       </el-col>
                               </el-row>
@@ -179,7 +175,7 @@ export default {
   width: 92%;
   margin: 20px 0 20px 40px;
   .address {
-    width: 48%;
+    width: 49%;
     border: 1px solid #ccc;
     margin: 0 5px 0 0;
     padding: 10px 0 30px 30px;
@@ -199,5 +195,12 @@ export default {
 .desc_detail {
   margin: 20px 0 20px 0;
   font-weight: bold;
+  .desc_remark {
+    word-wrap: none;
+  }
+  .desc_main {
+    width: 92%;
+    text-align: left;
+  }
 }
 </style>

@@ -2,36 +2,7 @@
           <div :class="$style.page">
                 <div  :class="$style.main">
                       <div  :class="$style.header">
-                            <el-row>
-                                    <el-col :span="3">
-                                            <date-picker-public @select_data="handlerSelect_data">
-                                            </date-picker-public>
-                                    </el-col>
-                                    <el-col :span="3"
-                                            :offset="5">
-                                            <select-public :select="select_data_type"
-                                                           @data_cb="handlerQuery">
-                                            </select-public>
-                                    </el-col>
-                                    <el-col :span="3"
-                                            :offset="1">
-                                            <select-public :select="select_data_status"
-                                                           @data_cb="handlerQuery">
-                                            </select-public>
-                                    </el-col>
-                                    <el-col :span="3"
-                                            :offset="1">
-                                            <select-public :select="select_data_distributor"
-                                                           @data_cb="handlerQuery">
-                                            </select-public>
-                                    </el-col>
-                                    <el-col :span="4"
-                                            :offset="1">
-                                            <input-public :select="select_batch_code"
-                                                          @data_cb="handlerInputQuery">
-                                            </input-public>
-                                    </el-col>
-                            </el-row>
+                            <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
                             <el-row>
                                     <el-col :span="2"
                                             :offset="21">
@@ -85,11 +56,13 @@
                                                                               查看详情
                                                                    </el-button>
                                                                    <el-button  size="small"
+                                                                               v-if="scope.row.status !== 3"
                                                                                style="margin: 0; padding: 10px;"
                                                                                @click="toInbound(scope.row)">
                                                                                入库&上架
                                                                    </el-button>
                                                                    <el-button  size="small"
+                                                                               v-if="scope.row.status !== 3"
                                                                                style="margin: 0; padding: 10px;"
                                                                                @click="inboundDelete(scope.row.id)"
                                                                                type="danger">
@@ -119,6 +92,7 @@ import selectPublic from '@/components/select-public';
 import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import detailDialog from './components/inbound_detail';
+import inboundListSearch from './components/inboundListSearch';
 
 export default {
   components: {
@@ -127,6 +101,7 @@ export default {
     selectPublic,
     inputPublic,
     paginationPublic,
+    inboundListSearch,
   },
   data() {
     return {
@@ -136,13 +111,8 @@ export default {
       inbound_info: {},
       id: 0,
       boundList: [],
-      statusList: [
-        { id: 1, name: '待入库' },
-        { id: 2, name: '入库中' },
-        { id: 3, name: '入库完成' },
-      ],
+      select: [],
       typeList: [],
-      distributorList: [],
       // 子组件数据
       select_data_type: {
         placeholder: '入库单分类',
@@ -163,12 +133,20 @@ export default {
         placeholder: '入库单号或确认单号',
         flag: 2,
       },
+      //
+      dateValue: [], // 选择时间
+      inboundTypeValue: '',
+      inboundTypeList: [],
+      inboundStatus: '',
+      inboundStatusList: [],
+      distributorValue: '',
+      distributorList: [],
+      codeValue: '',
     };
   },
   created() {
     this.getBatchType();
     this.getData();
-    this.getTypeList();
     this.getBatchStatus();
     this.getDistributors();
   },
@@ -183,6 +161,12 @@ export default {
     },
   },
   methods: {
+    handlerCallBackData(res) {
+      this.inbound_list_data = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+      this.$set(this.params);
+    },
     handlerQuery(res) {
       this.inbound_list_data = res.data.data;
       this.params.total = res.data.total;
@@ -256,20 +240,6 @@ export default {
         },
       });
     }, // 入库上架
-    getTypeList() {
-      if (!this.warehouseId) return;
-      const SelcetParams = {
-        page: 1,
-        page_size: 200,
-        warehouse_id: this.warehouseId,
-      };
-      $http.getBatchType(SelcetParams).then((res) => {
-        this.typeList = res.data.data;
-      });
-      $http.getDistributor().then((res) => {
-        this.distributorList = res.data.data;
-      });
-    }, // 入库单分类和供应商
     // 添加入库单
     addInbound() {
       this.$router.push({

@@ -1,9 +1,9 @@
 <template>
-        <div  v-if="+total > 0">
+        <div v-if="+total > 0">
               <el-pagination  @current-change="handleCurrentChange"
-                              :current-page="params.currentPage"
+                              :current-page="this.params.currentPage"
                               layout="total, prev, pager, next, jumper"
-                              :total="+params.total">
+                              :total="+this.params.total">
               </el-pagination>
         </div>
 </template>

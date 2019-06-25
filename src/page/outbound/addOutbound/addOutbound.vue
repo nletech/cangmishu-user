@@ -26,6 +26,7 @@
               <el-form-item label="备注"
                             prop="remark">
                             <el-input type="textarea"
+                                      :maxlength="30"
                                       v-model="form.remark">
                             </el-input>
               </el-form-item>
@@ -35,7 +36,8 @@
                               <el-form-item  label="运输方式"
                                             size="small">
                                             <el-input  v-model="form.delivery_type"
-                                                        placeholder="请输入运输方式">
+                                                       :maxlength="13"
+                                                       placeholder="请输入运输方式">
                                             </el-input>
                               </el-form-item>
                       </el-col>
@@ -44,6 +46,7 @@
                                 <!-- 运单号 -->
                                 <el-form-item label="运单号">
                                               <el-input  placeholder="请输入运单号"
+                                                         :maxlength="13"
                                                          v-model="form.express_num"
                                                          size="small">
                                               </el-input>
@@ -52,7 +55,7 @@
               </el-row>
               <!-- 提交按钮 -->
               <el-form-item>
-                        <el-button type="primary" @click="onSubmit()">提交</el-button>
+                            <el-button type="primary" @click="onSubmit()">提交</el-button>
               </el-form-item>
     </el-form>
   </mdoel-form>

@@ -1,5 +1,5 @@
 import store from '@/store';
-import { Message } from 'element-ui';
+// import { Message } from 'element-ui';
 import { routerMap } from './home';
 
 const whiteList = ['login', 'register', 'backPassword'];
@@ -30,10 +30,10 @@ export default function (router) {
         next();
       } else {
         next('/login');
-        Message({
-          type: 'error',
-          message: '请重新登录',
-        });
+        // Message({
+        //   type: 'error',
+        //   message: '请重新登录',
+        // });
       }
     }
   };

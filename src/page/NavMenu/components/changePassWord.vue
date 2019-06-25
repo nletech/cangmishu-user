@@ -1,5 +1,5 @@
 <template>
-          <el-dialog  title="修改个人资料"
+          <el-dialog  title="修改密码"
                       width="40%"
                       @update:visible="$emit('update:visible', $event)"
                       :visible="visible"

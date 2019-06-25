@@ -171,11 +171,6 @@ export default {
           type: 'success',
           message: `${success_msg}`,
         });
-      } else {
-        this.$message({
-          type: 'info',
-          message: `${fail_msg}`,
-        });
       }
     },
     // 获取省市区
@@ -215,7 +210,7 @@ export default {
             .then(() => {
               let id = this.row_data.id; // 用于编辑
               if (id) {
-                $http.addWarehouse(this.formInfo)
+                $http.modifyWarehouse(id, this.formInfo)
                   .then((res) => {
                     if (res.status) return;
                     this.$emit('updata_data', true); // 更新数据列表

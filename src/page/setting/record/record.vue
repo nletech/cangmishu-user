@@ -142,37 +142,41 @@ export default {
     }, // 添加信息按钮
     active_item_check(item) {
       this.info_data = [];
-      item === '入库单分类'
-      ? $http.getBatchType()
+      if (item === '入库单分类') {
+        $http.getBatchType()
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
-      : $http.getOrderType()
+      } else {
+        $http.getOrderType()
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           });
+      }
     }, // 检测选中的标签页
     handleCurrentChange(val) {
       this.current_page = val;
-      this.active_tab_item === '入库单分类'
-      ? $http.checkBatchType({ page: val })
+      if (this.active_tab_item === '入库单分类') {
+        $http.checkBatchType({ page: val })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
-      : $http.checkOrderType({ page: val })
+      } else {
+        $http.checkOrderType({ page: val })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           });
+      }
     }, // 分页查询
     edit(info) {
       this.row_data = info;
@@ -180,25 +184,27 @@ export default {
     },
     delete_data(info) {
       const active_item = this.active_tab_item;
-      active_item === '入库单分类'
-      ? $http.delBatchType(info.id)
+      if (active_item === '入库单分类') {
+        $http.delBatchType(info.id)
+                  .then(() => {
+                    if (status) return;
+                    this.$message({
+                      type: 'success',
+                      message: '操作成功',
+                    });
+                    this.active_item_check(active_item);
+                  })
+      } else {
+        $http.delOrderType(info.id)
           .then(() => {
             if (status) return;
             this.$message({
               type: 'success',
-              message: '删除入库单分类成功',
-            });
-            this.active_item_check(active_item);
-          })
-      : $http.delOrderType(info.id)
-          .then(() => {
-            if (status) return;
-            this.$message({
-              type: 'success',
-              message: '删除出库单分类成功',
+              message: '操作成功',
             });
             this.active_item_check(active_item);
           });
+      }
     },
   },
 };

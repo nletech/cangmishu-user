@@ -27,7 +27,7 @@
                             <el-col :lg="11">
                               <div  class="address sender">
                                     <label  class="label"> 收件信息
-                                            <el-button size="mini"  @click="handle_select(1)">选择收件人地址</el-button>
+                                            <el-button size="large"  @click="handle_select(1)">选择收件人地址</el-button>
                                     </label>
                                     <el-form  label-width="80px">
                                               <el-form-item label="姓名"
@@ -56,7 +56,7 @@
                         <el-button  class="title"
                                     icon="el-icon-plus"
                                     @click="addSenderAndReceiver()"
-                                    size="mini">
+                                    size="large">
                                     添加{{addressText}}
                         </el-button>
                   </div>
@@ -200,14 +200,14 @@ export default {
     handle_edit_btn(row) {
       this.visibleFlag = true;
       this.row_data = row;
-      console.log(row, '传入的 row');
     }, // 编辑
     handleVisible(val) {
+      console.log(val, '哈哈哈');
       this.visibleFlag = val;
       if (!this.AddressType) {
         this.getSenders();
       } else {
-        this.getRecs();
+        this.getReceivers();
       }
     },
     handleAddVisible(val) {

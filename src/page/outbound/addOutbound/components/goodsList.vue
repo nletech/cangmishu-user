@@ -14,7 +14,7 @@
                         </el-table-column>
                         <el-table-column  label="商品名称">
                                           <template slot-scope="scope">
-                                            {{scope.row.name_parent}}({{scope.row.name_cn}})
+                                                    {{scope.row.name_cn}}
                                           </template>
                         </el-table-column>
                         <el-table-column label="SKU"
@@ -91,10 +91,33 @@ export default {
       this.goodsList = temp;
     },
     handleVisibleGoods(val) {
+      // for (let i = 0; i < goodsList.length; i += 1) {
+      //   let flag = false;
+      //   for (let j = 0; j < this.temp_goods_list.length; j += 1) {
+      //     if (goodsList[i].id === this.temp_goods_list[j].id) {
+      //       flag = true;
+      //     }
+      //   }
+      //   if (!flag) {
+      //     this.temp_goods_list.push(goodsList[i]);
+      //   }
+      // }
       this.visible_goods = val;
     }, // 选择商品之后关闭弹窗
     handleSelectGoodsData(data) {
-      this.goodsList = data;
+      for (let i = 0; i < data.length; i += 1) {
+        let flag = false;
+        for (let j = 0; j < this.goodsList.length; j += 1) {
+          if (data[i].id === this.goodsList[j].id) {
+            flag = true;
+          }
+        }
+        if (!flag) {
+          this.goodsList.push(data[i]);
+        }
+      }
+      // console.log(this.goodsList, '父组件');
+      // console.log(data, '子组件');
     }, // 选择商品后的事件
     handleSelectGoods() {
       this.visible_goods = true;

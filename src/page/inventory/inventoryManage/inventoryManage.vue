@@ -16,7 +16,7 @@
                                                   clearable
                                                   @clear="handlerClear"
                                                   v-model="search_sku_value"
-                                                  placeholder="SKU">
+                                                  placeholder="入库批次号">
                                         </el-input>
                                 </el-col>
                                 <el-col :span="1">
@@ -65,7 +65,7 @@
                                                                             <el-table-column label="盘点次数" prop="shelf_num_waiting">
 
                                                                             </el-table-column>
-                                                                            <el-table-column label="位置" prop="shelf_num">
+                                                                            <el-table-column label="位置" prop="location_code">
 
                                                                             </el-table-column>
                                                                             <el-table-column label="出入库记录">
@@ -97,11 +97,6 @@
                                   <el-table-column  prop="stock_in_warehouse"
                                                     label="仓库库存">
                                   </el-table-column>
-                                  <el-table-column  label="锁定/可用库存">
-                                                      <template slot-scope="scope">
-                                                                {{scope.row.reserved_num}} / {{scope.row.available_num}}
-                                                      </template>
-                                  </el-table-column>
                                   <el-table-column  label="入库次数/数量">
                                                     <template slot-scope="scope">
                                                               {{scope.row.stock_entrance_times}} / {{scope.row.stock_entrance_qty}}
@@ -131,7 +126,7 @@
                           width="500px">
                           <el-checkbox-group  v-model="export_data">
                                               <el-checkbox value="1" label="1">导出货品列表</el-checkbox>
-                                              <el-checkbox value="2" label="2">导出SKU列表</el-checkbox>
+                                              <el-checkbox value="2" label="2">导出入库批次列表</el-checkbox>
                           </el-checkbox-group>
                           <span  slot="footer" class="dialog-footer">
                                 <el-button size="mini" @click="dialogVisible = false">取 消</el-button>

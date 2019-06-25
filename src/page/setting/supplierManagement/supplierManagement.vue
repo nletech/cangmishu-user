@@ -71,7 +71,7 @@
                                       </el-form-item>
                                       <el-form-item  label="供应商英文名:"
                                                      prop="name_en">
-                                                      <el-input v-model="distributor.name_en"></el-input>
+                                                     <el-input v-model="distributor.name_en"></el-input>
                                       </el-form-item>
                             </el-form>
                             <span   slot="footer" class="dialog-footer">
@@ -108,6 +108,9 @@ export default {
       currentPage: 1, // 当前页
       current_page: 1, // 编辑的当前页(当选中的信息不在第一页时)
     };
+  },
+  created() {
+    this.get_distributor_data();
   },
   watch: {
     dialogVisible() {
@@ -188,9 +191,6 @@ export default {
             });
         });
     },
-  },
-  created() {
-    this.get_distributor_data();
   },
 };
 </script>

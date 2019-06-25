@@ -3,7 +3,7 @@
                 <div  :class="$style.outboundList_main">
                       <el-row :class="$style.outboundList_tags">
                               <el-row  :class="$style.outboundList_tags">
-                                       <el-col  :span="4">
+                                       <!-- <el-col  :span="4">
                                                 <date-picker-public @select_data="handlerSelect_data">
                                                 </date-picker-public>
                                        </el-col>
@@ -23,7 +23,8 @@
                                                 <input-public :select="select_batch_code"
                                                               @data_cb="handlerInputQuery">
                                                 </input-public>
-                                       </el-col>
+                                       </el-col> -->
+                                       <outbound-list-search @data_cb="handlerCallBackData"></outbound-list-search>
                               </el-row>
                               <el-row>
                                        <el-col>
@@ -91,24 +92,22 @@
                                                              </el-button>
                                                              <el-button  size="mini"
                                                                          style="margin: 0; pading: 0;"
-                                                                         :disabled="scope.row.status === 0 || scope.row.status === 4 "
+                                                                         v-if="scope.row.status === 0 || scope.row.status === 4 "
                                                                          @click="checkedOutbound(scope.row)">
                                                                          设为出库
                                                              </el-button>
                                                              <el-button  size="mini"
                                                                          style="margin: 0; pading: 0;"
+                                                                         v-if="scope.row.status === 0 || scope.row.status === 4 "
                                                                          @click="cancelOrder(scope.row)">
                                                                          取消订单
                                                             </el-button>
                                                    </template>
                                  </el-table-column>
                       </el-table>
-                      <el-pagination  v-show="+total"
-                                      layout=" total, prev, pager, next, jumper"
-                                      @current-change="handleCurrentChange"
-                                      :current-page="currentPage"
-                                      :total="+total">
-                      </el-pagination>
+                      <pagination-public  :params="params"
+                                          @changePage="handlerChangePage">
+                      </pagination-public>
                      <!-- 入库单详情弹框 -->
                      <DetailDialog  :visible.sync="outboundDialogVisible"
                                     :id="id"
@@ -119,12 +118,15 @@
 </template>
 
 <script>
+import paginationPublic from '@/components/pagination-public';
 import $http from '@/api';
 import datePickerPublic from '@/components/date-picker-public';
 import selectPublic from '@/components/select-public';
 import inputPublic from '@/components/input-public';
 import datePickerSingePublic from '@/components/date-picker-singe-public';
 import DetailDialog from './components/outbound_detail';
+import outboundListSearch from './components/outboundListSearch';
+
 
 export default {
   data() {
@@ -144,19 +146,6 @@ export default {
         delivery_date: '',
       },
       row_data: {},
-      select_data_distributor: {
-        placeholder: '请选择状态',
-        options: [
-          { id: 0, name: '订单已取消' },
-          { id: 1, name: '待拣货' },
-          { id: 4, name: '待出库' },
-        ],
-        cb_flag: 3,
-      },
-      select_batch_code: {
-        placeholder: '出库单号',
-        flag: 1,
-      },
     };
   },
   components: {
@@ -165,6 +154,8 @@ export default {
     datePickerSingePublic,
     selectPublic,
     inputPublic,
+    outboundListSearch,
+    paginationPublic,
   },
   created() {
     this.getOutbounds();
@@ -180,6 +171,20 @@ export default {
     },
   },
   methods: {
+    handlerChangePage(val) {
+      $http.getInboundPage({ page: val })
+        .then((res) => {
+          this.outbound_list_data = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
+    }, // 分页回调
+    handlerCallBackData(res) {
+      this.outbound_list_data = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+      this.$set(this.params);
+    }, // 搜索回调
     handlerQuery(res) {
       this.outbound_list_data = res.data.data;
       this.params.total = res.data.total;
@@ -219,19 +224,9 @@ export default {
         name: 'addOutbound',
       });
     }, // 添加出库单
-    getOutbounds(query) {
+    getOutbounds() {
       if (!this.warehouseId) return;
-      const obj = {};
-      obj.warehouse_id = this.warehouseId; // 仓库 id 必填
-      // query有几种形式,这里查询时间范围是一个数组
-      if (Array.isArray(query)) {
-        obj.created_at_b = query[0]; // 开始时间
-        obj.created_at_e = query[1]; // 结束时间
-      } // 查询时间段
-      if (typeof query === 'string') {
-        obj.delivery_date = query;
-      } // 查询单个时间
-      $http.getOutbound(obj)
+      $http.getOutbound({ warehouse_id: this.warehouseId })
         .then((res) => {
           if (res.status) return;
           this.outbound_list_data = res.data.data;
@@ -255,20 +250,20 @@ export default {
     },
     // 取消订单
     cancelOrder(row) {
-      $http.cancelOutbound(row.id, { warehouse_id: row.warehouse_id })
-        .then((res) => {
-          if (res.status) return;
-          this.getOutbounds();
-          this.$message({
-            type: 'success',
-            message: res.msg,
-          });
-        })
-        .catch((res) => {
-          this.$message({
-            type: 'error',
-            message: res.msg,
-          });
+      this.$confirm('确认取消?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      })
+        .then(() => {
+          $http.cancelOutbound(row.id, { warehouse_id: row.warehouse_id })
+            .then((res) => {
+              if (res.status) return;
+              this.getOutbounds();
+              this.$message({
+                type: 'success',
+                message: res.msg,
+              });
+            });
         });
     },
   },
@@ -278,7 +273,7 @@ export default {
 <style lang="less" module>
 .outboundList {
   text-align: right;
-  margin: 20px 0 0 0 ;
+  margin: 30px 0 20px 0 ;
   .outboundList_main {
     width: 90%;
     margin: 0 auto;

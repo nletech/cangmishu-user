@@ -61,10 +61,10 @@
                     @click="handleChangeUserinfo">
                     <span v-if="!Uavatar" style="border: 1px solid;">管</span>
                     <img  v-else :class="$style.avatar"
-                                  style="display: inline-block; width: 100%;
-                                        height: 100%;
-                                        border-radius: 50%;"
-                                  :src="Uavatar">
+                          style="display: inline-block; width: 100%;
+                                height: 100%;
+                                border-radius: 50%;"
+                          :src="Uavatar">
               </div>
               <div :class="$style.UnickName">
                    <span v-html="UnickName"></span>

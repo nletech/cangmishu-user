@@ -57,15 +57,12 @@
             </el-input>
           </el-form-item>
         </el-form>
-        <el-row
-          :class="$style.submit_btn"
-        >
+        <el-row>
           <el-col :span="2" :offset="13">
-            <el-button
-                type="success"
-                @click="infoSubmit">
-              提交
-            </el-button>
+                  <el-button  :class="$style.submit_btn"
+                              @click="infoSubmit">
+                              提交
+                  </el-button>
           </el-col>
         </el-row>
       </el-col>
@@ -149,9 +146,6 @@ export default {
       },
     };
   },
-  mounted() {
-    console.log(this.row_data, 'row_data');
-  },
   watch: {
     row_data() {
       // 监听传入的 row_data 如果是空对象则弹框文字显示为 "添加",然后清除下表单的缓存
@@ -182,46 +176,39 @@ export default {
       this.formInfo.address   = this.add_info.addressDetail;
       this.$refs.form.validate((validate) => {
         if (validate) {
-          this.$confirm('确认提交?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          })
-            .then(() => {
-              let active_item = this.active_tab_item; // 活动标签
-              let id = this.row_data.id; // 用于编辑
-              // 如果 id 存在, 则为编辑信息，否则是添加信息
-              if (id) {
-                if (this.active_tab_item === '发件人信息') {
-                  $http.editSenderAddress(id, this.formInfo)
-                    .then((re) => {
-                      if (re.status) return;
-                      this.$emit('updata_data', active_item); // 更新数据列表
-                    });
-                } else if(this.active_tab_item === '收件人信息') {
-                  $http.editReceiverAddress(id, this.formInfo)
-                    .then((re) => {
-                      if (re.status) return;
-                      this.$emit('updata_data', active_item); // 更新数据列表
-                    });
-                }
-              } else {
-                if (this.active_tab_item === '发件人信息') {
-                  $http.addSenderAddress(this.formInfo)
-                    .then((re) => {
-                      if (re.status) return;
-                      this.$emit('updata_data_list', active_item); // 更新数据列表
-                    });
-                } else if(this.active_tab_item === '收件人信息') {
-                  $http.addReceiverAddress(this.formInfo)
-                    .then((re) => {
-                      if (re.status) return;
-                      this.$emit('updata_data_list', active_item); // 更新数据列表
-                    });
-                }
-              }
-              this.$emit('update:visible', false); // 关闭弹窗
-            });
+          let active_item = this.active_tab_item; // 活动标签
+          let id = this.row_data.id; // 用于编辑
+          // 如果 id 存在, 则为编辑信息，否则是添加信息
+          if (id) {
+            if (this.active_tab_item === '发件人信息') {
+              $http.editSenderAddress(id, this.formInfo)
+                .then((re) => {
+                  if (re.status) return;
+                  this.$emit('updata_data', active_item); // 更新数据列表
+                });
+            } else if(this.active_tab_item === '收件人信息') {
+              $http.editReceiverAddress(id, this.formInfo)
+                .then((re) => {
+                  if (re.status) return;
+                  this.$emit('updata_data', active_item); // 更新数据列表
+                });
+            }
+          } else {
+            if (this.active_tab_item === '发件人信息') {
+              $http.addSenderAddress(this.formInfo)
+                .then((re) => {
+                  if (re.status) return;
+                  this.$emit('updata_data_list', active_item); // 更新数据列表
+                });
+            } else if(this.active_tab_item === '收件人信息') {
+              $http.addReceiverAddress(this.formInfo)
+                .then((re) => {
+                  if (re.status) return;
+                  this.$emit('updata_data_list', active_item); // 更新数据列表
+                });
+            }
+          }
+          this.$emit('update:visible', false); // 关闭弹窗
         }
       });
     },
@@ -241,6 +228,10 @@ export default {
   .avatar_name {
     display: inline-block;
     margin: 20px 0 10px 20px;
+  }
+  .submit_btn {
+    background-color: @ThemeColor;
+    color: white;
   }
 }
 .staff_form {

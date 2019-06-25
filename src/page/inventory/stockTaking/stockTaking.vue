@@ -3,7 +3,7 @@
             <div :class="$style.stockTaking_main">
                  <el-row>
                         <el-col  :span="6">
-                                <el-input placeholder="请扫描货位或者SKU"
+                                <el-input placeholder="请输入货位或者入库批次"
                                           v-model="code"
                                           size="small">
                                           <i  style="color: #000;"

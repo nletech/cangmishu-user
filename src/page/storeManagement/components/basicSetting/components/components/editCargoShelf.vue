@@ -20,10 +20,16 @@
                                        size="small">
                                         <el-option  v-for="item in area_list_data"
                                                     :key="item.id"
+                                                    :label="`${item.code}-${item.name_cn}`"
                                                     :value="item.id">
-                                                    {{`${item.code}-${item.name_cn}`}}
                                         </el-option>
                             </el-select>
+              </el-form-item>
+              <el-form-item label="容积"
+                            prop="capacity">
+                            <el-input v-model="form.capacity"
+                                      size="small">
+                            </el-input>
               </el-form-item>
               <el-form-item label="是否启用">
                              <el-switch  v-model="form.is_enabled"
@@ -99,6 +105,7 @@ export default {
       form: {
         code: '', // 货位编号
         warehouse_area_id: '', // 货架 ID
+        capacity: '', // 容积
         passage: '', // 通道
         row: '', // 排
         col: '', // 列
@@ -155,6 +162,7 @@ export default {
                   this.form.col = allData[i].col;
                   this.form.floor = allData[i].floor;
                   this.form.remark = allData[i].remark;
+                  this.form.capacity = allData[i].capacity;
                 }
               }
             });
@@ -175,6 +183,7 @@ export default {
                   this.form.col = allData[i].col;
                   this.form.floor = allData[i].floor;
                   this.form.remark = allData[i].remark;
+                  this.form.capacity = allData[i].capacity;
                 }
               }
             });

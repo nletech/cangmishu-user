@@ -58,10 +58,10 @@
                                    <el-table-column  label="是否启用"
                                                      header-align="center"
                                                      align="center">
-                                                  <template slot-scope="scope">
-                                                            <span v-if="scope.row.is_enabled==1">是</span>
-                                                            <span v-if="scope.row.is_enabled==0">否</span>
-                                                  </template>
+                                                     <template slot-scope="scope">
+                                                               <span v-if="scope.row.is_enabled==1">是</span>
+                                                               <span v-if="scope.row.is_enabled==0">否</span>
+                                                     </template>
                                    </el-table-column>
                                    <el-table-column header-align="center"
                                                   prop="address"
@@ -92,8 +92,8 @@
                   </el-row>
             </div>
       </div>
-      <!-- 添加分类信息 -->
-      <el-dialog  :title="this.id ? '编辑分类信息' : '添加分类信息 '"
+      <!-- 添加货品分类 -->
+      <el-dialog  :title="this.id ? '编辑货品分类' : '添加货品分类 '"
                   :visible.sync="dialogVisible"
                   width="40%">
                   <el-form  ref="form"
@@ -238,41 +238,34 @@ export default {
             }
           }
           console.log(this.form_info, 'form_info');
-          this.$confirm('确认提交?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          })
-            .then(() => {
-              if (+this.id) {
-                this.form_info.id = this.id; // 用于编辑
-                $http.editCategoryManagement(this.id, this.form_info)
-                  .then((re) => {
-                    if (re.status) return;
-                    this.$message({
-                      type: 'success',
-                      message: '修改成功',
-                    });
-                    console.log('编辑');
-                    this.id = '';
-                    // 更新数据
-                    this.handleCurrentChange(this.current_page);
-                  });
-              } else {
-                // 添加信息
-                $http.addCategoryManagement(this.form_info)
-                  .then((re) => {
-                    if (re.status) return;
-                    this.$message({
-                      type: 'success',
-                      message: '添加成功',
-                    });
-                    this.id = '';
-                    // 更新数据
-                    this.get_category_list_data();
-                  });
-              }
-            });
+          if (+this.id) {
+            this.form_info.id = this.id; // 用于编辑
+            $http.editCategoryManagement(this.id, this.form_info)
+              .then((re) => {
+                if (re.status) return;
+                this.$message({
+                  type: 'success',
+                  message: '修改成功',
+                });
+                console.log('编辑');
+                this.id = '';
+                // 更新数据
+                this.handleCurrentChange(this.current_page);
+              });
+          } else {
+            // 添加信息
+            $http.addCategoryManagement(this.form_info)
+              .then((re) => {
+                if (re.status) return;
+                this.$message({
+                  type: 'success',
+                  message: '添加成功',
+                });
+                this.id = '';
+                // 更新数据
+                this.get_category_list_data();
+              });
+          }
           // 编辑信息
           this.dialogVisible = false;
         }

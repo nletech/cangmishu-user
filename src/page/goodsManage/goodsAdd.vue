@@ -19,7 +19,7 @@
                                                    </el-option>
                                        </el-select>
                         </el-form-item>
-                        <el-form-item>
+                        <el-form-item label="SKU属性:">
                                     <div  :class="$style.code"
                                           v-show="form.category_id === item.id"
                                           v-for="item in typeList"
@@ -67,16 +67,15 @@
                                                                   width="80"
                                                                   prop="gross_weight">
                                                   </my-edit-table>
-                                                  <el-table-column  prop="send_email"
+                                                  <el-table-column  prop="is_warning"
                                                                     label="是否发送库存报警邮件"
                                                                     width="80">
                                                                     <template slot-scope="scope">
-                                                                                <el-switch
-                                                                                  v-model="form.is_send_email"
-                                                                                  active-value="1"
-                                                                                  inactive-value="0"
-                                                                                  active-color="#13ce66"
-                                                                                  inactive-color="#ff4949">
+                                                                                <el-switch  v-model="scope.row.is_warning"
+                                                                                            active-value="1"
+                                                                                            inactive-value="0"
+                                                                                            active-color="#13ce66"
+                                                                                            inactive-color="#ff4949">
                                                                                 </el-switch>
                                                                     </template>
                                                   </el-table-column>
@@ -161,7 +160,7 @@ export default {
         display_link: '',
         photos: '', // 图片
         remark: '',
-        is_send_email: '1', // 是否发送邮件
+        is_warning: '1', // 是否发送邮件
       },
       en: true,
       tips: '',
@@ -172,7 +171,9 @@ export default {
       is_edit: false,
     };
   },
-
+  mounted() {
+    console.log(this.skuList);
+  },
   watch: {
     warehouseId() {
       this.getTypeList();
@@ -265,14 +266,14 @@ export default {
       }
       if (!row.relevance_code) {
         this.$message({
-          message: '外部编码不能为空',
+          message: 'SKU不能为空',
           type: 'warning',
         });
         return;
       }
       if (!/^[a-zA-Z0-9]{4,}$/g.test(row.relevance_code)) {
         this.$message({
-          message: '外部编码只能为数字或字母，且长度必须大于3位',
+          message: 'SKU只能为数字或字母，且长度必须大于3位',
           type: 'warning',
         });
         return;
@@ -293,7 +294,7 @@ export default {
         for (let i = 0; i < this.skuList.length; i += 1) {
           if (i !== index && row.relevance_code === this.skuList[i].relevance_code) {
             this.$message({
-              message: '外部编码已存在',
+              message: 'SKU已存在',
               type: 'warning',
             });
             return;
@@ -336,6 +337,7 @@ export default {
         gross_weight: '',
         relevance_code: '',
         $_edit: true,
+        is_warning: '1',
       };
     },
     // 提交商品信息
@@ -361,7 +363,7 @@ export default {
         if (!val.relevance_code) {
           ctr = false;
           this.$message({
-            message: '外部编码不能为空',
+            message: 'SKU不能为空',
             type: 'warning',
           });
           return;
@@ -369,7 +371,7 @@ export default {
         if (!/^[a-zA-Z0-9]{4,}$/g.test(val.relevance_code)) {
           ctr = false;
           this.$message({
-            message: '外部编码只能为数字或字母，且长度必须大于3位',
+            message: 'SKU只能为数字或字母，且长度必须大于3位',
             type: 'warning',
           });
         }
@@ -382,7 +384,7 @@ export default {
             }
             this.form.warehouse_id = this.warehouseId || this.$route.query.warehouseId;
             this.form.specs = this.skuList.filter(res => res.name_cn);
-            this.form.specs[0].is_warning = this.form.is_send_email;
+            // this.form.specs[0].is_warning = this.form.is_warning;
             console.log(this.form, 'this.form');
             $http.addProducts(this.form)
               .then(() => {

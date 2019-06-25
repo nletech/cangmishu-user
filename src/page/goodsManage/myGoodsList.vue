@@ -39,41 +39,56 @@
                                                 <el-col :span="4">
                                                         <el-button  v-if="isRole()"
                                                                     @click="addCommodity"
+                                                                    style="position: relative; top: 40px;"
                                                                     size="medium">
                                                                     {{'添加单个货品'}}
                                                         </el-button>
                                                 </el-col>
+                                                <el-col :span="1">
+                                                        <div :class="$style.line"></div>
+                                                </el-col>
                                                 <el-col :span="6"
                                                         :offset="8">
-                                                        <el-upload
-                                                          :class="$style.uploaddemo"
-                                                          :action=goodsapi
-                                                          :data=uploadData
-                                                          :on-success="handleSuccess"
-                                                          :headers="Authorization"
-                                                          name="file"
-                                                          :show-file-list="false"
-                                                        >
-                                                          <el-button  slot="trigger"
-                                                                      size="medium">
-                                                                      导入货品表
-                                                          </el-button>
+                                                        <el-upload  :class="$style.uploaddemo"
+                                                                    :action=goodsapi
+                                                                    :data=uploadData
+                                                                    :on-success="handleSuccess"
+                                                                    :headers="Authorization"
+                                                                    name="file"
+                                                                    :show-file-list="false">
+                                                                    <el-button  size="medium"
+                                                                                style="width: 144px;"
+                                                                                :class="$style.text_modify"
+                                                                                @click="downloadTemplate">
+                                                                                下载模板
+                                                                    </el-button>
                                                         </el-upload>
-                                                        <el-button  size="medium"
-                                                                    @click="downloadTemplate">
-                                                                    下载模板
-                                                        </el-button>
+                                                        <el-upload  :class="$style.uploaddemo"
+                                                                    :action=goodsapi
+                                                                    :data=uploadData
+                                                                    :on-success="handleSuccess"
+                                                                    :headers="Authorization"
+                                                                    name="file"
+                                                                    :show-file-list="false">
+                                                                    <el-button  slot="trigger"
+                                                                                style="width: 144px;"
+                                                                                :class="$style.text_modify"
+                                                                                size="medium">
+                                                                                导入货品表
+                                                                    </el-button>
+                                                        </el-upload>
                                                         <el-upload  :data=uploadData
-                                                                    :class="$style.uploaddemo"
+                                                                    :class="[$style.uploaddemo, $style.text_modify]"
                                                                     :action=specapi
                                                                     :on-success="handleSuccess"
                                                                     :headers="Authorization"
                                                                     name="file"
                                                                     :show-file-list="false">
-                                                          <el-button  slot="trigger"
-                                                                      size="medium">
-                                                                    导入货品规格表
-                                                          </el-button>
+                                                                    <el-button  slot="trigger"
+                                                                                style="width: 144px;"
+                                                                                size="medium">
+                                                                                导入货品规格表
+                                                                    </el-button>
                                                         </el-upload>
                                                 </el-col>
                                         </el-row>
@@ -90,7 +105,7 @@
                                       <template   slot-scope="props">
                                                   <el-table   :data="props.row.specs" border style="width:80%;">
                                                               <el-table-column  prop="relevance_code"
-                                                                                :label="$t('relevanceCode')">
+                                                                                label="SKU">
                                                               </el-table-column>
                                                               <el-table-column  prop="name_cn"
                                                                                 :label="$t('specificationChineseName')">
@@ -196,7 +211,6 @@ import WmsTags from '@/components/wms_tags';
 import MyInput from '@/components/my_input';
 import MySelect from '@/components/my_select';
 import MyGroup from '@/components/my_group';
-import MyDate from '@/components/my_date';
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import buttonPagination from '@/components/pagination_and_buttons';
@@ -216,7 +230,7 @@ export default {
       uploadData: {},
       dialogVisible: false,
       select_batch_code: {
-        placeholder: '货品名或SKU',
+        placeholder: '货品名或入库批次',
         flag: 3,
       },
     };
@@ -225,7 +239,6 @@ export default {
     WmsTags,
     MyInput,
     MyGroup,
-    MyDate,
     MySelect,
     buttonPagination,
     inputPublic,
@@ -250,7 +263,6 @@ export default {
   },
   computed: {
     warehouseId() {
-      // 修复设置仓库问题
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
     Authorization() {
@@ -288,7 +300,6 @@ export default {
       return true;
     },
     handleSelectionChange(val) {
-      // console.log(val);
       this.selectGoods = [];
       val.forEach((element) => {
         this.selectGoods.push({ id: element.id });
@@ -296,7 +307,6 @@ export default {
     },
     // 选中设置
     checkSelectable(row) {
-      //
       console.log(row, 'checkSelectable');
     },
     downloadTemplate() {
@@ -333,7 +343,8 @@ export default {
       $http.setGoodscategory(
         { category_id: this.selectCategory_id,
           product_ids: this.selectGoods,
-          warehouse_id: this.warehouseId },
+          warehouse_id: this.warehouseId,
+        },
       )
         .then((res) => {
           this.$message({
@@ -359,9 +370,6 @@ export default {
       $http.getCategoryManagement()
         .then((res) => {
           this.typeList = res.data.data;
-        })
-        .catch(() => {
-          console.log('categoryList');
         });
     },
     // 添加货品
@@ -437,6 +445,16 @@ export default {
 .uploaddemo {
   display: inline-block;
   text-align: center;
+}
+.text_modify {
+  margin: 0 0 10px 0;
+}
+.line {
+  position: relative;
+  left: 100px;
+  width: 2px;
+  height: 120px;
+  border-right: 1px solid #ccc;
 }
 </style>
 

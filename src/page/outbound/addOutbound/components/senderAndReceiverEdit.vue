@@ -41,10 +41,10 @@
                                                       </el-input>
                                         </el-form-item>
                                       </el-form>
-                                      <el-row  :class="$style.submit_btn">
+                                      <el-row>
                                               <el-col  :span="2"
                                                         :offset="13">
-                                                        <el-button  type="success"
+                                                        <el-button  :class="$style.submit_btn"
                                                                     @click="infoSubmit">
                                                                     提交
                                                         </el-button>
@@ -233,6 +233,10 @@ export default {
       margin: 10px 0 40px 0;
       font-size: 16px;
       font-weight: 400;
+    }
+    .submit_btn {
+      background-color: @ThemeColor;
+      color: #fff;
     }
   }
 </style>
