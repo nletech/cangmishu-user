@@ -13,6 +13,12 @@ const $http = {
   logout(data) {
     return Axios.post('/logout', data);
   }, // 登出
+  resetPwdEnd(data) {
+    return Axios.post('/user/resetPassword', data);
+  }, // 重置密码
+  forgetPwd(data) {
+    return Axios.post('/user/forgetPassword', data);
+  },
   //                                                          首页
   // 首页仓库数据
   homeWarehouseData(data) {
@@ -203,6 +209,12 @@ const $http = {
   modifyWarehouse(id, data) {
     return Axios.put(`/warehouses/${id}`, data);
   }, // 编辑仓库
+  deleteWarehouse(id) {
+    return Axios.delete(`/warehouses/${id}`);
+  }, // 删除仓库
+  setDefaultWarehouse(id) {
+    return Axios.post(`/warehouses/default/${id}`);
+  }, // 设为默认仓库
   checkWarehouses(data) {
     return Axios.get('/warehouses', { params: data });
   }, // 仓库列表分页查询

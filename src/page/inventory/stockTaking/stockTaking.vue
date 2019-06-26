@@ -44,7 +44,7 @@
                                               header-align="center"
                                               align="center">
                             </el-table-column>
-                            <el-table-column  label="货位库存"
+                            <el-table-column  label="仓库库存"
                                               prop="shelf_num"
                                               header-align="center"
                                               align="center">

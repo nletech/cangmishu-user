@@ -9,6 +9,7 @@
                                        v-model="form.order_type">
                                         <el-option  v-for="item in outboundTypes"
                                                     :key="item.id"
+                                                    :disabled="!item.is_enabled"
                                                     :label="item.name"
                                                     :value="item.id">
                                         </el-option>

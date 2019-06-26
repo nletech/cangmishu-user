@@ -120,8 +120,8 @@ export default {
         });
     }, // 入库单分类
     getDistributors() {
-      $http.getDistributor().then((res) => {
-        this.distributorList = res.data.data;
+      $http.queryDistributor({ all: 1 }).then((res) => {
+        this.distributorList = res.data;
       });
     },
     handlerClear() {

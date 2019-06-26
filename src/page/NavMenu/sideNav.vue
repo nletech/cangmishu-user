@@ -36,36 +36,36 @@
                         </ul>
                   </div>
       </transition>
-    <!-- 隐藏后的菜单列表（先不做）-->
-    <!-- <el-menu
-      background-color="#444154"
-      :default-active="$route.name"
-      class="el-menu-vertical-demo"
-      active-text-color="#ffd04b"
-      text-color="#fff"
-      v-show="sideNavStatus"
-      :collapse="true"
-    >
-      <el-submenu
-        v-for="(item, index) in sideList"
-        :key="index"
-      >
-        <template slot="title">
-          <i class="iconfont" v-html="item.icon"></i>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item
-          :index="item.name"
-          v-for="i in item.children"
-          :key="i.name"
-          @click="$router.push({
-            name: i.name,
-          })">
-            {{$t(i.name)}}
-          </el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-    </el-menu> -->
+      <transition name="fade">
+                  <!-- 仓秘书 -->
+                  <div  v-show="sideNavStatus"
+                        @mouseleave="handleLeave1()">
+                        <!-- 侧边栏导航 -->
+                        <ul  style="padding: 0;">
+                              <li  v-for="(item, index) in sideList" style="width: 100%; line-height: 80px; height: 80px; text-align: center; list-style: none;"
+                                  :key="index"
+                                  @mouseover="showItem1(item.name, index)">
+                                  <i  class="iconfont"
+                                      v-html="item.icon"
+                                      style="color: #ccc;"
+                                      @click="handleHomeClick1(item.name)">
+                                  </i>
+                              </li>
+                        </ul>
+                        <!-- 对应的子菜单 -->
+                        <ul  :class="$style.NavChild1"
+                             ref="NavChild1"
+                             v-show="li_show_switch"
+                             @click="handleClickCloseNavChild">
+                              <li  v-for="item in li_NavChild"
+                                   :class="$style.NavChild_li1"
+                                   @click.self="handlerClick1(item.name)"
+                                   :key="item.name">
+                                   {{$t(item.name)}}
+                              </li>
+                        </ul>
+                  </div>
+      </transition>
   </div>
 </template>
 <script>
@@ -102,7 +102,6 @@ export default {
               subMeanu.push(e);
             }
           });
-          // subMeanu = menu[i].children;
         }
       } // 这个循环实现的思路：通过点击不同的侧边栏导航项来展示不同的导航项对应的子菜单
       this.$refs.NavChild.style.margin = `${distance} 0 0 0 `; // 输出处理后的计算值
@@ -115,6 +114,45 @@ export default {
       this.li_show_switch = false;
     }, // 移出鼠标，关闭子菜单
     handleHomeClick(name) {
+      if (name === 'initPage') {
+        this.$router.push({ name: 'home' });
+      }
+    }, // 只有点击侧边栏 首页 路由跳转才生效
+    // 以下是收缩之后
+    handlerClick1(name) {
+      this.$router.push({ name: `${name}` });
+    },
+    // 子菜单操作
+    showItem1(itemName, index) {
+      /* eslint-disable */
+      let subMeanu = []; // 缓存子菜单
+      let distance; // 缓存计算的距离
+      const menu = this.sideNavList;
+      for (let i = 0; i < menu.length; i += 1) {
+        if (menu[i].name === itemName) {
+          if (index === 0) {
+            this.li_show_switch = false;
+            return;
+          } // 鼠标悬浮到侧边栏首页不展示子列表
+          this.li_show_switch = true;
+          distance = `${(i * 80) + 40}px`; // 根据计算修改子菜单对应的布局
+          menu[i].children.forEach((e) => {
+            if (e.nav === 2) { // 这里是筛特定的路由
+              subMeanu.push(e);
+            }
+          });
+        }
+      } // 这个循环实现的思路：通过点击不同的侧边栏导航项来展示不同的导航项对应的子菜单
+      this.$refs.NavChild1.style.margin = `${distance} 0 0 0 `; // 输出处理后的计算值
+      this.li_NavChild = subMeanu; // 输出子菜单
+    },
+    handleClickCloseNavChild() {
+      this.li_show_switch = false;
+    }, // 点击关闭子菜单
+    handleLeave1() {
+      this.li_show_switch = false;
+    }, // 移出鼠标，关闭子菜单
+    handleHomeClick1(name) {
       if (name === 'initPage') {
         this.$router.push({ name: 'home' });
       }
@@ -229,6 +267,29 @@ export default {
     position: relative;
     .nav_li_hidden {
       padding: 4px;
+    }
+  }
+  .NavChild1 {
+    margin: 0;
+    padding: 0; // 解决浏览器中 ul 自动右移 40px
+    background-color: red;
+    width: 160px;
+    list-style: none;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 80px;
+    .NavChild_li1 {
+      color: #fff;
+      background-color: #444154;
+      padding: 20px 0 0 0;
+      width: 100%;
+      height: 40px;
+      font-size: 1.1rem;
+      &:hover {
+        cursor: pointer;
+        background: #463F74;
+      }
     }
   }
 }

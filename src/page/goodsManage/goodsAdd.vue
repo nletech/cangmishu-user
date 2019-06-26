@@ -150,7 +150,6 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      isOriginEdit: false, // 编辑还是新增
       originInfo: {},
       form: {
         category_id: '', // 所属分类
@@ -170,9 +169,6 @@ export default {
       fileList: [],
       is_edit: false,
     };
-  },
-  mounted() {
-    console.log(this.skuList);
   },
   watch: {
     warehouseId() {

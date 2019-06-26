@@ -177,7 +177,7 @@
                                                                     <el-input v-model="form.ean" style="width: 310px;"></el-input>
                                                       </el-form-item>
                                                       <el-form-item  label="商品保质期至"
-                                                                     v-if="form.expiration_date"
+                                                                     v-if="form.need_expiration_date"
                                                                      prop="expiration_date">
                                                                      <el-date-picker v-model="form.expiration_date"
                                                                                      style="width: 310px;"
@@ -187,12 +187,12 @@
                                                                      </el-date-picker>
                                                       </el-form-item>
                                                       <el-form-item  label="出产批次号"
-                                                                     v-if="form.production_batch_number"
+                                                                     v-if="form.need_production_batch_number"
                                                                      prop="production_batch_number">
                                                                      <el-input v-model="form.production_batch_number" style="width: 310px;"></el-input>
                                                       </el-form-item>
                                                       <el-form-item  label="最佳食用期"
-                                                                     v-if="form.best_before_date"
+                                                                     v-if="form.need_best_before_date"
                                                                      prop="best_before_date">
                                                                      <el-date-picker v-model="form.best_before_date"
                                                                                     style="width: 310px;"
@@ -319,6 +319,10 @@ export default {
       distributor_name: '',
       category_name: '',
       total_need_num: '',
+      //
+      need_expiration_date: '', // 过期时间标志
+      need_best_before_date: '', // 最佳体验期标志
+      need_production_batch_number: '', // 生产批次号标志
     };
   },
   components: {

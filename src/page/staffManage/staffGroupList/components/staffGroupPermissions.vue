@@ -207,8 +207,8 @@ export default {
   margin: 15px 0 50px 15px;
   padding: 20px 0 0 40px;
   .form_main {
-    width: 100%;
-    min-height: 507px;
+    width: 110%;
+    min-height: 607px;
   }
   .owner_main_name {
     display: inline-block;

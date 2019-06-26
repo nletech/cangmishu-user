@@ -11,6 +11,12 @@
                                                   header-align="center"
                                                   width="60">
                                 </el-table-column>
+                                <el-table-column  label="类型"
+                                                  prop="type"
+                                                  align="center"
+                                                  header-align="center"
+                                                  width="60">
+                                </el-table-column>
                                 <el-table-column  label="操作数量"
                                                   prop="operation_num"
                                                   align="center"
@@ -32,11 +38,11 @@
                                                   header-align="center"
                                                   prop="sku_total_stockin_num">
                                 </el-table-column>
-                                <el-table-column  label="上架库存"
+                                <!-- <el-table-column  label="上架库存"
                                                   align="center"
                                                   header-align="center"
                                                   prop="sku_total_shelf_num">
-                                </el-table-column>
+                                </el-table-column> -->
                                 <el-table-column  label="操作时间"
                                                   align="center"
                                                   header-align="center"

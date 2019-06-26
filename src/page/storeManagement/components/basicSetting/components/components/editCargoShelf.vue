@@ -191,28 +191,20 @@ export default {
       }
     }, // 获取当前货位信息
     onSubmit() {
-      console.log(this.form, 'this.form11111');
       this.$refs.ShelfReference.validate((valid) => {
         if (!valid) return;
-        this.$confirm('确认提交?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-          .then(() => {
-            $http.editWarehouseshelf(this.$route.params.shelfId, this.form)
-              .then((res) => {
-                if (res.status) return;
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  showClose: true,
-                });
-                this.$router.push({
-                  name: 'basicSetting',
-                  params: { add_shelf_back: true },
-                });
-              });
+        $http.editWarehouseshelf(this.$route.params.shelfId, this.form)
+          .then((res) => {
+            if (res.status) return;
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              showClose: true,
+            });
+            this.$router.push({
+              name: 'basicSetting',
+              params: { add_shelf_back: true },
+            });
           });
       });
     },

@@ -24,9 +24,10 @@
                     <!-- 添加货品 -->
                     <el-col :span="2"
                             :offset="2">
-                            <el-button  v-if="isRole()"
+                            <el-button
                                         icon="el-icon-plus"
                                         type="text"
+                                        style="font-size: 1.2rem;"
                                         @click="dialogVisible = true"
                                         size="large">
                                         {{$t('addGoods')}}

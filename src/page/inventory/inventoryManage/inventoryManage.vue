@@ -126,7 +126,7 @@
                           width="500px">
                           <el-checkbox-group  v-model="export_data">
                                               <el-checkbox value="1" label="1">导出货品列表</el-checkbox>
-                                              <el-checkbox value="2" label="2">导出入库批次列表</el-checkbox>
+                                              <el-checkbox value="2" label="2">导出货品规格列表</el-checkbox>
                           </el-checkbox-group>
                           <span  slot="footer" class="dialog-footer">
                                 <el-button size="mini" @click="dialogVisible = false">取 消</el-button>

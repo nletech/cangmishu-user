@@ -106,17 +106,10 @@ export default {
         if (!valid) return;
         this.form.is_enabled = +this.is_enabled;
         this.form.warehouse_id = this.$route.params.warehouse_id;
-        this.$confirm('确认提交?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-          .then(() => {
-            $http.editWarehouseArea(this.$route.params.area_id, this.form)
-              .then((res) => {
-                if (res.status) return;
-                this.$router.go(-1);
-              });
+        $http.editWarehouseArea(this.$route.params.area_id, this.form)
+          .then((res) => {
+            if (res.status) return;
+            this.$router.go(-1);
           });
       });
     },

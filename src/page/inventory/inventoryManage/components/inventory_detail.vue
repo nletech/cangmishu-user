@@ -29,8 +29,8 @@
                                       </el-table-column>
                                       <el-table-column prop="spec_total_stockin_num" label="总仓库库存">
                                       </el-table-column>
-                                      <el-table-column prop="spec_total_shelf_num" label="总上架库存">
-                                      </el-table-column>
+                                      <!-- <el-table-column prop="spec_total_shelf_num" label="总上架库存">
+                                      </el-table-column> -->
                                       <el-table-column prop="created_at" label="操作时间">
                                       </el-table-column>
                                       <el-table-column prop="order_sn" label="相关单号">

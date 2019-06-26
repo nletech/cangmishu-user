@@ -4,43 +4,35 @@
       <template v-if="this.$route.query.token">
         <el-form-item  class="login_model_form">
           <el-input
-            placeholder="请输入您的密码"
-            type="password"
-            v-model="form.password"
-            size="small"
-          >
+          placeholder="请输入密码"
+          type="password"
+          v-model="form.password"
+          size="small">
           </el-input>
         </el-form-item>
         <el-form-item  class="login_model_form">
           <el-input
-            placeholder="请确认您的密码"
-            type="password"
-            v-model="form.password_confirmation"
-            size="small"
-          >
+          placeholder="请再次输入密码"
+          type="password"
+          v-model="form.password_confirmation"
+          size="small">
           </el-input>
         </el-form-item>
       </template>
 
       <el-form-item v-else  class="login_model_form" prop="email">
         <el-input
-          placeholder="请输入您的邮箱"
-          v-model="form.email"
-          size="small"
-        >
+        placeholder="请输入邮箱"
+        v-model="form.email"
+        style="margin: 0 0 40px 0;"
+        size="small">
         </el-input>
       </el-form-item>
       <el-form-item class="user_login_button">
         <el-button type="primary" @click="SendMail">{{buttonText}}</el-button>
       </el-form-item>
     </el-form>
-    <span
-      slot="bottom_text"
-      @click="$router.push({ name: 'login' })"
-      class="backToLogoIn"
-    >
-      返回登录
-    </span>
+    <span slot="bottom_text" style="position: relative; top: -260px;" @click="$router.push({ name: 'login' })">返回登录</span>
   </page-model>
 </template>
 <script>
@@ -48,6 +40,7 @@ import $http from '@/api';
 import PageModel from './components/page_model';
 
 export default {
+  name: 'modifyPassword',
   components: {
     PageModel,
   },
@@ -106,42 +99,15 @@ export default {
   },
 };
 </script>
-<style module lang="less">
-.input_item {
-  margin-top: 10px;
-  .item_password {
-    margin-top: -8px;
-  }
-  .item_user_info {
-    .item_password;
-    display: flex;
-    flex-flow: row wrap;
-    .user_info_left {
-      width: 50%;
-    }
-    .user_info_right {
-      width: 50%;
-      text-align: right;
-      a {
-        color: #606266;
-        text-decoration: none;
-      }
-    }
+
+<style lang="less" module>
+@import '../../less/public_variable.less';
+.login_model_form {
+  .el-input-group__append {
+    border-color: @white;
+    border-radius: 0;
+    background: RGBA(87, 195, 138, 1);
+    color: @white;
   }
 }
-</style>
-<style lang="less">
-@import '../../less/public_variable.less';
-  .login_model_form {
-    .el-input-group__append {
-      border-color: @white;
-      border-radius: 0;
-      background: RGBA(87, 195, 138, 1);
-      color: @white;
-    }
-  }
-  .backToLogoIn {
-    position: relative;
-    top: -340px;
-  }
 </style>

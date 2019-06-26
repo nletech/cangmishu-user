@@ -30,8 +30,6 @@
                                                       prop="distributor_id">
                                                       <el-select  v-model="form.distributor_id"
                                                                   filterable
-                                                                  remote
-                                                                  :remote-method="remoteMethod"
                                                                   placeholder="输入关键字以搜索">
                                                                   <el-option  v-for="item in distributorSelectList"
                                                                               :label="item.name_cn"
@@ -172,7 +170,7 @@
                                     <!-- 选择框 -->
                                     <el-col :span="4"
                                             :class="$style.myselect">
-                                            <el-select  v-model="form.distributor_id"
+                                            <el-select  v-model="SelectedGoodsType"
                                                         @change="handlerSelect"
                                                         clearable
                                                         @clear="handlerClearGoodsTypes"
@@ -327,6 +325,7 @@ export default {
   mixins: [getListData, mixin],
   data() {
     return {
+      SelectedGoodsType: '', // 选择的货品分类
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < (Date.now() - (3600 * 1000 * 24));
@@ -384,6 +383,7 @@ export default {
     this.getBatchTypeList(); // 获取入库单分类
     this.getDistributorList(); // 获取供应商列表
     this.getGoodsTypes(); // 货品分类
+    this.queryAllDistributor(); // 不带分页的所有供应商
   },
   watch: {
     warehouseId() {
@@ -467,9 +467,10 @@ export default {
           this.goods = res.data.data;
         });
     }, // 选择商品分类来搜索商品
-    remoteMethod(val) {
-      $http.queryDistributor({ keywords: val }).then((res) => {
-        this.distributorSelectList = res.data.data;
+    queryAllDistributor() {
+      $http.queryDistributor({ all: 1 }).then((res) => {
+        console.log(res, 'r2222es');
+        this.distributorSelectList = res.data;
       });
     }, // 远程搜索供应商
     handlerAddGoods() {

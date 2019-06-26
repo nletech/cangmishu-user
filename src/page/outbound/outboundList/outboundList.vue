@@ -3,27 +3,6 @@
                 <div  :class="$style.outboundList_main">
                       <el-row :class="$style.outboundList_tags">
                               <el-row  :class="$style.outboundList_tags">
-                                       <!-- <el-col  :span="4">
-                                                <date-picker-public @select_data="handlerSelect_data">
-                                                </date-picker-public>
-                                       </el-col>
-                                       <el-col  :span="4"
-                                                :offset="4">
-                                                <date-picker-singe-public @select_data="handlerSelect_data">
-                                                </date-picker-singe-public>
-                                       </el-col>
-                                       <el-col  :span="4"
-                                                :offset="2">
-                                                <select-public :select="select_data_distributor"
-                                                               @data_cb="handlerQuery">
-                                                </select-public>
-                                       </el-col>
-                                       <el-col  :span="4"
-                                                :offset="2">
-                                                <input-public :select="select_batch_code"
-                                                              @data_cb="handlerInputQuery">
-                                                </input-public>
-                                       </el-col> -->
                                        <outbound-list-search @data_cb="handlerCallBackData"></outbound-list-search>
                               </el-row>
                               <el-row>
@@ -50,6 +29,7 @@
                                                    header-align="center"
                                                    align="center"
                                                    prop="status_name">
+                                                   <!-- <template slot-scope="s">{{s.row}}</template> -->
                                  </el-table-column>
                                  <el-table-column  label="出库单号"
                                                    header-align="center"
@@ -91,14 +71,14 @@
                                                                          查看详情
                                                              </el-button>
                                                              <el-button  size="mini"
+                                                                         v-if="scope.row.status == 1"
                                                                          style="margin: 0; pading: 0;"
-                                                                         v-if="scope.row.status === 0 || scope.row.status === 4 "
                                                                          @click="checkedOutbound(scope.row)">
                                                                          设为出库
                                                              </el-button>
                                                              <el-button  size="mini"
+                                                                         v-if="scope.row.status == 1"
                                                                          style="margin: 0; pading: 0;"
-                                                                         v-if="scope.row.status === 0 || scope.row.status === 4 "
                                                                          @click="cancelOrder(scope.row)">
                                                                          取消订单
                                                             </el-button>
@@ -143,8 +123,9 @@ export default {
       id: 0,
       outboundDialogVisible: false, // 出库单详情弹框
       params: {
-        delivery_date: '',
-      },
+        total: 0,
+        currentPage: 1,
+      }, // 分页数据
       row_data: {},
     };
   },
@@ -172,7 +153,10 @@ export default {
   },
   methods: {
     handlerChangePage(val) {
-      $http.getInboundPage({ page: val })
+      $http.getOutbound({
+        warehouse_id: this.warehouseId,
+        page: val,
+      })
         .then((res) => {
           this.outbound_list_data = res.data.data;
           this.params.total = res.data.total;
@@ -185,40 +169,6 @@ export default {
       this.params.currentPage = res.data.current_page;
       this.$set(this.params);
     }, // 搜索回调
-    handlerQuery(res) {
-      this.outbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-    }, // 选择框回调
-    handlerInputQuery(res) {
-      this.outbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-    }, // 输入框回调
-    handlerSelect_data(val) {
-      console.log(val, '出入库');
-      if (val && (Array.isArray(val) || typeof val === 'string')) {
-        this.getOutbounds(val);
-      } else {
-        // 刷新列表
-        this.getOutbounds();
-      }
-    }, // 创建时间筛选
-    handleCurrentChange(val) {
-      $http.checkOrder({
-        warehouse_id: this.warehouseId,
-        page: val,
-      })
-        .then((res) => {
-          if (res.status) return;
-          this.outbound_list_data = res.data.data;
-          this.total = res.data.total;
-          this.currentPage = res.data.current_page;
-        });
-    }, // 分页
-    handleOutboundSearch() {
-      //
-    }, // 搜索功能
     addOutbound() {
       this.$router.push({
         name: 'addOutbound',
@@ -230,8 +180,8 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.outbound_list_data = res.data.data;
-          this.total = res.data.total;
-          this.currentPage = res.data.current_page;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
         });
     }, // 获取出库单列表
     checkedOutbound(row) {
@@ -272,12 +222,13 @@ export default {
 
 <style lang="less" module>
 .outboundList {
-  text-align: right;
-  margin: 30px 0 20px 0 ;
+  text-align: left;
+  margin: 30px 0 60px 0 ;
   .outboundList_main {
     width: 90%;
     margin: 0 auto;
     .outboundList_tags {
+      text-align: right;
       margin: 0 0 10px 0;
       .btn {
         font-size: 1.2rem;

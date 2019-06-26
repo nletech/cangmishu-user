@@ -88,6 +88,20 @@
                                           <div  :class="$style.desc_item">
                                                 <span>创建日期:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
                                           </div>
+                                          <div  :class="$style.desc_item">
+                                                <span>出库日期:</span>
+                                                <span>&nbsp;&nbsp;
+                                                      <el-date-picker  v-model="delivery_date"
+                                                                       style="margin: 20px 0 20px 0;"
+                                                                       type="date"
+                                                                       size="small"
+                                                                       format="yyyy 年 MM 月 dd 日"
+                                                                       value-format="yyyy-MM-dd"
+                                                                       placeholder="预计出库时间"
+                                                                       :default-time="['00:00:00', '23:59:59']">
+                                                      </el-date-picker>
+                                                </span>
+                                          </div>
                                     </div>
                                     <el-row>
                                             <hr />
@@ -174,8 +188,6 @@ export default {
         obj.pick_num = len[i].pick_num;
         arr.push(obj);
       };
-      console.log(arr, 'arr');
-      console.log(this.row_data.order_items, 'this.row_data.order_items');
       $http.checkedOutbound({
         warehouse_id: this.warehouseId,
         order_id: this.$route.query.order_id,
@@ -188,13 +200,13 @@ export default {
             name: 'outboundList',
           });
         });
-      console.log(this.row_data, 'this.row_data');
     },
     get_data() {
       $http.getOutboundDetail(this.$route.query.order_id)
         .then((res) => {
           if (res.status) return;
           this.row_data = res.data;
+          console.log(res, '出库');
         });
     },
   },
@@ -226,7 +238,7 @@ export default {
       margin: 20px 0 20px 40px;
       .address {
         width: 48%;
-        min-height: 200px;
+        min-height: 240px;
         border: 1px solid #ccc;
         margin: 0 5px 0 0;
         padding: 10px 0 30px 30px;
@@ -241,9 +253,8 @@ export default {
         .address_detail {
           margin: 20px 0 4px 0;
           .address_text {
-            min-width: 500px;
+            min-width: 300px;
             text-align: left;
-            word-wrap: none;
           }
         }
       }

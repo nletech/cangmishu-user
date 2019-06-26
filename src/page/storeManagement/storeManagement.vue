@@ -30,7 +30,12 @@
                           <el-table-column  header-align="center"
                                             align="center"
                                             prop="warehouse_address"
-                                            label="省市区">
+                                            label="地址">
+                          </el-table-column>
+                          <el-table-column  header-align="center"
+                                            align="center"
+                                            prop="warehouse_feature"
+                                            label="仓库性质(㎡)">
                           </el-table-column>
                           <el-table-column  header-align="center"
                                             align="center"
@@ -38,7 +43,7 @@
                                             label="仓库面积(㎡)">
                           </el-table-column>
                           <el-table-column  header-align="center"
-                                            width="240"
+                                            width="400"
                                             label="操作">
                                             <template slot-scope="scope">
                                                       <el-button size="mini"
@@ -48,6 +53,16 @@
                                                       <el-button size="mini"
                                                                  @click="config(scope.row)">
                                                                  基础配置
+                                                      </el-button>
+                                                      <el-button size="mini"
+                                                                 type="danger"
+                                                                 v-if="!scope.row.is_default_warehouse"
+                                                                 @click="deleteWarehouse(scope.row)">
+                                                                 删除
+                                                      </el-button>
+                                                      <el-button size="mini"
+                                                                 @click="setDefaultWarehouse(scope.row)">
+                                                                 设为默认仓库
                                                       </el-button>
                                             </template>
                           </el-table-column>
@@ -123,7 +138,6 @@ export default {
     getWarehouse() {
       $http.warehouses()
         .then((res) => {
-          console.log(res);
           this.warehouses = res.data.data;
           this.total = res.data.total;
           this.current_page = res.data.current_page;
@@ -138,13 +152,35 @@ export default {
       this.switchFlag = true;
     },
     config(info) {
-      console.log(info, 'info');
       this.$router.push({
         name: 'basicSetting',
         params: {
           warehouses_id: info.id,
         },
       });
+    },
+    deleteWarehouse(info) {
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        $http.deleteWarehouse(info.id)
+          .then(() => {
+            this.$message({
+              message: '删除成功',
+              type: 'success',
+            });
+            this.getWarehouse();
+          });
+      });
+    },
+    setDefaultWarehouse(info) {
+      $http.setDefaultWarehouse(info.id)
+        .then((res) => {
+          if (res.status) return;
+          this.getWarehouse();
+        });
     },
   },
 };

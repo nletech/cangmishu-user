@@ -88,16 +88,16 @@
                 :close-on-click-modal="false"
                 center>
                 <div :class="$style.dialogcentered">
-                      <p>请选择仓库</p>
-                      <el-radio-group  :class="$style.radio_group"
-                                      v-model="selectWarehouse">
-                                      <el-radio-button  :class="$style.selectline"
-                                                        v-for="item in all_warehouse"
-                                                        :key="item.id"
-                                                        :label="item.name_cn"
-                                                        :value="item.id">
-                                      </el-radio-button>
-                      </el-radio-group>
+                          <p>请选择仓库</p>
+                          <el-radio-group  :class="$style.radio_group"
+                                          v-model="selectWarehouse">
+                                          <el-radio-button  :class="$style.selectline"
+                                                            v-for="item in all_warehouse"
+                                                            :key="item.id"
+                                                            :label="item.name_cn"
+                                                            :value="item.id">
+                                          </el-radio-button>
+                          </el-radio-group>
                 </div>
                 <span slot="footer"
                       class="dialog-footer">
@@ -171,6 +171,7 @@ export default {
     }, // 跳转到-----创建仓库
     shift_warehouse() {
       this.showWarehousesSwitch = true;
+      this.getWarehouses();
     }, // 切换仓库--确定按钮
     getWarehouses() {
       $http.warehouses().then((re) => {
@@ -248,7 +249,7 @@ export default {
   font-size: 20px;
   .radio_group {
     width: 400px;
-    height: 300px;
+    height: 200px;
     overflow: auto;
   }
 }

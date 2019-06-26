@@ -78,6 +78,7 @@ export default {
       font-size: 1.2rem;
       // font-weight: bold;
       color: @ThemeColor;
+      cursor: pointer;
     }
   }
 }

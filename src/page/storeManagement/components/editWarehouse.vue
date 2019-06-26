@@ -202,25 +202,15 @@ export default {
       //
       this.$refs.rule_form.validate((validate) => {
         if (validate) {
-          this.$confirm('确认提交?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          })
-            .then(() => {
-              let id = this.row_data.id; // 用于编辑
-              if (id) {
-                $http.modifyWarehouse(id, this.formInfo)
-                  .then((res) => {
-                    if (res.status) return;
-                    this.$emit('updata_data', true); // 更新数据列表
-                  })
-                  .catch(() => {
-                    console.log('添加出错');
-                  });
-              }
-              this.$emit('update:visible', false); // 关闭弹窗
-            });
+          let id = this.row_data.id; // 用于编辑
+          if (id) {
+            $http.modifyWarehouse(id, this.formInfo)
+              .then((res) => {
+                if (res.status) return;
+                this.$emit('updata_data', true); // 更新数据列表
+              });
+          }
+          this.$emit('update:visible', false); // 关闭弹窗
         } else {
           return false;
         }

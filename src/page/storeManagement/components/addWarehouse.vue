@@ -201,22 +201,11 @@ export default {
       //
       this.$refs.rule_form.validate((validate) => {
         if (validate) {
-          this.$confirm('确认提交?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          })
-            .then(() => {
-              console.log('addWWWW');
               $http.addWarehouse(this.formInfo)
                 .then((res) => {
                   if (res.status) return;
                   this.$router.push({ name: 'storeManage'});
-                })
-                .catch(() => {
-                  console.log('添加出错');
                 });
-            });
         } else {
           return false;
         }

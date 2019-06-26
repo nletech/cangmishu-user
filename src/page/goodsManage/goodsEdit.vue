@@ -19,7 +19,7 @@
                                                    </el-option>
                                        </el-select>
                         </el-form-item>
-                        <el-form-item>
+                        <el-form-item label="SKU属性:">
                                     <div  :class="$style.code"
                                           v-show="form.category_id === item.id"
                                           v-for="item in typeList"
@@ -56,7 +56,7 @@
                                                   </my-edit-table>
                                                   <my-edit-table  label="SKU*"
                                                                   prop="relevance_code"
-                                                                  :isDisabled="this.$route.query.isCheck">
+                                                                  :isDisabled="!!this.$route.query.isCheck">
                                                   </my-edit-table>
                                                   <my-edit-table  label="净重(g)"
                                                                   width="80"
@@ -70,12 +70,11 @@
                                                                     label="是否发送库存报警邮件"
                                                                     width="80">
                                                                     <template slot-scope="scope">
-                                                                                <el-switch
-                                                                                  v-model="scope.row.is_warning"
-                                                                                  active-value="1"
-                                                                                  inactive-value="0"
-                                                                                  active-color="#13ce66"
-                                                                                  inactive-color="#ff4949">
+                                                                                <el-switch  v-model="scope.row.is_warning"
+                                                                                            active-value="1"
+                                                                                            inactive-value="0"
+                                                                                            active-color="#13ce66"
+                                                                                            inactive-color="#ff4949">
                                                                                 </el-switch>
                                                                     </template>
                                                   </el-table-column>
@@ -119,8 +118,6 @@
                                                   :loading="$store.state.config.button_loading">
                                                   提交
                                       </el-button>
-                                      <!-- <cancel-button v-if="!$route.query.isCheck"></cancel-button>
-                                      <cancel-button v-else>返回</cancel-button> -->
                         </el-form-item>
               </el-form>
     </mdoel-form>
@@ -148,7 +145,6 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      isOriginEdit: false, // 编辑还是新增
       originInfo: {},
       form: {
         category_id: '', // 所属分类
@@ -158,7 +154,7 @@ export default {
         display_link: '',
         photos: '',
         remark: '',
-        is_warning: '', // 是否发送邮件
+        is_warning: '1', // 是否发送邮件
       },
       en: true,
       tips: '',
@@ -169,10 +165,15 @@ export default {
       is_edit: false,
     };
   },
-
   watch: {
     warehouseId() {
       this.getTypeList();
+    },
+    skuList() {
+      if (this.skuList.length && !this.skuList[this.skuList.length - 1]) {
+        this.skuList.push(this.specsForm());
+        //  && !this.skuList[this.skuList.length - 1]
+      }
     },
   },
   created() {
@@ -311,6 +312,7 @@ export default {
         gross_weight: '',
         relevance_code: '',
         $_edit: true,
+        is_warning: '1',
       };
     },
     // 提交商品信息
@@ -359,7 +361,6 @@ export default {
             this.form.warehouse_id = this.warehouseId || this.$route.query.warehouseId;
             this.form.specs = this.skuList.filter(res => res.name_cn);
             // 编辑接口
-            console.log(this.form, 'this.form.submit');
             $http.editProducts(this.$route.query.id, this.form)
               .then(() => {
                 this.successTips(this.$route.query.id);
