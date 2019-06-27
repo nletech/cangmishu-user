@@ -18,7 +18,8 @@
                             prop="warehouse_area_id">
                             <el-select v-model="form.warehouse_area_id"
                                        size="small">
-                                        <el-option  v-for="item in area_list_data"
+                                        <el-option  :disabled="!item.is_enabled"
+                                                    v-for="item in area_list_data"
                                                     :key="item.id"
                                                     :value="item.id"
                                                     :label="item.code + '-' + item.name_cn">
@@ -105,7 +106,7 @@ export default {
         floor: '', // 层
         is_enabled: '0', // 是否启用
         remark: '', // 备注
-        warehouse_id: this.$route.params.warehouse_id,
+        warehouse_id: '',
       },
       is_enabled: '0',
       area_list_data: [], // 货区列表数据
@@ -125,11 +126,14 @@ export default {
         ], // 容积
       };
     },
+    warehouseId() {
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
+    },
   },
   methods: {
     get_area_data() {
-      if (!this.$route.params.warehouse_id) return;
-      $http.getWarehouseArea({ warehouse_id: this.$route.params.warehouse_id })
+      if (!this.warehouseId) return;
+      $http.getWarehouseArea({ warehouse_id: this.warehouseId })
         .then((res) => {
           this.area_list_data = res.data.data;
         });
@@ -137,7 +141,8 @@ export default {
     onSubmit() {
       this.$refs.ShelfReference.validate((valid) => {
         if (!valid) return;
-        this.form.is_enabled = this.is_enabled; // 这个问题很操蛋
+        this.form.is_enabled = this.is_enabled;
+        this.form.warehouse_id = this.warehouseId;
         this.$confirm('确认提交?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

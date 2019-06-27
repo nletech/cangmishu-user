@@ -75,7 +75,7 @@ export default {
       outboundStatusList: [
         { id: 0, name: '订单已取消' },
         { id: 1, name: '待拣货' },
-        { id: 4, name: '已出库' },
+        { id: 2, name: '已出库' },
       ],
       outboundCode: '', // 输入的出库单号
     };

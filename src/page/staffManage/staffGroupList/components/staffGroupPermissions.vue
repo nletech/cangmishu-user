@@ -8,21 +8,22 @@
                                     <el-row :gutter="30">
                                             <el-col :span="10">
                                                     <!-- 请选择仓库 -->
-                                                    <el-form-item  :label="is_init ? '当前仓库:' : '请选择仓库:'">
+                                                    <el-form-item :label="is_init ? '当前仓库:' : '请选择仓库:'" prop="warehouse">
                                                                   <el-radio-group  v-model="form.warehouse_id"
-                                                                                   @change="handleChange">
-                                                                                   <el-radio  :disabled="is_init"
+                                                                                    @change="handleChange">
+                                                                                    <el-radio  :disabled="is_init"
                                                                                               v-for="(item, index) in warehouse"
+                                                                                              style="display: block; margin: 0; padding: 16px 0 16px 0;"
                                                                                               :key="index"
                                                                                               :label="item.id">
                                                                                               <span style="color: #000;">{{item.name_cn}}</span>
-                                                                                   </el-radio>
+                                                                                    </el-radio>
                                                                   </el-radio-group>
                                                     </el-form-item>
                                             </el-col>
                                             <el-col :span="10" :offset="4">
                                                     <!-- 请选择操作权限 -->
-                                                    <el-form-item label="请选择操作权限:">
+                                                    <el-form-item label="请选择操作权限:" prop="modules">
                                                                   <el-checkbox :indeterminate="isIndeterminate"
                                                                                v-model="checkAll"
                                                                                @change="handleCheckAllChange">
@@ -61,28 +62,13 @@
 import $http from '@/api';
 
 export default {
-  watch: {
-    temp_warehouse_id() {
-      if (this.temp_warehouse_id === this.default_warehouse_id) {
-        this.checkedArray = this.default_checkedArray;
-      } else {
-        this.checkedArray = [];
-      }
-    },
-  },
-  mounted() {
-    this.getData();
-  },
   data() {
     return {
       temp_warehouse_id: '', // 暂存 仓库 id
       default_warehouse_id: '', // 缓存分组已有仓库id
       default_checkedArray: [], //  缓存分组已有权限模块
       default_warehouse: {}, //  缓存分组已有仓库
-      warehouse: [],
-      checkAll: false, // 是否全选
       modules: [], // 权限模块
-      checkedArray: [], // 已选中数组
       isIndeterminate: true, // 实现全选效果
       is_init: false, // 初始选择
       // 复选框
@@ -99,7 +85,31 @@ export default {
         warehouse_id: '',
         owner_id: '',
       },
+      // 重写
+      warehouse: [], // 仓库列表
+      checkAll: false, // 是否全选(按钮)
+      checkedArray: [], // 已选中权限模块数组
     };
+  },
+  mounted() {
+    this.getData();
+  },
+  watch: {
+    temp_warehouse_id() {
+      if (this.temp_warehouse_id === this.default_warehouse_id) {
+        this.checkedArray = this.default_checkedArray;
+      } else {
+        this.checkedArray = [];
+      }
+    },
+    checkedArray(val) {
+      console.log(val, '仓库');
+    },
+  },
+  computed: {
+    checked() {
+      return { warehouse_id: this.temp_warehouse_id, checkedArray: this.checkedArray };
+    },
   },
   methods: {
     handleCheckAllChange(val) {
@@ -114,7 +124,7 @@ export default {
       }
       this.isIndeterminate = false;
     }, // 处理全选
-    handleCheckedChange(val) {
+    handleCheckedChange(val) { // 全选按钮的显示状态
       const checkedCount = val.length;
       this.checkAll = checkedCount === this.modules.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.modules.length;
@@ -122,6 +132,7 @@ export default {
     getData() {
       $http.getStaffDetail(this.$route.params.groupId)
         .then((res) => {
+          console.log(res, '获取的仓库信息');
           const data = res.data;
           // 总模块
           const WAREHOUSE = data.authorize.warehouse; // 总的仓库列表
@@ -148,11 +159,7 @@ export default {
     // 提交表单
     submit_form() {
       this.form.group_id = this.$route.params.groupId; // 表单数据预处理
-      const modulesIdCopy = []; // 存储 modulesId 用于提交
-      for (let i = 0; i < this.modules.length; i += 1) {
-        modulesIdCopy.push(this.modules[i].id);
-      }
-      this.form.modules = modulesIdCopy;
+      this.form.modules = this.checkedArray;
       if (!this.form.modules.length) {
         this.$message({
           type: 'error',

@@ -151,7 +151,7 @@
                                                       size="small"
                                                       label-width="120px">
                                                       <el-form-item  label="商品名称">
-                                                                    {{form.product_name_cn}}
+                                                                    {{form.product_name}}
                                                       </el-form-item>
                                                       <el-form-item  label="SKU">
                                                                     {{form.relevance_code}}
@@ -212,6 +212,7 @@
                                                                                 placeholder="请选择货位">
                                                                                 <el-option  v-for="(item, index) in warehouse_shelfs"
                                                                                             :key="index"
+                                                                                            :disabled="!item.is_enabled"
                                                                                             :value="item.code"
                                                                                             style="width: 310px;">
                                                                                             {{item.code}}

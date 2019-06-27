@@ -159,7 +159,6 @@ export default {
         display_link: '',
         photos: '', // 图片
         remark: '',
-        is_warning: '1', // 是否发送邮件
       },
       en: true,
       tips: '',
@@ -380,7 +379,6 @@ export default {
             }
             this.form.warehouse_id = this.warehouseId || this.$route.query.warehouseId;
             this.form.specs = this.skuList.filter(res => res.name_cn);
-            // this.form.specs[0].is_warning = this.form.is_warning;
             console.log(this.form, 'this.form');
             $http.addProducts(this.form)
               .then(() => {

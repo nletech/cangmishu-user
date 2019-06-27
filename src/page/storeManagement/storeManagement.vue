@@ -35,7 +35,7 @@
                           <el-table-column  header-align="center"
                                             align="center"
                                             prop="warehouse_feature"
-                                            label="仓库性质(㎡)">
+                                            label="仓库性质">
                           </el-table-column>
                           <el-table-column  header-align="center"
                                             align="center"
@@ -55,14 +55,15 @@
                                                                  基础配置
                                                       </el-button>
                                                       <el-button size="mini"
+                                                                 v-if="!scope.row.is_default_warehouse"
+                                                                 @click="setDefaultWarehouse(scope.row)">
+                                                                 设为默认仓库
+                                                      </el-button>
+                                                      <el-button size="mini"
                                                                  type="danger"
                                                                  v-if="!scope.row.is_default_warehouse"
                                                                  @click="deleteWarehouse(scope.row)">
                                                                  删除
-                                                      </el-button>
-                                                      <el-button size="mini"
-                                                                 @click="setDefaultWarehouse(scope.row)">
-                                                                 设为默认仓库
                                                       </el-button>
                                             </template>
                           </el-table-column>

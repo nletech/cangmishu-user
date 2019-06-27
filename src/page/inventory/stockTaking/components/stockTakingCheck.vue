@@ -52,7 +52,7 @@
                                        <el-date-picker  v-model="form.expiration_date"
                                                         type="date"
                                                         size="small"
-                                                        format="yyyy 年 MM 月 dd 日"
+                                                        format="yyyy-MM-dd"
                                                         value-format="yyyy-MM-dd"
                                                         placeholder="请选择保质期"
                                                         :default-time="['00:00:00', '23:59:59']">
@@ -64,7 +64,7 @@
                                        <el-date-picker  v-model="form.best_before_date"
                                                         type="date"
                                                         size="small"
-                                                        format="yyyy 年 MM 月 dd 日"
+                                                        format="yyyy-MM-dd"
                                                         value-format="yyyy-MM-dd"
                                                         placeholder="请选择最佳食用期"
                                                         :default-time="['00:00:00', '23:59:59']">
@@ -139,30 +139,21 @@ export default {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
-  mounted() {
-    console.log(this.row_data, 'row_data');
-    this.form.product_name = this.row_data.product_name;
-    this.form.relevance_code = this.row_data.relevance_code;
-    this.form.sku = this.row_data.sku;
-    this.form.stock_num = this.row_data.shelf_num;
-    this.form.location_code = this.row_data.location_code;
-    this.form.ean = this.row_data.ean;
-    this.form.production_batch_number = this.row_data.product_batch_number;
-    this.form.expiration_date = this.row_data.expiration_date;
-    this.form.remark = this.row_data.remark;
-  },
   watch: {
     visible() {
       if (this.visible) {
+        // console.log(this.row_data, 'row_data');
         this.form.product_name = this.row_data.product_name;
         this.form.relevance_code = this.row_data.relevance_code;
         this.form.sku = this.row_data.sku;
         this.form.stock_num = this.row_data.shelf_num;
         this.form.location_code = this.row_data.location_code;
         this.form.ean = this.row_data.ean;
-        this.form.production_batch_number = this.row_data.product_batch_number;
-        this.form.expiration_date = this.row_data.expiration_date;
+        this.form.production_batch_number = this.row_data.product_batch_number; // 生产批次号
+        this.form.expiration_date = this.row_data.expiration_date_name; // 保质期
+        this.form.best_before_date = this.row_data.best_before_date; // 最佳使用期
         this.form.remark = this.row_data.remark;
+        // console.log(this.form, 'row_dataform');
       } else {
         for (const item in this.form) {
           if (Object.prototype.hasOwnProperty.call(this.form, item)) {

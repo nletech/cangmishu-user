@@ -85,9 +85,13 @@
                                                    </template>
                                  </el-table-column>
                       </el-table>
-                      <pagination-public  :params="params"
-                                          @changePage="handlerChangePage">
-                      </pagination-public>
+                      <el-row>
+                              <el-col :span="6" :offset="18">
+                                      <pagination-public  :params="params"
+                                                          @changePage="handlerChangePage">
+                                      </pagination-public>
+                              </el-col>
+                      </el-row>
                      <!-- 入库单详情弹框 -->
                      <DetailDialog  :visible.sync="outboundDialogVisible"
                                     :id="id"

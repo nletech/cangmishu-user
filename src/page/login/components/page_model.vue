@@ -23,7 +23,7 @@
       </div>
       <div :class="$style.model_footer">
         <div :class="$style.footer_main">
-          <span>Copyright © 2019 EU Techne B.V.（2.0.1）技术支持</span>
+          <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
           <i :class="$style.footer_main_logo"></i>
         </div>
       </div>

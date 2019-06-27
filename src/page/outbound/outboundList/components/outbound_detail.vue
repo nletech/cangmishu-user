@@ -25,7 +25,7 @@
               </el-row>
               <el-row>
                       <div :class="$style.main">
-                          <el-row>
+                          <!-- <el-row>
                                 <el-col :span="10" :class="$style.address">
                                         <el-row :class="$style.address_title">
                                                 <el-col :span="4">发件信息:</el-col>
@@ -35,7 +35,7 @@
                                                 <el-col :span="4" :offset="4">{{row_data.send_phone}}</el-col>
                                         </el-row>
                                         <el-row :class="$style.address_detail">
-                                                <el-col :span="4">{{row_data.send_full_address}}</el-col>
+                                                <el-col>{{row_data.send_full_address}}</el-col>
                                         </el-row>
                                 </el-col>
                                 <el-col :span="10" :class="$style.address">
@@ -47,10 +47,56 @@
                                                 <el-col :span="4" :offset="4">{{row_data.receiver_phone}}</el-col>
                                         </el-row>
                                         <el-row :class="$style.address_detail">
-                                                <el-col :span="4">{{row_data.receiver_full_address}}</el-col>
+                                                <el-col>{{row_data.receiver_full_address}}</el-col>
                                         </el-row>
                                 </el-col>
-                           </el-row>
+                           </el-row> -->
+                      <el-form>
+                            <el-form-item>
+                                          <el-row :gutter="10">
+                                                  <el-col :lg="13">
+                                                    <div  :class="$style.address">
+                                                          <el-form  label-width="80px">
+                                                                    <el-form-item label="发件信息">
+                                                                    </el-form-item>
+                                                                    <el-form-item label="姓名"
+                                                                                  prop="fullname">
+                                                                                    <div style="text-align: left; margin: 0 0 0 20px;">{{row_data.send_fullname}}</div>
+                                                                    </el-form-item>
+                                                                    <el-form-item label="电话"
+                                                                                  prop="phone">
+                                                                                    <div style="text-align: left; margin: 0 0 0 20px;">{{row_data.send_phone}}</div>
+                                                                    </el-form-item>
+                                                                    <el-form-item label="地址"
+                                                                                  prop="address">
+                                                                                    <div style="text-align: left; margin: 0 0 0 20px;">{{row_data.send_full_address}}</div>
+                                                                    </el-form-item>
+                                                          </el-form>
+                                                    </div>
+                                                  </el-col>
+                                                  <el-col :lg="11">
+                                                    <div  :class="$style.address">
+                                                          <el-form  label-width="80px">
+                                                                    <el-form-item label="收件信息">
+                                                                    </el-form-item>
+                                                                    <el-form-item label="姓名"
+                                                                                  prop="fullname">
+                                                                                    <div style="text-align: left; margin: 0 0 0 20px;">{{row_data.receiver_fullname}}</div>
+                                                                    </el-form-item>
+                                                                    <el-form-item label="电话"
+                                                                                  prop="phone">
+                                                                                    <div style="text-align: left; margin: 0 0 0 20px;">{{row_data.receiver_phone}}</div>
+                                                                    </el-form-item>
+                                                                    <el-form-item label="地址"
+                                                                                  prop="address">
+                                                                                    <div style="text-align: left; margin: 0 0 0 20px;">{{row_data.receiver_full_address}}</div>
+                                                                    </el-form-item>
+                                                          </el-form>
+                                                    </div>
+                                                  </el-col>
+                                          </el-row>
+                            </el-form-item>
+                      </el-form>
                       </div>
               </el-row>
               <el-row>
@@ -66,7 +112,10 @@
                                                         <div>{{scope.row.relevance_code}}</div>
                                                 </template>
                                         </el-table-column>
-                                        <el-table-column prop="amount" label="数量">
+                                        <el-table-column prop="[amount, pick_num]" label="预/实际出库数">
+                                                         <template slot-scope="scope">
+                                                           {{scope.row.amount}}/{{scope.row.pick_num}}
+                                                         </template>
                                         </el-table-column>
                               </el-table>
                       </el-col>
@@ -175,21 +224,13 @@ export default {
   width: 92%;
   margin: 20px 0 20px 40px;
   .address {
-    width: 49%;
+    width: 92%;
     border: 1px solid #ccc;
-    margin: 0 5px 0 0;
-    padding: 10px 0 30px 30px;
     font-size: 1.1rem;
     font-weight: bold;
-    .address_title {
-      margin: 0 0 20px 0;
-    }
-    .address_info {
-      margin: 4px 0 4px 0;
-    }
-    .address_detail {
-      margin: 4px 0 4px 0;
-    }
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 240px;
   }
 }
 .desc_detail {

@@ -23,7 +23,7 @@
                                                   header-align="center">
 
                                 </el-table-column>
-                                <el-table-column  label="SKU"
+                                <el-table-column  label="入库批次"
                                                   align="center"
                                                   header-align="center"
                                                   prop="sku">

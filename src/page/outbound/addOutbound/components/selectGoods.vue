@@ -7,19 +7,42 @@
                           :before-close="handleClose">
                           <el-table  ref="table"
                                      border
-                                     :data="goods"
+                                     :data="goodsList"
                                      style="width: 100%"
-                                     @selection-change="handleSelected"
                                      :row-style="{cursor: 'pointer'}">
-                                    <el-table-column
-                                      type="selection"
-                                      width="55">
-                                    </el-table-column>
-                                    <el-table-column  label="商品名称"
+                                      <el-table-column  type="expand"
+                                                        width="55">
+                                                        <template slot-scope="scope">
+                                                                  <el-table :data="scope.row.specs"
+                                                                            @row-click="rowClickGoods"
+                                                                            border>
+                                                                            <el-table-column  width="55">
+                                                                                              <template slot-scope="scope">
+                                                                                                        <label  class="el-checkbox">
+                                                                                                                <span  class="el-checkbox__input"
+                                                                                                                       :class="scope.row.checked && 'is-checked'">
+                                                                                                                       <span class="el-checkbox__inner"></span>
+                                                                                                                </span>
+                                                                                                        </label>
+                                                                                              </template>
+                                                                            </el-table-column>
+                                                                            <el-table-column  label="SKU"
+                                                                                              prop="relevance_code">
+                                                                            </el-table-column>
+                                                                            <el-table-column  label="规格中文名"
+                                                                                              prop="name_cn">
+                                                                            </el-table-column>
+                                                                            <el-table-column  label="规格外文名"
+                                                                                              prop="name_en">
+                                                                            </el-table-column>
+                                                                  </el-table>
+                                                        </template>
+                                      </el-table-column>
+                                    <el-table-column  label="商品中文名称"
                                                       prop="name_cn">
                                     </el-table-column>
-                                    <el-table-column  prop="specs[0].relevance_code"
-                                                      label="SKU">
+                                    <el-table-column  prop="name_en"
+                                                      label="商品英文名称">
                                   </el-table-column>
                           </el-table>
                           <!-- 分页 -->
@@ -60,9 +83,9 @@ export default {
   },
   data() {
     return {
-      goods: [],
+      goodsList: [],
       total: '',
-      selected: [], // 初选
+      goodsSelected: [], // 初选
       currentPage: 1,
       all_selected: [], // 总的选择存储（因为有分页）
     };
@@ -83,12 +106,6 @@ export default {
     },
   },
   methods: {
-    handleSelected(arr) {
-      this.selected = [];
-      for (let i = 0; i < arr.length; i += 1) {
-        this.selected.push(arr[i]);
-      }
-    }, // 将选中项缓存起来
     getGoodsList() {
       // eslint-disable-next-line
       const warehouse_data = {
@@ -97,40 +114,62 @@ export default {
       $http.getProducts(warehouse_data)
         .then((res) => {
           if (res.status) return;
-          this.goods = res.data.data;
+          this.goodsList = res.data.data;
           this.total = res.data.total;
           this.currentPage = res.data.current_page;
         });
     }, // 获取商品列表
-    handleClose() {
-      this.$emit('update:visible_goods', false);
+    rowClickGoods(row) {
+      this.$set(row, 'checked', !row.checked);
+      if (row.checked) {
+        // eslint-disable-next-line
+        this.goodsSelected.some(item => item.id === row.id) || this.goodsSelected.push(row);
+        return;
+      }
+      this.goodsSelected = this.goodsSelected.filter(item => +item.id !== +row.id);
     },
+    // 以上修改
+    handleSelected(arr) {
+      this.selected = [];
+      for (let i = 0; i < arr.length; i += 1) {
+        this.selected.push(arr[i]);
+      }
+    }, // 将选中项缓存起来
+    // handleClose() {
+    //   this.$emit('update:visible_goods', false);
+    // },
     handleSelectGoods() {
       this.visible_goods = true;
     },
     confirmSelected() {
-      for (let i = 0; i < this.selected.length; i += 1) {
-        this.all_selected.push(this.selected[i]);
-      }
-      // 这里对包含对象的数组进行去重（根据对象的id属性）
-      function removeArrObj(arr) {
-        const obj = {}; // 用作记录的对象
-        const result = []; // 接收去重后的数组
-        // eslint-disable-next-line
-        let subObj = arr;
-        for (let i = 0; i < subObj.length; i += 1) {
-          if (!obj[subObj[i].id]) {
-            result.push(subObj[i]);
-            obj[subObj[i].id] = true;
-          } // 在数组的对象中, id 唯一则推入到 result 数组
-        }
-        return result;
-      }
-      const result = removeArrObj(this.all_selected);
-      this.all_selected = []; // 初始化
-      this.$emit('select-goods_data', result); // 回传给父组件
+      // for (let i = 0; i < this.selected.length; i += 1) {
+      //   this.all_selected.push(this.selected[i]);
+      // }
+      // // 这里对包含对象的数组进行去重（根据对象的id属性）
+      // function removeArrObj(arr) {
+      //   const obj = {}; // 用作记录的对象
+      //   const result = []; // 接收去重后的数组
+      //   // eslint-disable-next-line
+      //   let subObj = arr;
+      //   for (let i = 0; i < subObj.length; i += 1) {
+      //     if (!obj[subObj[i].id]) {
+      //       result.push(subObj[i]);
+      //       obj[subObj[i].id] = true;
+      //     } // 在数组的对象中, id 唯一则推入到 result 数组
+      //   }
+      //   return result;
+      // }
+      // const result = removeArrObj(this.all_selected);
+      // this.all_selected = []; // 初始化
+      this.goodsList = [...this.goodsSelected];
+      this.$emit('select-goods_data', this.goodsList); // 回传给父组件
       this.$emit('update:visible_goods', false);
+      this.handleClose();
     }, // 提交
+    handleClose() {
+      this.goodsSelected = [];
+      this.$emit('update:visible_goods', false);
+    },
     handleCurrentChange(val) {
       for (let i = 0; i < this.selected.length; i += 1) {
         this.all_selected.push(this.selected[i]);
@@ -142,7 +181,7 @@ export default {
       })
         .then((res) => {
           if (res.status) return;
-          this.goods = res.data.data;
+          this.goodsList = res.data.data;
           this.total = res.data.total;
           this.currentPage = res.data.current_page;
         });

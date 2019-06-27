@@ -95,6 +95,7 @@
       <!-- 添加货品分类 -->
       <el-dialog  :title="this.id ? '编辑货品分类' : '添加货品分类 '"
                   :visible.sync="dialogVisible"
+                  @close="handlerClose"
                   width="40%">
                   <el-form  ref="form"
                             :rules="rules"
@@ -160,6 +161,11 @@ export default {
       },
       sku_property: [], // sku属性
       check_list: ['保质期', '生产批次', '最佳食用期'], // 检测sku属性
+      check_list_map: {
+        best_before_date: '最佳食用期',
+        expiration_date: '保质期',
+        production_batch_number: '生产批次',
+      }, // 检测sku属性
       // =====
       dialogVisible: false,
       id: '', // 分类货品的id（编辑）
@@ -182,24 +188,37 @@ export default {
     this.get_category_list_data(); // 初始化列表数据
   },
   methods: {
+    handlerClose() {
+      this.sku_property = [];
+      // eslint-disable-next-line
+      for (const i in this.form) {
+        this.form[i] = '';
+      }
+      this.id = '';
+      console.log(this.form, 'form_info1111111');
+    },
     info_add_btn() {
       this.sku_property = []; // 清空
       this.category_info_form = {}; // 清空
       this.dialogVisible = true; // 打开弹窗
     }, // 添加信息按钮
     editCategory(info) {
+      this.sku_property = [];
       this.dialogVisible = true;
+      // eslint-disable-next-line
+      for (const item in info) {
+        if (String(item) === 'need_best_before_date' && info[item] === 1) {
+          this.sku_property.push('最佳食用期');
+        }
+        if (String(item) === 'need_expiration_date' && info[item] === 1) {
+          this.sku_property.push('保质期');
+        }
+        if (String(item) === 'need_production_batch_number' && info[item] === 1) {
+          this.sku_property.push('生产批次');
+        }
+      }
       // 选中 sku属性
-      /* eslint-disable */
-      info.need_best_before_date === 1 // 最佳食用期
-        ? this.sku_property.push('最佳食用期')
-        : this.sku_property.push('');
-      info.need_expiration_date === 1 // 保质期
-        ? this.sku_property.push('保质期')
-        : this.sku_property.push('');
-      info.need_production_batch_number === 1 // 生产批次
-        ? this.sku_property.push('生产批次')
-        : this.sku_property.push('');
+      console.log(info, '编辑info');
       this.category_info_form = info;
       this.category_info_form.is_enabled = `${info.is_enabled}`;
       this.id = info.id; // 用于编辑
@@ -215,7 +234,7 @@ export default {
       $http.getCategoryManagement()
         .then((re) => {
           if (re.status) return;
-          console.log(re.data, 'data   getCategoryManagement');
+          // console.log(re.data, 'data   getCategoryManagement');
           this.category_list_data = re.data.data;
           this.total = re.data.total;
         });
@@ -223,21 +242,22 @@ export default {
     submit_form() {
       this.$refs.form.validate((validate) => {
         if (validate) {
-          // console.log(this.category_info_form.is_enabled, 'this.category_info_form.is_enabled');
           this.form_info.name_cn = this.category_info_form.name_cn;
           this.form_info.name_en = this.category_info_form.name_en;
           this.form_info.is_enabled = this.category_info_form.is_enabled || 0; // 是否启用
           const arr = this.sku_property;
+          // console.log(arr, 'arr');
           for (let i = 0; i < arr.length; i += 1) {
             if (arr[i] === '保质期') {
               this.form_info.need_expiration_date = 1;
-            } else if (arr[i] === '生产批次') {
+            }
+            if (arr[i] === '生产批次') {
               this.form_info.need_production_batch_number = 1;
-            } else if (arr[i] === '最佳食用期') {
+            }
+            if (arr[i] === '最佳食用期') {
               this.form_info.need_best_before_date = 1;
             }
           }
-          console.log(this.form_info, 'form_info');
           if (+this.id) {
             this.form_info.id = this.id; // 用于编辑
             $http.editCategoryManagement(this.id, this.form_info)
@@ -248,7 +268,6 @@ export default {
                   message: '修改成功',
                 });
                 console.log('编辑');
-                this.id = '';
                 // 更新数据
                 this.handleCurrentChange(this.current_page);
               });

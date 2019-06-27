@@ -162,26 +162,19 @@ export default {
       this.formInfo.address   = this.form.addressDetail;
       this.$refs.form.validate((validate) => {
         if (validate) {
-          this.$confirm('确认提交?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          })
-            .then(() => {
-              if (this.addressText === '发件人') {
-                $http.editSenderAddress(this.row_data.id, this.formInfo)
-                  .then((res) => {
-                    if (res.status) return;
-                    this.$emit('update:visibleFlag', false);
-                  });
-              } else if (this.addressText === '收件人') {
-                  $http.editReceiverAddress(this.row_data.id, this.formInfo)
-                    .then((re) => {
-                      if (re.status) return;
-                      this.$emit('update:visibleFlag', false);
-                    })
-              }
-            });
+          if (this.addressText === '发件人') {
+            $http.editSenderAddress(this.row_data.id, this.formInfo)
+              .then((res) => {
+                if (res.status) return;
+                this.$emit('update:visibleFlag', false);
+              });
+          } else if (this.addressText === '收件人') {
+              $http.editReceiverAddress(this.row_data.id, this.formInfo)
+                .then((re) => {
+                  if (re.status) return;
+                  this.$emit('update:visibleFlag', false);
+                })
+          }
         }
       });
     },

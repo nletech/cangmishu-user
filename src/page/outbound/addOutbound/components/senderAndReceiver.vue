@@ -6,7 +6,7 @@
                             <el-col :lg="13">
                               <div  class="address">
                                     <label  class="label"> 发件信息
-                                            <el-button size="mini"  @click="handle_select(0)">选择发件人地址</el-button>
+                                            <el-button size="large"  @click="handle_select(0)">选择发件人地址</el-button>
                                     </label>
                                     <el-form  label-width="80px">
                                               <el-form-item label="姓名"

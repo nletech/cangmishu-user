@@ -34,7 +34,7 @@
                                                     style="margin: 10px;"
                                                     :loading="$store.state.config.button_loading"
                                                     @click="dialogVisible = true">
-                                                    导出库存管理
+                                                    导出商品库存
                                         </el-button>
                                 </el-col>
                         </el-row>
@@ -62,7 +62,7 @@
                                                                             <el-table-column label="仓库库存" prop="stockin_num">
 
                                                                             </el-table-column>
-                                                                            <el-table-column label="盘点次数" prop="shelf_num_waiting">
+                                                                            <el-table-column label="盘点次数" prop="edit_count">
 
                                                                             </el-table-column>
                                                                             <el-table-column label="位置" prop="location_code">

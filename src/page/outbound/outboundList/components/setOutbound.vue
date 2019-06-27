@@ -199,6 +199,10 @@ export default {
           this.$router.push({
             name: 'outboundList',
           });
+          this.$message({
+            message: '出库成功!',
+            type: 'success',
+          });
         });
     },
     get_data() {

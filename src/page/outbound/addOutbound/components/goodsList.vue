@@ -14,11 +14,11 @@
                         </el-table-column>
                         <el-table-column  label="商品名称">
                                           <template slot-scope="scope">
-                                                    {{scope.row.name_cn}}
+                                                    {{scope.row.product_name_cn}}
                                           </template>
                         </el-table-column>
                         <el-table-column label="SKU"
-                                         prop="specs[0].relevance_code">
+                                         prop="relevance_code">
                         </el-table-column>
                         <el-table-column label="数量"
                                          prop="num">

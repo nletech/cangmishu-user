@@ -49,15 +49,15 @@
                                                   <el-table-column  type="index"
                                                                     label="#">
                                                   </el-table-column>
-                                                  <el-table-column :label="$t('cnName')">
+                                                  <el-table-column :label="$t('cnName')" prop="product_name_cn">
                                                                     <template slot-scope="scope">
-                                                                              {{scope.row.name_cn}}({{scope.row.specs[0].name_cn}})
+                                                                              {{scope.row.product_name_cn}}
                                                                     </template>
                                                   </el-table-column>
                                                   <el-table-column label="SKU"
                                                                   width="150px">
                                                                   <template slot-scope="scope">
-                                                                            {{scope.row.specs[0].relevance_code}}
+                                                                            {{scope.row.relevance_code}}
                                                                   </template>
                                                   </el-table-column>
                                                   <el-table-column :label="$t('inboundNumbers')"
@@ -144,18 +144,24 @@
                                         <el-form-item :label="$t('remarks')">
                                                       <el-input v-model="form.remark"
                                                                 type="textarea"
+                                                                placeholder="最多不超过30个字"
+                                                                :maxlength="30"
                                                                 :autosize="{ minRows: 4, maxRows: 6}">
                                                       </el-input>
                                         </el-form-item>
                                         <el-form-item>
-                                                      <el-button @click="onSave('form')"
-                                                                type="primary"
-                                                                :loading="$store.state.config.button_loading">
-                                                                {{$t('submit')}}
-                                                      </el-button>
-                                                      <el-button @click="$router.go(-1)">
-                                                                {{$t('cancel')}}
-                                                      </el-button>
+                                                      <el-row>
+                                                              <el-col :span="6" :offset="10">
+                                                                      <el-button @click="onSave('form')"
+                                                                                type="primary"
+                                                                                :loading="$store.state.config.button_loading">
+                                                                                {{$t('submit')}}
+                                                                      </el-button>
+                                                                      <el-button @click="$router.go(-1)">
+                                                                                {{$t('cancel')}}
+                                                                      </el-button>
+                                                              </el-col>
+                                                      </el-row>
                                         </el-form-item>
                               </el-form>
                 </mdoel-form>
@@ -198,28 +204,49 @@
                             <el-table :data="goods"
                                       ref="table"
                                       border
-                                      @selection-change="handleSelectionChange"
                                       style="width: 100%">
-                                      <el-table-column
-                                        type="selection"
-                                        width="55">
+                                      <el-table-column  type="expand"
+                                                        width="55">
+                                                        <template slot-scope="scope">
+                                                                  <el-table :data="scope.row.specs"
+                                                                            @row-click="rowClickGoods"
+                                                                            border>
+                                                                            <el-table-column  width="55">
+                                                                                              <template slot-scope="scope">
+                                                                                                        <label  class="el-checkbox">
+                                                                                                                <span  class="el-checkbox__input"
+                                                                                                                       :class="scope.row.checked && 'is-checked'">
+                                                                                                                       <span class="el-checkbox__inner"></span>
+                                                                                                                </span>
+                                                                                                        </label>
+                                                                                              </template>
+                                                                            </el-table-column>
+                                                                            <el-table-column  label="SKU"
+                                                                                              prop="relevance_code">
+                                                                            </el-table-column>
+                                                                            <el-table-column  label="规格中文名"
+                                                                                              prop="name_cn">
+                                                                            </el-table-column>
+                                                                            <el-table-column  label="规格外文名"
+                                                                                              prop="name_en">
+                                                                            </el-table-column>
+                                                                  </el-table>
+                                                        </template>
                                       </el-table-column>
-                                      <el-table-column  label="商品名称"
+                                      <el-table-column  label="商品中文名称"
                                                         prop="name_cn">
                                       </el-table-column>
-                                      <el-table-column  prop="specs[0].relevance_code"
-                                                        label="SKU">
+                                      <el-table-column  label="商品外文名称"
+                                                        prop="name_en">
                                     </el-table-column>
                             </el-table>
-
                             <button-pagination :pageParams="params"></button-pagination>
-
                             <span slot="footer"
                                   class="dialog-footer">
                                   <el-button  type="primary"
                                               @click="confirmSelected"
                                               :loading="$store.state.btn_loading"
-                                              :disabled="!goodsSelected.length">
+                                              :disabled="!this.goodsSelected.length">
                                               {{'提交'}}
                                   </el-button>
                                   <el-button @click="handleClose()">{{'取消'}}</el-button>
@@ -296,9 +323,12 @@
                             </el-row>
                             <span  slot="footer"
                                   class="dialog-footer">
-                                  <el-button  @click="cancelDistributor">{{$t('cancel')}}</el-button>
+                                  <el-button  @click="cancelDistributor">
+                                              {{$t('cancel')}}
+                                  </el-button>
                                   <el-button  type="primary"
-                                              @click="onDistributorSave">{{$t('submit')}}
+                                              @click="onDistributorSave">
+                                              {{$t('submit')}}
                                   </el-button>
                             </span>
                 </el-dialog>
@@ -501,15 +531,17 @@ export default {
       });
     }, // 供应商列表
     handleSelectionChange(val) {
+      console.log(val, '选择');
       this.goodsSelected = val;
     }, // 处理选择商品弹框的选择事件
     distributorchange(val) {
-      $http.checkDistributor({ page: val }).then((res) => {
-        this.distributorList = res.data.data;
-        this.distributor.total = res.data.total;
-        this.distributor.currentPage = res.data.current_page;
-        this.distributor.size = res.data.per_page;
-      });
+      $http.checkDistributor({ page: val })
+        .then((res) => {
+          this.distributorList = res.data.data;
+          this.distributor.total = res.data.total;
+          this.distributor.currentPage = res.data.current_page;
+          this.distributor.size = res.data.per_page;
+        });
     }, // 供应商分页
     getBoundList() {
     },
@@ -533,20 +565,23 @@ export default {
     },
     // 选择货品弹框确认
     confirmSelected() {
-      for (let i = 0; i < this.goodsSelected.length; i += 1) {
-        let flag = false;
-        for (let j = 0; j < this.goodsList.length; j += 1) {
-          if (this.goodsSelected[i].id === this.goodsList[j].id) {
-            flag = true;
-          }
-        }
-        if (!flag) {
-          this.goodsList.push(this.goodsSelected[i]);
-        }
-      }
-      this.goodsDialog = false;
-    },
-    // 选择货品弹框关闭
+      // for (let i = 0; i < this.goodsSelected.length; i += 1) {
+      //   let flag = false;
+      //   for (let j = 0; j < this.goodsList.length; j += 1) {
+      //     if (this.goodsSelected[i].id === this.goodsList[j].id) {
+      //       flag = true;
+      //     }
+      //   }
+      //   if (!flag) {
+      //     this.goodsList.push(this.goodsSelected[i]);
+      //   }
+      // }
+      this.goodsList = [...this.goodsSelected];
+      this.handleClose();
+      // console.log(this.goodsSelected, 'this.goodsSelected');
+      // console.log(this.goodsList, 'this.goodsList');
+      // this.goodsDialog = false;
+    }, // 选择货品弹框关闭
     handleClose() {
       this.goodsSelected = [];
       this.goodsDialog = false;
@@ -564,7 +599,7 @@ export default {
         this.items.push({
           // id: item.product_id,
           spec_id: item.id,
-          relevance_code: item.specs[0].relevance_code,
+          relevance_code: item.relevance_code,
           need_num: item.need_num,
           // pieces_num: item.pieces_num || '',
           distributor_code: item.distributor_code,
@@ -586,7 +621,7 @@ export default {
       }
       this.form.warehouse_id = this.warehouseId;
       this.$refs[formName].validate((valid) => {
-        // console.log(this.form, 'this.form');
+        console.log(this.form, 'this.form');
         if (valid) {
           $http.addInbound(this.form).then(() => {
             // this.successTips();
@@ -653,7 +688,8 @@ export default {
               message: '操作成功',
               type: 'success',
             });
-            this.getDistributorList();
+            this.getDistributorList(); // 刷新弹窗的供应商列表
+            this.queryAllDistributor(); // 刷新搜索框的供应商列表
             this.distributorEditShow = false;
           });
       }

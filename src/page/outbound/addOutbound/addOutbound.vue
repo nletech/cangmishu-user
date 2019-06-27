@@ -28,6 +28,7 @@
                             prop="remark">
                             <el-input type="textarea"
                                       :maxlength="30"
+                                      placeholder="最多不超过30个字"
                                       v-model="form.remark">
                             </el-input>
               </el-form-item>
@@ -56,7 +57,15 @@
               </el-row>
               <!-- 提交按钮 -->
               <el-form-item>
-                            <el-button type="primary" @click="onSubmit()">提交</el-button>
+                            <el-row>
+                                    <el-col :span="2" :offset="10">
+                                                      <el-button :loading="$store.state.config.button_loading"
+                                                                type="primary"
+                                                                @click="onSubmit()">
+                                                                提交
+                                                      </el-button>
+                                    </el-col>
+                            </el-row>
               </el-form-item>
     </el-form>
   </mdoel-form>
@@ -132,7 +141,7 @@ export default {
       for (let i = 0; i < this.temp_goods_list.length; i += 1) {
         // eslint-disable-next-line
         let obj = new Object();
-        obj.relevance_code = this.temp_goods_list[i].specs[0].relevance_code;
+        obj.relevance_code = this.temp_goods_list[i].relevance_code;
         obj.num = this.temp_goods_list[i].number;
         arr.push(obj);
       }

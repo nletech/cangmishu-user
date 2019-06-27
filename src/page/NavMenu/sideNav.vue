@@ -42,7 +42,7 @@
                         @mouseleave="handleLeave1()">
                         <!-- 侧边栏导航 -->
                         <ul  style="padding: 0;">
-                              <li  v-for="(item, index) in sideList" style="width: 100%; line-height: 80px; height: 80px; text-align: center; list-style: none;"
+                              <li  v-for="(item, index) in sideList" style="width: 100%; line-height: 80px; height: 80px; text-align: center; list-style: none; cursor: pointer;"
                                   :key="index"
                                   @mouseover="showItem1(item.name, index)">
                                   <i  class="iconfont"
