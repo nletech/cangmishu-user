@@ -27,25 +27,32 @@
       <!-- 以上是wms旧代码 -->
       <!-- 切换仓库 选择按钮 -->
       <div  :class="$style.selectedTag">
-            <el-dropdown  :class="$style.selectedTag_main">
-                          <el-button :class="$style.selectedTag_main_btn">
-                                    <span>{{default_warehouse_name}}</span>
-                                    <i class="el-icon-arrow-down el-icon--right"></i>
-                          </el-button>
-                          <el-dropdown-menu  slot="dropdown"
-                                            :class="$style.selectedTag_main_dropdown"
-                                            style="width: 200px; text-align: center;">
-                                            <el-dropdown-item @click.native="to_store_management">
-                                                              <span>仓库管理</span>
-                                            </el-dropdown-item>
-                                            <el-dropdown-item @click.native="to_create_store">
-                                                            <span>创建仓库</span>
-                                            </el-dropdown-item>
-                                            <el-dropdown-item @click.native="shift_warehouse">
-                                                            <span>切换仓库</span>
-                                            </el-dropdown-item>
-                          </el-dropdown-menu>
-            </el-dropdown>
+            <div v-if="+UType !== 0">
+              <div style="font-size: 1.2rem; text-align: center; line-height: 80px;">
+                    <span>{{default_warehouse_name}}</span>
+              </div>
+            </div>
+            <div v-else>
+                        <el-dropdown  :class="$style.selectedTag_main">
+                                      <el-button :class="$style.selectedTag_main_btn">
+                                                <span>{{default_warehouse_name}}</span>
+                                                <i class="el-icon-arrow-down el-icon--right"></i>
+                                      </el-button>
+                                      <el-dropdown-menu  slot="dropdown"
+                                                        :class="$style.selectedTag_main_dropdown"
+                                                        style="width: 200px; text-align: center;">
+                                                        <el-dropdown-item @click.native="to_store_management">
+                                                                          <span>仓库管理</span>
+                                                        </el-dropdown-item>
+                                                        <el-dropdown-item @click.native="to_create_store">
+                                                                        <span>创建仓库</span>
+                                                        </el-dropdown-item>
+                                                        <el-dropdown-item @click.native="shift_warehouse">
+                                                                        <span>切换仓库</span>
+                                                        </el-dropdown-item>
+                                      </el-dropdown-menu>
+                        </el-dropdown>
+            </div>
       </div>
     </div>
     <!-- 用户信息 -->
@@ -141,6 +148,7 @@ export default {
   created() {
     this.getWarehouses(); // 获取仓库列表
   },
+
   watch: {
     default_warehouse_name(val) {
       // console.log(val, '监听仓库id');
@@ -181,7 +189,7 @@ export default {
       });
     }, // 获取仓库列表
     handleConfirm() {
-      console.log(this.currentWarehouseId, '当前仓库id', this.selectWarehouse, '当前仓库name');
+      // console.log(this.currentWarehouseId, '当前仓库id', this.selectWarehouse, '当前仓库name');
       this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
       this.showWarehousesSwitch = false; // 关闭对话框
@@ -206,6 +214,12 @@ export default {
           localStorage.removeItem('email');
           localStorage.removeItem('warehouseId');
           localStorage.removeItem('warehouseName');
+          localStorage.removeItem('setUType');
+          localStorage.removeItem('setUser');
+          localStorage.removeItem('setUnickName');
+          localStorage.removeItem('setUModules');
+          localStorage.removeItem('setUAvatar');
+          localStorage.removeItem('setUEmail');
           this.$router.push({
             name: 'login',
           });
@@ -231,10 +245,13 @@ export default {
       return +this.$store.state.config.shutdown_status;
     }, // 隐藏侧边栏标志
     Uavatar() {
-      return localStorage.getItem('setUAvatar');
+      return this.$store.state.config.avatar || localStorage.getItem('setUAvatar');
     },
     UnickName() {
-      return localStorage.getItem('setUnickName');
+      return this.$store.state.config.nickName || localStorage.getItem('setUnickName');
+    },
+    UType() {
+      return +localStorage.getItem('setUType');
     },
   },
 };
@@ -285,6 +302,8 @@ export default {
       .selectedTag_main {
         width: 100%;
         height: 100%;
+        margin: 20px 0 0 0;
+        font-size: 1.2rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -393,6 +412,7 @@ export default {
         display: flex; // 文字垂直居中
         justify-content: center;
         align-items: center;
+        cursor: pointer;
       }
     }
     .model_color(@color) {

@@ -93,13 +93,6 @@ export default {
     this.get_area_data();
     this.get_data();
   },
-  // mounted() {
-  //   console.log(this.form.warehouse_area_id, '------------------');
-  // },
-  // updated() {
-  //   console.log(this.form.warehouse_area_id, 'val');
-  //   console.log(this.form.is_enabled, 'form.is_enabled', this.is_enabled, 'isen');
-  // },
   data() {
     return {
       form: {
@@ -112,7 +105,7 @@ export default {
         floor: '', // 层
         is_enabled: '0', // 是否启用
         remark: '', // 备注
-        warehouse_id: this.$route.params.warehouse_id,
+        warehouse_id: this.$route.query.warehouse_id,
       },
       is_enabled: '0',
       area_list_data: [], // 货区列表数据
@@ -132,27 +125,27 @@ export default {
   },
   methods: {
     get_area_data() {
-      if (!this.$route.params.warehouse_id) return;
-      $http.getWarehouseArea({ warehouse_id: this.$route.params.warehouse_id })
+      if (!this.$route.query.warehouse_id) return;
+      $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id })
         .then((res) => {
           this.area_list_data = res.data.data;
-          // console.log(this.area_list_data, 'this.area_list_data');
         });
     }, // 获取货区列表
     get_data() {
       let allData = {}; // 缓存拿到的数据
-      if (this.$route.params.edit) {
-        if (this.$route.params.currentPage !== 1) {
+      if (this.$route.query.edit) {
+        if (this.$route.query.currentPage !== 1) {
           // 请求非首页的数据
           $http.checkWarehouseshelf({
-            page: this.$route.params.currentPage,
-            warehouse_id: this.$route.params.warehouse_id,
+            page: this.$route.query.currentPage,
+            warehouse_id: this.$route.query.warehouse_id,
           })
             .then((res) => {
+              console.log(res, 'AAAA');
               if (res.status) return;
               allData = res.data.data; // 存储数据
               for (let i = 0; i < allData.length; i += 1) {
-                if (allData[i].id === this.$route.params.shelfId) {
+                if (allData[i].id === this.$route.query.shelfId) {
                   this.form.code = allData[i].code;
                   this.form.warehouse_area_id = allData[i].warehouse_area.id;
                   this.is_enabled = `${allData[i].is_enabled}`; // 这里必须是字符串
@@ -167,12 +160,12 @@ export default {
               }
             });
         } else { // 请求首页的数据
-          $http.getWarehouseshelf({ warehouse_id: this.$route.params.warehouse_id })
+          $http.getWarehouseshelf({ warehouse_id: this.$route.query.warehouse_id })
             .then((res) => {
               if (res.status) return;
               allData = res.data.data; // 存储数据
               for (let i = 0; i < allData.length; i += 1) {
-                if (allData[i].id === this.$route.params.shelfId) {
+                if (allData[i].id === this.$route.query.shelfId) {
                   this.form.code = allData[i].code;
                   this.form.warehouse_area_id = allData[i].warehouse_area.id;
                   this.is_enabled = `${allData[i].is_enabled}`; // 这里必须是字符串
@@ -193,7 +186,7 @@ export default {
     onSubmit() {
       this.$refs.ShelfReference.validate((valid) => {
         if (!valid) return;
-        $http.editWarehouseshelf(this.$route.params.shelfId, this.form)
+        $http.editWarehouseshelf(this.$route.query.shelfId, this.form)
           .then((res) => {
             if (res.status) return;
             this.$message({
@@ -203,7 +196,10 @@ export default {
             });
             this.$router.push({
               name: 'basicSetting',
-              params: { add_shelf_back: true },
+              query: {
+                add_shelf_back: true,
+                warehouse_id: this.$route.query.warehouse_id,
+              },
             });
           });
       });

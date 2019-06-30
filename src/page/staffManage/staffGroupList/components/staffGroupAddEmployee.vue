@@ -140,13 +140,12 @@ export default {
     getList() {
       // 去除组内已存在的员工
       this.params.rm = 1;
-      this.params.group_id = this.$route.params.groupId;
+      this.params.group_id = this.$route.query.groupId;
       $http.getStaffs(this.params)
         .then((res) => {
           // 员工信息
           this.staff_data = res.data.data;
           this.params.data_count = res.data.total;
-          console.log(res, 'showEE');
         });
     },
     // 提交员工添加

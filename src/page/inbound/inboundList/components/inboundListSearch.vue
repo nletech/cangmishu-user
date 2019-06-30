@@ -108,9 +108,6 @@ export default {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
-  updated() {
-    console.log(this.inboundTypeValue, 'inboundTypeValue');
-  },
   methods: {
     getTypeList() {
       if (!this.warehouseId) return;

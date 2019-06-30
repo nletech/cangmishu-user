@@ -133,6 +133,13 @@ export default {
       },
     };
   },
+  watch: {
+    visible_add() {
+      if (!this.visible_add) {
+        this.form = {};
+      }
+    }, // 清空数据
+  },
   methods: {
     handleClose() {
       this.$emit('update:visible_add', false);
@@ -148,26 +155,19 @@ export default {
       this.formInfo.address   = this.form.addressDetail;
       this.$refs.form.validate((validate) => {
         if (validate) {
-          this.$confirm('确认提交?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          })
-            .then(() => {
-              if (this.addressText === '发件人') {
-                $http.addSenderAddress(this.formInfo)
-                  .then((res) => {
-                    if (res.status) return;
-                    this.$emit('update:visible_add', false);
-                  });
-              } else if (this.addressText === '收件人') {
-                  $http.addReceiverAddress(this.formInfo)
-                    .then((res) => {
-                      if (res.status) return;
-                      this.$emit('update:visible_add', false);
-                    })
-              }
-            })
+          if (this.addressText === '发件人') {
+            $http.addSenderAddress(this.formInfo)
+              .then((res) => {
+                if (res.status) return;
+                this.$emit('update:visible_add', false);
+              });
+          } else if (this.addressText === '收件人') {
+              $http.addReceiverAddress(this.formInfo)
+                .then((res) => {
+                  if (res.status) return;
+                  this.$emit('update:visible_add', false);
+                })
+          }
         }
       });
     },

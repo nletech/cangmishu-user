@@ -7,8 +7,17 @@ export default {
     setWarehouseId: '', // 仓库 id
     noneWarehouseId: false,
     warehouseList: '',
+    avatar: '', // 用户头像URL
+    nickName: '', // 用户名
   },
   mutations: {
+    // 设置用户头像和用户名
+    setUserInfo(state, data) {
+      state.avatar = data.avatar; // 用户头像URL
+      state.nickName = data.nickName; // 用户名
+      localStorage.setItem('setUAvatar', data.avatar);
+      localStorage.setItem('setUnickName', data.nickName);
+    },
     // 设置仓库
     setWarehouseName(state, data) {
       state.setWarehouseName = data;

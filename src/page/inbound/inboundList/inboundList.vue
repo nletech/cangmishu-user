@@ -195,7 +195,10 @@ export default {
         });
     }, // 供应商列表
     handlerChangePage(val) {
-      $http.getInboundPage({ page: val })
+      $http.getInboundPage({
+        warehouse_id: this.warehouseId,
+        page: val,
+      })
         .then((res) => {
           this.inbound_list_data = res.data.data;
           this.params.total = res.data.total;

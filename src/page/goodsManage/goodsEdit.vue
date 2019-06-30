@@ -170,9 +170,12 @@ export default {
       this.getTypeList();
     },
     skuList() {
-      if (this.skuList.length && !this.skuList[this.skuList.length - 1]) {
-        this.skuList.push(this.specsForm());
-        //  && !this.skuList[this.skuList.length - 1]
+      console.log('iii');
+      // eslint-disable-next-line
+      for (let i = 0; i < this.skuList.length; i += 1) {
+        if (i === this.skuList.length - 1 && this.skuList[i].relevance_code !== '') {
+          this.skuList.push(this.specsForm());
+        }
       }
     },
   },
@@ -236,8 +239,6 @@ export default {
         .then((res) => {
           this.form = res.data;
           this.skuList = res.data.specs;
-          // console.log(res, 'getAGoods');
-          // console.log(this.form, 'this.form');
         });
     },
     // 规格取消
@@ -255,6 +256,7 @@ export default {
     },
     // 保存/编辑规格
     saveSpec(row, index, is) {
+      console.log(row, 'row', index, 'index', is, 'is');
       if (!row.name_cn || !row.name_en) {
         this.$message({
           message: '规格中外文名不能为空',
@@ -284,11 +286,19 @@ export default {
         return;
       }
       if (this.$route.query.id) {
+        console.log('99');
         row.product_id = this.$route.query.id;
         if (row.id) row.spec_id = row.id;
         if (this.warehouseId) row.warehouse_id = this.warehouseId;
+        // this.skuList.push(this.specsForm());
+        for (let i = 0; i < this.skuList.length; i += 1) {
+          if (i === this.skuList.length - 1 && this.skuList[i].relevance_code !== '') {
+            this.skuList.push(this.specsForm());
+          }
+        }
         this.$set(row, '$_edit', false);
       } else {
+        console.log('999999');
         for (let i = 0; i < this.skuList.length; i += 1) {
           if (i !== index && row.relevance_code === this.skuList[i].relevance_code) {
             this.$message({
@@ -298,9 +308,13 @@ export default {
             return;
           }
         }
-        if (!is) this.skuList.push(this.specsForm());
+        if (!is) {
+          this.skuList.push(this.specsForm());
+          // console.log(this.skuList, 'this.skuList');
+        }
         this.is_edit = false;
         this.$set(row, '$_edit', false);
+        console.log('222');
       }
     },
     // 初始化表单
@@ -317,7 +331,6 @@ export default {
     },
     // 提交商品信息
     onSubmitGoods(formName) {
-      console.log(formName, 'formNameformNameformNameformName');
       let ctr = true;
       this.skuList.filter(res => res.name_cn).forEach((val) => {
         if (!val.name_en) {

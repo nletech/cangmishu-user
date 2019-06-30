@@ -15,13 +15,13 @@ export default function (router) {
   return (to, from, next) => {
     if (store.state.token.token) {
       if (to.name === 'login') {
-        console.log('to login');
+        // console.log('to login');
         next('/');
       } else if (!store.state.routerData.isPermissionFilter) {
-        console.log('未授权');
+        // console.log('未授权');
         addRouerMap(router, next, to); // 添加登录的路由
       } else {
-        console.log('其他');
+        // console.log('其他');
         next();
         // console.log('next');
       }

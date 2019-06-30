@@ -142,18 +142,17 @@ export default {
   watch: {
     visible() {
       if (this.visible) {
-        // console.log(this.row_data, 'row_data');
+        console.log(this.row_data, 'row_data');
         this.form.product_name = this.row_data.product_name;
         this.form.relevance_code = this.row_data.relevance_code;
         this.form.sku = this.row_data.sku;
         this.form.stock_num = this.row_data.shelf_num;
         this.form.location_code = this.row_data.location_code;
         this.form.ean = this.row_data.ean;
-        this.form.production_batch_number = this.row_data.product_batch_number; // 生产批次号
-        this.form.expiration_date = this.row_data.expiration_date_name; // 保质期
+        this.form.production_batch_number = this.row_data.production_batch_number; // 生产批次号
+        this.form.expiration_date = this.row_data.expiration_date; // 保质期
         this.form.best_before_date = this.row_data.best_before_date; // 最佳使用期
         this.form.remark = this.row_data.remark;
-        // console.log(this.form, 'row_dataform');
       } else {
         for (const item in this.form) {
           if (Object.prototype.hasOwnProperty.call(this.form, item)) {

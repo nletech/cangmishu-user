@@ -16,6 +16,7 @@
                         <el-col :span="3"
                                 :offset="5">
                                 <el-date-picker  v-model="planDateValue"
+                                                 @change="handlerChange"
                                                  type="date"
                                                  size="small"
                                                  format="yyyy-MM-dd"

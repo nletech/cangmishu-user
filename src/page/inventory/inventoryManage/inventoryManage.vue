@@ -220,7 +220,16 @@ export default {
     }, // 搜索响应
     handlerClear() {
       // eslint-disable-next-line
-      this.getStocks(); // 刷新列表
+      $http.getStocks({ // 查询货品（通过货品和sku）
+        warehouse_id: this.warehouseId,
+        product_name: this.search_stock_value || '',
+        sku: this.search_sku_value || '',
+      })
+        .then((res) => {
+          this.stockList = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
     }, // 清除输入框
     handlerInputQuery(res) {
       this.stockList = res.data.data;

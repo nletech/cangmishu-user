@@ -6,13 +6,11 @@
                 @add_callback="handle_add_callback">
                 <!-- 货区数据 -->
                 <warehouse-area  v-show="show_data === '货区'"
-                                :show_data_flag="show_data"
-                                :warehouse_id="warehouse_id">
+                                :show_data_flag="show_data">
                 </warehouse-area>
                 <!-- 货位数据 -->
                 <warehouse-shelf  v-show="show_data === '货位'"
-                                  :show_data_flag="show_data"
-                                  :warehouse_id="warehouse_id">
+                                  :show_data_flag="show_data">
                 </warehouse-shelf>
     </cms-model>
   </div>
@@ -24,7 +22,7 @@ import WarehouseShelf from './components/warehouseShelf';
 
 export default {
   created() {
-    if (this.$route.params.add_shelf_back) {
+    if (this.$route.query.add_shelf_back) {
       this.active_tab_name = '货位';
     } // 用于添加货位之后的返回操作
   },
@@ -54,26 +52,20 @@ export default {
       ],
       active_tab_name: '货区',
       show_data: '',
-      // warehouse_id: +localStorage.getItem('warehouseId'),
     };
-  },
-  computed: {
-    warehouse_id() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
   },
   methods: {
     handle_add_callback(val) {
       if (val === '货区') {
         this.$router.push({
           name: 'addCargoArea',
-          params: { warehouse_id: this.warehouse_id },
+          query: { warehouse_id: this.$route.query.warehouse_id },
         });
         //
       } else if (val === '货位') {
         this.$router.push({
           name: 'addCargoShelf',
-          params: { warehouse_id: this.warehouse_id },
+          query: { warehouse_id: this.$route.query.warehouse_id },
         });
       }
     },

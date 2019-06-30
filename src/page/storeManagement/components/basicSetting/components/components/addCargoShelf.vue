@@ -132,8 +132,8 @@ export default {
   },
   methods: {
     get_area_data() {
-      if (!this.warehouseId) return;
-      $http.getWarehouseArea({ warehouse_id: this.warehouseId })
+      if (!this.$route.query.warehouse_id) return;
+      $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id })
         .then((res) => {
           this.area_list_data = res.data.data;
         });
@@ -142,27 +142,22 @@ export default {
       this.$refs.ShelfReference.validate((valid) => {
         if (!valid) return;
         this.form.is_enabled = this.is_enabled;
-        this.form.warehouse_id = this.warehouseId;
-        this.$confirm('确认提交?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-          .then(() => {
-            $http.addWarehouseshelf(this.form)
-              .then((res) => {
-                // console.log(this.form, 'this.formthis.formthis.form');
-                if (res.status) return;
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  showClose: true,
-                });
-                this.$router.push({
-                  name: 'basicSetting',
-                  params: { add_shelf_back: true },
-                });
-              });
+        this.form.warehouse_id = this.$route.query.warehouse_id;
+        $http.addWarehouseshelf(this.form)
+          .then((res) => {
+            if (res.status) return;
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              showClose: true,
+            });
+            this.$router.push({
+              name: 'basicSetting',
+              query: {
+                add_shelf_back: true,
+                warehouse_id: this.form.warehouse_id,
+              },
+            });
           });
       });
     },

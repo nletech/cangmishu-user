@@ -88,6 +88,7 @@ export const routerMap = [
         icon: '&#xeb3b;',
         nav: 1,
         id: 'initPage',
+        index: 1, // 后端路由鉴权
         children: [
           {
             path: 'home',
@@ -104,6 +105,7 @@ export const routerMap = [
         icon: '&#xeb1b;',
         nav: 1,
         id: 'inbound',
+        index: 2, // 后端路由鉴权
         children: [
           {
             name: 'inboundList', // 子菜单-入库单列表
@@ -132,6 +134,7 @@ export const routerMap = [
         icon: '&#xeb1c;',
         nav: 1,
         id: 'outbound',
+        index: 3, // 后端路由鉴权
         children: [
           {
             name: 'outboundList', // 子菜单-出库单列表
@@ -172,6 +175,7 @@ export const routerMap = [
         icon: '&#xeb25;',
         nav: 1,
         id: 'inventory',
+        index: 4, // 后端路由鉴权
         children: [
           {
             name: 'myGoodsList', // 子菜单-货品管理
@@ -236,6 +240,7 @@ export const routerMap = [
         icon: '&#xeb3e;',
         nav: 1,
         id: 'staff',
+        index: 6, // 后端路由鉴权
         children: [
           {
             name: 'staffList', // 子菜单-员工列表
@@ -299,28 +304,6 @@ export const routerMap = [
           },
         ],
       },
-      // {
-      //   name: 'report', // 大菜单 报表
-      //   path: 'report',
-      //   component: LayoutSide,
-      //   icon: '&#xeb2e;',
-      //   nav: 1,
-      //   id: 'report',
-      //   children: [
-      //     {
-      //       name: 'inboundDetail', // 子菜单-入库单明细
-      //       path: 'inboundDetail',
-      //       component: InboundDetail,
-      //       nav: 2,
-      //     },
-      //     {
-      //       name: 'outboundDetail', // 子菜单-出库单明细
-      //       path: 'outboundDetail',
-      //       component: OutboundDetail,
-      //       nav: 2,
-      //     },
-      //   ],
-      // },
       {
         name: 'setting', // 大菜单 设置
         path: 'setting',
@@ -328,6 +311,7 @@ export const routerMap = [
         icon: '&#xeb41;',
         nav: 1,
         id: 'setting',
+        index: 5, // 后端路由鉴权
         children: [
           {
             name: 'storeManage', // 子菜单-仓库管理

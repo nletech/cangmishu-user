@@ -42,7 +42,6 @@ import $http from '@/api';
 
 export default {
   props: {
-    warehouse_id: [Number],
     id: [String],
     show_data_flag: [String],
   },
@@ -66,7 +65,7 @@ export default {
   methods: {
     get_data() {
       if (this.active) {
-        $http.getWarehouseArea({ warehouse_id: this.warehouse_id })
+        $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id })
           .then((res) => {
             this.Area_data = res.data.data;
             this.total = res.data.total;
@@ -77,7 +76,7 @@ export default {
     handleCurrentChange(val) {
       $http.checkWarehouseArea({
         page: val,
-        warehouse_id: this.warehouse_id,
+        warehouse_id: this.$route.query.warehouse_id,
       })
         .then((res) => {
           this.Area_data = res.data.data;
@@ -106,8 +105,8 @@ export default {
     edit(id) {
       this.$router.push({
         name: 'editCargoArea',
-        params: {
-          warehouse_id: this.warehouse_id,
+        query: {
+          warehouse_id: this.$route.query.warehouse_id,
           area_id: id, // 当前货区 id
           edit: true,
         },

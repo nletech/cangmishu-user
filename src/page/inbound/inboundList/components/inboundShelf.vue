@@ -73,7 +73,7 @@
                             </el-table-column>
                             <!-- 中文名称 -->
                             <el-table-column  label="中文名称"
-                                              prop="product_name_cn"
+                                              prop="product_name"
                                               align="center"
                                               header-align="center">
                             </el-table-column>
@@ -136,7 +136,7 @@
                 <el-row :gutter="10">
                   <el-col :span="10">
                     <span :class="$style.classify_title">备注:</span>
-                    <span>{{remark}}</span>
+                    <span>{{inboundInfo.remark}}</span>
                   </el-col>
                 </el-row>
                 <!-- 编辑规格信息弹框 -->
@@ -244,10 +244,20 @@ import $http from '@/api';
 import baseApi from '@/lib/axios/base_api'
 import getListData from '@/mixin/list';
 import buttonPagination from '@/components/pagination_and_buttons';
+import { OnlyNumber } from '@/lib/validateForm';
 
 export default {
   name: 'inboundShelf',
   data() {
+    const check = {
+      stockin_num: (rule, value, callback) => {
+        if (value <= 0 || !OnlyNumber(value)) {
+          callback(new Error('请输入整数'));
+        } else {
+          callback();
+        }
+      },
+    };
     return {
       rules: {
         expiration_date: [
@@ -260,7 +270,7 @@ export default {
           {required: true, message: '请选择最佳食用期', trigger: 'blur'},
         ],
         stockin_num: [
-          {required: true, message: '请输入实际入库数量', trigger: 'blur'},
+          { required: true, validator: check.stockin_num, trigger: 'blur'},
         ],
         ean: [
           {required: true, message: '请填写EAN', trigger: 'blur'},
@@ -413,7 +423,7 @@ export default {
     toInbound() {
       // const arr = this.inboundInfo.batch_products;
       const arr = this.inboundList;
-      console.log(arr, 'arr');
+      // console.log(arr, 'arr');
       const perStock = []; // 临时处理变量
       for (let i = 0; i < arr.length; i += 1) {
         let obj  = new Object();
@@ -429,7 +439,7 @@ export default {
         obj.box_code = arr[i].box_code;
         perStock.push(obj);
       }
-      console.log(perStock, 'perStock');
+      // console.log(perStock, 'perStock');
       const perInfo = {
         warehouse_id: this.warehouseId,
         batch_id: this.inboundInfo.id,

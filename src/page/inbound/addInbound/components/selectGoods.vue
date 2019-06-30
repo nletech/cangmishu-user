@@ -68,9 +68,6 @@ export default {
         this.getGoodsList();
       }
     },
-    selected() {
-      console.log(this.selected, '监s');
-    },
   },
   computed: {
     warehouse_id() {

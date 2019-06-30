@@ -128,6 +128,11 @@ export default {
               $http.modifyUserInfo(this.user_id, this.form)
                 .then((res) => {
                   if (res.status) return;
+                  // 更新旧的头像和用户名
+                  this.$store.commit('config/setUserInfo',
+                    { avatar: this.imageUrl,
+                      nickName: this.form.nickname,
+                    });
                   this.$emit('update:visible', false);
                   this.$message({
                     type: 'success',

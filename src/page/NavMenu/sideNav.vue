@@ -88,7 +88,7 @@ export default {
       /* eslint-disable */
       let subMeanu = []; // 缓存子菜单
       let distance; // 缓存计算的距离
-      const menu = this.sideNavList;
+      const menu = this.checkedSideNavList();
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
           if (index === 0) {
@@ -127,7 +127,7 @@ export default {
       /* eslint-disable */
       let subMeanu = []; // 缓存子菜单
       let distance; // 缓存计算的距离
-      const menu = this.sideNavList;
+      const menu = this.checkedSideNavList();
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
           if (index === 0) {
@@ -157,10 +157,38 @@ export default {
         this.$router.push({ name: 'home' });
       }
     }, // 只有点击侧边栏 首页 路由跳转才生效
+    checkedSideNavList () {
+      if (+localStorage.getItem('setUType') !== 0) { // 如果是员工账号则检测对应的模块权限
+        let user = JSON.parse(localStorage.getItem('setUModules')); // 拿到的模块权限
+        let result = []; // 预渲染的路由模块
+        result.push(this.sideNavList[0]); // 首页模块是账号默认有的
+        for (let i = 0; i < user.length; i += 1) { // 后端拿到的权限模块和前端的路由模块进行映射
+          for (let j = 0; j < this.sideNavList.length; j += 1) {
+            if (user[i] === this.sideNavList[j].index) {
+              result.push(this.sideNavList[j]);
+            }
+          }
+        }
+        return result;
+      }
+      return this.sideNavList;
+    }
   },
   computed: {
     sideList() {
-      // console.log(this.sideNavList, 'this.sideNavList');
+      if (+localStorage.getItem('setUType') !== 0) { // 如果是员工账号则检测对应的模块权限
+        let user = JSON.parse(localStorage.getItem('setUModules')); // 拿到的模块权限
+        let result = []; // 预渲染的路由模块
+        result.push(this.sideNavList[0]); // 首页模块是账号默认有的
+        for (let i = 0; i < user.length; i += 1) { // 后端拿到的权限模块和前端的路由模块进行映射
+          for (let j = 0; j < this.sideNavList.length; j += 1) {
+            if (user[i] === this.sideNavList[j].index) {
+              result.push(this.sideNavList[j]);
+            }
+          }
+        }
+        return result;
+      }
       return this.sideNavList;
     },
     // 仓秘书

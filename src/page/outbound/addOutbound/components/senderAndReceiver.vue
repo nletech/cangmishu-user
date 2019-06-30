@@ -1,9 +1,9 @@
 <template>
   <div>
       <!-- 收发件人信息 -->
-      <el-form-item>
+      <el-form-item :class="$style.main">
                     <el-row :gutter="10">
-                            <el-col :lg="13">
+                            <el-col :lg="12">
                               <div  class="address">
                                     <label  class="label"> 发件信息
                                             <el-button size="large"  @click="handle_select(0)">选择发件人地址</el-button>
@@ -24,7 +24,7 @@
                                     </el-form>
                               </div>
                             </el-col>
-                            <el-col :lg="11">
+                            <el-col :lg="12">
                               <div  class="address sender">
                                     <label  class="label"> 收件信息
                                             <el-button size="large"  @click="handle_select(1)">选择收件人地址</el-button>
@@ -64,7 +64,7 @@
                             :data="address_list_data"
                             border
                             highlight-current-row
-                            style="width: 100%">
+                            style="width: 100%; margin: 0 0 10px 0;">
                             <el-table-column  type="index"
                                               width="55"
                                               label="#">
@@ -86,7 +86,13 @@
                                               </template>
                             </el-table-column>
                   </el-table>
-                  <!-- <button-pagination :pageParams="addressParams"></button-pagination> -->
+                  <el-row>
+                          <el-col :span="4" :offset="16">
+                                  <pagination-public  :params="params"
+                                                      @changePage="handlerChangePage">
+                                  </pagination-public>
+                          </el-col>
+                  </el-row>
       </el-dialog>
       <!-- 编辑收发件人信息 -->
       <edit  :visibleFlag="visibleFlag"
@@ -104,6 +110,7 @@
 
 <script>
 import $http from '@/api';
+import paginationPublic from '@/components/pagination-public';
 import Edit from './senderAndReceiverEdit';
 import Add from './senderAndReceiveAdd';
 
@@ -112,14 +119,13 @@ export default {
   components: {
     Edit,
     Add,
-  },
-  watch: {
-    visibleFlag() {
-      console.log(this.visibleFlag, 'flag');
-    },
+    paginationPublic,
   },
   data() {
     return {
+      params: {
+        total: 0,
+      },
       visible_add: false, // 添加
       visibleFlag: false, // 编辑
       row_data: {}, // 行数据
@@ -149,6 +155,32 @@ export default {
     },
   },
   methods: {
+    handlerChangePage(val) {
+      console.log(val, this.addressText);
+      if (this.addressText === '发件人') {
+        $http.checkSenderAddress({
+          warehouse_id: this.warehouseId,
+          page: val,
+        })
+          .then((res) => {
+            if (res.status) return;
+            this.address_list_data = res.data.data;
+            this.params.total = res.data.total;
+            this.params.currentPage = res.data.current_page;
+          });
+      } else if (this.addressText === '收件人') {
+        $http.checkReceiverAddress({
+          warehouse_id: this.warehouseId,
+          page: val,
+        })
+          .then((res) => {
+            if (res.status) return;
+            this.address_list_data = res.data.data;
+            this.params.total = res.data.total;
+            this.params.currentPage = res.data.current_page;
+          });
+      }
+    }, // 分页响应
     addSenderAndReceiver() {
       this.visible_add = true;
     },
@@ -168,7 +200,8 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.address_list_data = res.data.data;
-          console.log(res, 'getSenders');
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
         });
     }, // 获取发件人列表
     getReceivers() {
@@ -176,7 +209,8 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.address_list_data = res.data.data;
-          console.log(res, 'getReceivers');
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
         });
     }, // 获取收件人列表
     handle_confirm_btn(row) {
@@ -195,14 +229,12 @@ export default {
         this.$emit('sender-and-receiver', { receiverId: row.id });
       }
       this.addressDialog = false; // 关闭弹窗
-      // console.log(row, 'row_c');
     }, // 确定
     handle_edit_btn(row) {
       this.visibleFlag = true;
       this.row_data = row;
     }, // 编辑
     handleVisible(val) {
-      console.log(val, '哈哈哈');
       this.visibleFlag = val;
       if (!this.AddressType) {
         this.getSenders();
@@ -233,4 +265,9 @@ export default {
   float: right;
   margin: 0 0 10px 0;
 }
+</style>
+<style lang="less" module>
+  .main {
+    position: relative;
+  }
 </style>

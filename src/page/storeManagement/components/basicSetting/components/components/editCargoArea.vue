@@ -62,7 +62,7 @@ export default {
         is_enabled: '0', // 启用状态
         remark: '', // 备注
         name_en: '', // 外文名称
-        warehouse_id: this.$route.params.warehouse_id, // 所属货区id
+        warehouse_id: this.$route.query.warehouse_id, // 所属货区id
       },
       is_enabled: '0',
     };
@@ -86,12 +86,12 @@ export default {
   },
   methods: {
     getInfo() {
-      if (this.$route.params.edit) {
-        $http.getWarehouseArea({ warehouse_id: this.$route.params.warehouse_id })
+      if (this.$route.query.edit) {
+        $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id })
           .then((res) => {
             const data = res.data.data;
             for (let i = 0; i < data.length; i += 1) {
-              if (data[i].id === +this.$route.params.area_id) {
+              if (data[i].id === +this.$route.query.area_id) {
                 this.form.code = data[i].code;
                 this.form.name_cn = data[i].name_cn;
                 this.is_enabled = `${data[i].is_enabled}`; // 这里必须是字符串
@@ -105,8 +105,8 @@ export default {
       this.$refs.CargoAreaReference.validate((valid) => {
         if (!valid) return;
         this.form.is_enabled = +this.is_enabled;
-        this.form.warehouse_id = this.$route.params.warehouse_id;
-        $http.editWarehouseArea(this.$route.params.area_id, this.form)
+        this.form.warehouse_id = this.$route.query.warehouse_id;
+        $http.editWarehouseArea(this.$route.query.area_id, this.form)
           .then((res) => {
             if (res.status) return;
             this.$router.go(-1);

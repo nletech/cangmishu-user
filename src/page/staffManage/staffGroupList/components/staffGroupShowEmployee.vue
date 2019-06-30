@@ -143,7 +143,7 @@ export default {
     getList() {
       // 获取该分组下的员工列表
       const info = {
-        warehouse_id: this.warehouseId,
+        warehouse_id: this.$route.query.warehouse_id,
         group_id: this.$route.query.groupId,
       };
       $http.getThisGroupStaffs(info)

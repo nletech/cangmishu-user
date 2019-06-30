@@ -38,16 +38,6 @@
                                                   header-align="center"
                                                   prop="sku_total_stockin_num">
                                 </el-table-column>
-                                <!-- <el-table-column  label="上架库存"
-                                                  align="center"
-                                                  header-align="center"
-                                                  prop="sku_total_shelf_num">
-                                </el-table-column> -->
-                                <el-table-column  label="操作时间"
-                                                  align="center"
-                                                  header-align="center"
-                                                  prop="created_at">
-                                </el-table-column>
                                 <el-table-column  label="相关单号"
                                                   prop="order_sn"
                                                   align="center"

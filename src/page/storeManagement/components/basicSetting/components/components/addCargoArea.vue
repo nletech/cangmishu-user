@@ -61,7 +61,7 @@ export default {
         is_enabled: 0, // 启用状态
         remark: '', // 备注
         name_en: '', // 外文名称
-        warehouse_id: this.$route.params.warehouse_id, // 所属货区id
+        warehouse_id: this.$route.query.warehouse_id, // 所属货区id
       },
       is_enabled: true,
     };
@@ -86,8 +86,7 @@ export default {
   methods: {
     getInfo() {
       if (!this.$route.params.areaId) return;
-      // console.log(this.$route.params.warehouse_id, 'warehouse_id添加货区');
-      $http.getInfoWarehouseArea(this.$route.params.warehouse_id)
+      $http.getInfoWarehouseArea(this.$route.query.warehouse_id)
         .then((res) => {
           this.is_enabled = !!res.data.is_enabled;
           this.form = res.data;
@@ -97,26 +96,22 @@ export default {
       this.$refs.CargoAreaReference.validate((valid) => {
         if (!valid) return;
         this.form.is_enabled = +this.is_enabled;
-        this.form.warehouse_id = this.$route.params.warehouse_id;
-        this.$confirm('确认提交?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-          .then(() => {
-            $http.addWarehouseArea(this.form, this.$route.params.warehouse_id)
-              .then((res) => {
-                if (res.status) return;
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  showClose: true,
-                });
-                this.$router.push({
-                  name: 'basicSetting',
-                  params: { add_shelf_back: false },
-                });
-              });
+        this.form.warehouse_id = this.$route.query.warehouse_id;
+        $http.addWarehouseArea(this.form, this.$route.query.warehouse_id)
+          .then((res) => {
+            if (res.status) return;
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              showClose: true,
+            });
+            this.$router.push({
+              name: 'basicSetting',
+              params: { add_shelf_back: false },
+              query: {
+                warehouse_id: this.form.warehouse_id,
+              },
+            });
           });
       });
     },

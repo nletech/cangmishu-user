@@ -34,8 +34,10 @@
     </router-view>
     <!-- 底部产权说明 -->
     <div :class="$style.footer">
-      <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
-      <i class="iconfont">&#xe604;</i>
+      <div>
+          <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
+          <i class="iconfont">&#xe604;</i>
+      </div>
     </div>
   </div>
 </template>
@@ -48,7 +50,6 @@ export default {
   },
   computed: {
     nav() {
-      console.log(this.$store.state.routerData.routerMap[0].children);
       return this.$store.state.routerData.routerMap[0].children.filter(
         item => item.name === this.$route.matched[1].name,
       )[0];
@@ -108,6 +109,8 @@ export default {
     color: @textColor;
     text-align: center;
     line-height: 80px;
+    width: 100%;
+    margin: 0 auto;
     i {
       font-size: 40px;
       position: relative;

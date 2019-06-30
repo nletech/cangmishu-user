@@ -48,7 +48,6 @@ export default {
     }
   },
   props: {
-    warehouse_id: [Number],
     id: [String],
     show_data_flag: [String],
   },
@@ -75,7 +74,7 @@ export default {
     handleCurrentChange(val) {
       $http.checkWarehouseshelf({
         page: val,
-        warehouse_id: this.warehouse_id,
+        warehouse_id: this.$route.query.warehouse_id,
       })
         .then((res) => {
           this.shelf_list_data = res.data.data;
@@ -85,7 +84,7 @@ export default {
     },
     get_data() {
       if (this.active) {
-        $http.getWarehouseshelf({ warehouse_id: this.warehouse_id })
+        $http.getWarehouseshelf({ warehouse_id: this.$route.query.warehouse_id })
           .then((res) => {
             this.shelf_list_data = res.data.data;
             this.total = res.data.total;
@@ -112,9 +111,9 @@ export default {
     edit(id) {
       this.$router.push({
         name: 'editCargoShelf',
-        params: {
+        query: {
           shelfId: id, // 该条数据的 id
-          warehouse_id: this.warehouse_id, // 当前仓库 id
+          warehouse_id: this.$route.query.warehouse_id, // 当前仓库 id
           edit: true,
           currentPage: this.currentPage, // 这个参数是用来查询不在首页的数据(因为拿到的数据分页)
         },

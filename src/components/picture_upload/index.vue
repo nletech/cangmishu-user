@@ -42,9 +42,6 @@ export default {
     api() {
       return `${baseApi}/upload/image`;
     },
-    // imgUrl() {
-    //   return `${baseApi}${this.photo}`;
-    // },
   },
   methods: {
     handleExceed() {
@@ -54,10 +51,9 @@ export default {
       });
     },
     // 上传截图成功回调
-    handleAvatarSuccess(res, fileList) {
+    handleAvatarSuccess(res) {
       if (res.status === 0) {
-        // this.myPhoto = res.data.url.substring(1);
-        this.$emit('update:photo', fileList.url);
+        this.$emit('update:photo', res.data.url);
       } else if (res.status === 1) {
         this.$notify({
           message: res.msg,
@@ -66,7 +62,6 @@ export default {
       }
     },
     handleRemove() {
-      // this.myPhoto = '';
       this.$emit('update:photo', '');
     },
   },

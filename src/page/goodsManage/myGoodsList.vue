@@ -231,7 +231,7 @@ export default {
       uploadData: {},
       dialogVisible: false,
       select_batch_code: {
-        placeholder: '货品名或入库批次',
+        placeholder: '货品名或SKU',
         flag: 3,
       },
     };

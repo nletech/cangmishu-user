@@ -1,7 +1,7 @@
 <template>
   <el-dialog  title=""
               align="center"
-              width="70%"
+              width="80%"
               @close="close"
               @update:visible="$emit('update:visible', $event)"
               :visible="visible">
@@ -54,7 +54,7 @@
                       <el-form>
                             <el-form-item>
                                           <el-row :gutter="10">
-                                                  <el-col :lg="13">
+                                                  <el-col :lg="12">
                                                     <div  :class="$style.address">
                                                           <el-form  label-width="80px">
                                                                     <el-form-item label="发件信息">
@@ -74,7 +74,7 @@
                                                           </el-form>
                                                     </div>
                                                   </el-col>
-                                                  <el-col :lg="11">
+                                                  <el-col :lg="12">
                                                     <div  :class="$style.address">
                                                           <el-form  label-width="80px">
                                                                     <el-form-item label="收件信息">

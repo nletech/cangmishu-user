@@ -531,7 +531,6 @@ export default {
       });
     }, // 供应商列表
     handleSelectionChange(val) {
-      console.log(val, '选择');
       this.goodsSelected = val;
     }, // 处理选择商品弹框的选择事件
     distributorchange(val) {
@@ -565,18 +564,18 @@ export default {
     },
     // 选择货品弹框确认
     confirmSelected() {
-      // for (let i = 0; i < this.goodsSelected.length; i += 1) {
-      //   let flag = false;
-      //   for (let j = 0; j < this.goodsList.length; j += 1) {
-      //     if (this.goodsSelected[i].id === this.goodsList[j].id) {
-      //       flag = true;
-      //     }
-      //   }
-      //   if (!flag) {
-      //     this.goodsList.push(this.goodsSelected[i]);
-      //   }
-      // }
-      this.goodsList = [...this.goodsSelected];
+      for (let i = 0; i < this.goodsSelected.length; i += 1) { // 检测选择商品子组件回传的商品数据 已存在则不会push进this.goodsList去
+        let flag = false;
+        for (let j = 0; j < this.goodsList.length; j += 1) {
+          if (this.goodsSelected[i].id === this.goodsList[j].id) {
+            flag = true;
+          }
+        }
+        if (!flag) {
+          this.goodsList.push(this.goodsSelected[i]);
+        }
+      }
+      // this.goodsList = [...this.goodsSelected];
       this.handleClose();
       // console.log(this.goodsSelected, 'this.goodsSelected');
       // console.log(this.goodsList, 'this.goodsList');

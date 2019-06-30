@@ -108,7 +108,7 @@ export default {
         $http.login(this.form)
           .then((res) => {
             if (res.status) return;
-            // console.log(res, '登录信息');
+            console.log(res, '登录信息');
             // 将token保存到本地
             this.$store.commit('token/addToken', {
               token: res.data.token.token_value,
@@ -122,6 +122,8 @@ export default {
             localStorage.setItem('setUAvatar', res.data.user.avatar); // 存入用户 头像
             localStorage.setItem('setUnickName', res.data.user.nickname); // 存入用户 昵称
             localStorage.setItem('setUEmail', res.data.user.email); // 存入用户 昵称
+            localStorage.setItem('setUModules', JSON.stringify(res.data.modules)); // 存入用户 昵称
+            localStorage.setItem('setUType', res.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
             // 跳转到首页
             this.$router.push({
               name: 'home',

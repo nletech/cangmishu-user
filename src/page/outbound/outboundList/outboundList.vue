@@ -29,7 +29,6 @@
                                                    header-align="center"
                                                    align="center"
                                                    prop="status_name">
-                                                   <!-- <template slot-scope="s">{{s.row}}</template> -->
                                  </el-table-column>
                                  <el-table-column  label="出库单号"
                                                    header-align="center"
@@ -46,10 +45,12 @@
                                                    align="center"
                                                    prop="order_type.name">
                                  </el-table-column>
-                                 <el-table-column  label="出库数量"
+                                 <el-table-column  label="预/已出库数量"
                                                    header-align="center"
-                                                   align="center"
-                                                   prop="sum">
+                                                   align="center">
+                                                   <template slot-scope="scope">
+                                                            {{scope.row.order_items[0].amount}}/{{scope.row.order_items[0].pick_num}}
+                                                   </template>
                                  </el-table-column>
                                  <el-table-column  label="创建时间"
                                                    header-align="center"

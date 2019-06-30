@@ -95,7 +95,7 @@ export default {
       },
       area: (rule, value, callback) => {
         if (parseInt(value, 10) <= 0 || isNaN(parseInt(value, 10))) {
-          callback(new Error('请输入正整数'));
+          callback(new Error('请输入仓库面积'));
         } else {
           callback();
         }

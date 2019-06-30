@@ -10,7 +10,7 @@
                                                     <!-- 请选择仓库 -->
                                                     <el-form-item :label="is_init ? '当前仓库:' : '请选择仓库:'" prop="warehouse">
                                                                   <el-radio-group  v-model="form.warehouse_id"
-                                                                                    @change="handleChange">
+                                                                                    @change="handleChange">yarndev
                                                                                     <el-radio  :disabled="is_init"
                                                                                               v-for="(item, index) in warehouse"
                                                                                               style="display: block; margin: 0; padding: 16px 0 16px 0;"

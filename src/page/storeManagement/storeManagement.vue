@@ -155,8 +155,8 @@ export default {
     config(info) {
       this.$router.push({
         name: 'basicSetting',
-        params: {
-          warehouses_id: info.id,
+        query: {
+          warehouse_id: info.id,
         },
       });
     },

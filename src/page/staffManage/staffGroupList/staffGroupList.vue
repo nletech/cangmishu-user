@@ -20,7 +20,7 @@
                                                      align="center"
                                                      header-align="center"
                                                      label="#"
-                                                     width="120">
+                                                     width="80">
                                    </el-table-column>
                                    <!-- 员工组名称 -->
                                    <el-table-column  prop="nickname"
@@ -31,6 +31,13 @@
                                                                 {{scope.row.name}}
                                                      </template>
                                     </el-table-column>
+                                    <!-- 所属仓库 -->
+                                   <el-table-column  align="center"
+                                                     header-align="center"
+                                                     label="所属仓库"
+                                                     prop="warehouse.name_cn"
+                                                     width="120">
+                                   </el-table-column>
                                     <!-- 员工数 -->
                                     <el-table-column  prop="staff_name"
                                                       align="center"
@@ -122,7 +129,9 @@ export default {
   },
   methods: {
     handlerChangePage(val) {
-      $http.getStaffGroups({ page: val })
+      $http.getStaffGroups({
+        page: val,
+      })
         .then((res) => {
           this.staffGroupData = res.data.data;
           this.params.total = res.data.total;
@@ -137,7 +146,6 @@ export default {
           this.staffGroupData = res.data.data;
           this.params.total = res.data.total; // 页面总数
           this.params.currentPage = res.data.current_page;
-          console.log(this.params, res, '员工列表');
         });
     },
     // 模块--基本信息
@@ -168,6 +176,7 @@ export default {
       this.$router.push({
         name: 'staffGroupShowEmployee',
         query: {
+          warehouse_id: staffGroupInfo.warehouse_id,
           groupId: staffGroupInfo.id,
         },
       });

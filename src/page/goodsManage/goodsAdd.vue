@@ -220,6 +220,7 @@ export default {
       return `${baseApi}/upload/image`;
     },
     imgUrl() {
+      console.log(this.form.photos, 'this.form.photos');
       return `${baseApi}${this.form.photos}`;
     },
   },
