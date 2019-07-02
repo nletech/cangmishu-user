@@ -156,7 +156,6 @@ export default {
   },
   methods: {
     handlerChangePage(val) {
-      console.log(val, this.addressText);
       if (this.addressText === '发件人') {
         $http.checkSenderAddress({
           warehouse_id: this.warehouseId,

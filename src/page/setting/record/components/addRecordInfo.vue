@@ -91,7 +91,6 @@ export default {
         this.text_flag = false;
         this.add_info = {};
         this.is_enabled = '0';
-        console.log('1');
       } else {
         /* eslint-disable */
         this.text_flag = true;

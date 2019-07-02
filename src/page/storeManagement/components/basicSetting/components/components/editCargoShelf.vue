@@ -141,7 +141,6 @@ export default {
             warehouse_id: this.$route.query.warehouse_id,
           })
             .then((res) => {
-              console.log(res, 'AAAA');
               if (res.status) return;
               allData = res.data.data; // 存储数据
               for (let i = 0; i < allData.length; i += 1) {

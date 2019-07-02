@@ -220,7 +220,6 @@ export default {
       return `${baseApi}/upload/image`;
     },
     imgUrl() {
-      console.log(this.form.photos, 'this.form.photos');
       return `${baseApi}${this.form.photos}`;
     },
   },
@@ -380,7 +379,6 @@ export default {
             }
             this.form.warehouse_id = this.warehouseId || this.$route.query.warehouseId;
             this.form.specs = this.skuList.filter(res => res.name_cn);
-            console.log(this.form, 'this.form');
             $http.addProducts(this.form)
               .then(() => {
                 this.successTips(this.$route.query.id);

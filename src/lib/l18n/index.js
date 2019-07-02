@@ -34,6 +34,8 @@ export default {
     inboundShelf: '入库&上架',
     addWarehouse: '添加仓库',
     setOutbound: '设为出库',
+    help: '帮助',
+    helpCenter: '帮助中心',
     // 以上仓秘书
     to: '至',
     startDate: '开始日期',
@@ -312,7 +314,7 @@ export default {
     MemberGroup: '会员组(中文)',
     MemberGroupe: '会员组(English)',
     NumberOfMembers: '成员数量',
-    LastLoginTime: '最后登陆时间',
+    LastLoginTime: '最后登录时间',
     AddressManage: '地址管理',
     Sendername: '发件人姓名',
     addresseename: '收件人姓名',
@@ -326,6 +328,8 @@ export default {
     ...zhLocale,
   },
   en: {
+    help: '帮助',
+    helpCenter: '帮助中心',
     userCenter: '我的WMS',
     newStore: '仓库创建',
     StoreLease: '仓库租赁',

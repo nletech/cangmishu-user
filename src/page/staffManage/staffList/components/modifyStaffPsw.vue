@@ -114,9 +114,6 @@ export default {
                   message: '修改失败',
                 });
               }
-            })
-            .catch(() => {
-              console.log('resetPsw is wrong!');
             });
         });
     },

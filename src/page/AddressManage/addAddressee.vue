@@ -187,18 +187,15 @@ export default {
       });
     },
     getCityStreet() {
-      console.log(1);
       const self = this;
       self.form.address = '';
       self.form.city = '';
       self.form.postcode = self.form.postcode.split(' ').join('').toUpperCase();
-      console.log(self.form.country === 'NL', !!self.form.postcode, !!self.form.door_no);
       if (self.form.country === 'nl' && !!self.form.postcode && !!self.form.door_no) {
         $http.getCityStreet({
           door_no: self.form.door_no,
           postcode: self.form.postcode,
         }).then((res) => {
-          console.log(res.status);
           if (res.status === 0) {
             self.form.address = res.data.street;
             self.form.city = res.data.city;

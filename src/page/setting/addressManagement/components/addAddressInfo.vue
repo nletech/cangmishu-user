@@ -1,72 +1,58 @@
 <template>
-  <el-dialog
-    :title="this.text_flag ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
-    :center="true"
-    @update:visible="$emit('update:visible', $event)"
-    :visible="visible"
-    width="60%"
-  >
-    <el-row :class="$style.add_warehouse_main">
-      <!-- 添加信息 -->
-      <el-col :span="10" :offset="6">
-        <el-form
-          :class="$style.staff_form"
-          label-width="140px"
-          size="middle"
-          label-position="left"
-          :model="add_info"
-          ref="form"
-          :rules="info_Verify_rules">
-          <el-form-item
-            prop="full_name"
-            label="姓名"
-            size="middle">
-            <el-input
-              v-model="add_info.full_name"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item
-            prop="phone"
-            label="电话"
-            size="middle"
-          >
-            <el-input
-              v-model="add_info.phone">
-            </el-input>
-          </el-form-item>
-          <!-- 地址 -->
-          <el-form-item
-            prop="address"
-            label="省市区"
-            size="middle">
-            <el-cascader
-              :props="props"
-              :options="addressInfo"
-              v-model="add_info.address"
-              style="width: 260px;">
-            </el-cascader>
-          </el-form-item>
-          <el-form-item
-            prop="addressDetail"
-            label="详细地址"
-            size="middle">
-            <el-input
-              type="textarea"
-              v-model="add_info.addressDetail">
-            </el-input>
-          </el-form-item>
-        </el-form>
-        <el-row>
-          <el-col :span="2" :offset="13">
-                  <el-button  :class="$style.submit_btn"
-                              @click="infoSubmit">
-                              提交
-                  </el-button>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
+  <el-dialog  :title="this.text_flag ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
+              :center="true"
+              @update:visible="$emit('update:visible', $event)"
+              :visible="visible"
+              width="60%">
+              <el-row  :class="$style.add_warehouse_main">
+                       <!-- 添加信息 -->
+                       <el-col>
+                                <el-form  :class="$style.staff_form"
+                                          label-width="140px"
+                                          size="middle"
+                                          label-position="left"
+                                          :model="add_info"
+                                          ref="form"
+                                          :rules="info_Verify_rules">
+                                          <el-form-item  prop="full_name"
+                                                         label="姓名"
+                                                         size="middle">
+                                                         <el-input  v-model="add_info.full_name">
+                                                         </el-input>
+                                          </el-form-item>
+                                          <el-form-item  prop="phone"
+                                                         label="电话"
+                                                         size="middle">
+                                                         <el-input  v-model="add_info.phone">
+                                                         </el-input>
+                                          </el-form-item>
+                                          <!-- 地址 -->
+                                          <el-form-item  prop="address"
+                                                         label="省市区"
+                                                         size="middle">
+                                                         <el-cascader  :props="props"
+                                                                       :options="addressInfo"
+                                                                       v-model="add_info.address">
+                                                         </el-cascader>
+                                          </el-form-item>
+                                          <el-form-item  prop="addressDetail"
+                                                         label="详细地址"
+                                                         size="middle">
+                                                         <el-input  type="textarea"
+                                                                    v-model="add_info.addressDetail">
+                                                         </el-input>
+                                          </el-form-item>
+                                </el-form>
+                                <el-row>
+                                        <el-col :span="2" :offset="13">
+                                                <el-button  :class="$style.submit_btn"
+                                                            @click="infoSubmit">
+                                                            提交
+                                                </el-button>
+                                        </el-col>
+                                </el-row>
+                       </el-col>
+              </el-row>
   </el-dialog>
 </template>
 
@@ -235,7 +221,7 @@ export default {
   }
 }
 .staff_form {
-  width: 400px;
+  width: 100%;
   height: 400px;
   margin: 0 auto;
   background-color: white;

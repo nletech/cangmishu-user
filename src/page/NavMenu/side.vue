@@ -45,6 +45,7 @@
 import sideNav from './sideNav';
 
 export default {
+  name: 'side',
   components: {
     sideNav,
   },
@@ -65,7 +66,6 @@ export default {
       return +this.$store.state.config.shutdown_status;
     },
   },
-  name: 'side',
 };
 </script>
 <style lang="less" module>
@@ -103,12 +103,12 @@ export default {
     line-height: 60px;
   }
   .footer {
-    height: 80px;
     border: 1px solid @separateLine;
     background: @white;
     color: @textColor;
     text-align: center;
     line-height: 80px;
+    height: 80px;
     width: 100%;
     margin: 0 auto;
     i {

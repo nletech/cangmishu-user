@@ -321,7 +321,7 @@ export default {
           type: 'success',
         });
         if (res.data[0].error[0]) {
-          console.log('上传有点问题:', res.data[0]);
+          // console.log('上传有点问题:', res.data[0]);
           this.$message({
             message: res.data[0].error[0],
             type: 'warning',
@@ -420,10 +420,6 @@ export default {
           if (res.status) return;
           this.goods_list_data = res.data.data;
           this.params.data_count = res.data.total;
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log('获取货品列表出错');
         });
     },
   },

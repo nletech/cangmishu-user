@@ -65,8 +65,8 @@ export default {
   },
   watch: {
     num_arr() {
-      console.log(this.num_arr, 'num_arr');
-      console.log(this.goodsList, 'goodslist');
+      // console.log(this.num_arr, 'num_arr');
+      // console.log(this.goodsList, 'goodslist');
       // 给 goodsList数组中的每个对象都添加一个 num属性,且该属性值为当前选择的数量值
       for (let i = 0; i < this.goodsList.length; i += 1) {
         for (let j = 0; j < this.num_arr.length; j += 1) {

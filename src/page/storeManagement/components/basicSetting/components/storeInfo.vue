@@ -189,28 +189,6 @@ export default {
       },
     };
   },
-  mounted() {
-    console.log(this.row_data, 'row_data');
-    console.log(this.is_enabled, 'enable');
-    console.log(this.$route.params.warehouses_id, 'warehouses_id来自对话框');
-  },
-  watch: {
-    row_data() {
-      // 监听传入的 row_data 如果是空对象则弹框文字显示为 "添加",然后清除下表单的缓存
-      // 如果是通过编辑按钮传入 row_data 则将信息填充进表单，填充的 id 用于请求编辑信息接口
-      // if (!Object.keys(this.row_data).length) {
-      //   this.text_flag = false;
-      //   this.add_info = {};
-      //   this.is_enabled = '0';
-      //   console.log('1');
-      // } else {
-      //   /* eslint-disable */
-      //   this.text_flag = true;
-      //   this.add_info.name        = this.row_data.name; // 姓名
-      //   this.is_enabled  = `${this.row_data.is_enabled}`; // 是否启用
-      // }
-    },
-  },
   methods: {
     // 提交修改信息
     infoSubmit() {
@@ -221,7 +199,6 @@ export default {
       this.formInfo.is_enabled = +this.is_enabled;
       this.formInfo.remark = `${this.add_info.remark}`;
       this.formInfo.warehouse_id = this.$route.params.warehouses_id; // 仓库 id
-      console.log(this.formInfo, 'formInfo111111111,');
       this.$refs.form.validate((validate) => {
         if (validate) {
           this.$confirm('确认提交?', '提示', {
@@ -255,7 +232,6 @@ export default {
                       this.$emit('updata_data_list', active_item); // 更新数据列表
                     });
                 } else if(this.active_tab_item === '货位') {
-                  console.log(this.formInfo, 'this.fo货位');
                   $http.addWarehouseshelf(this.formInfo)
                     .then((re) => {
                       if (re.status) return;

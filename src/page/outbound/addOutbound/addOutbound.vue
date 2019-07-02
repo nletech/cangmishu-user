@@ -118,7 +118,7 @@ export default {
   methods: {
     handleGoodsData(goodsList) {
       this.temp_goods_list = goodsList;
-      console.log(goodsList, '传到父组件的GL');
+      // console.log(goodsList, '传到父组件的GL');
     },
     getSenderAndReceiverData(person) {
       if (person.senderId) {

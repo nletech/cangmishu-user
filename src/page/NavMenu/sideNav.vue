@@ -11,13 +11,13 @@
                               <li  :class="$style.side_nav_li"
                                   v-for="(item, index) in sideList"
                                   :key="index"
+                                  @click="handleHomeClick(item.name)"
                                   @mouseover="showItem(item.name, index)">
                                   <i  :class="$style.li_icon"
                                         class="iconfont"
                                         v-html="item.icon">
                                   </i>
-                                  <span   :class="$style.li_title"
-                                          @click="handleHomeClick(item.name)">
+                                  <span   :class="$style.li_title">
                                           {{$t(item.name)}}
                                   </span>
                               </li>
@@ -44,11 +44,11 @@
                         <ul  style="padding: 0;">
                               <li  v-for="(item, index) in sideList" style="width: 100%; line-height: 80px; height: 80px; text-align: center; list-style: none; cursor: pointer;"
                                   :key="index"
+                                  @click.self="handleHomeClick1(item.name)"
                                   @mouseover="showItem1(item.name, index)">
                                   <i  class="iconfont"
                                       v-html="item.icon"
-                                      style="color: #ccc;"
-                                      @click="handleHomeClick1(item.name)">
+                                      style="color: #ccc;">
                                   </i>
                               </li>
                         </ul>
@@ -79,6 +79,41 @@ export default {
       ul_Nav: this.sideNavList, // 缓存的路由表
     };
   },
+  watch: {
+    innerHeight() {
+      return window.innerHeight;
+    },
+  },
+  computed: {
+    sideList() {
+      if (+localStorage.getItem('setUType') !== 0) { // 如果是员工账号则检测对应的模块权限
+        /* eslint-disable */
+        let user = JSON.parse(localStorage.getItem('setUModules')); // 拿到的模块权限
+        let result = []; // 预渲染的路由模块
+        result.push(this.sideNavList[0]); // 首页模块是账号默认有的
+        for (let i = 0; i < user.length; i += 1) { // 后端拿到的权限模块和前端的路由模块进行映射
+          for (let j = 0; j < this.sideNavList.length; j += 1) {
+            if (user[i] === this.sideNavList[j].index) {
+              result.push(this.sideNavList[j]);
+            }
+          }
+        }
+        result.push(this.sideNavList[6]); // 帮助模块是账号默认有的
+        return result;
+      }
+      return this.sideNavList;
+    },
+    // 仓秘书
+    sideNavData() {
+      return this.nav.children.filter(item => item.nav === 2);
+    },
+    sideNavTitle() {
+      return this.nav;
+    },
+    sideNavStatus() {
+      return +this.$store.state.config.shutdown_status;
+    },
+  },
   methods: {
     handlerClick(name) {
       this.$router.push({ name: `${name}` });
@@ -88,23 +123,26 @@ export default {
       /* eslint-disable */
       let subMeanu = []; // 缓存子菜单
       let distance; // 缓存计算的距离
+      let innerHeight = window.innerHeight;
       const menu = this.checkedSideNavList();
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
-          if (index === 0) {
+          if (index === 0 ||index === 6 ) {
             this.li_show_switch = false;
             return;
-          } // 鼠标悬浮到侧边栏首页不展示子列表
+          } // 鼠标悬浮到侧边栏首页和帮助的时候不展示子列表
           this.li_show_switch = true;
           distance = `${(i * 80) + 40}px`; // 根据计算修改子菜单对应的布局
+          // console.log(innerHeight, 'innerHeight');
+          // console.log(distance, 'distance');
           menu[i].children.forEach((e) => {
-            if (e.nav === 2) { // 这里是筛特定的路由
+            if (e.nav === 2) {
               subMeanu.push(e);
-            }
+            } // 这里是筛特定的子路由作为子菜单
           });
         }
       } // 这个循环实现的思路：通过点击不同的侧边栏导航项来展示不同的导航项对应的子菜单
-      this.$refs.NavChild.style.margin = `${distance} 0 0 0 `; // 输出处理后的计算值
+      this.$refs.NavChild.style.margin = `${distance} 0 0 0 `; // 输出处理后的子菜单 margin 计算值
       this.li_NavChild = subMeanu; // 输出子菜单
     },
     handleClickCloseNavChild() {
@@ -116,6 +154,9 @@ export default {
     handleHomeClick(name) {
       if (name === 'initPage') {
         this.$router.push({ name: 'home' });
+      }
+      if (name === 'help') {
+        this.$router.push({ name: 'helpCenter' });
       }
     }, // 只有点击侧边栏 首页 路由跳转才生效
     // 以下是收缩之后
@@ -130,7 +171,7 @@ export default {
       const menu = this.checkedSideNavList();
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
-          if (index === 0) {
+          if (index === 0 ||index === 6 ) {
             this.li_show_switch = false;
             return;
           } // 鼠标悬浮到侧边栏首页不展示子列表
@@ -156,6 +197,9 @@ export default {
       if (name === 'initPage') {
         this.$router.push({ name: 'home' });
       }
+      if (name === 'help') {
+        this.$router.push({ name: 'helpCenter' });
+      }
     }, // 只有点击侧边栏 首页 路由跳转才生效
     checkedSideNavList () {
       if (+localStorage.getItem('setUType') !== 0) { // 如果是员工账号则检测对应的模块权限
@@ -173,34 +217,6 @@ export default {
       }
       return this.sideNavList;
     }
-  },
-  computed: {
-    sideList() {
-      if (+localStorage.getItem('setUType') !== 0) { // 如果是员工账号则检测对应的模块权限
-        let user = JSON.parse(localStorage.getItem('setUModules')); // 拿到的模块权限
-        let result = []; // 预渲染的路由模块
-        result.push(this.sideNavList[0]); // 首页模块是账号默认有的
-        for (let i = 0; i < user.length; i += 1) { // 后端拿到的权限模块和前端的路由模块进行映射
-          for (let j = 0; j < this.sideNavList.length; j += 1) {
-            if (user[i] === this.sideNavList[j].index) {
-              result.push(this.sideNavList[j]);
-            }
-          }
-        }
-        return result;
-      }
-      return this.sideNavList;
-    },
-    // 仓秘书
-    sideNavData() {
-      return this.nav.children.filter(item => item.nav === 2);
-    },
-    sideNavTitle() {
-      return this.nav;
-    },
-    sideNavStatus() {
-      return +this.$store.state.config.shutdown_status;
-    },
   },
 };
 </script>

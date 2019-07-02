@@ -195,7 +195,6 @@ export default {
         this.form[i] = '';
       }
       this.id = '';
-      console.log(this.form, 'form_info1111111');
     },
     info_add_btn() {
       this.sku_property = []; // 清空
@@ -218,7 +217,6 @@ export default {
         }
       }
       // 选中 sku属性
-      console.log(info, '编辑info');
       this.category_info_form = info;
       this.category_info_form.is_enabled = `${info.is_enabled}`;
       this.id = info.id; // 用于编辑
@@ -246,7 +244,6 @@ export default {
           this.form_info.name_en = this.category_info_form.name_en;
           this.form_info.is_enabled = this.category_info_form.is_enabled || 0; // 是否启用
           const arr = this.sku_property;
-          // console.log(arr, 'arr');
           for (let i = 0; i < arr.length; i += 1) {
             if (arr[i] === '保质期') {
               this.form_info.need_expiration_date = 1;
@@ -267,7 +264,6 @@ export default {
                   type: 'success',
                   message: '修改成功',
                 });
-                console.log('编辑');
                 // 更新数据
                 this.handleCurrentChange(this.current_page);
               });
@@ -295,7 +291,6 @@ export default {
       this.current_page = val;
       $http.checkCategoryManagement({ page: val })
         .then((re) => {
-          // console.log(re, '分页查询');
           this.category_list_data = re.data.data;
           this.total = re.data.total;
           this.currentPage = re.data.current_page;

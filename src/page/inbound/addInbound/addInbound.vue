@@ -499,7 +499,6 @@ export default {
     }, // 选择商品分类来搜索商品
     queryAllDistributor() {
       $http.queryDistributor({ all: 1 }).then((res) => {
-        console.log(res, 'r2222es');
         this.distributorSelectList = res.data;
       });
     }, // 远程搜索供应商
@@ -592,7 +591,6 @@ export default {
     // 入库单提交
     onSave(formName) {
       this.items = [];
-      console.log(this.goodsList, 'this.goodsList');
       // eslint-disable-next-line
       for (const item of this.goodsList) {
         this.items.push({
@@ -620,7 +618,6 @@ export default {
       }
       this.form.warehouse_id = this.warehouseId;
       this.$refs[formName].validate((valid) => {
-        console.log(this.form, 'this.form');
         if (valid) {
           $http.addInbound(this.form).then(() => {
             // this.successTips();

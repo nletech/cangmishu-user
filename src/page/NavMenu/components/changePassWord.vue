@@ -59,7 +59,6 @@ export default {
     submit() {
       this.$refs.validator.validate((valid) => {
         if (valid) {
-          console.log(this.form, '提交的表单');
           $http.modifyPsw(this.user_id, this.form)
             .then((res) => {
               if (res.status) return;

@@ -170,7 +170,7 @@ export default {
       this.getTypeList();
     },
     skuList() {
-      console.log('iii');
+      // console.log('iii');
       // eslint-disable-next-line
       for (let i = 0; i < this.skuList.length; i += 1) {
         if (i === this.skuList.length - 1 && this.skuList[i].relevance_code !== '') {
@@ -256,7 +256,7 @@ export default {
     },
     // 保存/编辑规格
     saveSpec(row, index, is) {
-      console.log(row, 'row', index, 'index', is, 'is');
+      // console.log(row, 'row', index, 'index', is, 'is');
       if (!row.name_cn || !row.name_en) {
         this.$message({
           message: '规格中外文名不能为空',
@@ -286,7 +286,7 @@ export default {
         return;
       }
       if (this.$route.query.id) {
-        console.log('99');
+        // console.log('99');
         row.product_id = this.$route.query.id;
         if (row.id) row.spec_id = row.id;
         if (this.warehouseId) row.warehouse_id = this.warehouseId;
@@ -298,7 +298,7 @@ export default {
         }
         this.$set(row, '$_edit', false);
       } else {
-        console.log('999999');
+        // console.log('999999');
         for (let i = 0; i < this.skuList.length; i += 1) {
           if (i !== index && row.relevance_code === this.skuList[i].relevance_code) {
             this.$message({
@@ -314,7 +314,7 @@ export default {
         }
         this.is_edit = false;
         this.$set(row, '$_edit', false);
-        console.log('222');
+        // console.log('222');
       }
     },
     // 初始化表单

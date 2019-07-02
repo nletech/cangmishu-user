@@ -83,11 +83,11 @@
                                               </span>
                                     </template>
                   </el-table-column>
-                  <!-- 最后登陆时间 -->
+                  <!-- 最后登录时间 -->
                   <el-table-column  align="center"
                                     header-align="center"
                                     prop="last_login_at"
-                                    label="最后登陆时间"
+                                    label="最后登录时间"
                                     width="180">
                                     <template   slot-scope="scope">
                                                 <i  class="el-icon-time"
@@ -245,13 +245,9 @@ export default {
               .then((re) => {
                 // 员工信息
                 this.staff_data = re.data.data;
-              })
-              .catch(() => {
-                console.log('get staffList_info error');
               });
           }
-        })
-        .catch(() => { console.log('set forbidLogin error'); });
+        });
     },
     // 模块--删除账号
     delete_staff_account(userInfo) {

@@ -108,7 +108,7 @@ export default {
         $http.login(this.form)
           .then((res) => {
             if (res.status) return;
-            console.log(res, '登录信息');
+            // console.log(res, '登录信息');
             // 将token保存到本地
             this.$store.commit('token/addToken', {
               token: res.data.token.token_value,

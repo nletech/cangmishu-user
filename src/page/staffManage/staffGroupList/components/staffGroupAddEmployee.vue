@@ -60,9 +60,9 @@
                                                                {{scope.row.phone}}
                                                      </template>
                                    </el-table-column>
-                                   <!-- 最后登陆时间 -->
+                                   <!-- 最后登录时间 -->
                                    <el-table-column  prop="last_login_at"
-                                                     label="最后登陆时间"
+                                                     label="最后登录时间"
                                                      align="center"
                                                      header-align="center">
                                                      <template  slot-scope="scope">

@@ -90,7 +90,6 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.inventoryList = res.data.data;
-          console.log(res, 'res.....');
         });
     },
   },

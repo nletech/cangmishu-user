@@ -150,7 +150,7 @@ export default {
         $http.getSenderAddress()
             .then((re) => {
               if (re.status) return;
-              console.log(re, '发件人信息');
+              // console.log(re, '发件人信息');
               this.info_data = re.data.data;
               this.total = re.data.total;
               this.current_page = re.data.current_page;
@@ -162,7 +162,7 @@ export default {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
-            console.log(re, '收件人信息');
+            // console.log(re, '收件人信息');
           });
       }
     }, // 检测选中的标签页

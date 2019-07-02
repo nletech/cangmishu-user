@@ -365,6 +365,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           if (!this.form.editFlag) {
+            this.form.stockin_num = `${this.form.stockin_num.replace(/\b(0+)/gi, "")}`; // 去除数字前面的零
             this.inboundList.push(this.form);
           }
           // console.log(this.form, '编辑后的表单');
@@ -401,7 +402,6 @@ export default {
           this.dialogVisible = true;
           this.get_warehouse_shelf(); // 获取货位列表
           this.form = data; //货品(规格)列表
-          console.log(data, ' SKU拿到的');
         });
     }, // 提交输入的SKU
     getData() {
@@ -411,7 +411,6 @@ export default {
           this.inboundInfo = data;
           this.batch_id = data.id;
           // this.inboundList = data.batch_products; //货品(规格)列表
-          console.log(res, 'getData');
         });
     }, // 获取单个入库单信息
     handleEdit(row) {
@@ -447,7 +446,6 @@ export default {
       }
       $http.toInbound(perInfo).then((res) => {
         if (res.status) return; 
-        console.log(res, 'res');
         this.$message({
           message: '操作成功!',
           type: 'success',

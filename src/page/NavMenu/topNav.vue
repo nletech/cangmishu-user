@@ -164,6 +164,29 @@ export default {
       }
     },
   },
+  computed: {
+    default_warehouse_name() {
+      return this.$store.state.config.setWarehouseName || localStorage.getItem('warehouseName');
+    }, // 初始化默认仓库
+    topNavData() {
+      return this.$store.state.routerData.routerMap[0].children;
+    },
+    email() {
+      return localStorage.getItem('email');
+    },
+    sideNavStatus() {
+      return +this.$store.state.config.shutdown_status;
+    }, // 隐藏侧边栏标志
+    Uavatar() {
+      return this.$store.state.config.avatar || localStorage.getItem('setUAvatar');
+    },
+    UnickName() {
+      return this.$store.state.config.nickName || localStorage.getItem('setUnickName');
+    },
+    UType() {
+      return +localStorage.getItem('setUType');
+    },
+  },
   methods: {
     handleChangeUserinfo() {
       this.show_user_info_flag = true;
@@ -229,29 +252,6 @@ export default {
     // 关闭导航栏
     closeSideNav() {
       this.$store.commit('config/closeSideNav', !+this.sideNavStatus);
-    },
-  },
-  computed: {
-    default_warehouse_name() {
-      return this.$store.state.config.setWarehouseName || localStorage.getItem('warehouseName');
-    }, // 初始化默认仓库
-    topNavData() {
-      return this.$store.state.routerData.routerMap[0].children;
-    },
-    email() {
-      return localStorage.getItem('email');
-    },
-    sideNavStatus() {
-      return +this.$store.state.config.shutdown_status;
-    }, // 隐藏侧边栏标志
-    Uavatar() {
-      return this.$store.state.config.avatar || localStorage.getItem('setUAvatar');
-    },
-    UnickName() {
-      return this.$store.state.config.nickName || localStorage.getItem('setUnickName');
-    },
-    UType() {
-      return +localStorage.getItem('setUType');
     },
   },
 };

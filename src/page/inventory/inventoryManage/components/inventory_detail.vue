@@ -148,7 +148,7 @@ export default {
       }
       $http.getStockLogs(this.id, obj)
         .then((res) => {
-          console.log(res, 'res这个');
+          // console.log(res, 'res这个');
           this.inventoryList = res.data.data;
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;

@@ -102,9 +102,6 @@ export default {
         this.checkedArray = [];
       }
     },
-    checkedArray(val) {
-      console.log(val, '仓库');
-    },
   },
   computed: {
     checked() {
@@ -132,7 +129,6 @@ export default {
     getData() {
       $http.getStaffDetail(this.$route.params.groupId)
         .then((res) => {
-          console.log(res, '获取的仓库信息');
           const data = res.data;
           // 总模块
           const WAREHOUSE = data.authorize.warehouse; // 总的仓库列表

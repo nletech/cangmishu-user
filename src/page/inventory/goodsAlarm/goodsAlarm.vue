@@ -118,7 +118,6 @@ export default {
           this.stockList = res.data.warning_data;
           this.form.default_warning_stock = res.data.default_warning_stock;
           this.form.warning_email = res.data.warning_email;
-          console.log(res, 'warning');
         });
     },
     search_btn() {
@@ -134,7 +133,6 @@ export default {
       });
       this.$refs.form.validate((valid) => {
         if (valid) {
-          console.log(this.form, 'this.form');
           $http.addWarning(this.form).then(() => {
             this.$message({
               message: '修改成功',

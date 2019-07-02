@@ -28,11 +28,12 @@
                                                           :headers="Authorization"
                                                           :show-file-list="false"
                                                           name="image"
-                                                          :on-exceed="handleExceed"
                                                           :file-list="fileList"
                                                           :on-success="handleAvatarSuccess"
                                                           :before-upload="beforeAvatarUpload">
-                                                          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                                          <img  v-if="imageUrl"
+                                                                :src="imageUrl"
+                                                                class="avatar">
                                                           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                               </el-upload>
                                 </el-form-item>
@@ -96,16 +97,12 @@ export default {
     handleAvatarSuccess(res) {
       if (res.status === 0) {
         this.imageUrl = res.data.url;
-        console.log(res, '图片链接');
       } else if (res.status === 1) {
         this.$notify({
           message: res.msg,
           type: 'warning',
         });
       }
-    },
-    handleExceed() {
-      //
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';

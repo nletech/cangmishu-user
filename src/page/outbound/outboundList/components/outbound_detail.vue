@@ -2,7 +2,6 @@
   <el-dialog  title=""
               align="center"
               width="80%"
-              @close="close"
               @update:visible="$emit('update:visible', $event)"
               :visible="visible">
               <el-row>
@@ -191,23 +190,6 @@ export default {
   computed: {
     warehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
-  },
-  watch: {
-    id: {
-      handler(value) {
-        console.log(value, this.row_data, '查看详情');
-      },
-      deep: true,
-      immediate: true,
-    },
-  },
-  methods: {
-    close() {
-      // this.page_params.page = 1;
-    },
-    getList() {
-      //
     },
   },
 };

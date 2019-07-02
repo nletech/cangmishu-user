@@ -164,7 +164,6 @@ export default {
       this.record_visible = true;
       this.row = rowInfo;
       this.row.warehouseId = this.warehouseId;
-      console.log(rowInfo, 'handleRecord');
     },
     handleSearch() {
       if (this.code) {

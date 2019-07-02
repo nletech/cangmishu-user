@@ -34,7 +34,6 @@ export default {
     active_tab_name: [String], // 当前选定的 tab
   },
   mounted() {
-    console.log('is');
     this.tabs_cms = this.tabs; // 避免直接修改 props
     this.active_tab_name_cms = this.active_tab_name; // 避免直接修改 props
   },

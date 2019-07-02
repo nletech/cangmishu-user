@@ -28,7 +28,6 @@ const EditSender = loadOnDemand('outbound/addOutbound/components/editSender');//
 const EditRecevier = loadOnDemand('outbound/addOutbound/components/editRecevier');// 编辑收件人信息
 
 // 库存
-// const MyGoodsList = loadOnDemand('inventory/goodsManage/myGoodsList');// 货品管理
 const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking');// 库存盘点 (新模块)
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage');// 库存管理
 const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存报警
@@ -36,12 +35,6 @@ const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存
 const MyGoodsList1 = loadOnDemand('goodsManage/myGoodsList'); // 我的商品库
 const GoodsAdd = loadOnDemand('goodsManage/goodsAdd'); // 商品新增
 const GoodsEdit = loadOnDemand('goodsManage/goodsEdit'); // 商品编辑
-// const InventoryManage1 = loadOnDemand('goodsManage/inventoryManage'); // 库存管理
-// const InventoryAlarm1 = loadOnDemand('goodsManage/goodsAlarm'); // 库存报警
-// const InboundList1 = loadOnDemand('goodsManage/inboundList'); // 入库单列表
-// const AddInbound1 = loadOnDemand('goodsManage/addInbound'); // 添加入库单
-// const OutboundList1 = loadOnDemand('goodsManage/outboundList'); // 出库单列表
-// const AddOutbound1 = loadOnDemand('goodsManage/addOutbound'); // 添加入库单
 
 // 员工管理
 // 员工列表
@@ -73,6 +66,8 @@ const AddressManagement = loadOnDemand('setting/addressManagement/addressManagem
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
 const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryManagement'); // 货品分类管理
 const Record = loadOnDemand('setting/record/record'); // 出入库单分类
+// 帮助
+const Help = loadOnDemand('helpCenter/help'); // 货品分类管理
 
 export const routerMap = [
   {
@@ -213,24 +208,6 @@ export const routerMap = [
             component: GoodsEdit,
             nav: 3,
           },
-          // {
-          //   name: 'inventoryAlarm1', // 模块
-          //   path: 'inventoryAlarm1',
-          //   component: InventoryAlarm,
-          //   nav: 3,
-          // },
-          // {
-          //   name: 'inventoryAlarm1', // 模块
-          //   path: 'inventoryAlarm1',
-          //   component: InventoryAlarm,
-          //   nav: 3,
-          // },
-          // {
-          //   name: 'inventoryAlarm1', // 模块
-          //   path: 'inventoryAlarm1',
-          //   component: InventoryAlarm,
-          //   nav: 3,
-          // },
         ],
       },
       {
@@ -377,6 +354,23 @@ export const routerMap = [
             name: 'record', // 子菜单-出入库单分类管理
             path: 'record',
             component: Record,
+            nav: 2,
+          },
+        ],
+      },
+      {
+        name: 'help', // 大菜单 帮助
+        path: 'help',
+        component: LayoutSide,
+        icon: '&#xeb38;',
+        nav: 1,
+        id: 'helpCenter',
+        index: 7, // 后端路由鉴权
+        children: [
+          {
+            name: 'helpCenter', // 帮助
+            path: 'helpCenter',
+            component: Help,
             nav: 2,
           },
         ],

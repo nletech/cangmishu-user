@@ -75,9 +75,6 @@ export default {
     },
   },
   watch: {
-    visibleFlag() {
-      console.log(this.visibleFlag, 'propvisi');
-    },
     row_data() {
       this.form.full_name = this.row_data.fullname;
       this.form.phone = this.row_data.phone;

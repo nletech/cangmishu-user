@@ -140,9 +140,6 @@ export default {
                   message: '保存失败',
                 });
               }
-            })
-            .catch(() => {
-              console.log('add staff is wrong!');
             });
         });
     },

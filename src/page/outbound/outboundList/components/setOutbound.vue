@@ -210,7 +210,6 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.row_data = res.data;
-          console.log(res, '出库');
         });
     },
   },

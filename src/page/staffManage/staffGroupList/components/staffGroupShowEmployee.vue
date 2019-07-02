@@ -66,11 +66,11 @@
                                               {{scope.row.phone}}
                                     </template>
                   </el-table-column>
-                  <!-- 最后登陆时间 -->
+                  <!-- 最后登录时间 -->
                   <el-table-column  prop="last_login_at"
                                     align="center"
                                     header-align="center"
-                                    label="最后登陆时间">
+                                    label="最后登录时间">
                                     <template slot-scope="scope">
                                               <i  class="el-icon-time"
                                                   v-show="Boolean(scope.row.last_login_at)">
@@ -166,7 +166,6 @@ export default {
         .then(() => {
           $http.deleteStaffInGroup(copyInfo)
             .then((res) => {
-              // console.log(res);
               if (res.status === 0) {
                 this.$message({
                   type: 'success',

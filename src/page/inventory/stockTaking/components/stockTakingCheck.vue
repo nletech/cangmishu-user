@@ -142,7 +142,7 @@ export default {
   watch: {
     visible() {
       if (this.visible) {
-        console.log(this.row_data, 'row_data');
+        // console.log(this.row_data, 'row_data');
         this.form.product_name = this.row_data.product_name;
         this.form.relevance_code = this.row_data.relevance_code;
         this.form.sku = this.row_data.sku;
