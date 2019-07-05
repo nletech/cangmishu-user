@@ -40,11 +40,11 @@
                   <!-- 仓秘书 -->
                   <div  v-show="sideNavStatus"
                         @mouseleave="handleLeave1()">
-                        <!-- 侧边栏导航 -->
+                        <!-- 侧边栏导航收缩之后 -->
                         <ul  style="padding: 0;">
                               <li  v-for="(item, index) in sideList" style="width: 100%; line-height: 80px; height: 80px; text-align: center; list-style: none; cursor: pointer;"
                                   :key="index"
-                                  @click.self="handleHomeClick1(item.name)"
+                                  @click="handleHomeClick1(item.name)"
                                   @mouseover="showItem1(item.name, index)">
                                   <i  class="iconfont"
                                       v-html="item.icon"
@@ -59,7 +59,7 @@
                              @click="handleClickCloseNavChild">
                               <li  v-for="item in li_NavChild"
                                    :class="$style.NavChild_li1"
-                                   @click.self="handlerClick1(item.name)"
+                                   @click="handlerClick1(item.name)"
                                    :key="item.name">
                                    {{$t(item.name)}}
                               </li>
@@ -78,11 +78,6 @@ export default {
       li_NavChild: [], // 子菜单数组
       ul_Nav: this.sideNavList, // 缓存的路由表
     };
-  },
-  watch: {
-    innerHeight() {
-      return window.innerHeight;
-    },
   },
   computed: {
     sideList() {
@@ -113,6 +108,10 @@ export default {
     sideNavStatus() {
       return +this.$store.state.config.shutdown_status;
     },
+    innerHeight() {
+      let a = window.innerHeight;
+      return a;
+    },
   },
   methods: {
     handlerClick(name) {
@@ -120,10 +119,13 @@ export default {
     },
     // 子菜单操作
     showItem(itemName, index) {
+      this.$refs.NavChild.style.position = ``; // 初始化
+      this.$refs.NavChild.style.bottom = ``; // 初始化
       /* eslint-disable */
       let subMeanu = []; // 缓存子菜单
       let distance; // 缓存计算的距离
-      let innerHeight = window.innerHeight;
+      let innerHeight = window.innerHeight; // 当前窗口的高度
+      let subMeanuInnerHeight = ''; // 子路由列表的总 innerHeight
       const menu = this.checkedSideNavList();
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
@@ -132,17 +134,22 @@ export default {
             return;
           } // 鼠标悬浮到侧边栏首页和帮助的时候不展示子列表
           this.li_show_switch = true;
-          distance = `${(i * 80) + 40}px`; // 根据计算修改子菜单对应的布局
-          // console.log(innerHeight, 'innerHeight');
-          // console.log(distance, 'distance');
           menu[i].children.forEach((e) => {
             if (e.nav === 2) {
               subMeanu.push(e);
             } // 这里是筛特定的子路由作为子菜单
           });
+          distance = `${(i * 80) + 40}`; // 根据计算修改子菜单对应的布局
+          subMeanuInnerHeight = `${+distance + (subMeanu.length * 80) + 80}`;
         }
       } // 这个循环实现的思路：通过点击不同的侧边栏导航项来展示不同的导航项对应的子菜单
-      this.$refs.NavChild.style.margin = `${distance} 0 0 0 `; // 输出处理后的子菜单 margin 计算值
+      if (subMeanuInnerHeight > innerHeight) { // 兼容小屏幕
+        this.$refs.NavChild.style.position = `fixed `; // 沉底
+        this.$refs.NavChild.style.bottom = `0 `; // 沉底c
+      } else {
+        this.$refs.NavChild.style.margin = `${distance}px 0 0 0 `; // 输出处理后的子菜单 margin 计算值
+      }
+      console.log(subMeanuInnerHeight - innerHeight, 'result');
       this.li_NavChild = subMeanu; // 输出子菜单
     },
     handleClickCloseNavChild() {
@@ -286,7 +293,7 @@ export default {
   .NavChild {
     margin: 0;
     padding: 0; // 解决浏览器中 ul 自动右移 40px
-    background-color: red;
+    // background-color: red;
     width: 200px;
     list-style: none;
     text-align: center;
