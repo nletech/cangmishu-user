@@ -120,12 +120,12 @@
                                                               <el-table-column  prop="gross_weight"
                                                                                 :label="$t('grossWeight') + '(g)'">
                                                               </el-table-column>
-                                                              <el-table-column  prop="is_warning"
+                                                              <!-- <el-table-column  prop="is_warning"
                                                                                 label="是否发送库存报警邮件">
                                                                                 <template slot-scope="scope">
                                                                                           {{scope.row.is_warning | is_warning_filter}}
                                                                                 </template>
-                                                              </el-table-column>
+                                                              </el-table-column> -->
                                                   </el-table>
                                       </template>
                     </el-table-column>

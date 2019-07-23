@@ -169,7 +169,7 @@ export default {
       } // 拦截商品数量未填写
       // eslint-disable-next-line
       for (const item in this.form) {
-        if (this.form[item] === '') {
+        if (item !== 'remark' && this.form[item] === '') {
           this.$message({
             message: '请将信息填写完整',
             type: 'warning',

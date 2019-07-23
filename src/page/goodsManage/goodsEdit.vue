@@ -66,7 +66,7 @@
                                                                   width="80"
                                                                   prop="gross_weight">
                                                   </my-edit-table>
-                                                  <el-table-column  prop="is_warning"
+                                                  <!-- <el-table-column  prop="is_warning"
                                                                     label="是否发送库存报警邮件"
                                                                     width="80">
                                                                     <template slot-scope="scope">
@@ -77,7 +77,7 @@
                                                                                             inactive-color="#ff4949">
                                                                                 </el-switch>
                                                                     </template>
-                                                  </el-table-column>
+                                                  </el-table-column> -->
                                                   <table-function  label="操作"
                                                                    width="160px">
                                                                    <template slot="edit"

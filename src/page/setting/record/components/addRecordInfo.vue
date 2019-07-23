@@ -73,7 +73,7 @@ export default {
       add_info: {
         name: '', // 分类名称
       },
-      is_enabled: '0',
+      is_enabled: '1',
       formInfo: {},
       text_flag: '',
       info_Verify_rules: { // 表单输入验证提醒
@@ -90,7 +90,7 @@ export default {
       if (!Object.keys(this.row_data).length) {
         this.text_flag = false;
         this.add_info = {};
-        this.is_enabled = '0';
+        this.is_enabled = '1';
       } else {
         /* eslint-disable */
         this.text_flag = true;

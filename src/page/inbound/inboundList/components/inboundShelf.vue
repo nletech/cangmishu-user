@@ -172,7 +172,7 @@
                                                                     prop="box_code">
                                                                     <el-input v-model="form.box_code" style="width: 310px;"></el-input>
                                                       </el-form-item>
-                                                      <el-form-item  label="ENA码信息"
+                                                      <el-form-item  label="EAN码信息"
                                                                      prop="ean">
                                                                     <el-input v-model="form.ean" style="width: 310px;"></el-input>
                                                       </el-form-item>

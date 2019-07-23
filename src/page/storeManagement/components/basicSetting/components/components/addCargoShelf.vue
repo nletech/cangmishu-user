@@ -104,11 +104,11 @@ export default {
         row: '', // 排
         col: '', // 列
         floor: '', // 层
-        is_enabled: '0', // 是否启用
+        is_enabled: '1', // 是否启用
         remark: '', // 备注
         warehouse_id: '',
       },
-      is_enabled: '0',
+      is_enabled: '1',
       area_list_data: [], // 货区列表数据
     };
   },

@@ -67,7 +67,7 @@
                                                                   width="80"
                                                                   prop="gross_weight">
                                                   </my-edit-table>
-                                                  <el-table-column  prop="is_warning"
+                                                  <!-- <el-table-column  prop="is_warning"
                                                                     label="是否发送库存报警邮件"
                                                                     width="80">
                                                                     <template slot-scope="scope">
@@ -78,7 +78,7 @@
                                                                                             inactive-color="#ff4949">
                                                                                 </el-switch>
                                                                     </template>
-                                                  </el-table-column>
+                                                  </el-table-column> -->
                                                   <table-function  label="操作"
                                                                    :disabled="!!$route.query.isCheck"
                                                                    width="160px">
@@ -266,13 +266,13 @@ export default {
         });
         return;
       }
-      if (!/^[a-zA-Z0-9]{4,}$/g.test(row.relevance_code)) {
-        this.$message({
-          message: 'SKU只能为数字或字母，且长度必须大于3位',
-          type: 'warning',
-        });
-        return;
-      }
+      // if (!/^[a-zA-Z0-9]{4,}$/g.test(row.relevance_code)) {
+      //   this.$message({
+      //     message: 'SKU只能为数字或字母，且长度必须大于3位',
+      //     type: 'warning',
+      //   });
+      //   return;
+      // }
       if (this.$route.query.id) {
         row.product_id = this.$route.query.id;
         if (row.id) row.spec_id = row.id;
@@ -361,15 +361,16 @@ export default {
             message: 'SKU不能为空',
             type: 'warning',
           });
+          // eslint-disable-next-line
           return;
         }
-        if (!/^[a-zA-Z0-9]{4,}$/g.test(val.relevance_code)) {
-          ctr = false;
-          this.$message({
-            message: 'SKU只能为数字或字母，且长度必须大于3位',
-            type: 'warning',
-          });
-        }
+        // if (!/^[a-zA-Z0-9]{4,}$/g.test(val.relevance_code)) {
+        //   ctr = false;
+        //   this.$message({
+        //     message: 'SKU只能为数字或字母，且长度必须大于3位',
+        //     type: 'warning',
+        //   });
+        // }
       });
       if (ctr) {
         this.$refs[formName].validate((valid) => {

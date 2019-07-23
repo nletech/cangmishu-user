@@ -194,12 +194,12 @@ export default {
         need_expiration_date: 0, // 是否保质期
         need_production_batch_number: 0, // 是否生产批次
         need_best_before_date: 0, // 是否最佳体验期
-        is_enabled: 0, // 是否启用
+        is_enabled: '0', // 是否启用
       }, // 编辑分类
       category_info_add: {
         name_cn: '', // 中文名
         name_en: '', // 英文名
-        is_enabled: 0, // 是否启用
+        is_enabled: '1', // 是否启用
       }, // 添加分类
       add_sku_property: [], // sku属性
       edit_sku_property: [], // 编辑 sku 属性
@@ -248,6 +248,7 @@ export default {
       // eslint-disable-next-line
       for (const i in this.category_info_add) {
         this.category_info_add[i] = '';
+        this.category_info_add.is_enabled = '1';
       }
       this.id = '';
     },
@@ -292,7 +293,7 @@ export default {
         let form_add = {};
         form_add.name_cn = this.category_info_add.name_cn;
         form_add.name_en = this.category_info_add.name_en;
-        form_add.is_enabled = this.category_info_add.is_enabled || 0; // 是否启用
+        form_add.is_enabled = this.category_info_add.is_enabled || '1'; // 是否启用
         form_add.need_expiration_date = 0;
         form_add.need_production_batch_number = 0;
         form_add.need_best_before_date = 0;
