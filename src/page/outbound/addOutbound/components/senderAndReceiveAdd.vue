@@ -27,10 +27,10 @@
                                                 <el-form-item  prop="address"
                                                               label="省市区"
                                                               size="middle">
-                                                              <el-cascader  :props="props"
+                                                              <el-cascader  style="width:100%;"
+                                                                            :props="props"
                                                                             :options="addressInfo"
-                                                                            v-model="form.address"
-                                                                            style="width: 260px;">
+                                                                            v-model="form.address">
                                                               </el-cascader>
                                                 </el-form-item>
                                                 <el-form-item  prop="addressDetail"
