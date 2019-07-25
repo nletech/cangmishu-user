@@ -1,84 +1,6 @@
 <template>
           <div :class="$style.no_authentication">
                 <el-row style="min-width:1140px;">
-                  <!-- <el-col :span="10">
-                    <div class="home_left">
-                      <div class="notice">
-                        <el-tabs v-model="activeLabel">
-                          <el-tab-pane label="通知" name="1" type="card" class="message">
-                            <p v-for="(item, index) in noticeList" :key="index">
-                              {{item.notice_time.slice(0, 10)}}
-                              {{item.notice_info}}
-                            </p>
-                            <span v-if="noticeList.length === 0">暂无通知</span>
-                          </el-tab-pane>
-                          <el-tab-pane label="公告" name="2" class="announcement">
-                            <p>欢迎使用EUT仓储共享平台!</p>
-                          </el-tab-pane>
-                        </el-tabs>
-                      </div>
-                      <div class="kuaijie">
-                        <el-row :gutter="20">
-                          <el-col :span="12">
-                                  <div class="router_card newin">
-                                    <i class="iconfont">&#xe7aa;</i>
-                                    <el-button  type="text"
-                                                @click="$router.push({name: 'addInbound'})"
-                                                icon="el-icon-plus">
-                                                新建入库单
-                                    </el-button>
-                                  </div>
-                          </el-col>
-                          <el-col :span="12">
-                            <div class="router_card newout">
-                              <i class="iconfont">&#xe7aa;</i>
-                              <el-button
-                                type="text"
-                                @click="$router.push({name: 'addOutbound'})"
-                                icon="el-icon-plus">
-                                新建出库单
-                              </el-button>
-                            </div>
-                          </el-col>
-                        <el-col :span="12">
-                            <div class="router_card">
-                              <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe600;</i>
-                              <el-button
-                                type="text"
-                                @click="$router.push({name: 'outboundList'})"
-                                icon="el-icon-tickets">
-                                出库单列表
-                              </el-button>
-                            </div>
-                          </el-col>
-                        </el-row>
-                        <el-row :gutter="20">
-                          <el-col :span="12">
-                            <div class="router_card">
-                              <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe633;</i>
-                              <el-button
-                                type="text"
-                                @click="$router.push({name: 'inventoryManage'})"
-                                icon="el-icon-tickets">
-                                库存管理
-                              </el-button>
-                            </div>
-                          </el-col>
-                          <el-col :span="12">
-                            <div class="router_card">
-                              <i class="iconfont" style="color: RGBA(216, 211, 244, 1)">&#xe671;</i>
-                              <el-button
-                                type="text"
-                                @click="$router.push({name: 'logisticsQuery'})"
-                                icon="el-icon-zoom-in">
-                                物流查询
-                              </el-button>
-                            </div>
-                          </el-col>
-                        </el-row>
-                      </div>
-                    </div>
-                  </el-col> -->
                   <el-col :span="22" :offset="1">
                           <div class="home_right">
                             <header>
@@ -134,10 +56,10 @@
                   </el-col>
                 </el-row>
                 <el-dialog  :visible.sync="centerDialogVisible"
-                            width="30%"
+                            width="50%"
                             center>
                             <div :class="$style.dialogcentered">
-                              <p>请选择仓库</p>
+                              <p>请选择仓库111</p>
                               <el-radio-group v-model="selectWarehouse">
                                 <el-radio-button :class="$style.selectline"
                                                 v-for="item in warehouseList"

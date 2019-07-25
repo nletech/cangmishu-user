@@ -89,27 +89,19 @@
     </div>
   </div>
     <!-- 切换仓库 -->
-    <el-dialog  :visible="showWarehousesSwitch"
-                width="26%"
-                :show-close="false"
-                :close-on-click-modal="false"
-                center>
-                <div :class="$style.dialogcentered">
-                          <p>请选择仓库</p>
-                          <el-radio-group  :class="$style.radio_group"
-                                          v-model="selectWarehouse">
-                                          <el-radio-button  :class="$style.selectline"
-                                                            v-for="item in all_warehouse"
-                                                            :key="item.id"
-                                                            :label="item.name_cn"
-                                                            :value="item.id">
-                                          </el-radio-button>
-                          </el-radio-group>
-                </div>
-                <span slot="footer"
-                      class="dialog-footer">
-                      <el-button type="primary" @click="handleConfirm">确 定</el-button>
-                </span>
+
+      <el-dialog title="切换仓库" :visible.sync="showWarehousesSwitch">
+      <el-form :model="form">
+        <el-form-item label="请选择仓库" :label-width="formLabelWidth">
+          <el-select  v-model="selectWarehouse" placeholder="请选择仓库" >
+            <el-option v-for="item in all_warehouse" :label="item.name_cn"  :key="item.id" :value="item.name_cn"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="showWarehousesSwitch = false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm">确 定</el-button>
+      </div>
     </el-dialog>
     <!-- 修改密码 -->
     <change-pass-word :visible.sync="show_psw_flag"></change-pass-word>
