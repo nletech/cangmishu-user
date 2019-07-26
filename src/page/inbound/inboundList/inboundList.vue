@@ -23,22 +23,19 @@
                                        <el-table-column  type="index"
                                                          label="#">
                                        </el-table-column>
-                                       <el-table-column  prop="status_name"
-                                                         label="状态">
+                                       <el-table-column  prop="confirmation_number"
+                                                         :label="$t('confirmationNumber')">
                                        </el-table-column>
                                        <el-table-column  prop="batch_type.name"
                                                          :label="$t('inboundType')">
                                        </el-table-column>
-                                       <el-table-column  prop="batch_code"
-                                                         :label="$t('inboundNumber')">
-                                       </el-table-column>
-                                       <el-table-column  prop="confirmation_number"
-                                                         :label="$t('confirmationNumber')">
+                                       <el-table-column  prop="status_name"
+                                                         label="状态">
                                        </el-table-column>
                                        <el-table-column  prop="distributor.name_cn"
                                                          label="供应商">
                                        </el-table-column>
-                                       <el-table-column label="预/已入库数量">
+                                       <el-table-column label="预/已数量">
                                                         <template slot-scope="scope">
                                                                    {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
                                                         </template>
@@ -46,29 +43,26 @@
                                        <el-table-column  prop="created_at"
                                                          label="创建时间">
                                        </el-table-column>
-                                       <el-table-column  label="操作"
+                                       <el-table-column  label="操作"  fixed="right"
                                                          width="240">
-                                                         <template slot-scope="scope">
-                                                                   <el-button size="small"
-                                                                              style="margin: 0; padding: 10px;"
-                                                                              @click="viewDetails(scope.row)"
-                                                                              :loading="$store.state.config.button_loading">
-                                                                              查看详情
-                                                                   </el-button>
-                                                                   <el-button  size="small"
-                                                                               v-if="scope.row.status !== 3"
-                                                                               style="margin: 0; padding: 10px;"
-                                                                               @click="toInbound(scope.row)">
-                                                                               入库&上架
-                                                                   </el-button>
-                                                                   <el-button  size="small"
-                                                                               v-if="scope.row.status !== 3"
-                                                                               style="margin: 0; padding: 10px;"
-                                                                               @click="inboundDelete(scope.row.id)"
-                                                                               type="danger">
-                                                                               删除
-                                                                   </el-button>
-                                                        </template>
+                                             <template slot-scope="scope">
+                                                <el-tooltip content="查看详情" placement="top">
+                                                  <el-button size="medium" icon="el-icon-view"
+                                                              @click="viewDetails(scope.row)"
+                                                              :loading="$store.state.config.button_loading" circle></el-button>
+                                                </el-tooltip>
+                                                <el-tooltip content="入库 &amp;上架" placement="top">
+                                                  <el-button  size="medium" type="primary" icon="el-icon-sell" @click="toInbound(scope.row)" circle></el-button>
+                                                </el-tooltip>
+                                                <el-tooltip content="删除" placement="top">
+                                                  <el-button  size="medium" icon="el-icon-delete"
+                                                                   v-if="scope.row.status !== 3"
+                                                                   style="margin: 0; padding: 10px;"
+                                                                   @click="inboundDelete(scope.row.id)"
+                                                                   type="danger" circle>
+                                                  </el-button>
+                                                </el-tooltip>
+                                            </template>
                                       </el-table-column>
                             </el-table>
                       </div>

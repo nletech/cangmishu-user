@@ -258,8 +258,8 @@ export default {
     }
   }
   .side_nav_ul {
-    min-width: 231px;
-    width: 231px;
+    min-width: 200px;
+    width: 200px;
     margin: 0;
     padding: 0;
     display: flex;
@@ -299,7 +299,7 @@ export default {
     text-align: center;
     position: absolute;
     top: 0;
-    left: 231px;
+    left: 200px;
     .NavChild_li {
       color: #fff;
       background-color: #444154;

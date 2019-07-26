@@ -21,7 +21,7 @@
                                                       </el-select>
                                         </el-form-item>
                                         <!-- 确认入库单编号 -->
-                                        <el-form-item label="确认单编号"
+                                        <el-form-item label="入库单编号"
                                                       prop="confirmation_number">
                                                       <el-input v-model="form.confirmation_number"></el-input>
                                         </el-form-item>
@@ -189,69 +189,58 @@
                                     </el-col>
                                     <!-- 搜索框 -->
                                     <el-col   :span="4" :offset="6">
-                                              <input-public :select="select_batch_code"
-                                                            @data_cb="handlerInputQuery">
-                                              </input-public>
+                                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="select_batch_code">
+                                        </el-input>
+                                        <el-button type="primary" icon="el-icon-search">搜索</el-button>
                                     </el-col>
                                     <!-- 添加商品 -->
                                     <el-col :span="2" :offset="8">
                                             <el-button @click="handlerAddGoods">
-                                              {{'添加商品'}}
+                                              添加商品
                                             </el-button>
                                     </el-col>
                             </el-row>
                             <!-- 数据表 -->
-                            <el-table :data="goods"
-                                      ref="table"
-                                      border
-                                      style="width: 100%">
-                                      <el-table-column  type="expand"
-                                                        width="55">
-                                                        <template slot-scope="scope">
-                                                                  <el-table :data="scope.row.specs"
-                                                                            @row-click="rowClickGoods"
-                                                                            border>
-                                                                            <el-table-column  width="55">
-                                                                                              <template slot-scope="scope">
-                                                                                                        <label  class="el-checkbox">
-                                                                                                                <span  class="el-checkbox__input"
-                                                                                                                       :class="scope.row.checked && 'is-checked'">
-                                                                                                                       <span class="el-checkbox__inner"></span>
-                                                                                                                </span>
-                                                                                                        </label>
-                                                                                              </template>
-                                                                            </el-table-column>
-                                                                            <el-table-column  label="SKU"
-                                                                                              prop="relevance_code">
-                                                                            </el-table-column>
-                                                                            <el-table-column  label="规格中文名"
-                                                                                              prop="name_cn">
-                                                                            </el-table-column>
-                                                                            <el-table-column  label="规格外文名"
-                                                                                              prop="name_en">
-                                                                            </el-table-column>
-                                                                  </el-table>
-                                                        </template>
-                                      </el-table-column>
-                                      <el-table-column  label="商品中文名称"
-                                                        prop="name_cn">
-                                      </el-table-column>
-                                      <el-table-column  label="商品外文名称"
-                                                        prop="name_en">
-                                    </el-table-column>
-                            </el-table>
-                            <button-pagination :pageParams="params"></button-pagination>
-                            <span slot="footer"
-                                  class="dialog-footer">
-                                  <el-button  type="primary"
-                                              @click="confirmSelected"
-                                              :loading="$store.state.btn_loading"
-                                              :disabled="!this.goodsSelected.length">
-                                              {{'提交'}}
-                                  </el-button>
-                                  <el-button @click="handleClose()">{{'取消'}}</el-button>
-                            </span>
-                </el-dialog>
+                        <el-table :data="goods"
+                                  ref="table"
+                                  border
+                          style="width: 100%">
+                            <el-table-column
+                              type="selection"
+                              width="55">
+                            </el-table-column>
+                            <el-table-column
+                              type="index"
+                              :index="indexMethod">
+                            </el-table-column>
+                            <el-table-column  label="商品规格名称"
+                                              prop="name_cn">
+                            </el-table-column>
+                            <el-table-column  label="单位"
+                                              prop="name_en">
+                            </el-table-column>
+                            <el-table-column  label="毛重"
+                                              prop="name_en">
+                            </el-table-column>
+                            <el-table-column  label="参考进货价"
+                                              prop="name_en">
+                            </el-table-column>
+                            <el-table-column  label="当前库存"
+                                              prop="name_en">
+                            </el-table-column>
+                        </el-table>
+                        <button-pagination :pageParams="params"></button-pagination>
+                        <span slot="footer"
+                              class="dialog-footer">
+                              <el-button  type="primary"
+                                          @click="confirmSelected"
+                                          :loading="$store.state.btn_loading"
+                                          :disabled="!this.goodsSelected.length">
+                                          提交
+                              </el-button>
+                              <el-button @click="handleClose()">取消</el-button>
+                        </span>
+                      </el-dialog>
                 <!-- 供应商管理弹窗 -->
                 <el-dialog  title="供应商管理"
                             :visible.sync="distributorListShow"

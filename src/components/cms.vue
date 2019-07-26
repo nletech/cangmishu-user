@@ -68,7 +68,7 @@ export default {
   }
 }
 .wms_tag_container_table {
-  padding: 10px 45px 20px 45px ;
+  padding: 10px 25px 20px 25px ;
   .page {
     margin-top: 10px;
   }

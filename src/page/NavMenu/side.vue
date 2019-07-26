@@ -71,7 +71,7 @@ export default {
 <style lang="less" module>
 @import '../../less/public_variable.less';
 .nav_left {
-  padding-left: 231px;
+  padding-left: 200px;
 }
 .init_nav_left {
   padding-left: 76px;

@@ -6,7 +6,7 @@
   >
     <div :class="$style.nav">
        <div  :class="$style.top_nav_logo"
-             :style="{ width: sideNavStatus ? '80px' : '231px' }">
+             :style="{ width: sideNavStatus ? '80px' : '200px' }">
              <span v-if="!sideNavStatus">仓秘书</span>
              <img v-else src="../../assets/img/cang.png" alt="仓秘书">
       </div>
@@ -321,7 +321,7 @@ export default {
     line-height: 80px;
   }
   .top_nav_logo {
-    width: 231px;
+    width: 200px;
     height: 80px;
     background-color: @ThemeColor;
     color: @white;

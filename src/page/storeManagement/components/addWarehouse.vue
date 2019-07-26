@@ -2,9 +2,8 @@
           <div  :class="$style.add_warehouse">
                 <div  :class="$style.main">
                       <el-row  :class="$style.add_warehouse_main">
-                                <el-col :span="10" :offset="6">
+                                <el-col >
                                         <el-form  ref="rule_form"
-                                                  :class="$style.staff_form"
                                                   label-width="140px"
                                                   size="middle"
                                                   :rules="rules"
@@ -41,15 +40,10 @@
                                                                 size="middle">
                                                                 <el-input  v-model="warehouseInfo.area"></el-input>
                                                   </el-form-item>
+                                                  <el-form-item>
+                                                  <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
+                                                </el-form-item>
                                         </el-form>
-                                        <el-row>
-                                                <el-col :span="2" :offset="13">
-                                                  <el-button  :class="$style.submit_btn"
-                                                              @click="warehouseInfoSubmit">
-                                                              提交
-                                                  </el-button>
-                                                </el-col>
-                                        </el-row>
                                 </el-col>
                       </el-row>
                 </div>

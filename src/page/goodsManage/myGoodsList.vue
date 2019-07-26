@@ -103,31 +103,31 @@
                      style="margin:10px auto 0;">
                      <!-- 右箭头 -->
                     <el-table-column  type="expand">
-                                      <template   slot-scope="props">
-                                                  <el-table   :data="props.row.specs" border style="width:80%;">
-                                                              <el-table-column  prop="relevance_code"
-                                                                                label="SKU">
-                                                              </el-table-column>
-                                                              <el-table-column  prop="name_cn"
-                                                                                :label="$t('specificationChineseName')">
-                                                              </el-table-column>
-                                                              <el-table-column  prop="name_en"
-                                                                                :label="$t('specificationEnglishName')">
-                                                              </el-table-column>
-                                                              <el-table-column  prop="net_weight"
-                                                                                :label="$t('netWeight') + '(g)'">
-                                                              </el-table-column>
-                                                              <el-table-column  prop="gross_weight"
-                                                                                :label="$t('grossWeight') + '(g)'">
-                                                              </el-table-column>
-                                                              <!-- <el-table-column  prop="is_warning"
-                                                                                label="是否发送库存报警邮件">
-                                                                                <template slot-scope="scope">
-                                                                                          {{scope.row.is_warning | is_warning_filter}}
-                                                                                </template>
-                                                              </el-table-column> -->
-                                                  </el-table>
-                                      </template>
+                        <template   slot-scope="props">
+                                    <el-table   :data="props.row.specs" border style="width:80%;">
+                                                <el-table-column  prop="relevance_code"
+                                                                  label="SKU">
+                                                </el-table-column>
+                                                <el-table-column  prop="name_cn"
+                                                                  :label="$t('specificationChineseName')">
+                                                </el-table-column>
+                                                <el-table-column  prop="name_en"
+                                                                  :label="$t('specificationEnglishName')">
+                                                </el-table-column>
+                                                <el-table-column  prop="net_weight"
+                                                                  :label="$t('netWeight') + '(g)'">
+                                                </el-table-column>
+                                                <el-table-column  prop="gross_weight"
+                                                                  :label="$t('grossWeight') + '(g)'">
+                                                </el-table-column>
+                                                <!-- <el-table-column  prop="is_warning"
+                                                                  label="是否发送库存报警邮件">
+                                                                  <template slot-scope="scope">
+                                                                            {{scope.row.is_warning | is_warning_filter}}
+                                                                  </template>
+                                                </el-table-column> -->
+                                    </el-table>
+                        </template>
                     </el-table-column>
                     <!-- 中文名称 -->
                     <el-table-column  prop="name_cn"
@@ -147,30 +147,40 @@
                                       header-align="center"
                                       :label="$t('category')">
                     </el-table-column>
+                    <!-- 单位 -->
+                    <el-table-column  prop="category.name_cn"
+                                      align="center"
+                                      header-align="center"
+                                      label="单位">
+                    </el-table-column>
+                    <!-- 零售价 -->
+                    <el-table-column  prop="category.name_cn"
+                                      align="center"
+                                      header-align="center"
+                                      label="零售价">
+                    </el-table-column>
                     <!-- 最后修改时间 -->
                     <el-table-column  prop="updated_at"
                                       align="center"
                                       header-align="center"
                                       label="最后修改时间">
                                       <template slot-scope="scope">
-                                                <i class="el-icon-time"></i>
-                                                <span style="margin-left: 10px">{{ scope.row.updated_at }}</span>
+                                          <span style="margin-left: 10px">{{ scope.row.updated_at }}</span>
                                       </template>
                     </el-table-column>
                     <!-- 操作 -->
                     <el-table-column  :label="$t('operation')"
                                       header-align="center"
-                                      width="170">
+                                      width="170" fixed="right">
                                     <template slot-scope="scope">
-                                              <el-button  size="mini"
-                                                          type="danger"
-                                                          @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)">
-                                                          {{$t('edit')}}
-                                              </el-button>
-                                              <el-button  size="mini"
-                                                          @click="deleteCommodity(scope.row.id)">
-                                                          删除
-                                              </el-button>
+                                        <el-tooltip content="编辑" placement="top">
+                                          <el-button  size="mini" icon="el-icon-edit"
+                                                      @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)" circle></el-button>
+                                        </el-tooltip>
+                                        <el-tooltip content="删除" placement="top">
+                                          <el-button  type="danger" size="mini" icon="el-icon-delete" @click="deleteCommodity(scope.row.id)" circle>
+                                          </el-button>
+                                        </el-tooltip>
                                     </template>
                     </el-table-column>
           </el-table>

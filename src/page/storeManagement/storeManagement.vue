@@ -30,6 +30,7 @@
                           <el-table-column  header-align="center"
                                             align="center"
                                             prop="warehouse_address"
+                                            width="300"
                                             label="地址">
                           </el-table-column>
                           <el-table-column  header-align="center"
@@ -42,22 +43,21 @@
                                             prop="area"
                                             label="仓库面积(㎡)">
                           </el-table-column>
-                          <el-table-column  header-align="center"
-                                            width="400"
-                                            label="操作">
+                          <el-table-column  header-align="center" fixed="right"
+                                            label="操作" width="200">
                                             <template slot-scope="scope">
                                                       <el-button size="mini"
                                                                  @click="edit(scope.row)">
-                                                                 查看编辑
+                                                                 编辑
                                                       </el-button>
                                                       <el-button size="mini"
                                                                  @click="config(scope.row)">
-                                                                 基础配置
+                                                                 配置
                                                       </el-button>
                                                       <el-button size="mini"
                                                                  v-if="!scope.row.is_default_warehouse"
                                                                  @click="setDefaultWarehouse(scope.row)">
-                                                                 设为默认仓库
+                                                                 设为默认
                                                       </el-button>
                                                       <el-button size="mini"
                                                                  type="danger"

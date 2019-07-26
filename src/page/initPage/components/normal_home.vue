@@ -1,7 +1,7 @@
 <template>
           <div :class="$style.no_authentication">
-                <el-row style="min-width:1140px;">
-                  <el-col :span="22" :offset="1">
+                <el-row >
+                  <el-col >
                           <div class="home_right">
                             <header>
                               数据栏
@@ -318,7 +318,7 @@ export default {
 }
 .home_right {
   background-color: white;
-  margin: 20px 20px 20px 0;
+  margin: 20px 20px 20px 20px;
   padding: 20px;
   height: 600px;
   border:  @border;
