@@ -78,7 +78,7 @@ export default {
 }
 .side_nav {
   .title_text {
-    margin: 0 30px 0 260px;
+    margin: 0 30px 0 220px;
   }
   .title_texts {
     margin: 0 30px 0 100px;

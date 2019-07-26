@@ -1,82 +1,70 @@
 <template>
-          <div :class="$style.page">
-                <div  :class="$style.main">
-                      <div  :class="$style.header">
-                            <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
-                            <el-row>
-                                    <el-col :span="2"
-                                            :offset="21">
-                                            <el-button  type="text"
-                                                        :class="$style.header_btn"
-                                                        size="small"
-                                                        @click="addInbound"
-                                                        icon="el-icon-plus">
-                                                        {{$t('addInbound')}}
-                                            </el-button>
-                                    </el-col>
-                            </el-row>
-                      </div>
-                      <div  :class="$style.tab">
-                            <el-table  :data="inbound_list_data"
-                                       border
-                                       style="width:100%">
-                                       <el-table-column  type="index"
-                                                         label="#">
-                                       </el-table-column>
-                                       <el-table-column  prop="confirmation_number"
-                                                         :label="$t('confirmationNumber')">
-                                       </el-table-column>
-                                       <el-table-column  prop="batch_type.name"
-                                                         :label="$t('inboundType')">
-                                       </el-table-column>
-                                       <el-table-column  prop="status_name"
-                                                         label="状态">
-                                       </el-table-column>
-                                       <el-table-column  prop="distributor.name_cn"
-                                                         label="供应商">
-                                       </el-table-column>
-                                       <el-table-column label="预/已数量">
-                                                        <template slot-scope="scope">
-                                                                   {{scope.row.total_num.total_need_num}}/{{scope.row.total_num.total_stockin_num}}
-                                                        </template>
-                                       </el-table-column>
-                                       <el-table-column  prop="created_at"
-                                                         label="创建时间">
-                                       </el-table-column>
-                                       <el-table-column  label="操作"  fixed="right"
-                                                         width="240">
-                                             <template slot-scope="scope">
-                                                <el-tooltip content="查看详情" placement="top">
-                                                  <el-button size="medium" icon="el-icon-view"
-                                                              @click="viewDetails(scope.row)"
-                                                              :loading="$store.state.config.button_loading" circle></el-button>
-                                                </el-tooltip>
-                                                <el-tooltip content="入库 &amp;上架" placement="top">
-                                                  <el-button  size="medium" type="primary" icon="el-icon-sell" @click="toInbound(scope.row)" circle></el-button>
-                                                </el-tooltip>
-                                                <el-tooltip content="删除" placement="top">
-                                                  <el-button  size="medium" icon="el-icon-delete"
-                                                                   v-if="scope.row.status !== 3"
-                                                                   style="margin: 0; padding: 10px;"
-                                                                   @click="inboundDelete(scope.row.id)"
-                                                                   type="danger" circle>
-                                                  </el-button>
-                                                </el-tooltip>
-                                            </template>
-                                      </el-table-column>
-                            </el-table>
-                      </div>
-                      <div  :class="$style.pagination">
-                            <pagination-public  :params="params"
-                                                @changePage="handlerChangePage">
-                            </pagination-public>
-                      </div>
+    <div :class="$style.page">
+          <div  :class="$style.main">
+                <div  :class="$style.header">
+                      <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
+                      <el-row>
+                        <el-col :span="2"
+                                :offset="21">
+                            <el-button  type="text"
+                                        :class="$style.header_btn"
+                                        size="small"
+                                        @click="addInbound"
+                                        icon="el-icon-plus">
+                                        {{$t('addInbound')}}
+                            </el-button>
+                        </el-col>
+                      </el-row>
                 </div>
-                <!-- 入库单详情弹框 -->
-                <detail-dialog  :visible.sync="inboundDialogVisible"
-                                :id="id">
-                </detail-dialog>
+                <div  :class="$style.tab">
+                  <el-table  :data="inbound_list_data" border>
+                     <el-table-column type="selection" width="40"></el-table-column>
+                     <el-table-column  prop="confirmation_number" label="单据编号" width="150">
+                     </el-table-column>
+                     <el-table-column  prop="batch_type.name" label="类型">
+                     </el-table-column>
+                     <el-table-column  prop="status_name" label="状态" width="100">
+                     </el-table-column>
+                     <el-table-column  prop="distributor.name_cn" label="供应商">
+                     </el-table-column>
+                     <el-table-column  prop="total_num.total_need_num" label="预计数量" width="100">
+                     </el-table-column>
+                     <el-table-column  prop="total_num.total_stockin_numn" label="实际数量" width="100">
+                     </el-table-column>
+                     <el-table-column  prop="created_at" label="创建时间" width="155">
+                     </el-table-column>
+                     <el-table-column  label="操作"  fixed="right" width="200">
+                           <template slot-scope="scope">
+                              <el-tooltip content="查看详情" placement="top">
+                                <el-button size="mini" icon="el-icon-view" round
+                                            @click="viewDetails(scope.row)"
+                                            :loading="$store.state.config.button_loading"></el-button>
+                              </el-tooltip>
+                              <el-tooltip content="入库 &amp;上架" placement="top">
+                                <el-button  size="mini" type="primary" icon="el-icon-sell" @click="toInbound(scope.row)" round></el-button>
+                              </el-tooltip>
+                              <el-tooltip content="删除" placement="top">
+                                <el-button  size="mini" icon="el-icon-delete"
+                                                 v-if="scope.row.status !== 3"
+                                                 @click="inboundDelete(scope.row.id)"
+                                                 type="danger" round>
+                                </el-button>
+                              </el-tooltip>
+                          </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+                <div  :class="$style.pagination">
+                      <pagination-public  :params="params"
+                                          @changePage="handlerChangePage">
+                      </pagination-public>
+                </div>
           </div>
+          <!-- 入库单详情弹框 -->
+          <detail-dialog  :visible.sync="inboundDialogVisible"
+                          :id="id">
+          </detail-dialog>
+    </div>
 </template>
 
 <script>
@@ -279,7 +267,7 @@ export default {
 .page {
   margin: 20px 0 0 0;
   .main {
-    width: 90%;
+    width: 96%;
     margin: 0 auto;
     .header {
       margin: 10px 0 10px 0;

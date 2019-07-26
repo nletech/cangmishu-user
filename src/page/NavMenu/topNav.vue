@@ -2,8 +2,7 @@
 <div>
   <div
     :class="$style.top_nav"
-    class="top_nav"
-  >
+    class="top_nav">
     <div :class="$style.nav">
        <div  :class="$style.top_nav_logo"
              :style="{ width: sideNavStatus ? '80px' : '200px' }">
@@ -14,44 +13,33 @@
             :class="$style.side_nav_switch">
             <i class="iconfont">&#xe622;</i>
       </div>
-      <!-- <div :class="$style.lang_switch">
-        <el-dropdown>
-          <span class="el-dropdown-link">
-            English<i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="a">简体中文</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div> -->
-      <!-- 以上是wms旧代码 -->
       <!-- 切换仓库 选择按钮 -->
       <div  :class="$style.selectedTag">
             <div v-if="+UType !== 0">
               <div style="font-size: 1.2rem; text-align: center; line-height: 80px;">
-                    <span>{{default_warehouse_name}}</span>
+                  <i class="medium el-icon-house"></i> <span>{{default_warehouse_name}}</span>
               </div>
             </div>
             <div v-else>
-                        <el-dropdown  :class="$style.selectedTag_main">
-                                      <el-button :class="$style.selectedTag_main_btn">
-                                                <span>{{default_warehouse_name}}</span>
-                                                <i class="el-icon-arrow-down el-icon--right"></i>
-                                      </el-button>
-                                      <el-dropdown-menu  slot="dropdown"
-                                                        :class="$style.selectedTag_main_dropdown"
-                                                        style="width: 200px; text-align: center;">
-                                                        <el-dropdown-item @click.native="to_store_management">
-                                                                          <span>仓库列表</span>
-                                                        </el-dropdown-item>
-                                                        <el-dropdown-item @click.native="shift_warehouse">
-                                                                        <span>切换仓库</span>
-                                                        </el-dropdown-item>
-                                                        <el-dropdown-item @click.native="to_create_store">
-                                                                        <span>创建仓库</span>
-                                                        </el-dropdown-item>
-                                      </el-dropdown-menu>
-                        </el-dropdown>
+                  <el-dropdown  :class="$style.selectedTag_main">
+                      <el-button type="text">
+                          <i class="medium el-icon-house"></i> <strong>{{default_warehouse_name}}</strong>
+                          <i class="el-icon-arrow-down el-icon--right"></i>
+                      </el-button>
+                      <el-dropdown-menu  slot="dropdown"
+                          :class="$style.selectedTag_main_dropdown"
+                          style="width: 200px; text-align: center;">
+                          <el-dropdown-item @click.native="to_store_management">
+                              <span>仓库列表</span>
+                          </el-dropdown-item>
+                          <el-dropdown-item @click.native="shift_warehouse">
+                              <span>切换仓库</span>
+                          </el-dropdown-item>
+                          <el-dropdown-item @click.native="to_create_store">
+                              <span>创建仓库</span>
+                          </el-dropdown-item>
+                      </el-dropdown-menu>
+                  </el-dropdown>
             </div>
       </div>
     </div>

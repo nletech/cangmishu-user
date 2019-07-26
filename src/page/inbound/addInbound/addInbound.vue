@@ -1,246 +1,255 @@
 <template>
           <div  class="storeManage">
-                <mdoel-form   :colValue="20">
-                              <el-form  slot="left"
-                                        label-width="120px"
-                                        :rules="formValidator"
-                                        :model="form"
-                                        ref="form">
-                                      <!-- 基本信息 -->
-                                        <label class="label"> {{$t('EssentialInformation')}}</label>
-                                        <!-- 入库单分类 -->
-                                        <el-form-item :label="$t('inboundType')"
-                                                      prop="type_id">
-                                                      <el-select v-model="form.type_id">
-                                                                <el-option
-                                                                  v-for="item in batchTypeList"
-                                                                  :label="item.name"
-                                                                  :disabled="item.is_enabled === 0"
-                                                                  :value="item.id" :key="item.id">
-                                                                </el-option>
-                                                      </el-select>
-                                        </el-form-item>
-                                        <!-- 确认入库单编号 -->
-                                        <el-form-item label="入库单编号"
-                                                      prop="confirmation_number">
-                                                      <el-input v-model="form.confirmation_number"></el-input>
-                                        </el-form-item>
-                                        <!-- 供应商 -->
-                                        <el-form-item :label="$t('distributor')"
-                                                      prop="distributor_id">
-                                                      <el-select  v-model="form.distributor_id"
-                                                                  filterable
-                                                                  placeholder="输入关键字以搜索">
-                                                                  <el-option  v-for="item in distributorSelectList"
-                                                                              :label="item.name_cn"
-                                                                              :value="item.id" :key="item.id">
-                                                                  </el-option>
-                                                      </el-select>
-                                                      <el-button @click="onDistributor">
-                                                                {{$t('distributorManagement')}}
-                                                      </el-button>
-                                        </el-form-item>
-                                        <label class="label"> {{'待入库商品清单'}}</label>
-                                        <el-button @click="showDialog">
-                                                    {{'选择商品'}}
+                <mdoel-form   :colValue="24">
+                    <el-form  slot="left" :inline="true"
+                              :rules="formValidator"
+                              :model="form" label-width="100px"
+                              ref="form">
+                        <label class="label"> {{$t('EssentialInformation')}}</label>
+                        <!-- 入库单分类 -->
+                        <el-row>
+                          <el-col>
+                              <el-form-item :label="$t('inboundType')" 
+                                            prop="type_id">
+                                            <el-select v-model="form.type_id">
+                                                      <el-option
+                                                        v-for="item in batchTypeList"
+                                                        :label="item.name"
+                                                        :disabled="item.is_enabled === 0"
+                                                        :value="item.id" :key="item.id">
+                                                      </el-option>
+                                            </el-select>
+                              </el-form-item>
+                          </el-col>
+                        </el-row>
+                        <el-row>
+                          <el-col :span="10">
+                              <!-- 供应商 -->
+                              <el-form-item label="供应商" label-position="right"
+                                            prop="distributor_id">
+                              <el-select  v-model="form.distributor_id" placeholder="请选择供应商">
+                                  <el-option  v-for="item in distributorSelectList"
+                                              :label="item.name_cn"
+                                              :value="item.id" :key="item.id">
+                                  </el-option>
+                              </el-select>
+                              <el-button @click="onDistributor" icon="el-icon-more"></el-button>
+                              </el-form-item>
+                          </el-col>
+                          <el-col :span="7" :offset="7">
+                              <!-- 确认入库单编号 -->
+                              <el-form-item label="单据编号" label-position="right"
+                                            prop="confirmation_number">
+                                  <el-input v-model="form.confirmation_number"  class="noborder" prefix-icon="el-icon-tickets"></el-input>
+                              </el-form-item>
+                          </el-col>
+                        </el-row>
+                        <el-row>
+                          <el-col>
+                            <label class="label" style="float:left; width:80px;">商品清单 </label>
+                            <div style="float:left; width:300px;">
+                                <el-button size="mini" @click="showDialog" type="primary" plain>选择商品规格 <i class="el-icon-more el-icon--right"></i> </el-button>
+                                <span class="sub-title">带*为必填项</span>
+                            </div>
+                          </el-col>
+                        </el-row>
+                        <el-row>
+                          <el-col>
+                              <el-table :data="goodsList" empty-text="请选择商品规格">
+                                        <el-table-column  type="index"
+                                                          label="#" fixed>
+                                        </el-table-column>
+                                        <el-table-column label="商品规格名称" prop="product_name" width="200px" fixed></el-table-column>
+                                        <el-table-column label="SKU" prop="relevance_code" width="150px"></el-table-column>
+                                        <el-table-column :label="$t('inboundNumbers')"
+                                                        width="150px;">
+                                                        <template slot-scope="scope">
+                                                                  <el-input-number
+                                                                    size="mini"
+                                                                    v-model="scope.row.need_num"
+                                                                    :min="1">
+                                                                  </el-input-number>
+                                                        </template>
+                                        </el-table-column>
+                                        <el-table-column label="进货价格（元）"
+                                                        min-width="80px">
+                                                          <template slot-scope="scope">
+                                                                    <el-input size="mini"
+                                                                              v-model="scope.row.distributor_code">
+                                                                    </el-input>
+                                                          </template>
+                                        </el-table-column>
+                                        <el-table-column :label="$t('remarks')">
+                                                        <template slot-scope="scope">
+                                                                  <el-input size="mini" v-model="scope.row.remark"></el-input>
+                                                        </template>
+                                        </el-table-column>
+                                        <el-table-column min-width="60px">
+                                          <template slot-scope="scope">
+                                              <el-tooltip content="删除" placement="top">
+                                                <el-button  size="mini" icon="el-icon-delete"
+                                                                 @click="removeGoods(scope.$index)"
+                                                                 type="danger" round>
+                                                </el-button>
+                                              </el-tooltip>
+                                          </template>
+                                        </el-table-column>
+                              </el-table>
+                          </el-col>
+                        </el-row>
+                              <!-- 运输方式 -->
+                              <label class="label"> {{$t('notNecessaryInfo')}} </label>
+                              <el-row>
+                                <el-col>
+                                  <el-form-item :label="$t('planInboundTime')">
+                                            <el-row>>
+                                              <el-col :span="12"
+                                                      style="padding:0;">
+                                                      <el-date-picker v-model="startDate"
+                                                                      type="date"
+                                                                      :placeholder="$t('startDate')"
+                                                                      :picker-options="pickerOptions"
+                                                                      value-format="yyyy-MM-dd"
+                                                                      size="small">
+                                                      </el-date-picker>
+                                              </el-col>
+                                              <el-col  :span="5"  :offset="1">
+                                                       <el-time-select  v-model="startTime"
+                                                                        :picker-options="{
+                                                                          start: '00:00',
+                                                                          step: '00:30',
+                                                                          end: '23:30'
+                                                                        }"
+                                                                        :placeholder="$t('startTime')"
+                                                                        size="small">
+                                                       </el-time-select>
+                                                </el-col>
+                                              </el-row>
+                                              <el-row>
+                                              <el-col  :span="12">
+                                                       <el-date-picker  v-model="endDate"
+                                                                        type="date"
+                                                                        :placeholder="$t('endDate')"
+                                                                        :picker-options="pickerOptions"
+                                                                        value-format="yyyy-MM-dd"
+                                                                       size="small">
+                                                       </el-date-picker>
+                                              </el-col>
+                                              <el-col :span="5"  :offset="1">
+                                                      <el-time-select  v-model="endTime"
+                                                                      :picker-options="{
+                                                                        start: '00:00',
+                                                                        step: '00:30',
+                                                                        end: '23:30'
+                                                                      }"
+                                                                      :placeholder="$t('endTime')"
+                                                                      size="small">
+                                                      </el-time-select>
+                                                </el-col>
+                                            </el-row>
+                                    </el-form-item>
+                                  </el-col>
+                              </el-row>
+                              <el-row>
+                                <el-col :span="24">
+                                  <el-form-item :label="$t('remarks')">
+                                                <el-input v-model="form.remark"
+                                                          type="textarea"
+                                                          placeholder="最多不超过30个字"
+                                                          :maxlength="30"
+                                                          :autosize="{ minRows: 4, maxRows: 6}">
+                                                </el-input>
+                                  </el-form-item>
+                                </el-col>
+                              </el-row>
+                              <el-row>
+                                <el-col>
+                                    <el-form-item>
+                                        <el-button @click="onSave('form')"
+                                                  type="primary"
+                                                  :loading="$store.state.config.button_loading">
+                                                  {{$t('submit')}}
                                         </el-button>
-                                        <el-table :data="goodsList"
-                                                  border style="width: 100%;margin: 20px 0 20px 100px;">
-                                                  <el-table-column  type="index"
-                                                                    label="#">
-                                                  </el-table-column>
-                                                  <el-table-column :label="$t('cnName')" prop="product_name_cn">
-                                                                    <template slot-scope="scope">
-                                                                              {{scope.row.product_name_cn}}
-                                                                    </template>
-                                                  </el-table-column>
-                                                  <el-table-column label="SKU"
-                                                                  width="150px">
-                                                                  <template slot-scope="scope">
-                                                                            {{scope.row.relevance_code}}
-                                                                  </template>
-                                                  </el-table-column>
-                                                  <el-table-column :label="$t('inboundNumbers')"
-                                                                  width="150px;">
-                                                                  <template slot-scope="scope">
-                                                                            <el-input-number
-                                                                              size="mini"
-                                                                              v-model="scope.row.need_num"
-                                                                              :min="1">
-                                                                            </el-input-number>
-                                                                  </template>
-                                                  </el-table-column>
-                                                  <el-table-column :label="$t('distributorNumber')"
-                                                                  min-width="120px">
-                                                                    <template slot-scope="scope">
-                                                                              <el-input size="mini"
-                                                                                        v-model="scope.row.distributor_code">
-                                                                              </el-input>
-                                                                    </template>
-                                                  </el-table-column>
-                                                  <el-table-column :label="$t('remarks')">
-                                                                  <template slot-scope="scope">
-                                                                            <el-input size="mini" v-model="scope.row.remark"></el-input>
-                                                                  </template>
-                                                  </el-table-column>
-                                                  <el-table-column :label="$t('operation')">
-                                                                    <template slot-scope="scope">
-                                                                              <el-button @click="removeGoods(scope.$index)" size="mini">{{$t('delete')}}</el-button>
-                                                                    </template>
-                                                  </el-table-column>
-                                        </el-table>
-                                        <!-- 运输方式 -->
-                                        <label class="label"> {{$t('notNecessaryInfo')}} </label>
-                                        <el-form-item :label="$t('planInboundTime')">
-                                                      <div class="start-time">
-                                                        <el-col :span="10" :offset="1"
-                                                                style="padding:0;">
-                                                                <el-date-picker v-model="startDate"
-                                                                                type="date"
-                                                                                :placeholder="$t('startDate')"
-                                                                                :picker-options="pickerOptions"
-                                                                                value-format="yyyy-MM-dd"
-                                                                                size="small">
-                                                                </el-date-picker>
-                                                        </el-col>
-                                                        <el-col  :span="5"
-                                                                 style="padding:0;">
-                                                                 <el-time-select  v-model="startTime"
-                                                                                  :picker-options="{
-                                                                                    start: '00:00',
-                                                                                    step: '00:30',
-                                                                                    end: '23:30'
-                                                                                  }"
-                                                                                  :placeholder="$t('startTime')"
-                                                                                  size="small">
-                                                                 </el-time-select>
-                                                          </el-col>
-                                                        </div>
-                                                        <div class="start-time">
-                                                        <el-col  :span="10" :offset="1"
-                                                                 style="padding:0;">
-                                                                 <el-date-picker  v-model="endDate"
-                                                                                  type="date"
-                                                                                  :placeholder="$t('endDate')"
-                                                                                  :picker-options="pickerOptions"
-                                                                                  value-format="yyyy-MM-dd"
-                                                                                 size="small">
-                                                                 </el-date-picker>
-                                                        </el-col>
-                                                        <el-col :span="5"
-                                                                style="padding:0;">
-                                                                <el-time-select  v-model="endTime"
-                                                                                :picker-options="{
-                                                                                  start: '00:00',
-                                                                                  step: '00:30',
-                                                                                  end: '23:30'
-                                                                                }"
-                                                                                :placeholder="$t('endTime')"
-                                                                                size="small">
-                                                                </el-time-select>
-                                                          </el-col>
-                                                      </div>
-                                        </el-form-item>
-                                        <el-form-item :label="$t('remarks')">
-                                                      <el-input v-model="form.remark"
-                                                                type="textarea"
-                                                                placeholder="最多不超过30个字"
-                                                                :maxlength="30"
-                                                                :autosize="{ minRows: 4, maxRows: 6}">
-                                                      </el-input>
-                                        </el-form-item>
-                                        <el-form-item>
-                                                      <el-row>
-                                                              <el-col :span="6" :offset="10">
-                                                                      <el-button @click="onSave('form')"
-                                                                                type="primary"
-                                                                                :loading="$store.state.config.button_loading">
-                                                                                {{$t('submit')}}
-                                                                      </el-button>
-                                                                      <el-button @click="$router.go(-1)">
-                                                                                {{$t('cancel')}}
-                                                                      </el-button>
-                                                              </el-col>
-                                                      </el-row>
-                                        </el-form-item>
-                              </el-form>
+                                        <el-button @click="$router.go(-1)">
+                                                  {{$t('cancel')}}
+                                        </el-button>
+                                    </el-form-item>
+                              </el-col>
+                            </el-row>
+                    </el-form>
                 </mdoel-form>
                 <!-- 选择商品弹窗 -->
                 <el-dialog  title="选择商品"
                             width="80%"
                             :visible.sync="goodsDialog"
-                            :show-close="false"
                             :before-close="handleClose">
-                            <!-- 请选择 -->
-                            <el-row :class="$style.header">
-                                    <!-- 选择框 -->
-                                    <el-col :span="4"
-                                            :class="$style.myselect">
-                                            <el-select  v-model="SelectedGoodsType"
-                                                        @change="handlerSelect"
-                                                        clearable
-                                                        @clear="handlerClearGoodsTypes"
-                                                        placeholder="请选择分类">
-                                                        <el-option  v-for="item in goodsTypes"
-                                                                    :label="item.name_cn"
-                                                                    :value="item.id" :key="item.id">
-                                                        </el-option>
-                                            </el-select>
-                                    </el-col>
-                                    <!-- 搜索框 -->
-                                    <el-col   :span="4" :offset="6">
-                                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="select_batch_code">
-                                        </el-input>
-                                        <el-button type="primary" icon="el-icon-search">搜索</el-button>
-                                    </el-col>
-                                    <!-- 添加商品 -->
-                                    <el-col :span="2" :offset="8">
-                                            <el-button @click="handlerAddGoods">
-                                              添加商品
-                                            </el-button>
-                                    </el-col>
-                            </el-row>
-                            <!-- 数据表 -->
+                  <el-row :gutter="20">
+                    <el-col :span="5">请选择货品分类</el-col>
+                    <el-col :span="19">
+                        <!-- 搜索框 -->
+                        <el-row :gutter="20" type="flex">
+                          <el-col  :span="12">
+                              <el-input placeholder="请输入内容">
+                                  <el-button slot="append" type="primary" icon="el-icon-search"></el-button>
+                              </el-input>
+                          </el-col>
+                          <!-- 添加商品 -->
+                          <el-col :span="4" :offset="8" >
+                            <div style="float:right">
+                            <el-button @click="handlerAddGoods">
+                              添加商品
+                            </el-button>
+                            </div>
+                          </el-col>
+                        </el-row>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="5">
+                        <el-tree
+                          :props="{label:'name_cn'}"
+                          :data="goodsTypes"
+                          default-expand-all
+                          @node-click="handlerSelect"
+                          :expand-on-click-node="false"></el-tree>
+                    </el-col>
+                    <el-col :span="19">
+                        <!-- 数据表 -->
                         <el-table :data="goods"
                                   ref="table"
                                   border
-                          style="width: 100%">
-                            <el-table-column
-                              type="selection"
-                              width="55">
+                                  @selection-change="rowClickGoods" style="width: 100%; margin-top:10px;">
+                            <el-table-column type="selection" width="60"></el-table-column>
+                            <el-table-column type="index" label="序号" width="60"></el-table-column>
+                            <el-table-column type="index" label="入库数量" width="160">
+                              <template slot-scope="scope">
+                                  <el-input-number size="mini" value="0"></el-input-number>
+                              </template>
                             </el-table-column>
-                            <el-table-column
-                              type="index"
-                              :index="indexMethod">
-                            </el-table-column>
-                            <el-table-column  label="商品规格名称"
-                                              prop="name_cn">
-                            </el-table-column>
-                            <el-table-column  label="单位"
-                                              prop="name_en">
-                            </el-table-column>
-                            <el-table-column  label="毛重"
-                                              prop="name_en">
-                            </el-table-column>
-                            <el-table-column  label="参考进货价"
-                                              prop="name_en">
-                            </el-table-column>
-                            <el-table-column  label="当前库存"
-                                              prop="name_en">
-                            </el-table-column>
+                            <el-table-column  label="商品名称及规格" prop="product_name"></el-table-column>
+                            <el-table-column  label="参考进货价（元）" prop="sale_price"></el-table-column>
+                            <el-table-column  label="当前库存" prop="net_weight"></el-table-column>
                         </el-table>
                         <button-pagination :pageParams="params"></button-pagination>
-                        <span slot="footer"
-                              class="dialog-footer">
-                              <el-button  type="primary"
-                                          @click="confirmSelected"
-                                          :loading="$store.state.btn_loading"
-                                          :disabled="!this.goodsSelected.length">
-                                          提交
-                              </el-button>
-                              <el-button @click="handleClose()">取消</el-button>
-                        </span>
-                      </el-dialog>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="5">
+                      该入库单已添加{{goodsSelected.length}}种商品
+                    </el-col>
+                    <el-col :span="19" class="dialog-footer">
+                      <div style="float:right">
+                        <el-button  type="primary"
+                                    @click="confirmSelected"
+                                    :loading="$store.state.btn_loading"
+                                    :disabled="!this.goodsSelected.length">
+                                    提交
+                        </el-button>
+                        <el-button @click="handleClose()">取消</el-button>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </el-dialog>
                 <!-- 供应商管理弹窗 -->
                 <el-dialog  title="供应商管理"
                             :visible.sync="distributorListShow"
@@ -267,21 +276,21 @@
 
                                             <el-table-column  label="操作"
                                                               width="200">
-                                                              <template slot-scope="scope">
-                                                                        <!-- 编辑 -->
-                                                                        <el-button  @click="distributorEdit(scope.row)"
-                                                                                    size="small"
-                                                                                    >
-                                                                                    {{$t('edit')}}
-                                                                        </el-button>
-                                                                        <!-- 删除 -->
-                                                                        <el-button  @click="distributorDelete(scope.row.id)"
-                                                                                    type="danger"
-                                                                                    size="small"
-                                                                                    plain>
-                                                                                    {{$t('delete')}}
-                                                                        </el-button>
-                                                              </template>
+                                                  <template slot-scope="scope">
+                                                            <!-- 编辑 -->
+                                                            <el-button  @click="distributorEdit(scope.row)"
+                                                                        size="small"
+                                                                        >
+                                                                        {{$t('edit')}}
+                                                            </el-button>
+                                                            <!-- 删除 -->
+                                                            <el-button  @click="distributorDelete(scope.row.id)"
+                                                                        type="danger"
+                                                                        size="small"
+                                                                        plain>
+                                                                        {{$t('delete')}}
+                                                            </el-button>
+                                                  </template>
                                             </el-table-column>
                                   </el-table>
                                   <el-pagination  style="margin: 10px 0 0 0; float: right;"
@@ -456,7 +465,7 @@ export default {
       this.params.warehouse_id = this.warehouseId;
       this.goods = [];
       // 获取商品列表(商品是规格)
-      $http.getProducts({ warehouse_id: this.warehouseId })
+      $http.querySpecs({ warehouse_id: this.warehouseId })
         .then((res) => {
           this.goods = res.data.data;
           this.params.data_count = res.data.total;
@@ -477,9 +486,9 @@ export default {
           this.goodsTypes = res.data.data;
         });
     },
-    handlerSelect(val) {
-      $http.queryProducts({
-        category_id: val,
+    handlerSelect(item) {
+      $http.querySpecs({
+        category_id: item.id,
         warehouse_id: this.warehouseId,
       })
         .then((res) => {
@@ -541,14 +550,11 @@ export default {
     },
     // 拉取待入库货品列表
     // 货品列表行点击
-    rowClickGoods(row) {
-      this.$set(row, 'checked', !row.checked);
-      if (row.checked) {
-        // eslint-disable-next-line
-        this.goodsSelected.some(item => item.id === row.id) || this.goodsSelected.push(row);
-        return;
+    rowClickGoods(items) {
+      this.goodsSelected = [];
+      for (const item of items) {
+        this.goodsSelected.push(item);
       }
-      this.goodsSelected = this.goodsSelected.filter(item => +item.id !== +row.id);
     },
     // 选择货品弹框确认
     confirmSelected() {
@@ -718,6 +724,12 @@ export default {
 }
 .header {
   margin: 0 0 10px 0;
+}
+.noborder input.el-input__inner {
+    border-radius:0px;
+    border-top:0px;
+    border-left:0px;
+    border-right:0px;
 }
 </style>
 

@@ -19,13 +19,13 @@
                           </el-table-column>
                           <el-table-column  header-align="center"
                                             align="center"
-                                            prop="name_cn"
-                                            label="仓库名称">
+                                            prop="code"
+                                            label="编号">
                           </el-table-column>
                           <el-table-column  header-align="center"
                                             align="center"
-                                            prop="code"
-                                            label="仓库编号">
+                                            prop="name_cn"
+                                            label="仓库名称">
                           </el-table-column>
                           <el-table-column  header-align="center"
                                             align="center"
@@ -35,37 +35,38 @@
                           </el-table-column>
                           <el-table-column  header-align="center"
                                             align="center"
-                                            prop="warehouse_feature"
-                                            label="仓库性质">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
                                             prop="area"
-                                            label="仓库面积(㎡)">
+                                            label="面积(㎡)">
                           </el-table-column>
                           <el-table-column  header-align="center" fixed="right"
                                             label="操作" width="200">
-                                            <template slot-scope="scope">
-                                                      <el-button size="mini"
-                                                                 @click="edit(scope.row)">
-                                                                 编辑
-                                                      </el-button>
-                                                      <el-button size="mini"
-                                                                 @click="config(scope.row)">
-                                                                 配置
-                                                      </el-button>
-                                                      <el-button size="mini"
-                                                                 v-if="!scope.row.is_default_warehouse"
-                                                                 @click="setDefaultWarehouse(scope.row)">
-                                                                 设为默认
-                                                      </el-button>
-                                                      <el-button size="mini"
-                                                                 type="danger"
-                                                                 v-if="!scope.row.is_default_warehouse"
-                                                                 @click="deleteWarehouse(scope.row)">
-                                                                 删除
-                                                      </el-button>
-                                            </template>
+                              <template slot-scope="scope">
+                                <el-tooltip content="编辑" placement="top">
+                                        <el-button size="mini" icon="el-icon-edit" round
+                                                   @click="edit(scope.row)">
+                                        </el-button>
+                                </el-tooltip>
+                                <el-tooltip content="配置" placement="top">
+                                        <el-button type="primary" size="mini" icon="el-icon-setting" round
+                                                   @click="config(scope.row)">
+                                        </el-button>
+                                </el-tooltip>
+                                <el-tooltip content="设为默认" placement="top">
+                                        <el-button size="mini"
+                                                   v-if="!scope.row.is_default_warehouse" round
+                                                   icon="el-icon-house"
+                                                   @click="setDefaultWarehouse(scope.row)">
+                                        </el-button>
+                                </el-tooltip>
+                                <el-tooltip content="删除" placement="top">
+                                        <el-button size="mini"
+                                                   type="danger" round
+                                                   v-if="!scope.row.is_default_warehouse"
+                                                   icon="el-icon-delete"
+                                                   @click="deleteWarehouse(scope.row)">
+                                        </el-button>
+                                </el-tooltip>
+                              </template>
                           </el-table-column>
               </el-table>
               <!-- 分页 -->
@@ -196,7 +197,7 @@ export default {
   margin: 20px 0 20px 0;
   .body_main {
     margin: 0 auto;
-    width: 90%;
+    width: 96%;
     .btn {
       display: block;
       font-size: 1.2rem;

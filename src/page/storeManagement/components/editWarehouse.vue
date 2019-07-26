@@ -4,8 +4,6 @@
                       @update:visible="$emit('update:visible', $event)"
                       :visible="visible"
                       width="80%">
-                      <el-row :class="$style.add_warehouse_main" :gutter="20">
-                              <el-col  >
                                       <el-form
                                                 label-width="140px"
                                                 :rules="rules"
@@ -16,13 +14,15 @@
                                                 <el-form-item  prop="name_cn"
                                                                label="仓库名称"
                                                                size="medium">
-                                                               <el-input  v-model="warehouseInfo.name_cn"></el-input>
+                                                    <el-input  v-model="warehouseInfo.name_cn"  maxlength="30" show-word-limit></el-input>
                                                 </el-form-item>
                                                 <el-form-item  prop="code"
                                                                label="仓库编码"
                                                                size="medium">
-                                                               <el-input  v-model="warehouseInfo.code"></el-input>
-                                                               <div class="sub-title">仓库代码是唯一标识</div>
+                                                    <el-col :span="5">
+                                                    <el-input  v-model="warehouseInfo.code"  maxlength="10" show-word-limit></el-input>
+                                                    <div class="sub-title">仓库代码是唯一标识</div>
+                                                    </el-col>
                                                 </el-form-item>
                                                 <el-form-item  prop="address"
                                                                label="省市区"
@@ -43,12 +43,13 @@
 
                                                 <label class="label">扩展信息</label>
                                                 <el-form-item  prop="area"
-                                                               label="面积 (平方米)"
+                                                               label="仓库面积"
                                                                size="medium">
-                                                  <el-col :span="10">
-                                                     <el-input-number v-model="warehouseInfo.area" :min="1" :max="100000" label="平方米"></el-input-number>
+                                                  <el-col :span="5">
+                                                      <el-input placeholder="平方米" v-model="warehouseInfo.area">
+                                                        <template slot="append">m²</template>
+                                                      </el-input>
                                                   </el-col>
-                                                  <el-col class="line" :span="2">m²</el-col>
                                                 </el-form-item>
                                                 <el-form-item  label="启用多语言输入">
                                                     <el-switch
@@ -64,8 +65,6 @@
                                                   <el-button @click="visible = false">取消</el-button>
                                                 </el-form-item>
                                       </el-form>
-                              </el-col>
-                      </el-row>
           </el-dialog>
 </template>
 

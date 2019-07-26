@@ -118,6 +118,9 @@ const $http = {
   deleteSpecs(id) {
     return Axios.delete(`/specs/${id}`);
   }, // 删除货品规格
+  querySpecs(data) {
+    return Axios.get('/specs', { params: data });
+  }, // 查询规格商品
   //                                               库存盘点
   queryInventory(data) {
     return Axios.get('stock/code', { params: data });

@@ -1,20 +1,19 @@
 <template>
           <div>
-                <el-row>
-                        <el-col :span="3">
-                                  <el-date-picker  v-model="dateValue"
-                                                   @change="handlerChange"
-                                                    clearable
-                                                    type="daterange"
-                                                    start-placeholder="开始日期"
-                                                    end-placeholder="结束日期"
-                                                    size="small"
-                                                    value-format="yyyy-MM-dd"
-                                                    :default-time="['00:00:00', '23:59:59']">
-                                  </el-date-picker>
+                <el-row :gutter="20">
+                        <el-col :span="8">
+                              <el-date-picker  v-model="dateValue"
+                                               @change="handlerChange"
+                                                clearable
+                                                type="daterange"
+                                                start-placeholder="开始日期"
+                                                end-placeholder="结束日期"
+                                                size="small"
+                                                value-format="yyyy-MM-dd"
+                                                :default-time="['00:00:00', '23:59:59']">
+                              </el-date-picker>
                         </el-col>
-                        <el-col :span="3"
-                                :offset="5">
+                        <el-col :span="3">
                                 <el-select  v-model="inboundTypeValue"
                                             clearable
                                             @change="handlerChange"
@@ -27,8 +26,7 @@
                                             </el-option>
                                 </el-select>
                         </el-col>
-                        <el-col :span="3"
-                                :offset="1">
+                        <el-col :span="3">
                                 <el-select  v-model="inboundStatus"
                                             clearable
                                             size="small"
@@ -41,8 +39,7 @@
                                             </el-option>
                                 </el-select>
                         </el-col>
-                        <el-col :span="3"
-                                :offset="1">
+                        <el-col :span="3">
                                 <el-select  v-model="distributorValue"
                                             clearable
                                             size="small"
@@ -55,25 +52,10 @@
                                             </el-option>
                                 </el-select>
                         </el-col>
-                        <el-col :span="4"
-                                :offset="1">
-                                <el-row>
-                                        <el-col :span="20">
-                                                <el-input v-model="codeValue"
-                                                          clearable
-                                                          @change="handlerChange"
-                                                          @clear="handlerChange"
-                                                          size="small"
-                                                          placeholder="请输入确认单号">
-                                                </el-input>
-                                        </el-col>
-                                        <el-col :span="2">
-                                                <el-button size="small"
-                                                           @click="handlerChange">
-                                                          搜索
-                                                </el-button>
-                                        </el-col>
-                                </el-row>
+                        <el-col :span="5">
+                            <el-input size="small" placeholder="请输入单据编号" v-model="codeValue" @change="handlerChange" @clear="handlerChange">
+                              <el-button slot="append" icon="el-icon-search" @click="handlerChange"></el-button>
+                            </el-input>
                         </el-col>
                 </el-row>
           </div>
