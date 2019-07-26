@@ -66,7 +66,7 @@ export default {
 @import '../less/public_variable.less';
 .wms_tag_container {
   margin: 10px 0 10px 0;
-  padding: 0 20px 0 48px;
+  padding: 0 20px 0 20px;
   background: @white;
   .text_right {
     text-align: right;

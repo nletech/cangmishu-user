@@ -169,19 +169,17 @@
                                       </template>
                     </el-table-column>
                     <!-- 操作 -->
-                    <el-table-column  :label="$t('operation')"
-                                      header-align="center"
-                                      width="170" fixed="right">
-                                    <template slot-scope="scope">
-                                        <el-tooltip content="编辑" placement="top">
-                                          <el-button  size="mini" icon="el-icon-edit"
-                                                      @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)" circle></el-button>
-                                        </el-tooltip>
-                                        <el-tooltip content="删除" placement="top">
-                                          <el-button  type="danger" size="mini" icon="el-icon-delete" @click="deleteCommodity(scope.row.id)" circle>
-                                          </el-button>
-                                        </el-tooltip>
-                                    </template>
+                    <el-table-column  :label="$t('operation')" header-align="center" width="150" fixed="right">
+                        <template slot-scope="scope">
+                            <el-tooltip content="编辑" placement="top">
+                              <el-button  size="mini" icon="el-icon-edit"
+                                          @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)"></el-button>
+                            </el-tooltip>
+                            <el-tooltip content="删除" placement="top">
+                              <el-button  type="danger" size="mini" icon="el-icon-delete" @click="deleteCommodity(scope.row.id)">
+                              </el-button>
+                            </el-tooltip>
+                        </template>
                     </el-table-column>
           </el-table>
           <button-pagination :pageParams="params"></button-pagination>

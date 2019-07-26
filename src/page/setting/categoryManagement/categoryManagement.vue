@@ -6,9 +6,9 @@
                   <el-row>
                         <!-- 添加按钮 -->
                         <div :class="$style.am_operation_btn">
-                          <span @click="dialogVisible = true;">
+                          <span @click="addCategory()">
                             <i class="iconfont">&#xe618;</i>
-                            {{'添加货品分类'}}
+                            添加货品分类
                           </span>
                         </div>
                         <!-- 列表信息-->
@@ -74,7 +74,7 @@
                                                     </el-button>
                                                     <el-button size="mini"
                                                               type="danger"
-                                                              @click="delClassification(scope.row)">
+                                                              @click="delCategory(scope.row)">
                                                               删除
                                                     </el-button>
                                                   </template>
@@ -92,90 +92,55 @@
                   </el-row>
             </div>
       </div>
-      <!-- 添加货品分类 -->
-      <el-dialog  title="添加货品分类"
-                  :visible.sync="dialogVisible"
-                  @close="handlerClose"
-                  width="40%">
-                  <el-form  ref="form"
-                            :rules="rules"
-                            :model="category_info_add"
-                            label-width="140px">
-                            <el-form-item label="分类中文名:"
-                                          style="width: 80%;"
-                                          prop="name_cn">
-                                          <el-input v-model="category_info_add.name_cn"></el-input>
-                            </el-form-item>
-                            <el-form-item label="分类英文名:"
-                                          style="width: 80%;"
-                                          prop="name_en">
-                                          <el-input v-model="category_info_add.name_en"></el-input>
-                            </el-form-item>
-                            <el-form-item label="SKU属性:"
-                                          prop="add_sku_property">
-                                          <el-checkbox-group  v-model="add_sku_property"
-                                                              @change="handleChangeCheckbox">
-                                                              <el-checkbox label="保质期"></el-checkbox>
-                                                              <el-checkbox label="生产批次"></el-checkbox>
-                                                              <el-checkbox label="最佳食用期"></el-checkbox>
-                                          </el-checkbox-group>
-                            </el-form-item>
-                            <el-form-item  label="是否启用"
-                                           prop="is_enabled">
-                                           <el-switch  v-model="category_info_add.is_enabled"
-                                                       active-color="#13ce66"
-                                                       active-value="1"
-                                                       inactive-value="0"
-                                                       inactive-color="#ccc">
-                                           </el-switch>
-                            </el-form-item>
-                  </el-form>
-                  <span  slot="footer"
-                         class="dialog-footer">
-                         <el-button type="primary" @click="submit_form">提 交</el-button>
-                  </span>
-      </el-dialog>
       <!-- 编辑货品分类 -->
-      <el-dialog  title="编辑货品分类"
-                  :visible.sync="editDialogVisible"
-                  @close="handlerCloseEdit"
-                  width="40%">
+      <el-dialog  :title="getDailogTitle()"
+                  :visible.sync="dialogVisible"
+                  width="800">
                   <el-form  ref="editForm"
                             :rules="rules"
-                            :model="category_info_edit"
+                            :model="model"
                             label-width="140px">
+                    <h4>基本信息</h4>
                             <el-form-item label="分类中文名:"
-                                          style="width: 80%;"
                                           prop="name_cn">
-                                          <el-input v-model="category_info_edit.name_cn"></el-input>
+                                <el-input v-model="model.name_cn" maxlength="10" show-word-limit></el-input>
                             </el-form-item>
                             <el-form-item label="分类英文名:"
-                                          style="width: 80%;"
                                           prop="name_en">
-                                          <el-input v-model="category_info_edit.name_en"></el-input>
+                                <el-input v-model="model.name_en" maxlength="20" show-word-limit></el-input>
                             </el-form-item>
-                            <el-form-item label="SKU属性:"
-                                          prop="add_sku_property">
-                                          <el-checkbox-group  v-model="edit_sku_property"
-                                                              @change="handleChangeCheckboxEdit">
-                                                              <el-checkbox label="保质期"></el-checkbox>
-                                                              <el-checkbox label="生产批次"></el-checkbox>
-                                                              <el-checkbox label="最佳食用期"></el-checkbox>
-                                          </el-checkbox-group>
+                    <h4>选填项</h4>
+                            <el-form-item label="保质期"
+                                          prop="name_en">
+                                <el-row>
+                                    <el-switch v-model="model.need_expiration_date" :active-value="1" :inactive-value="0"></el-switch>
+                                    <el-popover placement="right-start" title="保质期作用" width="300" trigger="hover"
+                                    content="开启此选项,该分类下面所有货品上架都需要填写保质期,出库将按商品的保质期截止日期从近到远来出库">
+                                    <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                                    </el-popover>
+                                </el-row>
                             </el-form-item>
-                            <el-form-item  label="是否启用"
-                                           prop="is_enabled">
-                                           <el-switch  v-model="category_info_edit.is_enabled"
-                                                       active-color="#13ce66"
-                                                       :active-value="1"
-                                                       :inactive-value="0"
-                                                       inactive-color="#ccc">
-                                           </el-switch>
-                           </el-form-item>
+                            <el-form-item label="生产批次"
+                                          prop="name_en">
+                                <el-switch v-model="model.need_production_batch_number" :active-value="1" :inactive-value="0"></el-switch>
+                                <el-popover placement="right-start" title="生产批次作用" width="300" trigger="hover"
+                                    content="开启此选项,该分类下面所有货品上架都需要填写生产批次,方便出库时候查询到每次出库的批次信息">
+                                    <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                                </el-popover>
+                            </el-form-item>
+                            <el-form-item label="最佳食用期"
+                                          prop="name_en">
+                                <el-switch v-model="model.need_best_before_date" :active-value="1" :inactive-value="0"></el-switch>
+                                <el-popover placement="right-start" title="最佳食用期作用" width="300" trigger="hover"
+                                    content="开启此选项,该分类下面所有货品上架都需要填写最佳食用期,主要用于食品行业">
+                                    <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                                </el-popover>
+                            </el-form-item>
+
                   </el-form>
                   <span  slot="footer"
                          class="dialog-footer">
-                         <el-button type="primary" @click="edit_submit_form">提 交</el-button>
+                         <el-button type="primary" @click="subimtData">提 交</el-button>
                   </span>
       </el-dialog>
   </div>
@@ -187,8 +152,10 @@ export default {
   name: 'categoryManagement',
   data() {
     return {
-      editDialogVisible: false, // 编辑弹窗
-      category_info_edit: {
+      dialogVisible: false, // 显示弹窗
+      dailogTitle: '新增',
+      model: {
+        id: 0,
         name_cn: '', // 中文名
         name_en: '', // 英文名
         need_expiration_date: 0, // 是否保质期
@@ -196,17 +163,6 @@ export default {
         need_best_before_date: 0, // 是否最佳体验期
         is_enabled: '0', // 是否启用
       }, // 编辑分类
-      category_info_add: {
-        name_cn: '', // 中文名
-        name_en: '', // 英文名
-        is_enabled: '1', // 是否启用
-      }, // 添加分类
-      add_sku_property: [], // sku属性
-      edit_sku_property: [], // 编辑 sku 属性
-      check_list: ['保质期', '生产批次', '最佳食用期'], // 检测sku属性
-      // =====
-      dialogVisible: false, // 添加弹窗
-      id: '', // 分类货品的id（编辑）
       rules: {
         name_cn: [
           { required: true, message: '请填写分类中文名', trigger: 'blur' },
@@ -215,7 +171,6 @@ export default {
           { required: true, message: '请填写分类英文名', trigger: 'blur' },
         ],
       },
-      //
       category_list: [], // 分类列表数据
       total: '', // 列表总条数
       currentPage: 1, // 当前页
@@ -223,10 +178,44 @@ export default {
     };
   },
   created() {
-    this.get_category_list_data(); // 初始化列表数据
+    this.loadData(); // 初始化列表数据
   },
   methods: {
-    get_category_list_data() {
+    setData(model) { // 填充数据
+      this.model.id = model.id;
+      this.model.name_cn = model.name_cn;
+      this.model.name_en = model.name_en;
+      this.model.need_expiration_date = model.need_expiration_date;
+      this.model.need_production_batch_number = model.need_production_batch_number;
+      this.model.need_best_before_date = model.need_best_before_date;
+    },
+    emptyData() { // 清空数据
+      this.setData({
+        id: 0,
+        name_cn: '', // 中文名
+        name_en: '', // 英文名
+        need_expiration_date: 0, // 是否保质期
+        need_production_batch_number: 0, // 是否生产批次
+        need_best_before_date: 0, // 是否最佳体验期
+      });
+    },
+    getDailogTitle() { // 得到标题
+      return this.model.id === 0 ? '新增' : '修改';
+    },
+    getData() { // 填充数据
+      return this.model;
+    },
+    addCategory() {
+      this.dialogVisible = true;
+      this.emptyData();
+    },
+    editCategory(row) {
+      this.dialogVisible = true;
+      this.setData(row);
+    }, // 编辑信息按钮
+    loadData() {
+      this.emptyData();
+      this.dialogVisible = false;
       $http.getCategoryManagement()
         .then((re) => {
           if (re.status) return;
@@ -234,125 +223,21 @@ export default {
           this.category_list = re.data.data;
           this.total = re.data.total;
         });
-    }, // 获取货品分类信息
-    handleChangeCheckbox(sku) {
-      this.add_sku_property = [];
-      this.add_sku_property = [...sku];
     },
-    handleChangeCheckboxEdit(sku) {
-      this.edit_sku_property = [];
-      this.edit_sku_property = [...sku];
-    },
-    handlerClose() {
-      this.add_sku_property = [];
-      // eslint-disable-next-line
-      for (const i in this.category_info_add) {
-        this.category_info_add[i] = '';
-        this.category_info_add.is_enabled = '1';
-      }
-      this.id = '';
-    },
-    handlerCloseEdit() {
-      this.add_sku_property = [];
-      // eslint-disable-next-line
-      for (const i in this.category_info_edit) {
-        this.category_info_edit[i] = '';
-      }
-      this.id = '';
-    },
-    editCategory(row) {
-      this.editDialogVisible = true;
-      this.category_info_edit.name_cn = row.name_cn;
-      this.category_info_edit.name_en = row.name_en;
-      this.category_info_edit.is_enabled = row.is_enabled;
-      this.edit_sku_property = [];
-      /* eslint-disable */
-      for (const item in row) {
-        if (String(item) === 'need_best_before_date' && row[item] === 1) {
-          this.edit_sku_property.push('最佳食用期');
-        }
-        if (String(item) === 'need_expiration_date' && row[item] === 1) {
-          this.edit_sku_property.push('保质期');
-        }
-        if (String(item) === 'need_production_batch_number' && row[item] === 1) {
-          this.edit_sku_property.push('生产批次');
-        }
-      }
-      this.id = row.id; // 用于编辑
-    }, // 编辑信息按钮
-    delClassification(row) {
+    delCategory(row) {
       $http.deleteCategoryManagement(row.id)
         .then((re) => {
           if (re.status) return;
-          this.get_category_list_data();
+          this.loadData();
         });
     }, // 删除信息按钮
-    submit_form() {
-      this.$refs.form.validate((validate) => {
-        if (!validate) return;
-        let form_add = {};
-        form_add.name_cn = this.category_info_add.name_cn;
-        form_add.name_en = this.category_info_add.name_en;
-        form_add.is_enabled = this.category_info_add.is_enabled || '1'; // 是否启用
-        form_add.need_expiration_date = 0;
-        form_add.need_production_batch_number = 0;
-        form_add.need_best_before_date = 0;
-        let arr = this.add_sku_property;
-        for (let i = 0; i < arr.length; i += 1) {
-          if (arr[i] === '保质期') {
-            form_add.need_expiration_date = 1;
-          }
-          if (arr[i] === '生产批次') {
-            form_add.need_production_batch_number = 1;
-          }
-          if (arr[i] === '最佳食用期') {
-            form_add.need_best_before_date = 1;
-          }
-        }
-        // 添加信息
-        $http.addCategoryManagement(form_add)
-          .then((re) => {
-            if (re.status) return;
-            this.$message({
-              type: 'success',
-              message: '添加成功',
-            });
-            this.id = ''; // 初始化编辑标志
-            // 更新数据
-            this.get_category_list_data();
-          });
-        // 编辑信息
-        for (const item in this.category_info_add) {
-          this.category_info_add[item] = '';
-        } // 清空表单
-        this.dialogVisible = false;
-      });
-    }, // 提交表单
-    edit_submit_form() {
+    subimtData() {
       this.$refs.editForm.validate((validate) => {
         if (!validate) return;
-        let form_edit = {};
-        form_edit.name_cn = this.category_info_edit.name_cn;
-        form_edit.name_en = this.category_info_edit.name_en;
-        form_edit.is_enabled = this.category_info_edit.is_enabled || 0; // 是否启用
-        form_edit.need_expiration_date = 0;
-        form_edit.need_production_batch_number = 0;
-        form_edit.need_best_before_date = 0;
-        let arr = this.edit_sku_property;
-        for (let i = 0; i < arr.length; i += 1) {
-          if (arr[i] === '保质期') {
-            form_edit.need_expiration_date = 1;
-          }
-          if (arr[i] === '生产批次') {
-            form_edit.need_production_batch_number = 1;
-          }
-          if (arr[i] === '最佳食用期') {
-            form_edit.need_best_before_date = 1;
-          }
-        }
-        if (+this.id) {
-          form_edit.id = this.id; // 用于编辑
-          $http.editCategoryManagement(this.id, form_edit)
+        const formData = this.getData();
+        if (formData.id > 0) {
+          // 修改信息
+          $http.editCategoryManagement(formData.id, formData)
             .then((re) => {
               if (re.status) return;
               this.$message({
@@ -360,15 +245,23 @@ export default {
                 message: '修改成功',
               });
               // 更新数据
-              this.handleCurrentChange(this.current_page);
+              this.loadData();
+            });
+        } else {
+          // 添加信息
+          $http.addCategoryManagement(formData)
+            .then((re) => {
+              if (re.status) return;
+              this.$message({
+                type: 'success',
+                message: '添加成功',
+              });
+              // 更新数据
+              this.loadData();
             });
         }
-        for (const item in this.category_info_edit) {
-          this.category_info_edit[item] = '';
-        } // 清空表单
-        this.editDialogVisible = false;
       });
-    }, // 编辑提交表单
+    }, // 提交表单
     handleCurrentChange(val) {
       // 缓存当前页
       this.current_page = val;

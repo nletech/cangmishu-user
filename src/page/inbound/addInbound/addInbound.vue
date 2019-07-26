@@ -10,14 +10,14 @@
                         <el-row>
                           <el-col>
                               <el-form-item :label="$t('inboundType')" prop="type_id">
-                                            <el-select v-model="form.type_id">
-                                                      <el-option
-                                                        v-for="item in batchTypeList"
-                                                        :label="item.name"
-                                                        :disabled="item.is_enabled === 0"
-                                                        :value="item.id" :key="item.id">
-                                                      </el-option>
-                                            </el-select>
+                                  <el-select v-model="form.type_id">
+                                            <el-option
+                                              v-for="item in batchTypeList"
+                                              :label="item.name"
+                                              :disabled="item.is_enabled === 0"
+                                              :value="item.id" :key="item.id">
+                                            </el-option>
+                                  </el-select>
                               </el-form-item>
                           </el-col>
                         </el-row>
@@ -28,17 +28,17 @@
                                             prop="distributor_id">
                               <el-select  v-model="form.distributor_id" placeholder="请选择供应商">
                                   <el-option  v-for="item in distributorSelectList"
-                                              :label="item.name_cn"
-                                              :value="item.id" :key="item.id">
+                                        :label="item.name_cn"
+                                        :value="item.id" :key="item.id">
                                   </el-option>
                               </el-select>
                               <el-button @click="onDistributor" icon="el-icon-more"></el-button>
                               </el-form-item>
                           </el-col>
-                          <el-col :span="7" :offset="7">
+                          <el-col :span="8" :offset="6">
                               <!-- 确认入库单编号 -->
                               <el-form-item label="单据编号" label-position="right"
-                                            prop="confirmation_number">
+                                          prop="confirmation_number" style="float:right">
                                   <el-input v-model="form.confirmation_number"  class="noborder" prefix-icon="el-icon-tickets"></el-input>
                               </el-form-item>
                           </el-col>

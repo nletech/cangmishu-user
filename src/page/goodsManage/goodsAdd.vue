@@ -19,16 +19,6 @@
                                                    </el-option>
                                        </el-select>
                         </el-form-item>
-                        <el-form-item label="SKU属性:">
-                                    <div  :class="$style.code"
-                                          v-show="form.category_id === item.id"
-                                          v-for="item in typeList"
-                                          :key="item.id">
-                                          <el-tag  v-show="item.need_best_before_date">最佳食用期</el-tag>
-                                          <el-tag  v-show="item.need_expiration_date">保质期</el-tag>
-                                          <el-tag  v-show="item.need_production_batch_number">批次号</el-tag>
-                                    </div>
-                        </el-form-item>
                         <el-form-item  label="中文名称"
                                        prop="name_cn"
                                        style="width:70%">
