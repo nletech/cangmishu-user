@@ -331,6 +331,9 @@ const $http = {
   getBatchType() {
     return Axios.get('/batchType');
   }, // 获取入库单分类
+  getBatchCode(data) {
+    return Axios.post('/batchCode', data);
+  }, // 入库单号
   addBatchType(data) {
     return Axios.post('/batchType', data);
   }, // 添加入库单分类

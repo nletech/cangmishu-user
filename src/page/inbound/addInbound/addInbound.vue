@@ -9,8 +9,7 @@
                         <!-- 入库单分类 -->
                         <el-row>
                           <el-col>
-                              <el-form-item :label="$t('inboundType')" 
-                                            prop="type_id">
+                              <el-form-item :label="$t('inboundType')" prop="type_id">
                                             <el-select v-model="form.type_id">
                                                       <el-option
                                                         v-for="item in batchTypeList"
@@ -412,6 +411,7 @@ export default {
     this.getDistributorList(); // 获取供应商列表
     this.getGoodsTypes(); // 货品分类
     this.queryAllDistributor(); // 不带分页的所有供应商
+    this.getBatchCode();
   },
   watch: {
     warehouseId() {
@@ -460,6 +460,13 @@ export default {
     },
   },
   methods: {
+    getBatchCode() {
+      // 获取批次号)
+      $http.getBatchCode({ warehouse_id: this.warehouseId })
+        .then((res) => {
+          this.form.confirmation_number = res.data.batch_code;
+        });
+    },
     getList() {
       if (!this.warehouseId) return;
       this.params.warehouse_id = this.warehouseId;
