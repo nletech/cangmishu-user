@@ -20,10 +20,18 @@
                </el-table-column>
                <el-table-column  width="260"
                                  label="操作">
-                                 <template  slot-scope="scope">
-                                            <el-button size="mini" @click="edit(scope.row.id)">编辑</el-button>
-                                            <el-button  type="danger" @click="del(scope.row.id)" size="mini">删除</el-button>
-                                 </template>
+                  <template slot-scope="scope">
+                    <el-tooltip content="编辑" placement="top">
+                      <el-button size="mini" icon="el-icon-edit" round
+                                  @click="edit(scope.row.id)"></el-button>
+                    </el-tooltip>
+                    <el-tooltip content="删除" placement="top">
+                      <el-button  size="mini" icon="el-icon-delete"
+                                       @click="del(scope.row.id)"
+                                       type="danger" round>
+                      </el-button>
+                    </el-tooltip>
+                  </template>
                </el-table-column>
     </el-table>
     <!-- 分页组件 -->

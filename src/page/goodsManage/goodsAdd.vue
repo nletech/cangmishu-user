@@ -2,107 +2,127 @@
 <div class="goods_edit">
   <mdoel-form :colValue="24">
               <el-form  :model="form"
-                        slot="left"
-                        label-width="120px"
-                        :rules="formValidator"
-                        ref="form">
-                        <label class="label"> {{'基本信息'}} </label>
-                        <el-form-item  label="货品分类"
-                                       prop="category_id">
-                                       <el-select  v-model="form.category_id"
-                                                   size="small">
-                                                   <el-option  v-for="item in typeList"
-                                                               :label="item.name_cn"
-                                                               :value="item.id"
-                                                               :disabled="item.is_enabled === 0"
-                                                               :key="item.id">
-                                                   </el-option>
-                                       </el-select>
-                        </el-form-item>
-                        <el-form-item  label="中文名称"
-                                       prop="name_cn"
-                                       style="width:70%">
-                                       <el-input v-model="form.name_cn"
-                                                 size="small"
-                                                 :disabled="!!$route.query.isCheck">
-                                       </el-input>
-                        </el-form-item>
-                        <el-form-item  label="外文名称"
-                                       prop="name_en"
-                                       style="width:70%">
-                                       <el-input  v-model="form.name_en"
-                                                  size="small"
-                                                  :disabled="!!$route.query.isCheck">
-                                       </el-input>
-                        </el-form-item>
-                        <label class="label"> {{'货品规格'}} </label>
-                        <el-form-item>
-                                      <el-table  :data="skuList"
-                                                 border >
-                                                  <my-edit-table  label="规格中文名*"
-                                                                  prop="name_cn">
-                                                  </my-edit-table>
-                                                  <my-edit-table  label="规格外文名*"
-                                                                  prop="name_en">
-                                                  </my-edit-table>
-                                                  <my-edit-table  label="SKU*"
-                                                                  prop="relevance_code"
-                                                                  :isDisabled="!!$route.query.id">
-                                                  </my-edit-table>
-                                                  <my-edit-table  label="净重(g)"
-                                                                  width="80"
-                                                                  prop="net_weight">
-                                                  </my-edit-table>
-                                                  <my-edit-table  label="毛重(g)"
-                                                                  width="80"
-                                                                  prop="gross_weight">
-                                                  </my-edit-table>
-                                                  <!-- <el-table-column  prop="is_warning"
-                                                                    label="是否发送库存报警邮件"
-                                                                    width="80">
-                                                                    <template slot-scope="scope">
-                                                                                <el-switch  v-model="scope.row.is_warning"
-                                                                                            active-value="1"
-                                                                                            inactive-value="0"
-                                                                                            active-color="#13ce66"
-                                                                                            inactive-color="#ff4949">
-                                                                                </el-switch>
-                                                                    </template>
-                                                  </el-table-column> -->
-                                                  <table-function  label="操作"
-                                                                   :disabled="!!$route.query.isCheck"
-                                                                   width="160px">
-                                                                   <template  slot="edit"
-                                                                              slot-scope="scope">
-                                                                              <el-button  :disabled="!!$route.query.isCheck"
-                                                                                          @click="saveSpec(scope.row, scope.index, scope.row.is_add)"
-                                                                                          type="text">
-                                                                                          {{$t('save')}}
-                                                                              </el-button>
-                                                                   </template>
-                                                                  <template  slot-scope="scope">
-                                                                             <el-button  @click="delScpe(scope.row, scope.index)"
-                                                                                         :disabled="!!$route.query.isCheck"
-                                                                                         type="danger"
-                                                                                         size="mini">
-                                                                                         {{$t('remove')}}
-                                                                             </el-button>
-                                                                  </template>
-                                                  </table-function>
-                                      </el-table>
-                        </el-form-item>
-                        <label class="label"> {{'选填信息'}} </label>
+                slot="left"
+                label-width="120px"
+                :rules="formValidator"
+                ref="form">
+                <label class="label"> {{'基本信息'}} </label>
+                <el-row>
+                  <el-col :span="10">
+                      <!-- 供应商 -->
+                      <el-form-item label="货品分类" label-position="right"
+                                    prop="category_id">
+                      <el-select  v-model="form.category_id">
+                                 <el-option  v-for="item in typeList"
+                                             :label="item.name_cn"
+                                             :value="item.id"
+                                             :disabled="item.is_enabled === 0"
+                                             :key="item.id">
+                                 </el-option>
+                      </el-select>
+                      <el-button @click="addCategory" icon="el-icon-more"></el-button>
+                      </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-form-item  label="中文名称"
+                               prop="name_cn"
+                               style="width:70%">
+                               <el-input v-model="form.name_cn">
+                               </el-input>
+                </el-form-item>
+                <el-form-item  v-if="isEnabledLangInput()"  label="外文名称"
+                               prop="name_en"
+                               style="width:70%">
+                               <el-input  v-model="form.name_en"></el-input>
+                </el-form-item>
+                <el-row style="margin-top:20px;">
+                  <el-col>
+                    <label class="label" style="float:left; width:80px;">货品规格 </label>
+                    <div style="float:left; width:300px;">
+                        <el-button size="mini" @click="addNewLine" type="primary" plain>添加行 <i class="el-icon-more el-icon--right"></i> </el-button>
+                        <span class="sub-title">带*为必填项</span>
+                    </div>
+                  </el-col>
+                </el-row>
+                        <el-row>
+                          <el-col>
+                              <el-table  :data="specList" empty-text="请添加商品规格">
+                                  <el-table-column  type="index"
+                                                    label="#" fixed>
+                                  </el-table-column>
+                                  <el-table-column label="规格名称*" prop="name_cn" width="200px">
+                                    <template slot-scope="scope">
+                                      <el-input type="text" placeholder="请输入规格名称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
+                                    </template>
+                                  </el-table-column>
+                                  <el-table-column v-if="isEnabledLangInput()" label="规格外文名*" prop="name_en" width="200px">
+                                    <template slot-scope="scope">
+                                      <el-input type="text" placeholder="请输入规格外文称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
+                                    </template>
+                                  </el-table-column>
+                                  <el-table-column label="SKU*" prop="relevance_code" width="200px">
+                                    <template slot="header" slot-scope="scope">
+                                      SKU *
+                                      <el-popover placement="top-start" title="SKU" width="200" trigger="hover"
+                                          content="SKU是商品唯一编码，保存后不能更改，且不能重复">
+                                          <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                                      </el-popover>
+                                    </template>
+                                    <template slot-scope="scope">
+                                      <el-input type="text" :isDisabled="!!$route.query.id" placeholder="请输入SKU" maxlength="20" show-word-limit v-model="scope.row.relevance_code"></el-input>
+                                    </template>
+                                  </el-table-column>
+                                  <!-- 零售价 -->
+                                  <el-table-column  prop="purchase_price"
+                                                    align="center"
+                                                    header-align="center"
+                                                    label="进货价（元）"
+                                                    width="150">
+                                    <template slot-scope="scope">
+                                      <el-input type="number" placeholder="进货价" maxlength="10" show-word-limit v-model="scope.row.purchase_price" :min="0"></el-input>
+                                    </template>
+                                  </el-table-column>
+                                  <el-table-column  prop="sale_price"
+                                                    align="center"
+                                                    header-align="center"
+                                                    label="销售价（元）"
+                                                    width="150">
+                                    <template slot-scope="scope">
+                                      <el-input type="number" placeholder="销售价" maxlength="10" show-word-limit v-model="scope.row.sale_price" :min="0"></el-input>
+                                      </template>
+                                  </el-table-column>
+                                  <el-table-column  prop="sale_price"
+                                                    align="center"
+                                                    header-align="center"
+                                                    label="毛重(g)"
+                                                    width="120">
+                                    <template slot-scope="scope">
+                                      <el-input type="number" placeholder="请输入克" maxlength="10" show-word-limit v-model="scope.row.gross_weight" :min="0"></el-input>
+                                      </template>
+                                  </el-table-column>
+                                  <el-table-column min-width="60px">
+                                    <template slot-scope="scope">
+                                      <el-tooltip content="删除" placement="top">
+                                        <el-button  size="mini" icon="el-icon-delete"
+                                                         @click="delSpec(scope.row, scope.$index)"
+                                                         type="danger" round>
+                                        </el-button>
+                                      </el-tooltip>
+                                    </template>
+                                  </el-table-column>
+                              </el-table>
+                            </el-col>
+                        </el-row>
+                        <label class="label" style="padding-top:20px;"> {{'选填信息'}} </label>
                         <el-form-item :label="$t('goodsRemark')"
                                       style="width:70%">
                                       <el-input  v-model="form.remark"
-                                                 :disabled="!!$route.query.isCheck"
                                                  type="textarea"
                                                  :autosize="{ minRows: 4, maxRows: 6}">
                                       </el-input>
                         </el-form-item>
                         <el-form-item :label="$t('goodsPhoto')">
-                                      <picture-upload :photo.sync="form.photos"
-                                                      :disabled="!!$route.query.isCheck">
+                                      <picture-upload :photo.sync="form.photos">
                                       </picture-upload>
                                       <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
                         </el-form-item>
@@ -127,7 +147,6 @@ import baseApi from '@/lib/axios/base_api';
 import MyEditTable from '@/components/my_edit_table';
 import TableFunction from '@/components/my_edit_table/table_function';
 import PictureUpload from '@/components/picture_upload';
-import { English, noChinese, Chinese } from '@/lib/validateForm';
 
 export default {
   name: 'goodsAdd',
@@ -152,11 +171,18 @@ export default {
       },
       en: true,
       tips: '',
-      spec_name: '', // 添加规格名
       typeList: [], // 分类列表
-      skuList: [], // 商品规格
+      specModel: {
+        id: 0,
+        name_cn: '',
+        name_en: '',
+        relevance_code: '',
+        sale_price: 0,
+        purchase_price: 0,
+        gross_weight: 0,
+      },
+      specList: [], // 商品规格
       fileList: [],
-      is_edit: false,
     };
   },
   watch: {
@@ -166,7 +192,7 @@ export default {
   },
   created() {
     if (!this.$route.query.id) {
-      this.skuList.push(this.specsForm());
+      this.addNewLine();
     } else {
       this.getInfo();
     }
@@ -177,29 +203,12 @@ export default {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
     formValidator() {
-      const validatorChinese = (rule, value, callback) => {
-        if (!Chinese(value)) {
-          return callback(Error('中文名称必须包含中文'));
-        }
-        return callback();
-      };
-      const validatorEnglish = (rule, value, callback) => {
-        if (!English(value) || !noChinese(value)) {
-          return callback(Error('外文名称不能出现中文且必须包含外文'));
-        }
-        return callback();
-      };
       return {
         category_id: [
           { required: true, message: '请选择分类', trigger: 'change' },
         ],
         name_cn: [
           { required: true, message: '请输入中文名称', trigger: 'blur' },
-          { validator: validatorChinese, trigger: 'blur' },
-        ],
-        name_en: [
-          { required: true, message: '请输入外文名称', trigger: 'blur' },
-          { validator: validatorEnglish, trigger: 'blur' },
         ],
       };
     },
@@ -214,133 +223,40 @@ export default {
     },
   },
   methods: {
+    resetData() {
+      this.specModel = {
+        id: 0,
+        name_cn: '',
+        name_en: '',
+        relevance_code: '',
+        sale_price: 0,
+        purchase_price: 0,
+        gross_weight: 0,
+      };
+
+      return this.specModel;
+    },
+    addNewLine() {
+      this.specList.push(this.resetData());
+    },
     // 货品分类列表
     getTypeList() {
       $http.getCategoryManagement().then((res) => {
         this.typeList = res.data.data;
       });
     },
-    // 规格取消
-    ScpeCancel(row) {
-      if (row.id) {
-        this.$set(row, '$_edit', false);
-      } else {
-        for (const key in row) {
-          if (Object.prototype.hasOwnProperty.call(row, key)) {
-            row[key] = '';
-          }
-        }
-        this.$set(row, '$_edit', true);
-      }
-    },
-    // 保存/编辑规格
-    saveSpec(row, index, is) {
-      if (!row.name_cn || !row.name_en) {
-        this.$message({
-          message: '规格中外文名不能为空',
-          type: 'warning',
-        });
-        return;
-      }
-      if (/\w*[\u4E00-\u9FFF]+\w*/g.test(row.name_en)) {
-        this.$message({
-          message: '规格外文名不能含中文名',
-          type: 'warning',
-        });
-        return;
-      }
-      if (!row.relevance_code) {
-        this.$message({
-          message: 'SKU不能为空',
-          type: 'warning',
-        });
-        return;
-      }
-      // if (!/^[a-zA-Z0-9]{4,}$/g.test(row.relevance_code)) {
-      //   this.$message({
-      //     message: 'SKU只能为数字或字母，且长度必须大于3位',
-      //     type: 'warning',
-      //   });
-      //   return;
-      // }
-      if (this.$route.query.id) {
-        row.product_id = this.$route.query.id;
-        if (row.id) row.spec_id = row.id;
-        if (this.warehouseId) row.warehouse_id = this.warehouseId;
-        $http.addSpec(row, row.id).then(() => {
-          this.$message({
-            message: !row.id ? '添加成功' : '修改成功',
-            type: 'success',
-          });
-          this.$set(row, '$_edit', false);
-          this.getInfo();
-        });
-      } else {
-        for (let i = 0; i < this.skuList.length; i += 1) {
-          if (i !== index && row.relevance_code === this.skuList[i].relevance_code) {
-            this.$message({
-              message: 'SKU已存在',
-              type: 'warning',
-            });
-            return;
-          }
-        }
-        if (!is) this.skuList.push(this.specsForm());
-        this.is_edit = false;
-        this.$set(row, '$_edit', false);
-      }
-    },
     // 删除规格
-    delScpe(row, index) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        if (this.$route.query.id) {
-          $http.delSpec({
-            spec_id: row.id,
-            warehouse_id: this.warehouseId,
-          }).then(() => {
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-            });
-            this.getInfo();
-          });
-          return;
-        }
-        this.skuList.splice(index, 1);
-      });
-    },
-    // 初始化表单
-    specsForm() {
-      return {
-        name_en: '',
-        name_cn: '',
-        net_weight: '',
-        gross_weight: '',
-        relevance_code: '',
-        $_edit: true,
-        is_warning: '1',
-      };
+    delSpec(row, index) {
+      this.specList.splice(index, 1);
     },
     // 提交商品信息
     onSubmitGoods(formName) {
       let ctr = true;
-      this.skuList.filter(res => res.name_cn).forEach((val) => {
-        if (!val.name_en) {
+      this.specList.filter(res => res.name_cn).forEach((val) => {
+        if (!val.name_cn) {
           ctr = false;
           this.$message({
-            message: '规格中外文名不能为空',
-            type: 'warning',
-          });
-          return;
-        }
-        if (/\w*[\u4E00-\u9FFF]+\w*/g.test(val.name_en)) {
-          ctr = false;
-          this.$message({
-            message: '规格外文名不能含中文名',
+            message: '规格名称不能为空',
             type: 'warning',
           });
           return;
@@ -354,13 +270,13 @@ export default {
           // eslint-disable-next-line
           return;
         }
-        // if (!/^[a-zA-Z0-9]{4,}$/g.test(val.relevance_code)) {
-        //   ctr = false;
-        //   this.$message({
-        //     message: 'SKU只能为数字或字母，且长度必须大于3位',
-        //     type: 'warning',
-        //   });
-        // }
+        if (!/^[a-zA-Z0-9-_]{4,}$/g.test(val.relevance_code)) {
+          ctr = false;
+          this.$message({
+            message: 'SKU只能为数字或字母或下划线，且长度必须大于3位',
+            type: 'warning',
+          });
+        }
       });
       if (ctr) {
         this.$refs[formName].validate((valid) => {
@@ -369,7 +285,7 @@ export default {
               this.form.product_id = this.$route.query.id;
             }
             this.form.warehouse_id = this.warehouseId || this.$route.query.warehouseId;
-            this.form.specs = this.skuList.filter(res => res.name_cn);
+            this.form.specs = this.specList.filter(res => res.name_cn);
             $http.addProducts(this.form)
               .then(() => {
                 this.successTips(this.$route.query.id);

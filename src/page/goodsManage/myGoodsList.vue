@@ -104,28 +104,27 @@
                      <!-- 右箭头 -->
                     <el-table-column  type="expand">
                         <template   slot-scope="props">
-                                    <el-table   :data="props.row.specs" border style="width:80%;">
-                                                <el-table-column  prop="relevance_code"
-                                                                  label="SKU">
-                                                </el-table-column>
-                                                <el-table-column  prop="name_cn"
-                                                                  :label="$t('specificationChineseName')">
-                                                </el-table-column>
-                                                <el-table-column  prop="name_en"
-                                                                  :label="$t('specificationEnglishName')">
-                                                </el-table-column>
-                                                <el-table-column  prop="net_weight"
-                                                                  :label="$t('netWeight') + '(g)'">
-                                                </el-table-column>
-                                                <el-table-column  prop="gross_weight"
-                                                                  :label="$t('grossWeight') + '(g)'">
-                                                </el-table-column>
-                                                <!-- <el-table-column  prop="is_warning"
-                                                                  label="是否发送库存报警邮件">
-                                                                  <template slot-scope="scope">
-                                                                            {{scope.row.is_warning | is_warning_filter}}
-                                                                  </template>
-                                                </el-table-column> -->
+                                    <el-table   :data="props.row.specs" border>
+                                      <el-table-column  type="index" label="#">
+                                      </el-table-column>
+                                      <el-table-column  prop="relevance_code"
+                                                        label="SKU">
+                                      </el-table-column>
+                                      <el-table-column  prop="name_cn"
+                                                        :label="$t('specificationChineseName')">
+                                      </el-table-column>
+                                      <el-table-column  prop="name_en"  v-if="isEnabledLangInput()"
+                                                        :label="$t('specificationEnglishName')">
+                                      </el-table-column>
+                                      <el-table-column  prop="gross_weight"
+                                                        :label="$t('grossWeight') + '(g)'">
+                                      </el-table-column>
+                                      <el-table-column  prop="purchase_price"
+                                                        label="进货价">
+                                      </el-table-column>
+                                      <el-table-column  prop="sale_price"
+                                                        label="销售价">
+                                      </el-table-column>
                                     </el-table>
                         </template>
                     </el-table-column>
@@ -136,7 +135,7 @@
                                       :label="$t('cnName')">
                     </el-table-column>
                     <!-- 外文名称 -->
-                    <el-table-column  prop="name_en"
+                    <el-table-column  prop="name_en" v-if="isEnabledLangInput()"
                                       align="center"
                                       header-align="center"
                                      :label="$t('enName')">
@@ -147,14 +146,14 @@
                                       header-align="center"
                                       :label="$t('category')">
                     </el-table-column>
-                    <!-- 单位 -->
-                    <el-table-column  prop="category.name_cn"
+                    <!-- 零售价 -->
+                    <el-table-column  prop="purchase_price"
                                       align="center"
                                       header-align="center"
-                                      label="单位">
+                                      label="进货价">
                     </el-table-column>
                     <!-- 零售价 -->
-                    <el-table-column  prop="category.name_cn"
+                    <el-table-column  prop="sale_price"
                                       align="center"
                                       header-align="center"
                                       label="零售价">
@@ -163,7 +162,7 @@
                     <el-table-column  prop="updated_at"
                                       align="center"
                                       header-align="center"
-                                      label="最后修改时间">
+                                      label="最后修改时间" width="200">
                                       <template slot-scope="scope">
                                           <span style="margin-left: 10px">{{ scope.row.updated_at }}</span>
                                       </template>
@@ -224,6 +223,7 @@ import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import buttonPagination from '@/components/pagination_and_buttons';
 import inputPublic from '@/components/input-public';
+import mixin from '@/mixin/form_config';
 
 
 export default {
@@ -252,7 +252,7 @@ export default {
     buttonPagination,
     inputPublic,
   },
-  mixins: [getListData],
+  mixins: [getListData, mixin],
   filters: {
     is_warning_filter(val) {
       // eslint-disable-next-line

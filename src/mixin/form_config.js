@@ -1,5 +1,8 @@
 export default {
   methods: {
+    isEnabledLangInput() {
+      return false;
+    },
     successTips(is) {
       this.$message({
         message: !is ? this.$t('addSuccess') : this.$t('editSuccess'),

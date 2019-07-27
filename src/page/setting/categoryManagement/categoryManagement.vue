@@ -22,12 +22,12 @@
                                                     header-align="center"
                                                     align="center">
                                    </el-table-column>
-                                   <el-table-column  label="货品分类中文名"
+                                   <el-table-column  label="中文名"
                                                      prop="name_cn"
                                                      header-align="center"
                                                      align="center">
                                    </el-table-column>
-                                   <el-table-column  label="货品分类外文名"
+                                   <el-table-column  label="外文名" v-if="isEnabledLangInput()"
                                                     prop="name_en"
                                                     header-align="center"
                                                     align="center">
@@ -67,17 +67,15 @@
                                                   prop="address"
                                                   width="180"
                                                   label="操作">
-                                                  <template slot-scope="scope">
-                                                    <el-button size="mini"
-                                                              @click="editCategory(scope.row)">
-                                                              编辑
-                                                    </el-button>
-                                                    <el-button size="mini"
-                                                              type="danger"
-                                                              @click="delCategory(scope.row)">
-                                                              删除
-                                                    </el-button>
-                                                  </template>
+                                      <template slot-scope="scope">
+                                        <el-tooltip content="编辑" placement="top">
+                                          <el-button size="mini" icon="el-icon-edit" round @click="editCategory(scope.row)"></el-button>
+                                        </el-tooltip>
+                                        <el-tooltip content="删除" placement="top">
+                                          <el-button  size="mini" icon="el-icon-delete" @click="delCategory(scope.row)" type="danger" round>
+                                          </el-button>
+                                        </el-tooltip>
+                                      </template>
                                    </el-table-column>
                         </el-table>
                         <!-- 分页 -->
@@ -106,12 +104,12 @@
                                 <el-input v-model="model.name_cn" maxlength="10" show-word-limit></el-input>
                             </el-form-item>
                             <el-form-item label="分类英文名:"
-                                          prop="name_en">
+                                          prop="name_en"  v-if="isEnabledLangInput()">
                                 <el-input v-model="model.name_en" maxlength="20" show-word-limit></el-input>
                             </el-form-item>
                     <h4>选填项</h4>
                             <el-form-item label="保质期"
-                                          prop="name_en">
+                                          prop="need_expiration_date">
                                 <el-row>
                                     <el-switch v-model="model.need_expiration_date" :active-value="1" :inactive-value="0"></el-switch>
                                     <el-popover placement="right-start" title="保质期作用" width="300" trigger="hover"
@@ -121,7 +119,7 @@
                                 </el-row>
                             </el-form-item>
                             <el-form-item label="生产批次"
-                                          prop="name_en">
+                                          prop="need_production_batch_number">
                                 <el-switch v-model="model.need_production_batch_number" :active-value="1" :inactive-value="0"></el-switch>
                                 <el-popover placement="right-start" title="生产批次作用" width="300" trigger="hover"
                                     content="开启此选项,该分类下面所有货品上架都需要填写生产批次,方便出库时候查询到每次出库的批次信息">
@@ -129,12 +127,16 @@
                                 </el-popover>
                             </el-form-item>
                             <el-form-item label="最佳食用期"
-                                          prop="name_en">
+                                          prop="need_best_before_date">
                                 <el-switch v-model="model.need_best_before_date" :active-value="1" :inactive-value="0"></el-switch>
                                 <el-popover placement="right-start" title="最佳食用期作用" width="300" trigger="hover"
                                     content="开启此选项,该分类下面所有货品上架都需要填写最佳食用期,主要用于食品行业">
                                     <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
                                 </el-popover>
+                            </el-form-item>
+                            <el-form-item label="是否启用"
+                                          prop="is_enabled">
+                                <el-switch v-model="model.is_enabled" :active-value="1" :inactive-value="0"></el-switch>
                             </el-form-item>
 
                   </el-form>
@@ -147,9 +149,11 @@
 </template>
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'categoryManagement',
+  mixins: [mixin],
   data() {
     return {
       dialogVisible: false, // 显示弹窗
