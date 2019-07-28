@@ -191,7 +191,7 @@ export default {
 .stockTaking {
   margin: 20px 0 0 0 ;
   .stockTaking_main {
-    width: 90%;
+    width: 96%;
     margin: 0 auto;
   }
   .stockTaking_table {

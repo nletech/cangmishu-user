@@ -198,7 +198,7 @@ export default {
     margin: 20px 0 10px 0;
     background-color: #fff !important;
     .am_main {
-      width: 90%;
+      width: 96%;
       margin: 0 auto;
       position: relative;
       background-color: #fff;

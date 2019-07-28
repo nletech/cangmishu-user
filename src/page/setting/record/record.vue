@@ -216,7 +216,7 @@ export default {
 .addressManagement {
   margin: 20px 0 10px 0;
   .am_main {
-    width: 90%;
+    width: 96%;
     margin: 0 auto;
     position: relative;
     background-color: #fff;

@@ -230,7 +230,7 @@ export default {
   text-align: left;
   margin: 30px 0 60px 0 ;
   .outboundList_main {
-    width: 90%;
+    width: 96%;
     margin: 0 auto;
     .outboundList_tags {
       text-align: right;

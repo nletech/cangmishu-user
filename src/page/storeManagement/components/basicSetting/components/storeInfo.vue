@@ -252,7 +252,7 @@ export default {
 @import '../../../../../less/public_variable.less';
 
 .add_warehouse_main {
-  width: 90%;
+  width: 96%;
   height: 50%;
   margin: 0 auto;
   padding: 30px 0 0 0;
