@@ -24,10 +24,7 @@ export default {
 @import '../../less/public_variable.less';
 
 .help_main {
-  width: 92%;
-  min-height: 607px;
-  background-color: white;
-  margin: 10px auto;
+  width: 96%;
   padding: 80px 0 0 0;
   .help_desc {
     display: felx;

@@ -1,7 +1,7 @@
 <template>
           <div>
                 <el-row>
-                        <el-col :span="3">
+                        <el-col :span="6">
                                   <el-date-picker  v-model="dateValue"
                                                    @change="handlerChange"
                                                     clearable
@@ -14,7 +14,7 @@
                                   </el-date-picker>
                         </el-col>
                         <el-col :span="3"
-                                :offset="5">
+                                :offset="3">
                                 <el-date-picker  v-model="planDateValue"
                                                  @change="handlerChange"
                                                  type="date"
@@ -40,7 +40,7 @@
                                 </el-select>
                         </el-col>
                         <el-col :span="4"
-                                :offset="2">
+                                :offset="1">
                                 <el-row>
                                         <el-col :span="20">
                                                 <el-input v-model="outboundCode"
