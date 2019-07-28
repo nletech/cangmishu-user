@@ -8,7 +8,7 @@
                           <el-row type="flex" justify="space-between">
                           <el-col :span="8">
                           </el-col>
-                          <el-col :span="8"><h2 align="center" style="margin:0px;">商品采购清单</h2></el-col>
+                          <el-col :span="7"><h2 align="center" style="margin:0px;">商品采购清单</h2></el-col>
                           <el-col :span="8">
                             <!-- 确认入库单编号 -->
                               <el-form-item label="单据编号" label-position="right"
@@ -36,9 +36,9 @@
                                   </el-select>
                             </el-form-item>
                           </el-col>
-                          <el-col :span="8">
+                          <el-col :span="6">
                           </el-col>
-                          <el-col :span="8">
+                          <el-col :span="9">
                               <!-- 供应商 -->
                               <el-form-item label="供应商" label-position="right"
                                             prop="distributor_id" style="float:right">

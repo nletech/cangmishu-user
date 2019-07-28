@@ -4,29 +4,31 @@
                 <!-- 选择商品弹窗 -->
                 <el-dialog  title="选择商品"
                             width="80%"
+                            min-width="1000px"
                             :visible.sync="visible"
                             :before-close="handleClose">
-                  <el-row :gutter="20">
+                  <el-row :gutter="20" style="line-height:30px;">
                     <el-col :span="5">请选择货品分类</el-col>
                     <el-col :span="19">
                         <!-- 搜索框 -->
-                        <el-row :gutter="20" type="flex">
-                          <el-col  :span="12">
-                              <el-input placeholder="请输入内容" >
-                                  <el-button type="primary" icon="el-icon-search"></el-button>
+                        <el-row type="flex">
+                          <el-col  :span="16">
+                              <el-input placeholder="请输入关键词">
+                                  <el-button type="primary" icon="el-icon-search">搜索</el-button>
                               </el-input>
                           </el-col>
                           <!-- 添加商品 -->
-                          <el-col :span="4" :offset="8" >
+                          <el-col :span="4" :offset="4" >
                             <div style="float:right">
-                            <el-button @click="goToAddGoodPage"> 添加商品 </el-button>
+                            <el-button @click="goToAddGoodPage" icon="el-icon-document-add"> 添加商品 </el-button>
                             </div>
                           </el-col>
                         </el-row>
                     </el-col>
                   </el-row>
+                  <hr/>
                   <el-row :gutter="20">
-                    <el-col :span="5">
+                    <el-col :span="5" >
                         <el-tree
                           :props="{label:'name_cn'}"
                           :data="categoryListData"
@@ -34,7 +36,7 @@
                           @node-click="onCategoryChange"
                           :expand-on-click-node="false"></el-tree>
                     </el-col>
-                    <el-col :span="19">
+                    <el-col :span="19"  style="border-left:1px solid #ccc">
                         <!-- 数据表 -->
                         <el-table :data="specList"
                                   ref="table"
@@ -48,13 +50,14 @@
                               </template>
                             </el-table-column>
                             <el-table-column  label="商品名称及规格" prop="product_name"></el-table-column>
-                            <el-table-column  label="参考进货价（元）" prop="purchase_price"></el-table-column>
-                            <el-table-column  label="参考销售价（元）" prop="slae_price"></el-table-column>
-                            <el-table-column  label="当前库存" prop="stockin_num"></el-table-column>
+                            <el-table-column  label="参考进货价（元）" prop="purchase_price" align="center"></el-table-column>
+                            <el-table-column  label="参考销售价（元）" prop="sale_price" align="center"></el-table-column>
+                            <el-table-column  label="当前库存" prop="stockin_num" align="center"></el-table-column>
                         </el-table>
                         <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
                     </el-col>
                   </el-row>
+                  <hr/>
                   <el-row :gutter="20">
                     <el-col :span="5">
                       该入库单已添加{{specSelected.length}}种商品

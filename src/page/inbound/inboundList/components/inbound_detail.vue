@@ -1,6 +1,6 @@
 <template>
   <el-dialog  title="查看入库单"
-              width="80%"
+              :fullscreen="true"
               @close="close"
               @update:visible="$emit('update:visible', $event)"
               :visible="visible">
