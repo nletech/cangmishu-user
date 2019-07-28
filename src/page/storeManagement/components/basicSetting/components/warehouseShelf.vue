@@ -47,8 +47,10 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
+  mixins: [mixin],
   mounted() {
     if (this.show_data_flag === '货位') {
       this.get_data();
@@ -82,7 +84,7 @@ export default {
     handleCurrentChange(val) {
       $http.checkWarehouseshelf({
         page: val,
-        warehouse_id: this.$route.query.warehouse_id,
+        warehouse_id: this.warehouseId,
       })
         .then((res) => {
           this.shelf_list_data = res.data.data;
@@ -92,7 +94,7 @@ export default {
     },
     get_data() {
       if (this.active) {
-        $http.getWarehouseshelf({ warehouse_id: this.$route.query.warehouse_id })
+        $http.getWarehouseshelf({ warehouse_id: this.warehouseId })
           .then((res) => {
             this.shelf_list_data = res.data.data;
             this.total = res.data.total;
@@ -121,7 +123,7 @@ export default {
         name: 'editCargoShelf',
         query: {
           shelfId: id, // 该条数据的 id
-          warehouse_id: this.$route.query.warehouse_id, // 当前仓库 id
+          warehouse_id: this.warehouseId, // 当前仓库 id
           edit: true,
           currentPage: this.currentPage, // 这个参数是用来查询不在首页的数据(因为拿到的数据分页)
         },
