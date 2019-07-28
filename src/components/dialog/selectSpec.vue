@@ -52,7 +52,7 @@
                             <el-table-column  label="参考销售价（元）" prop="slae_price"></el-table-column>
                             <el-table-column  label="当前库存" prop="stockin_num"></el-table-column>
                         </el-table>
-                        <button-pagination :pageParams="params"></button-pagination>
+                        <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">

@@ -28,62 +28,63 @@
                                  <el-table-column  label="状态"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="status_name">
+                                                   prop="status_name" width="120">
                                  </el-table-column>
                                  <el-table-column  label="出库单号"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="out_sn">
+                                                   prop="out_sn" width="150">
                                  </el-table-column>
                                  <el-table-column  label="运单号"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="express_num">
+                                                   prop="express_num" width="150">
                                  </el-table-column>
-                                 <el-table-column  label="出库单类型"
+                                 <el-table-column  label="类型"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="order_type.name">
+                                                   prop="order_type.name" width="150">
                                  </el-table-column>
-                                 <el-table-column  label="预/已出库数量"
+                                 <el-table-column  label="下单数量"
                                                    header-align="center"
-                                                   align="center">
-                                                   <template slot-scope="scope">
-                                                            {{scope.row.order_items[0].amount}}/{{scope.row.order_items[0].pick_num}}
-                                                   </template>
+                                                   align="center"
+                                                   prop="sub_qty" width="100">
+                                 </el-table-column>
+                                 <el-table-column  label="出库数量"
+                                                   header-align="center"
+                                                   align="center"
+                                                   prop="sub_pick_num" width="100">
+                                 </el-table-column>
+                                 <el-table-column  label="出库日期"
+                                                   header-align="center"
+                                                   align="center"
+                                                   prop="delivery_date" width="155">
                                  </el-table-column>
                                  <el-table-column  label="创建时间"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="created_at">
-                                 </el-table-column>
-                                 <el-table-column  label="预计出库日期"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="delivery_date">
+                                                   prop="created_at" width="155">
                                  </el-table-column>
                                  <el-table-column  label="操作"
                                                    header-align="center"
-                                                   width="270">
-                                                   <template slot-scope="scope">
-                                                             <el-button  size="mini"
-                                                                         style="margin: 0; pading: 0;"
-                                                                         @click="viewDetails(scope.row)">
-                                                                         查看详情
-                                                             </el-button>
-                                                             <el-button  size="mini"
-                                                                         v-if="scope.row.status == 1"
-                                                                         style="margin: 0; pading: 0;"
-                                                                         @click="checkedOutbound(scope.row)">
-                                                                         设为出库
-                                                             </el-button>
-                                                             <el-button  size="mini"
-                                                                         v-if="scope.row.status == 1"
-                                                                         style="margin: 0; pading: 0;"
-                                                                         @click="cancelOrder(scope.row)">
-                                                                         取消订单
-                                                            </el-button>
-                                                   </template>
+                                                   width="200" fixed="right">
+                                    <template slot-scope="scope">
+                                      <el-tooltip content="查看详情" placement="top">
+                                        <el-button size="mini" icon="el-icon-view" round
+                                                    @click="viewDetails(scope.row)"
+                                                    :loading="$store.state.config.button_loading"></el-button>
+                                      </el-tooltip>
+                                      <el-tooltip content="设为出库" placement="top">
+                                        <el-button  size="mini" type="primary" icon="el-icon-sell" @click="checkedOutbound(scope.row)" round></el-button>
+                                      </el-tooltip>
+                                      <el-tooltip content="取消订单" placement="top">
+                                        <el-button  size="mini" icon="el-icon-circle-close"
+                                                         v-if="scope.row.status == 1"
+                                                         @click="cancelOrder(scope.row.id)"
+                                                         type="danger" round>
+                                        </el-button>
+                                      </el-tooltip>
+                                  </template>
                                  </el-table-column>
                       </el-table>
                       <el-row>
