@@ -19,60 +19,61 @@
                                     </div>
                             </el-col>
                     </el-row>
-                    <el-row>
-                            <div :class="$style.main">
-                                <el-row>
-                                      <el-col :span="10" :class="$style.address">
-                                              <el-row :class="$style.address_title">
-                                                      <el-col :span="4">发件信息:</el-col>
-                                              </el-row>
-                                              <el-row :class="$style.address_info">
-                                                      <el-col :span="4" v-if="row_data">{{row_data.send_fullname}}</el-col>
-                                                      <el-col :span="4" :offset="4" v-if="row_data">{{row_data.send_phone}}</el-col>
-                                              </el-row>
-                                              <el-row :class="$style.address_detail">
-                                                      <el-col :span="8" v-if="row_data" :class="$style.address_text">{{row_data.send_full_address}}</el-col>
-                                              </el-row>
-                                      </el-col>
-                                      <el-col :span="10" :class="$style.address">
-                                              <el-row :class="$style.address_title">
-                                                      <el-col :span="4">收件信息:</el-col>
-                                              </el-row>
-                                              <el-row :class="$style.address_info">
-                                                      <el-col :span="4" v-if="row_data">{{row_data.receiver_fullname}}</el-col>
-                                                      <el-col :span="4" :offset="4" v-if="row_data">{{row_data.receiver_phone}}</el-col>
-                                              </el-row>
-                                              <el-row :class="$style.address_detail">
-                                                      <el-col :span="8" v-if="row_data"  :class="$style.address_text">{{row_data.receiver_full_address}}</el-col>
-                                              </el-row>
-                                      </el-col>
-                                </el-row>
-                            </div>
+                    <el-row :gutter="12" v-if="row_data" :class="$style.contact">
+                      <el-col :span="12">
+                        <el-card shadow="never">
+                            <el-row >
+                                    <el-col :span="4">发件信息:</el-col>
+                            </el-row>
+                            <el-row >
+                                    <el-col>{{row_data.send_fullname}} {{row_data.send_phone}}</el-col>
+                            </el-row>
+                            <el-row>
+                                    <el-col>{{row_data.send_full_address}}</el-col>
+                            </el-row>
+                        </el-card>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-card shadow="never">
+                           <el-row>
+                                <el-col :span="4">收件信息:</el-col>
+                          </el-row>
+                          <el-row >
+                                <el-col>{{row_data.receiver_fullname}} {{row_data.receiver_phone}}</el-col>
+                          </el-row>
+                          <el-row>
+                                <el-col>{{row_data.receiver_full_address}}</el-col>
+                          </el-row>
+                        </el-card>
+                      </el-col>
                     </el-row>
+                    <br/>
                     <el-row>
                             <el-col>
-                                    <el-table  v-if="row_data" :data="row_data.order_items" border style="width: 92%;">
-                                              <el-table-column type="index" width="60">
-                                              </el-table-column>
-                                              <el-table-column prop="name_cn" label="中文名称">
-                                              </el-table-column>
-                                              <el-table-column prop="relevance_code" label="SKU">
-                                                                <template slot-scope="scope">
-                                                                        <div><img :src="scope.row.relevance_code_barcode"/></div>
-                                                                        <div>{{scope.row.relevance_code}}</div>
-                                                                </template>
-                                              </el-table-column>
-                                              <el-table-column prop="amount" label="预计出库数量">
-                                              </el-table-column>
-                                              <el-table-column label="实际出库数量" prop="pick_num, amount">
-                                                                <template slot-scope="scope">
-                                                                          <el-input-number type="number"
-                                                                                           :min="0"
-                                                                                           :max="scope.row.amount"
-                                                                                           v-model="scope.row.pick_num">
-                                                                          </el-input-number>
-                                                                </template>
-                                              </el-table-column>
+                                    <el-table  v-if="row_data" :data="row_data.order_items" border>
+                                        <el-table-column type="index" width="60">
+                                        </el-table-column>
+                                        <el-table-column prop="name_cn" label="中文名称">
+                                        </el-table-column>
+                                        <el-table-column prop="relevance_code" label="SKU">
+                                                          <template slot-scope="scope">
+                                                                  <div><img :src="scope.row.relevance_code_barcode"/></div>
+                                                                  <div>{{scope.row.relevance_code}}</div>
+                                                          </template>
+                                        </el-table-column>
+                                        <el-table-column prop="sale_price" label="销售价格（元）" width="120" align="center">
+                                        </el-table-column>
+                                        <el-table-column prop="amount" label="下单数量*" width="100" align="center">
+                                        </el-table-column>
+                                        <el-table-column label="实际出库数量*" prop="pick_num, amount">
+                                            <template slot-scope="scope">
+                                                      <el-input-number size="mini" type="number"
+                                                                       :min="0"
+                                                                       :max="scope.row.amount"
+                                                                       v-model="scope.row.pick_num">
+                                                      </el-input-number>
+                                            </template>
+                                        </el-table-column>
                                     </el-table>
                             </el-col>
                     </el-row>
@@ -97,8 +98,7 @@
                                                                        size="small"
                                                                        format="yyyy 年 MM 月 dd 日"
                                                                        value-format="yyyy-MM-dd"
-                                                                       placeholder="预计出库时间"
-                                                                       :default-time="['00:00:00', '23:59:59']">
+                                                                       placeholder="预计出库时间">
                                                       </el-date-picker>
                                                 </span>
                                           </div>
@@ -218,11 +218,8 @@ export default {
 
 <style lang="less" module>
 @import '../../../../less/public_variable.less';
-
 .setOutbound {
-  box-shadow:2px 0px 8px rgba(109,96,186,0.3);
-  width: 92%;
-  height: 120%;
+  width: 96%;
   padding: 0 0 0 10px;
   .background {
     margin: 10px 0 0 0;
@@ -233,34 +230,12 @@ export default {
     .systemInfo {
       margin: 0 0 30px 0;
     }
+    .contact{
+      font-weight: bold;
+      line-height: 35px;
+    }
     .img {
       margin: 0 20px 0 0;
-    }
-    .main {
-      width: 92%;
-      margin: 20px 0 20px 40px;
-      .address {
-        width: 48%;
-        min-height: 240px;
-        border: 1px solid #ccc;
-        margin: 0 5px 0 0;
-        padding: 10px 0 30px 30px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        .address_title {
-          margin: 0 0 20px 0;
-        }
-        .address_info {
-          margin: 4px 0 4px 0;
-        }
-        .address_detail {
-          margin: 20px 0 4px 0;
-          .address_text {
-            min-width: 300px;
-            text-align: left;
-          }
-        }
-      }
     }
     .desc_detail {
       margin: 20px 0 20px 0;
