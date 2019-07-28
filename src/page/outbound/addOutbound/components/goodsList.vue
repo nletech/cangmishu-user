@@ -1,126 +1,98 @@
 <template>
         <div :class="$style.goods_list">
               <!-- 选择货品按钮 -->
-              <el-button  :class="$style.goods_list_btn"
-                          @click="handleSelectGoods">
+              <el-button  :class="$style.goods_list_btn" type="primary" plain
+                          @click="handleShowDialog" size="mini" icon="el-icon-more" style="float:right">
                           选择商品
               </el-button>
               <!-- 货品列表 -->
-              <el-table :data="goodsList"
+              <el-table :data.sync="specList"
                         border
-                        style="width: 100%;">
+                        style="width: 100%;" empty-text="请选择商品规格">
                         <el-table-column  type="index"
                                           label="#">
                         </el-table-column>
-                        <el-table-column  label="商品名称">
-                                          <template slot-scope="scope">
-                                                    {{scope.row.product_name_cn}}
-                                          </template>
+                        <el-table-column  label="商品名称及规格">
+                            <template slot-scope="scope">
+                                      {{scope.row.product_name}}
+                            </template>
                         </el-table-column>
-                        <el-table-column label="SKU"
-                                         prop="relevance_code">
+                        <el-table-column label="SKU" prop="relevance_code">
                         </el-table-column>
-                        <el-table-column label="数量"
-                                         prop="num">
-                                          <template slot-scope="scope">
-                                                    <el-input-number  v-model="num_arr[scope.row.id]"
-                                                                      :min="0"
-                                                                      size="mini">
-                                                    </el-input-number>
-                                          </template>
+                        <el-table-column label="销售单价（元）" prop="sale_price">
+                              <template slot-scope="scope">
+                                  <el-input-number  v-model="scope.row.sale_price" :min="0" size="mini">
+                                  </el-input-number>
+                              </template>
+                        </el-table-column>
+                        <el-table-column label="数量" prop="num">
+                          <template slot-scope="scope">
+                              <el-input-number  v-model="scope.row.need_num" :min="0" size="mini">
+                              </el-input-number>
+                          </template>
                         </el-table-column>
                         <el-table-column label="操作">
-                                          <template slot-scope="scope">
-                                                    <el-button @click="removeGoods(scope.$index)" size="small">删除</el-button>
-                                          </template>
+                          <template slot-scope="scope">
+                              <el-tooltip content="删除" placement="top">
+                                <el-button  size="mini" icon="el-icon-delete"
+                                                 @click="removeSpec(scope.$index)"
+                                                 type="danger" round>
+                                </el-button>
+                              </el-tooltip>
+                          </template>
                         </el-table-column>
               </el-table>
               <!-- 选择商品弹窗 -->
-              <select-goods :visible_goods.sync="visible_goods"
-                            @select-goods_data="handleSelectGoodsData"
-                            @update:visible_goods="handleVisibleGoods($event)">
-              </select-goods>
+              <select-spec :visible.sync="dialogShow" :warehouseId.sync="warehouseId" @selected="onSpecSelected" :onlyShowStock="1">
+              </select-spec>
         </div>
 </template>
 
 <script>
-import SelectGoods from './selectGoods';
+import selectSpec from '@/components/dialog/selectSpec';
 
 export default {
-  name: 'goodsList',
+  name: 'specList',
+  props: {
+    warehouseId: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+  },
   components: {
-    SelectGoods,
+    selectSpec,
   },
   data() {
     return {
-      goodsList: [],
-      goods: [],
-      visible_goods: false,
-      goods_data: [{
-        relevance_code: '',
-        num: '',
-      }], // 需要传到父组件的内容
+      specList: [],
+      dialogShow: false,
       num_arr: [],
     };
   },
-  watch: {
-    num_arr() {
-      // console.log(this.num_arr, 'num_arr');
-      // console.log(this.goodsList, 'goodslist');
-      // 给 goodsList数组中的每个对象都添加一个 num属性,且该属性值为当前选择的数量值
-      for (let i = 0; i < this.goodsList.length; i += 1) {
-        for (let j = 0; j < this.num_arr.length; j += 1) {
-          if (this.goodsList[i].id === j) {
-            this.goodsList[i].number = this.num_arr[j];
-          }
-        }
-      }
-      this.$emit('get_data', this.goodsList);
-    },
-  },
   methods: {
-    removeGoods(index) {
-      const temp = JSON.parse(JSON.stringify(this.goodsList));
-      for (let i = 0; i < temp.length; i += 1) {
-        if (index === i) {
-          temp.splice(index, 1);
-          this.num_arr[index] = 0;
-        }
-      }
-      // console.log(temp, 'temp', this.goodsList, 'this.goodsList');
-      this.goodsList = temp;
-    },
-    handleVisibleGoods(val) {
-      // for (let i = 0; i < goodsList.length; i += 1) {
-      //   let flag = false;
-      //   for (let j = 0; j < this.temp_goods_list.length; j += 1) {
-      //     if (goodsList[i].id === this.temp_goods_list[j].id) {
-      //       flag = true;
-      //     }
-      //   }
-      //   if (!flag) {
-      //     this.temp_goods_list.push(goodsList[i]);
-      //   }
-      // }
-      this.visible_goods = val;
-    }, // 选择商品之后关闭弹窗
-    handleSelectGoodsData(data) {
+    onSpecSelected(data) {
+      console.log('选中的数据', data);
       for (let i = 0; i < data.length; i += 1) {
-        let flag = false;
-        for (let j = 0; j < this.goodsList.length; j += 1) {
-          if (data[i].id === this.goodsList[j].id) {
-            flag = true;
+        let found = false;
+        for (let j = 0; j < this.specList.length; j += 1) {
+          if (data[i].id === this.specList[j].id) {
+            found = true;
+            console.log('存在数据', data[i]);
+            break;
           }
         }
-        if (!flag) {
-          this.goodsList.push(data[i]);
+        if (!found) {
+          this.specList.push(data[i]);
         }
       }
-      // console.log(this.goodsList, '父组件');
-      // console.log(data, '子组件');
-    }, // 选择商品后的事件
-    handleSelectGoods() {
-      this.visible_goods = true;
+    },
+    removeSpec(index) {
+      this.specList.splice(index, 1);
+    },
+    handleShowDialog() {
+      console.log(this.dialogShow, '打开选择商品规格窗口');
+      this.dialogShow = true;
     }, // 打开选择商品弹窗
   },
 };

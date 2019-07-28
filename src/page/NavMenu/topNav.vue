@@ -17,13 +17,13 @@
       <div  :class="$style.selectedTag">
             <div v-if="+UType !== 0">
               <div style="font-size: 1.2rem; text-align: center; line-height: 80px;">
-                  <i class="medium el-icon-house"></i> <span>{{default_warehouse_name}}</span>
+                  <i class="medium el-icon-house"></i> <span>{{warehouseName}}</span>
               </div>
             </div>
             <div v-else>
                   <el-dropdown  :class="$style.selectedTag_main">
                       <el-button type="text">
-                          <i class="medium el-icon-house"></i> <strong>{{default_warehouse_name}}</strong>
+                          <i class="medium el-icon-house"></i> <strong>{{warehouseName}}</strong>
                           <i class="el-icon-arrow-down el-icon--right"></i>
                       </el-button>
                       <el-dropdown-menu  slot="dropdown"
@@ -48,7 +48,7 @@
          <div  v-if="isShowSelectWarehouseIcon"
                @click="toggleWarehouseIcon"
                :class="$style.warehouse">
-               <i v-show="iconShow" class="iconfont">&#xe6bf;</i>
+               <i class="iconfont">&#xe6bf;</i>
                <span>{{selectWarehouse}}</span>
          </div>
          <div :class="$style.user">
@@ -68,8 +68,8 @@
                    <el-dropdown>
                                <span class="iconfont">&#xe60e;</span>
                                <el-dropdown-menu slot="dropdown">
-                                                 <el-dropdown-item @click.native="handleChangePassWord">{{'修改密码'}}</el-dropdown-item>
-                                                 <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                                     <el-dropdown-item @click.native="handleChangePassWord">{{'修改密码'}}</el-dropdown-item>
+                                     <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
                                </el-dropdown-menu>
                    </el-dropdown>
               </div>
@@ -78,16 +78,16 @@
   </div>
     <!-- 切换仓库 -->
 
-      <el-dialog title="切换仓库" :visible.sync="showWarehousesSwitch">
-      <el-form :model="form">
-        <el-form-item label="请选择仓库" :label-width="formLabelWidth">
-          <el-select  v-model="selectWarehouse" placeholder="请选择仓库" >
-            <el-option v-for="item in all_warehouse" :label="item.name_cn"  :key="item.id" :value="item.name_cn"></el-option>
+      <el-dialog title="切换仓库" :visible.sync="showWarehousesDialog">
+      <el-form>
+        <el-form-item label="请选择仓库">
+          <el-select  v-model="currentWarehouseId" placeholder="请选择仓库" >
+            <el-option v-for="item in warehouseList" :label="item.name_cn"  :key="item.id" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showWarehousesSwitch = false">取 消</el-button>
+        <el-button @click="showWarehousesDialog = false">取 消</el-button>
         <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </div>
     </el-dialog>
@@ -99,6 +99,7 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 import ChangePassWord from './components/changePassWord'; // 修改密码
 import UserInfo from './components/userInfo'; // 修改个人资料
 
@@ -108,21 +109,18 @@ export default {
     ChangePassWord,
     UserInfo,
   },
+  mixins: [mixin],
   data() {
     return {
       show_user_info_flag: false,
       show_psw_flag: false,
-      all_warehouse: '', // 仓库列表
+      warehouseList: [], // 仓库列表
       selectWarehouse: '', // 切换仓库选择的仓库
-      showWarehousesSwitch: false, // 切换仓库弹窗开关
-      warehouses: [], // 仓库列表
-      currentWarehouseId: '', // 当前选中仓库 Id
+      showWarehousesDialog: false, // 切换仓库弹窗开关
       // 仓秘书
       centerDialogVisible: false,
       isShowSelectWarehouseIcon: false,
-      noWarehouse: true,
-      iconShow: true,
-      warehouseList: '',
+      currentWarehouseId: this.warehouseId,
     };
   },
   created() {
@@ -130,24 +128,19 @@ export default {
   },
 
   watch: {
-    default_warehouse_name(val) {
-      // console.log(val, '监听仓库id');
-      const arr = this.all_warehouse;
+    currentWarehouseId(val) {
+      const arr = this.warehouseList;
+      // console.log('改变仓库ID', val, arr);
       // 监听当前选择的仓库名称，如果选中的名称改变，则缓存改仓库的 id
       for (let i = 0; i < arr.length; i += 1) {
-        if (val === arr[i].name_cn) {
-          this.currentWarehouseId = +arr[i].id;
-          // console.log(this.currentWarehouseId, 'this.currentWarehouseId');
-          this.$store.commit('config/setWarehouseId', +arr[i].id); // 设置仓库 id
-          this.$store.commit('config/setWarehouseName', this.selectWarehouse); // 设置仓库名
+        if (val === arr[i].id) {
+          // console.log('改变仓库ID', val, arr);
+          this.selectWarehouse = arr[i].name_cn; // 设置仓库名
         }
       }
     },
   },
   computed: {
-    default_warehouse_name() {
-      return this.$store.state.config.setWarehouseName || localStorage.getItem('warehouseName');
-    }, // 初始化默认仓库
     topNavData() {
       return this.$store.state.routerData.routerMap[0].children;
     },
@@ -181,21 +174,20 @@ export default {
       this.$router.replace({ name: 'addWarehouse' });
     }, // 跳转到-----创建仓库
     shift_warehouse() {
-      this.showWarehousesSwitch = true;
+      this.showWarehousesDialog = true;
       this.getWarehouses();
     }, // 切换仓库--确定按钮
     getWarehouses() {
       $http.warehouses().then((re) => {
         const data = re.data.data;
-        this.all_warehouse = data;
-        this.$set(this.all_warehouse);
+        this.warehouseList = data;
       });
     }, // 获取仓库列表
     handleConfirm() {
-      // console.log(this.currentWarehouseId, '当前仓库id', this.selectWarehouse, '当前仓库name');
+      console.log(this.currentWarehouseId, '当前仓库id', this.selectWarehouse, '当前仓库name');
       this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
-      this.showWarehousesSwitch = false; // 关闭对话框
+      this.showWarehousesDialog = false; // 关闭对话框
     },
     toggleWarehouseIcon() {
       if (this.warehouseList.length === 1) { return; }

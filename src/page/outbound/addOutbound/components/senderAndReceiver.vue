@@ -1,52 +1,58 @@
 <template>
   <div>
       <!-- 收发件人信息 -->
-      <el-form-item :class="$style.main">
-                    <el-row :gutter="10">
-                            <el-col :lg="12">
-                              <div  class="address">
-                                    <label  class="label"> 发件信息
-                                            <el-button size="large"  @click="handle_select(0)">选择发件人地址</el-button>
-                                    </label>
-                                    <el-form  label-width="80px">
-                                              <el-form-item label="姓名"
-                                                            prop="fullname">
-                                                              {{senderInfo.fullname}}
-                                              </el-form-item>
-                                              <el-form-item label="电话"
-                                                            prop="phone">
-                                                            {{senderInfo.phone}}
-                                              </el-form-item>
-                                              <el-form-item label="地址"
-                                                            prop="address">
-                                                            {{senderInfo.address}}
-                                              </el-form-item>
-                                    </el-form>
-                              </div>
-                            </el-col>
-                            <el-col :lg="12">
-                              <div  class="address sender">
-                                    <label  class="label"> 收件信息
-                                            <el-button size="large"  @click="handle_select(1)">选择收件人地址</el-button>
-                                    </label>
-                                    <el-form  label-width="80px">
-                                              <el-form-item label="姓名"
-                                                            prop="fullname">
-                                                            {{receiverInfo.fullname}}
-                                              </el-form-item>
-                                              <el-form-item label="电话"
-                                                            prop="phone">
-                                                            {{receiverInfo.phone}}
-                                              </el-form-item>
-                                              <el-form-item label="地址"
-                                                            prop="address">
-                                                            {{receiverInfo.address}}
-                                              </el-form-item>
-                                    </el-form>
-                              </div>
-                            </el-col>
-                    </el-row>
-      </el-form-item>
+      <el-row  :gutter="10" type="flex" align="middle">
+          <el-col :lg="12" justify="space-between">
+            <div  class="address">
+                  <label  class="label">
+                      <el-button size="mini" @click="handle_select(0)" icon="el-icon-more" style="float:right"></el-button>
+                      发件信息
+                  </label>
+                  <el-form  label-width="80px" v-if="senderInfo.fullname">
+                      <el-form-item label="姓名"
+                                    prop="fullname">
+                                      {{senderInfo.fullname}}
+                      </el-form-item>
+                      <el-form-item label="电话"
+                                    prop="phone">
+                                    {{senderInfo.phone}}
+                      </el-form-item>
+                      <el-form-item label="地址"
+                                    prop="address">
+                                    {{senderInfo.address}}
+                      </el-form-item>
+                  </el-form>
+                  <div v-if="!senderInfo.fullname">
+                    <el-button size="large"  @click="handle_select(0)" type="primary" plain icon="el-icon-house">选择发件人地址</el-button>
+                  </div>
+            </div>
+          </el-col>
+          <el-col :lg="12" justify="space-between">
+            <div  class="address sender">
+                  <label class="label">
+                      <el-button size="mini" @click="handle_select(1)" icon="el-icon-more" style="float:right"></el-button>
+                    收件信息
+                  </label>
+                  <el-form  label-width="80px" v-if="receiverInfo.fullname">
+                            <el-form-item label="姓名"
+                                          prop="fullname">
+                                          {{receiverInfo.fullname}}
+                            </el-form-item>
+                            <el-form-item label="电话"
+                                          prop="phone">
+                                          {{receiverInfo.phone}}
+                            </el-form-item>
+                            <el-form-item label="地址"
+                                          prop="address">
+                                          {{receiverInfo.address}}
+                            </el-form-item>
+                  </el-form>
+                  <div v-if="!receiverInfo.fullname">
+                    <el-button size="large"  @click="handle_select(1)" type="primary" plain icon="el-icon-s-custom">选择收件人地址</el-button>
+                  </div>
+            </div>
+          </el-col>
+      </el-row>
       <!-- 详细信息弹窗 -->
       <el-dialog  :title="`选择${addressText}`"
                   width="80%"

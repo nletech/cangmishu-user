@@ -29,7 +29,7 @@
                      </el-table-column>
                      <el-table-column  prop="total_num.total_need_num" label="预计数量" width="100">
                      </el-table-column>
-                     <el-table-column  prop="total_num.total_stockin_numn" label="实际数量" width="100">
+                     <el-table-column  prop="total_num.total_stockin_num" label="实际数量" width="100">
                      </el-table-column>
                      <el-table-column  prop="created_at" label="创建时间" width="155">
                      </el-table-column>

@@ -1,7 +1,7 @@
 <template>
           <div  class="storeManage">
                 <mdoel-form   :colValue="24">
-                    <el-form  slot="left" :inline="true"
+                    <el-form  slot="left"
                               :rules="formValidator"
                               :model="form" label-width="100px"
                               ref="form">
@@ -35,11 +35,13 @@
                               <el-button @click="onDistributor" icon="el-icon-more"></el-button>
                               </el-form-item>
                           </el-col>
-                          <el-col :span="8" :offset="6">
+                          <el-col :span="10" :offset="4">
                               <!-- 确认入库单编号 -->
                               <el-form-item label="单据编号" label-position="right"
-                                          prop="confirmation_number" style="float:right">
-                                  <el-input v-model="form.confirmation_number"  class="noborder" prefix-icon="el-icon-tickets"></el-input>
+                                          prop="confirmation_number" style="float:right" class="noborder">
+                                  <el-input v-model="form.confirmation_number" prefix-icon="el-icon-tickets">
+                                    <el-button slot="append" @click="getBatchCode" icon="el-icon-refresh"></el-button>
+                                  </el-input>
                               </el-form-item>
                           </el-col>
                         </el-row>
@@ -54,7 +56,7 @@
                         </el-row>
                         <el-row>
                           <el-col>
-                              <el-table :data="goodsList" empty-text="请选择商品规格">
+                              <el-table :data="specList" empty-text="请选择商品规格">
                                         <el-table-column  type="index"
                                                           label="#" fixed>
                                         </el-table-column>
@@ -74,7 +76,7 @@
                                                         min-width="80px">
                                                           <template slot-scope="scope">
                                                                     <el-input size="mini"
-                                                                              v-model="scope.row.distributor_code">
+                                                                              v-model="scope.row.purchase_price">
                                                                     </el-input>
                                                           </template>
                                         </el-table-column>
@@ -101,7 +103,7 @@
                               <el-row>
                                 <el-col>
                                   <el-form-item :label="$t('planInboundTime')">
-                                            <el-row>>
+                                            <el-row>
                                               <el-col :span="12"
                                                       style="padding:0;">
                                                       <el-date-picker v-model="startDate"
@@ -149,106 +151,31 @@
                                     </el-form-item>
                                   </el-col>
                               </el-row>
-                              <el-row>
-                                <el-col :span="24">
-                                  <el-form-item :label="$t('remarks')">
-                                                <el-input v-model="form.remark"
-                                                          type="textarea"
-                                                          placeholder="最多不超过30个字"
-                                                          :maxlength="30"
-                                                          :autosize="{ minRows: 4, maxRows: 6}">
-                                                </el-input>
+                              <el-row :gutter="20">
+                                <el-col>
+                                  <el-form-item :label="$t('remarks')" >
+                                          <el-input v-model="form.remark"
+                                                    type="textarea"
+                                                    placeholder="最多不超过30个字"
+                                                    :maxlength="30">
+                                          </el-input>
                                   </el-form-item>
                                 </el-col>
                               </el-row>
-                              <el-row>
-                                <el-col>
-                                    <el-form-item>
-                                        <el-button @click="onSave('form')"
-                                                  type="primary"
-                                                  :loading="$store.state.config.button_loading">
-                                                  {{$t('submit')}}
-                                        </el-button>
-                                        <el-button @click="$router.go(-1)">
-                                                  {{$t('cancel')}}
-                                        </el-button>
-                                    </el-form-item>
-                              </el-col>
-                            </el-row>
+                              <el-form-item style="padding-left:100px;" >
+                                  <el-button @click="onSave('form')"
+                                            type="primary"
+                                            :loading="$store.state.config.button_loading">
+                                            {{$t('submit')}}
+                                  </el-button>
+                                  <el-button @click="$router.go(-1)">
+                                            {{$t('cancel')}}
+                                  </el-button>
+                              </el-form-item>
                     </el-form>
                 </mdoel-form>
                 <!-- 选择商品弹窗 -->
-                <el-dialog  title="选择商品"
-                            width="80%"
-                            :visible.sync="goodsDialog"
-                            :before-close="handleClose">
-                  <el-row :gutter="20">
-                    <el-col :span="5">请选择货品分类</el-col>
-                    <el-col :span="19">
-                        <!-- 搜索框 -->
-                        <el-row :gutter="20" type="flex">
-                          <el-col  :span="12">
-                              <el-input placeholder="请输入内容">
-                                  <el-button slot="append" type="primary" icon="el-icon-search"></el-button>
-                              </el-input>
-                          </el-col>
-                          <!-- 添加商品 -->
-                          <el-col :span="4" :offset="8" >
-                            <div style="float:right">
-                            <el-button @click="handlerAddGoods">
-                              添加商品
-                            </el-button>
-                            </div>
-                          </el-col>
-                        </el-row>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-col :span="5">
-                        <el-tree
-                          :props="{label:'name_cn'}"
-                          :data="goodsTypes"
-                          default-expand-all
-                          @node-click="handlerSelect"
-                          :expand-on-click-node="false"></el-tree>
-                    </el-col>
-                    <el-col :span="19">
-                        <!-- 数据表 -->
-                        <el-table :data="goods"
-                                  ref="table"
-                                  border
-                                  @selection-change="rowClickGoods" style="width: 100%; margin-top:10px;">
-                            <el-table-column type="selection" width="60"></el-table-column>
-                            <el-table-column type="index" label="序号" width="60"></el-table-column>
-                            <el-table-column type="index" label="入库数量" width="160">
-                              <template slot-scope="scope">
-                                  <el-input-number size="mini" value="0"></el-input-number>
-                              </template>
-                            </el-table-column>
-                            <el-table-column  label="商品名称及规格" prop="product_name"></el-table-column>
-                            <el-table-column  label="参考进货价（元）" prop="sale_price"></el-table-column>
-                            <el-table-column  label="当前库存" prop="net_weight"></el-table-column>
-                        </el-table>
-                        <button-pagination :pageParams="params"></button-pagination>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-col :span="5">
-                      该入库单已添加{{goodsSelected.length}}种商品
-                    </el-col>
-                    <el-col :span="19" class="dialog-footer">
-                      <div style="float:right">
-                        <el-button  type="primary"
-                                    @click="confirmSelected"
-                                    :loading="$store.state.btn_loading"
-                                    :disabled="!this.goodsSelected.length">
-                                    提交
-                        </el-button>
-                        <el-button @click="handleClose()">取消</el-button>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </el-dialog>
+                <select-spec-dialog :visible.sync="dialogSpecShow" :warehouseId.sync="warehouseId" @selected="onSpecSelected"></select-spec-dialog>
                 <!-- 供应商管理弹窗 -->
                 <el-dialog  title="供应商管理"
                             :visible.sync="distributorListShow"
@@ -341,6 +268,7 @@ import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
 import MyGroup from '@/components/my_group';
 import { OnlyLetterAndNumber } from '@/lib/validateForm';
+import selectSpecDialog from '@/components/dialog/selectSpec';
 
 export default {
   components: {
@@ -348,20 +276,15 @@ export default {
     MyGroup,
     buttonPagination,
     inputPublic,
+    selectSpecDialog,
   },
   mixins: [getListData, mixin],
   data() {
     return {
-      SelectedGoodsType: '', // 选择的货品分类
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < (Date.now() - (3600 * 1000 * 24));
         },
-      },
-      Paramss: {
-        page: 1,
-        page_size: 10,
-        data_count: 0,
       },
       form: {
         warehouse_id: '',
@@ -377,18 +300,9 @@ export default {
       startTime: '',
       endTime: '',
       endDate: '',
-      recomendShelfList: [
-        { value: 's02-01-21' },
-        { value: 's02-01-22' },
-      ],
-      recomendShelf: '',
-      typeList: [], // 货品分类列表
       batchTypeList: [], // 入库单分类
-      boundList: [], // 入库仓库
-      goodsList: [], // 选中货品列表
-      goods: [], // 弹出框货品列表
-      goodsSelected: [], // 弹出框选中货品
-      goodsDialog: false, // 待入库货品弹出框
+      specList: [], // 选中货品列表
+      dialogSpecShow: false, // 待入库货品弹出框
       distributorList: [], // 供应商列表
       distributorListShow: false, // 供应商列表对话框
       distributorEditShow: false, // 供应商编辑对话框
@@ -398,33 +312,15 @@ export default {
       // 以下重写
       distributor: {},
       distributorSelectList: [], // 供应商列表
-      goodsTypes: [], // 商品分类列表
-      select_batch_code: {
-        placeholder: '请输入商品名称或SKU',
-        flag: 10,
-      },
     };
   },
   created() {
-    this.getBoundList(); // 获取仓库
     this.getBatchTypeList(); // 获取入库单分类
     this.getDistributorList(); // 获取供应商列表
-    this.getGoodsTypes(); // 货品分类
     this.queryAllDistributor(); // 不带分页的所有供应商
     this.getBatchCode();
   },
-  watch: {
-    warehouseId() {
-      this.getGoodsTypes();
-      this.getBoundList();
-      this.getBatchTypeList();
-      this.getDistributorList();
-    },
-  },
   computed: {
-    warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
     formValidator() {
       const validatorOrdernumber = (rule, value, callback) => {
         if (!OnlyLetterAndNumber(value)) {
@@ -467,52 +363,11 @@ export default {
           this.form.confirmation_number = res.data.batch_code;
         });
     },
-    getList() {
-      if (!this.warehouseId) return;
-      this.params.warehouse_id = this.warehouseId;
-      this.goods = [];
-      // 获取商品列表(商品是规格)
-      $http.querySpecs({ warehouse_id: this.warehouseId })
-        .then((res) => {
-          this.goods = res.data.data;
-          this.params.data_count = res.data.total;
-        });
-    }, // 获取商品列表
-    handlerInputQuery(res) {
-      this.goods = res.data.data;
-      this.params.data_count = res.data.total;
-      this.params.currentPage = res.data.current_page;
-    }, // input搜索回调
-    handlerClearGoodsTypes() {
-      this.getList();
-    }, // 清除回调
-    getGoodsTypes() {
-      if (!this.warehouseId) return;
-      $http.getCategoryManagement()
-        .then((res) => {
-          this.goodsTypes = res.data.data;
-        });
-    },
-    handlerSelect(item) {
-      $http.querySpecs({
-        category_id: item.id,
-        warehouse_id: this.warehouseId,
-      })
-        .then((res) => {
-          this.goods = res.data.data;
-        });
-    }, // 选择商品分类来搜索商品
     queryAllDistributor() {
       $http.queryDistributor({ all: 1 }).then((res) => {
         this.distributorSelectList = res.data;
       });
     }, // 远程搜索供应商
-    handlerAddGoods() {
-      this.$router.push({
-        name: 'goodsAdd',
-        query: { warehouse_id: this.$route.query.warehouse_id },
-      });
-    },
     getBatchTypeList() {
       if (!this.warehouseId) return;
       this.form.type_id = '';
@@ -546,55 +401,35 @@ export default {
           this.distributor.size = res.data.per_page;
         });
     }, // 供应商分页
-    getBoundList() {
-    },
     // 待入库货品弹出框
     showDialog() {
-      this.goodsDialog = true;
-      this.params.page = 1;
-      this.params.keyword = '';
-      this.getList();
+      this.dialogSpecShow = true;
     },
-    // 拉取待入库货品列表
-    // 货品列表行点击
-    rowClickGoods(items) {
-      this.goodsSelected = [];
-      for (const item of items) {
-        this.goodsSelected.push(item);
-      }
-    },
-    // 选择货品弹框确认
-    confirmSelected() {
-      for (let i = 0; i < this.goodsSelected.length; i += 1) { // 检测选择商品子组件回传的商品数据 已存在则不会push进this.goodsList去
-        let flag = false;
-        for (let j = 0; j < this.goodsList.length; j += 1) {
-          if (this.goodsSelected[i].id === this.goodsList[j].id) {
-            flag = true;
+    onSpecSelected(data) {
+      console.log('选中的数据', data);
+      for (let i = 0; i < data.length; i += 1) {
+        let found = false;
+        for (let j = 0; j < this.specList.length; j += 1) {
+          if (data[i].id === this.specList[j].id) {
+            found = true;
+            console.log('存在数据', data[i]);
+            break;
           }
         }
-        if (!flag) {
-          this.goodsList.push(this.goodsSelected[i]);
+        if (!found) {
+          this.specList.push(data[i]);
         }
       }
-      // this.goodsList = [...this.goodsSelected];
-      this.handleClose();
-      // console.log(this.goodsSelected, 'this.goodsSelected');
-      // console.log(this.goodsList, 'this.goodsList');
-      // this.goodsDialog = false;
-    }, // 选择货品弹框关闭
-    handleClose() {
-      this.goodsSelected = [];
-      this.goodsDialog = false;
     },
     // 删除已选择货品
     removeGoods(index) {
-      this.goodsList.splice(index, 1);
+      this.specList.splice(index, 1);
     },
     // 入库单提交
     onSave(formName) {
       this.items = [];
       // eslint-disable-next-line
-      for (const item of this.goodsList) {
+      for (const item of this.specList) {
         this.items.push({
           // id: item.product_id,
           spec_id: item.id,
@@ -732,15 +567,15 @@ export default {
 .header {
   margin: 0 0 10px 0;
 }
-.noborder input.el-input__inner {
+.noborder .el-input__inner {
     border-radius:0px;
     border-top:0px;
     border-left:0px;
     border-right:0px;
+    background-color: red;
 }
 </style>
-
-<style>
+<style lang="less" scoped>
  .distributor_main {
    margin: 20px 0 40px 0;
  }

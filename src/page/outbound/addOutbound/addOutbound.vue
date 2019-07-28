@@ -1,72 +1,78 @@
 <template>
 <div class="storeManage">
-  <mdoel-form :colValue="20">
-    <el-form  slot="left"
-              label-width="120px">
-              <!-- 出库单类型 -->
-              <el-form-item label="出库单分类">
-                            <el-select size="small"
-                                       v-model="form.order_type">
-                                        <el-option  v-for="item in outboundTypes"
-                                                    :key="item.id"
-                                                    :disabled="!item.is_enabled"
-                                                    :label="item.name"
-                                                    :value="item.id">
-                                        </el-option>
-                            </el-select>
-              </el-form-item>
-              <!-- 收发件人信息 -->
-              <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
-              <label class="label"> 出库清单 </label>
-              <!-- 出库清单表 -->
-              <el-form-item>
-                          <!-- 选择商品的列表 -->
-                         <goods-list @get_data="handleGoodsData"></goods-list>
-              </el-form-item>
-              <!-- 备注 -->
-              <el-form-item label="备注"
-                            prop="remark">
-                            <el-input type="textarea"
-                                      :maxlength="30"
-                                      placeholder="最多不超过30个字"
-                                      v-model="form.remark">
+  <mdoel-form :colValue="24">
+    <el-form  slot="left" label-width="120px" ref="form" label-position="left">
+      <el-row type="flex" justify="space-between">
+        <el-col :span="8">
+            <!-- 供应商 -->
+            分类
+            <el-select  v-model="form.order_type" size="mini" placeholder="请选择分类">
+                <el-option  v-for="item in outboundTypes"
+                          :key="item.id"
+                          :disabled="!item.is_enabled"
+                          :label="item.name"
+                          :value="item.id">
+              </el-option>
+            </el-select>
+        </el-col>
+        <el-col :span="8"><h2 align="center" style="margin:0px;">商品销售清单</h2></el-col>
+        <el-col :span="8">
+            业务日期
+            <el-date-picker size="mini" align="right" type="date" placeholder="选择日期" ></el-date-picker>
+        </el-col>
+    </el-row>
+    <hr/>
+    <label class="label" style="float:left; width:80px;">出库清单 </label>
+    <!-- 出库清单表 -->
+    <!-- 选择商品的列表 -->
+    <goods-list @get_data="handleGoodsData"  :warehouseId="warehouseId"></goods-list>
+    <label class="label"> 收发件人信息 </label>
+    <!-- 收发件人信息 -->
+    <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
+    <!-- 备注 -->
+    <el-form-item label="备注"
+                  prop="remark">
+                  <el-input type="textarea"
+                            :maxlength="30"
+                            placeholder="最多不超过30个字"
+                            v-model="form.remark">
+                  </el-input>
+    </el-form-item>
+    <el-row>
+            <el-col :span="10">
+                    <!-- 运输方式 -->
+                    <el-form-item  label="运输方式"
+                                  size="small">
+                        <el-input  v-model="form.delivery_type"
+                                   :maxlength="13"
+                                   placeholder="请输入运输方式">
+                        </el-input>
+                    </el-form-item>
+            </el-col>
+            <el-col  :span="10"
+                     :offset="2">
+                      <!-- 运单号 -->
+                      <el-form-item label="运单号">
+                            <el-input  placeholder="请输入运单号"
+                                       :maxlength="13"
+                                       v-model="form.express_num"
+                                       size="small">
                             </el-input>
-              </el-form-item>
-              <el-row>
-                      <el-col :span="10">
-                              <!-- 运输方式 -->
-                              <el-form-item  label="运输方式"
-                                            size="small">
-                                            <el-input  v-model="form.delivery_type"
-                                                       :maxlength="13"
-                                                       placeholder="请输入运输方式">
-                                            </el-input>
-                              </el-form-item>
-                      </el-col>
-                      <el-col  :span="10"
-                               :offset="2">
-                                <!-- 运单号 -->
-                                <el-form-item label="运单号">
-                                              <el-input  placeholder="请输入运单号"
-                                                         :maxlength="13"
-                                                         v-model="form.express_num"
-                                                         size="small">
-                                              </el-input>
-                                </el-form-item>
-                      </el-col>
-              </el-row>
-              <!-- 提交按钮 -->
-              <el-form-item>
-                            <el-row>
-                                    <el-col :span="2" :offset="10">
-                                                      <el-button :loading="$store.state.config.button_loading"
-                                                                type="primary"
-                                                                @click="onSubmit()">
-                                                                提交
-                                                      </el-button>
-                                    </el-col>
-                            </el-row>
-              </el-form-item>
+                      </el-form-item>
+            </el-col>
+    </el-row>
+    <!-- 提交按钮 -->
+    <el-form-item>
+      <el-row>
+              <el-col :span="2" :offset="10">
+              <el-button :loading="$store.state.config.button_loading"
+                        type="primary"
+                        @click="onSubmit()">
+                        提交
+              </el-button>
+              </el-col>
+      </el-row>
+    </el-form-item>
     </el-form>
   </mdoel-form>
 </div>
@@ -75,6 +81,7 @@
 <script>
 import MdoelForm from '@/components/form';
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 import SenderAndReceiver from './components/senderAndReceiver';
 import GoodsList from './components/goodsList';
 
@@ -85,6 +92,7 @@ export default {
     GoodsList,
     MdoelForm,
   },
+  mixins: [mixin],
   data() {
     return {
       form: {
@@ -103,17 +111,12 @@ export default {
       formInfo: {}, // 提交的表格
       // 修改
       goodsList: [], // 选中货品列表
-      goodsDialog: false, // 是否显示货品弹出框
       temp_goods_list: [], // 用于处理与提交的商品信息
+      warehouse_id: 0,
     };
   },
   created() {
     this.getOrderTypes(); // 获取出库单分类
-  },
-  computed: {
-    warehouse_id() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
   },
   methods: {
     handleGoodsData(goodsList) {

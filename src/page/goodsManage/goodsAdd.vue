@@ -199,9 +199,6 @@ export default {
     this.getTypeList();
   },
   computed: {
-    warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
     formValidator() {
       return {
         category_id: [

@@ -95,7 +95,7 @@ export default {
           type: 'success',
           showClose: true,
         });
-        window.open(`${baseApi}/batch/${this.id}/download?api_token=${this.api}`);
+        window.open(`${baseApi}/batch/${this.id}/download?api_token=${this.api}&lang`);
       });
     },
   },

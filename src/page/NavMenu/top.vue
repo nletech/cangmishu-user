@@ -1,8 +1,8 @@
 <template>
-          <div  class="topNav">
-                <top-nav></top-nav>
-                <router-view />
-          </div>
+  <div  class="topNav">
+      <top-nav></top-nav>
+      <router-view />
+  </div>
 </template>
 <script>
 import TopNav from './topNav';
