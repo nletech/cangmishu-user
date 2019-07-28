@@ -47,12 +47,14 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
   props: {
     id: [String],
     show_data_flag: [String],
   },
+  mixins: [mixin],
   watch: {
     show_data_flag(val) {
       if (val === '货区') {
@@ -73,7 +75,7 @@ export default {
   methods: {
     get_data() {
       if (this.active) {
-        $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id })
+        $http.getWarehouseArea({ warehouse_id: this.warehouseId })
           .then((res) => {
             this.Area_data = res.data.data;
             this.total = res.data.total;
@@ -84,7 +86,7 @@ export default {
     handleCurrentChange(val) {
       $http.checkWarehouseArea({
         page: val,
-        warehouse_id: this.$route.query.warehouse_id,
+        warehouse_id: this.warehouseId,
       })
         .then((res) => {
           this.Area_data = res.data.data;
@@ -114,7 +116,7 @@ export default {
       this.$router.push({
         name: 'editCargoArea',
         query: {
-          warehouse_id: this.$route.query.warehouse_id,
+          warehouse_id: this.warehouseId,
           area_id: id, // 当前货区 id
           edit: true,
         },

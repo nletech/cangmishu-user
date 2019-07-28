@@ -17,6 +17,7 @@
 </template>
 <script>
 import CmsModel from '@/components/cms-model/cms-model';
+import mixin from '@/mixin/form_config';
 import WarehouseArea from './components/warehouseArea';
 import WarehouseShelf from './components/warehouseShelf';
 
@@ -27,6 +28,7 @@ export default {
     } // 用于添加货位之后的返回操作
   },
   name: 'basicSetting',
+  mixins: [mixin],
   components: {
     CmsModel,
     WarehouseArea,
@@ -59,13 +61,13 @@ export default {
       if (val === '货区') {
         this.$router.push({
           name: 'addCargoArea',
-          query: { warehouse_id: this.$route.query.warehouse_id },
+          query: { warehouse_id: this.warehouseId },
         });
         //
       } else if (val === '货位') {
         this.$router.push({
           name: 'addCargoShelf',
-          query: { warehouse_id: this.$route.query.warehouse_id },
+          query: { warehouse_id: this.warehouseId },
         });
       }
     },
