@@ -17,8 +17,6 @@
         </el-col>
         <el-col :span="8"><h2 align="center" style="margin:0px;">商品销售清单</h2></el-col>
         <el-col :span="8">
-          <div style="text-align:right">业务日期
-            <el-date-picker size="mini" align="right" type="date" placeholder="选择日期" ></el-date-picker></div>
         </el-col>
     </el-row>
     <hr/>
