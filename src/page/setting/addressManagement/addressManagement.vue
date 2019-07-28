@@ -46,6 +46,7 @@
                                                 header-align="center"
                                                 align="center"
                                                 prop="full_address"
+                                                width="350"
                                                 label="地址">
                                               </el-table-column>
                                               <el-table-column
@@ -53,16 +54,17 @@
                                                 width="240"
                                                 label="操作">
                                                 <template slot-scope="scope">
-                                                  <el-button size="mini"
-                                                            @click="edit(scope.row)">
-                                                              编辑
-                                                  </el-button>
-                                                  <el-button size="mini"
-                                                            type="danger"
-                                                            @click="delete_data(scope.row)">
-                                                              删除
-                                                  </el-button>
-                                                </template>
+                                                  <el-tooltip content="编辑" placement="top">
+                                                    <el-button size="mini" icon="el-icon-edit" round
+                                                                @click="edit(scope.row)"></el-button>
+                                                  </el-tooltip>
+                                                  <el-tooltip content="删除" placement="top">
+                                                    <el-button  size="mini" icon="el-icon-delete"
+                                                                     @click="delete_data(scope.row)"
+                                                                     type="danger" round>
+                                                    </el-button>
+                                                  </el-tooltip>
+                                              </template>
                                               </el-table-column>
                                             </el-table>
                                             <el-pagination  :class="$style.pagination"

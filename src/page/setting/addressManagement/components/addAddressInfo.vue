@@ -43,15 +43,10 @@
                                                                     v-model="add_info.addressDetail">
                                                          </el-input>
                                           </el-form-item>
+                                          <el-form-item>
+                                            <el-button  :class="$style.submit_btn" @click="infoSubmit">提交</el-button>
+                                          </el-form-item>
                                 </el-form>
-                                <el-row>
-                                        <el-col :span="2" :offset="13">
-                                                <el-button  :class="$style.submit_btn"
-                                                            @click="infoSubmit">
-                                                            提交
-                                                </el-button>
-                                        </el-col>
-                                </el-row>
                        </el-col>
               </el-row>
   </el-dialog>
