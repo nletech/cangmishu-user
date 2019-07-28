@@ -37,7 +37,7 @@
                 <el-row style="margin-top:20px;">
                   <el-col>
                     <label class="label" style="float:left; width:80px;">货品规格 </label>
-                    <div style="float:left; width:300px;">
+                    <div style="float:left; width:300px; padding-top20px;">
                         <el-button size="mini" @click="addNewLine" type="primary" plain>添加行 <i class="el-icon-more el-icon--right"></i> </el-button>
                         <span class="sub-title">带*为必填项</span>
                     </div>
@@ -276,7 +276,7 @@ export default {
         this.specList.splice(index, 1);
         return;
       }
-      this.$confirm('确定要删除已存保存过的SKU吗?', '提示', {
+      this.$confirm('确定要删除已保存过的SKU吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',

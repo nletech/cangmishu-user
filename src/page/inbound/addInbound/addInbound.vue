@@ -5,11 +5,27 @@
                               :rules="formValidator"
                               :model="form" label-width="100px"
                               ref="form">
-                        <label class="label"> {{$t('EssentialInformation')}}</label>
+                          <el-row type="flex" justify="space-between">
+                          <el-col :span="8">
+                          </el-col>
+                          <el-col :span="8"><h2 align="center" style="margin:0px;">商品采购清单</h2></el-col>
+                          <el-col :span="8">
+                            <!-- 确认入库单编号 -->
+                              <el-form-item label="单据编号" label-position="right"
+                                          prop="confirmation_number" style="float:right" class="noborder">
+                                  <el-input v-model="form.confirmation_number" prefix-icon="el-icon-tickets">
+                                    <el-button slot="append" @click="getBatchCode" icon="el-icon-refresh"></el-button>
+                                  </el-input>
+                              </el-form-item>
+                          </el-col>
+                      </el-row>
+                      <hr/>
+                        <label class="label"> 基本信息 </label>
                         <!-- 入库单分类 -->
-                        <el-row>
-                          <el-col>
-                              <el-form-item :label="$t('inboundType')" prop="type_id">
+                        <el-row type="flex" justify="space-between">
+                          <el-col :span="8">
+                            <el-form-item label="分类" label-position="right" prop="order_type">
+                              <!-- 供应商 -->
                                   <el-select v-model="form.type_id">
                                             <el-option
                                               v-for="item in batchTypeList"
@@ -18,14 +34,14 @@
                                               :value="item.id" :key="item.id">
                                             </el-option>
                                   </el-select>
-                              </el-form-item>
+                            </el-form-item>
                           </el-col>
-                        </el-row>
-                        <el-row>
-                          <el-col :span="10">
+                          <el-col :span="8">
+                          </el-col>
+                          <el-col :span="8">
                               <!-- 供应商 -->
                               <el-form-item label="供应商" label-position="right"
-                                            prop="distributor_id">
+                                            prop="distributor_id" style="float:right">
                               <el-select  v-model="form.distributor_id" placeholder="请选择供应商">
                                   <el-option  v-for="item in distributorSelectList"
                                         :label="item.name_cn"
@@ -35,20 +51,11 @@
                               <el-button @click="onDistributor" icon="el-icon-more"></el-button>
                               </el-form-item>
                           </el-col>
-                          <el-col :span="10" :offset="4">
-                              <!-- 确认入库单编号 -->
-                              <el-form-item label="单据编号" label-position="right"
-                                          prop="confirmation_number" style="float:right" class="noborder">
-                                  <el-input v-model="form.confirmation_number" prefix-icon="el-icon-tickets">
-                                    <el-button slot="append" @click="getBatchCode" icon="el-icon-refresh"></el-button>
-                                  </el-input>
-                              </el-form-item>
-                          </el-col>
                         </el-row>
                         <el-row>
                           <el-col>
                             <label class="label" style="float:left; width:80px;">商品清单 </label>
-                            <div style="float:left; width:300px;">
+                            <div style="float:left; width:300px; padding-top:20px">
                                 <el-button size="mini" @click="showDialog" type="primary" plain>选择商品规格 <i class="el-icon-more el-icon--right"></i> </el-button>
                                 <span class="sub-title">带*为必填项</span>
                             </div>

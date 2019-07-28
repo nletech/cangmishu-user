@@ -158,14 +158,12 @@ export default {
       this.params.currentPage = res.data.current_page;
     }, // input搜索回调
     goToAddGoodPage() {
-      this.$confirm('添加商品将会离开当前界面,确定?')
-      .then(_ => {
+      this.$confirm('添加商品将会离开当前界面,确定?').then(() => {
         this.$router.push({
           name: 'goodsAdd',
           query: { warehouse_id: this.warehouseId },
         });
-      })
-      .catch(_ => {});
+      }).catch(() => {});
     },
     // 待入库货品弹出框
     specRowChange(items) {

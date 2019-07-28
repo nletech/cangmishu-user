@@ -1,28 +1,13 @@
 <template>
   <div :class="$style.myWms_home">
-    <!-- <activation-status v-if="!status.is_activated"></activation-status>
-    <no-authentication v-else-if="!status.certification_owner_status && status.is_activated">
-    </no-authentication>
-    <under-review
-    v-else-if="status.certification_owner_status == 1
-    && status.is_activated
-    && status.certification_renter_status != 1">
-    </under-review>
-    <lease-warehouse
-    v-else-if="status.certification_renter_status == 1
-    && status.is_activated
-    && status.certification_owner_status != 1"></lease-warehouse>
-    <lease-wareh-by
-    v-else-if="status.certification_renter_status === 2
-    && status.is_activated"></lease-wareh-by> -->
-    <normal-home></normal-home>
+    <welcome></welcome>
   </div>
 </template>
 <script>
 import NoAuthentication from './components/no_authentication';
 import ActivationStatus from './components/activation_status';
 import UnderReview from './components/under_review';
-import normalHome from './components/normal_home';
+import welcome from './components/welcome';
 import LeaseWarehouse from './components/lease_warehouse';
 import LeaseWarehBy from './components/lease_wareh_by';
 
@@ -32,7 +17,7 @@ export default {
     NoAuthentication,
     ActivationStatus,
     UnderReview,
-    normalHome,
+    welcome,
     LeaseWarehouse,
     LeaseWarehBy,
   },

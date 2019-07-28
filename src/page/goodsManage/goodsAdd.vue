@@ -38,7 +38,7 @@
                 <el-row style="margin-top:20px;">
                   <el-col>
                     <label class="label" style="float:left; width:80px;">货品规格 </label>
-                    <div style="float:left; width:300px;">
+                    <div style="float:left; width:300px; padding-top:20px;">
                         <el-button size="mini" @click="addNewLine" type="primary" plain>添加行 <i class="el-icon-more el-icon--right"></i> </el-button>
                         <span class="sub-title">带*为必填项</span>
                     </div>
@@ -249,6 +249,13 @@ export default {
     // 提交商品信息
     onSubmitGoods(formName) {
       let ctr = true;
+      if (this.specList.length === 0) {
+        this.$message({
+          message: '请添加商品规格',
+          type: 'warning',
+        });
+        return;
+      }
       this.specList.filter(res => res.name_cn).forEach((val) => {
         if (!val.name_cn) {
           ctr = false;
