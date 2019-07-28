@@ -48,7 +48,7 @@
                                  <el-table-column  label="下单数量"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="sub_qty" width="100">
+                                                   prop="sub_order_qty" width="100">
                                  </el-table-column>
                                  <el-table-column  label="出库数量"
                                                    header-align="center"
