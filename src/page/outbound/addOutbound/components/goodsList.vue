@@ -43,7 +43,7 @@
                         </el-table-column>
               </el-table>
               <!-- 选择商品弹窗 -->
-              <select-spec :visible.sync="dialogShow" :warehouseId.sync="warehouseId" @selected="onSpecSelected" :onlyShowStock="1">
+              <select-spec :visible.sync="dialogShow" :warehouseId.sync="warehouseId" @selected="onSpecSelected" :onlyShowStock="true">
               </select-spec>
         </div>
 </template>
@@ -59,15 +59,16 @@ export default {
       default: 0,
       required: true,
     },
+    specList: {
+      type: Array,
+    },
   },
   components: {
     selectSpec,
   },
   data() {
     return {
-      specList: [],
       dialogShow: false,
-      num_arr: [],
     };
   },
   methods: {

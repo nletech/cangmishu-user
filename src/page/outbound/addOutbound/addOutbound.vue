@@ -17,15 +17,15 @@
         </el-col>
         <el-col :span="8"><h2 align="center" style="margin:0px;">商品销售清单</h2></el-col>
         <el-col :span="8">
-            业务日期
-            <el-date-picker size="mini" align="right" type="date" placeholder="选择日期" ></el-date-picker>
+          <div style="text-align:right">业务日期
+            <el-date-picker size="mini" align="right" type="date" placeholder="选择日期" ></el-date-picker></div>
         </el-col>
     </el-row>
     <hr/>
     <label class="label" style="float:left; width:80px;">出库清单 </label>
     <!-- 出库清单表 -->
     <!-- 选择商品的列表 -->
-    <goods-list @get_data="handleGoodsData"  :warehouseId="warehouseId"></goods-list>
+    <goods-list @get_data="handleGoodsData"  :warehouseId="warehouseId" :specList.sync="selectedSpec"></goods-list>
     <label class="label"> 收发件人信息 </label>
     <!-- 收发件人信息 -->
     <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
@@ -96,14 +96,14 @@ export default {
   data() {
     return {
       form: {
-        warehouse_id: '', // 仓库id
+        warehouse_id: 0, // 仓库id
         order_type: '', // 出库单分类
         goods_data: [], // 出库清单货物列表
         delivery_type: '', // 运输方式
         express_num: '', // 运单号
         remark: '', // 备注
-        sender_id: '', // 发件人 id
-        receiver_id: '', // 收件人 id
+        sender_id: 0, // 发件人 id
+        receiver_id: 0, // 收件人 id
       },
       outboundTypes: [], // 出库单分类
       AddressType: 0,
@@ -111,7 +111,7 @@ export default {
       formInfo: {}, // 提交的表格
       // 修改
       goodsList: [], // 选中货品列表
-      temp_goods_list: [], // 用于处理与提交的商品信息
+      selectedSpec: [], // 用于处理与提交的商品信息
       warehouse_id: 0,
     };
   },
@@ -120,8 +120,7 @@ export default {
   },
   methods: {
     handleGoodsData(goodsList) {
-      this.temp_goods_list = goodsList;
-      // console.log(goodsList, '传到父组件的GL');
+      this.selectedSpec = goodsList;
     },
     getSenderAndReceiverData(person) {
       if (person.senderId) {
@@ -141,47 +140,65 @@ export default {
     }, // 获取出库单分类
     onSubmit() {
       const arr = [];
-      for (let i = 0; i < this.temp_goods_list.length; i += 1) {
+      for (let i = 0; i < this.selectedSpec.length; i += 1) {
         // eslint-disable-next-line
-        let obj = new Object();
-        obj.relevance_code = this.temp_goods_list[i].relevance_code;
-        obj.num = this.temp_goods_list[i].number;
+        let needNum = 0;
+        if (this.selectedSpec[i].need_num) {
+          needNum = parseInt(this.selectedSpec[i].need_num, 10);
+        }
+        if (needNum <= 0) {
+          this.$message({
+            message: `${this.selectedSpec[i].product_name}数量不能为空`,
+            type: 'warning',
+          });
+          return;
+        }
+        if (this.selectedSpec[i].sale_price <= 0) {
+          this.$message({
+            message: `${this.selectedSpec[i].product_name}价格不能为空`,
+            type: 'warning',
+          });
+          return;
+        }
+        const obj = {};
+        obj.relevance_code = this.selectedSpec[i].relevance_code;
+        obj.num = needNum;
+        obj.sale_price = this.selectedSpec[i].sale_price;
         arr.push(obj);
       }
-      this.form.goods_data = arr;
-      this.form.warehouse_id = this.warehouse_id;
       // 以下是验证表单
       // eslint-disable-next-line
-      let newArr = this.form.goods_data;
-      let flag = false;
-      if (!this.form.goods_data.length) {
+      if (arr.length === 0) {
         this.$message({
-          message: '商品不能为空',
+          message: '出库清单不能为空',
           type: 'warning',
         });
         return;
       } // 拦截商品未填写
-      for (let i = 0; i < newArr.length; i += 1) {
-        if (!newArr[i].num) {
-          this.$message({
-            message: '商品的数量必填',
-            type: 'warning',
-          });
-          flag = true;
-        }
-      } // 拦截商品数量未填写
+      if (this.form.receiver_id === 0) {
+        this.$message({
+          message: '请选择收件人',
+          type: 'warning',
+        });
+        return;
+      } // 拦截商品未填写
+      if (this.form.sender_id === 0) {
+        this.$message({
+          message: '请选择发件人',
+          type: 'warning',
+        });
+        return;
+      } // 拦截商品未填写
+      if (this.form.order_type === '') {
+        this.$message({
+          message: '请选择分类',
+          type: 'warning',
+        });
+        return;
+      } // 拦截商品未填写
       // eslint-disable-next-line
-      for (const item in this.form) {
-        if (item !== 'remark' && this.form[item] === '') {
-          this.$message({
-            message: '请将信息填写完整',
-            type: 'warning',
-          });
-          flag = true;
-        }
-      } // 验证所有提交的数据
-      // eslint-disable-next-line
-      if (flag) return;
+      this.form.goods_data = arr;
+      this.form.warehouse_id = this.warehouseId;
       // console.log(this.form, 'this.formthis.form');
       $http.addOutbound(this.form)
         .then((res) => {
