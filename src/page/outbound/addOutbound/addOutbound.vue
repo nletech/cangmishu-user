@@ -20,13 +20,13 @@
         </el-col>
     </el-row>
     <hr/>
+    <label class="label"> 收发件人信息 </label>
+    <!-- 收发件人信息 -->
+    <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
     <label class="label" style="float:left; width:80px;">出库清单 </label>
     <!-- 出库清单表 -->
     <!-- 选择商品的列表 -->
     <goods-list @get_data="handleGoodsData"  :warehouseId="warehouseId" :specList.sync="selectedSpec"></goods-list>
-    <label class="label"> 收发件人信息 </label>
-    <!-- 收发件人信息 -->
-    <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
     <!-- 备注 -->
     <el-form-item label="备注"
                   prop="remark">

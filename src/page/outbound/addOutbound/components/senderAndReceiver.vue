@@ -68,7 +68,6 @@
                   </div>
                   <el-table :row-style="{cursor: 'pointer'}"
                             :data="address_list_data"
-                            border
                             highlight-current-row
                             style="width: 100%; margin: 0 0 10px 0;">
                             <el-table-column  type="index"
@@ -86,10 +85,10 @@
                             </el-table-column>
                             <el-table-column  label="操作"
                                               width="240">
-                                              <template slot-scope="scope">
-                                                        <el-button @click="handle_confirm_btn(scope.row)">确定</el-button>
-                                                        <el-button @click="handle_edit_btn(scope.row)">编辑</el-button>
-                                              </template>
+                                <template slot-scope="scope">
+                                          <el-button icon="el-icon-check" type="primary" plain @click="handle_confirm_btn(scope.row)">确定</el-button>
+                                          <el-button icon="el-icon-edit" @click="handle_edit_btn(scope.row)">编辑</el-button>
+                                </template>
                             </el-table-column>
                   </el-table>
                   <el-row>

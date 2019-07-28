@@ -1,58 +1,47 @@
 <template>
       <el-dialog  :title="`添加${addressText}`"
-                  width="80%"
+                  width="800px"
                   :before-close="handleClose"
                   :visible.sync="visible_add">
-                  <div  :class="$style.add_sender">
-                      <el-row :class="$style.am_main">
-                              <el-col :span="10"
-                                      :offset="6">
-                                      <el-form  :class="$style.staff_form"
-                                                label-width="140px"
-                                                size="middle"
-                                                label-position="left"
-                                                :model="form"
-                                                ref="form"
-                                                :rules="info_Verify_rules">
-                                                <el-form-item  prop="full_name"
-                                                              label="姓名"
-                                                              size="middle">
-                                                              <el-input  v-model="form.full_name"></el-input>
-                                                </el-form-item>
-                                                <el-form-item  prop="phone"
-                                                              label="电话"
-                                                              size="middle">
-                                                              <el-input  v-model="form.phone"></el-input>
-                                                </el-form-item>
-                                                <el-form-item  prop="address"
-                                                              label="省市区"
-                                                              size="middle">
-                                                              <el-cascader  style="width:100%;"
-                                                                            :props="props"
-                                                                            :options="addressInfo"
-                                                                            v-model="form.address">
-                                                              </el-cascader>
-                                                </el-form-item>
-                                                <el-form-item  prop="addressDetail"
-                                                              label="详细地址"
-                                                              size="middle">
-                                                              <el-input  type="textarea"
-                                                                          v-model="form.addressDetail">
-                                                              </el-input>
-                                                </el-form-item>
-                                      </el-form>
-                                      <el-row>
-                                              <el-col  :span="2"
-                                                        :offset="13">
-                                                        <el-button  :class="$style.submit_btn"
-                                                                    @click="infoSubmit">
-                                                                    提交
-                                                        </el-button>
-                                              </el-col>
-                                      </el-row>
-                              </el-col>
-                      </el-row>
-                  </div>
+                    <el-form  :class="$style.staff_form"
+                              label-width="140px"
+                              size="middle"
+                              label-position="left"
+                              :model="form"
+                              ref="form"
+                              :rules="info_Verify_rules">
+                              <el-form-item  prop="full_name"
+                                            label="姓名"
+                                            size="middle">
+                                            <el-input  v-model="form.full_name"></el-input>
+                              </el-form-item>
+                              <el-form-item  prop="phone"
+                                            label="电话"
+                                            size="middle">
+                                            <el-input  v-model="form.phone"></el-input>
+                              </el-form-item>
+                              <el-form-item  prop="address"
+                                            label="省市区"
+                                            size="middle">
+                                            <el-cascader  style="width:100%;"
+                                                          :props="props"
+                                                          :options="addressInfo"
+                                                          v-model="form.address">
+                                            </el-cascader>
+                              </el-form-item>
+                              <el-form-item  prop="addressDetail"
+                                            label="详细地址"
+                                            size="middle">
+                                            <el-input  type="textarea"
+                                                        v-model="form.addressDetail">
+                                            </el-input>
+                              </el-form-item>
+                              <el-form-item>
+                              <el-button type="primary" @click="infoSubmit">
+                                        提交
+                              </el-button>
+                            </el-form-item>
+                    </el-form>
       </el-dialog>
 </template>
 
