@@ -83,31 +83,21 @@
                                               header-align="center"
                                               prop="relevance_code">
                             </el-table-column>
-                            <!-- 预/已入库数量(个) -->
-                            <el-table-column  label="预/已入库数量(个)"
-                                              align="center"
-                                              header-align="center"
-                                              prop="need_num, total_stockin_num"
-                                              width="120">
-                                              <template slot-scope="scope">
-                                                        <span>{{scope.row.need_num}}/{{scope.row.total_stockin_num}}</span>
-                                              </template>
-                            </el-table-column>
-                            <!-- 供应商货号 -->
-                            <el-table-column  label="供应商货号"
-                                              prop="distributor_code">
-                            </el-table-column>
-                            <!-- 箱子条码 -->
-                            <el-table-column  label="箱子条码"
-                                              align="center"
-                                              header-align="center"
-                                              prop="box_code">
-                            </el-table-column>
                             <!-- EAN -->
                             <el-table-column  label="EAN"
                                               align="center"
                                               header-align="center"
                                               prop="ean">
+                            </el-table-column>
+                            <!-- 预/已入库数量(个) -->
+                            <el-table-column  label="预计入库数量"
+                                              align="center"
+                                              header-align="center"
+                                              prop="need_num"
+                                              width="120">
+                                              <template slot-scope="scope">
+                                                        <span>{{scope.row.need_num}}</span>
+                                              </template>
                             </el-table-column>
                             <!-- 实际入库数量 -->
                             <el-table-column  label="实际入库数量"
