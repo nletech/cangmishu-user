@@ -29,7 +29,7 @@
                                       <el-table-column  label="供应商英文名"
                                                         header-align="center"
                                                         align="center"
-                                                        prop="name_en">
+                                                        prop="name_en" v-if="isEnabledLangInput()">
                                       </el-table-column>
                                       <el-table-column  label="操作"
                                                         header-align="center"
@@ -97,9 +97,6 @@ export default {
       rules: {
         name_cn: [
           { required: true, message: '请输入供应商中文名', trigger: 'blur' },
-        ],
-        name_en: [
-          { required: true, message: '请输入供应商英文名', trigger: 'blur' },
         ],
       },
       //

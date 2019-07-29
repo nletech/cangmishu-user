@@ -47,9 +47,11 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'addRecordInfo',
+  mixins: [mixin],
   props: {
     visible: [Boolean],
     tabs: [Array],
@@ -106,6 +108,7 @@ export default {
       /* eslint-disable */
       this.formInfo.name = this.add_info.name;
       this.formInfo.is_enabled = +this.is_enabled;
+      this.formInfo.warehouse_id = this.warehouseId;
       this.$refs.form.validate((validate) => {
         if (validate) {
           let active_item = this.active_tab_item; // 活动标签

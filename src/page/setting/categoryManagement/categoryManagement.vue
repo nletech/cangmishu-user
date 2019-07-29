@@ -165,7 +165,8 @@ export default {
         need_expiration_date: 0, // 是否保质期
         need_production_batch_number: 0, // 是否生产批次
         need_best_before_date: 0, // 是否最佳体验期
-        is_enabled: '0', // 是否启用
+        is_enabled: 1, // 是否启用
+        warehouse_id: this.warehouseId,
       }, // 编辑分类
       rules: {
         name_cn: [
@@ -192,6 +193,8 @@ export default {
       this.model.need_expiration_date = model.need_expiration_date;
       this.model.need_production_batch_number = model.need_production_batch_number;
       this.model.need_best_before_date = model.need_best_before_date;
+      this.model.warehouse_id = model.warehouse_id;
+      this.model.is_enabled = model.is_enabled;
     },
     emptyData() { // 清空数据
       this.setData({
@@ -201,6 +204,8 @@ export default {
         need_expiration_date: 0, // 是否保质期
         need_production_batch_number: 0, // 是否生产批次
         need_best_before_date: 0, // 是否最佳体验期
+        warehouse_id: this.warehouseId,
+        is_enabled: 1,
       });
     },
     getDailogTitle() { // 得到标题

@@ -87,6 +87,7 @@ export default {
   },
   created() {
     this.activeLabel = '1';
+    this.gethomeWarehouseData();
   },
   methods: {
     gethomeWarehouseData() {
