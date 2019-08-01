@@ -18,22 +18,22 @@
                 </div>
                 <div  :class="$style.tab">
                   <el-table  :data="inbound_list_data" border>
-                     <el-table-column type="selection" width="40"></el-table-column>
-                     <el-table-column  prop="confirmation_number" label="单据编号" width="150">
+                     <el-table-column type="selection" width="40" header-align="center" align="center" ></el-table-column>
+                     <el-table-column  prop="confirmation_number" label="单据编号" width="150" header-align="center" align="center" >
                      </el-table-column>
-                     <el-table-column  prop="batch_type.name" label="类型">
+                     <el-table-column  prop="batch_type.name" label="类型" header-align="center" align="center" >
                      </el-table-column>
-                     <el-table-column  prop="status_name" label="状态" width="100">
+                     <el-table-column  prop="status_name" label="状态" width="100" header-align="center" align="center" >
                      </el-table-column>
-                     <el-table-column  prop="distributor.name_cn" label="供应商">
+                     <el-table-column  prop="distributor.name_cn" label="供应商" header-align="center" align="center" >
                      </el-table-column>
-                     <el-table-column  prop="total_num.total_need_num" label="预计数量" width="100">
+                     <el-table-column  prop="total_num.total_need_num" label="预计数量" width="100" header-align="center" align="center" >
                      </el-table-column>
-                     <el-table-column  prop="total_num.total_stockin_num" label="实际数量" width="100">
+                     <el-table-column  prop="total_num.total_stockin_num" label="实际数量" width="100" header-align="center" align="center" >
                      </el-table-column>
-                     <el-table-column  prop="created_at" label="创建时间" width="155">
+                     <el-table-column  prop="created_at" label="创建时间" width="155" header-align="center" align="center" >
                      </el-table-column>
-                     <el-table-column  label="操作"  fixed="right" width="200">
+                     <el-table-column  label="操作" width="200" header-align="center" align="center" >
                            <template slot-scope="scope">
                               <el-tooltip content="查看详情" placement="top">
                                 <el-button size="mini" icon="el-icon-view" round

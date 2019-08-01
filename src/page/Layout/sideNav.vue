@@ -132,7 +132,7 @@ export default {
           if (index === 0 ||index === 6 ) {
             this.li_show_switch = false;
             return;
-          } // 鼠标悬浮到侧边栏首页和帮助的时候不展示子列表
+          } // 鼠标悬浮到侧边栏 首页 和 帮助 模块的时候不显示子列表
           this.li_show_switch = true;
           menu[i].children.forEach((e) => {
             if (e.nav === 2) {
@@ -149,7 +149,6 @@ export default {
       } else {
         this.$refs.NavChild.style.margin = `${distance}px 0 0 0 `; // 输出处理后的子菜单 margin 计算值
       }
-      console.log(subMeanuInnerHeight - innerHeight, 'result');
       this.li_NavChild = subMeanu; // 输出子菜单
     },
     handleClickCloseNavChild() {
@@ -293,7 +292,6 @@ export default {
   .NavChild {
     margin: 0;
     padding: 0; // 解决浏览器中 ul 自动右移 40px
-    // background-color: red;
     width: 200px;
     list-style: none;
     text-align: center;

@@ -76,9 +76,8 @@
          </div>
     </div>
   </div>
-    <!-- 切换仓库 -->
-
-      <el-dialog title="切换仓库" :visible.sync="showWarehousesDialog">
+  <!-- 切换仓库 -->
+  <el-dialog title="切换仓库" :visible.sync="showWarehousesDialog">
       <el-form>
         <el-form-item label="请选择仓库">
           <el-select  v-model="currentWarehouseId" placeholder="请选择仓库" >
@@ -90,10 +89,10 @@
         <el-button @click="showWarehousesDialog = false">取 消</el-button>
         <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </div>
-    </el-dialog>
-    <!-- 修改密码 -->
-    <change-pass-word :visible.sync="show_psw_flag"></change-pass-word>
-    <user-info :visible.sync="show_user_info_flag"></user-info>
+  </el-dialog>
+  <!-- 修改密码 -->
+  <change-pass-word :visible.sync="show_psw_flag"></change-pass-word>
+  <user-info :visible.sync="show_user_info_flag"></user-info>
 </div>
 </template>
 
@@ -117,7 +116,6 @@ export default {
       warehouseList: [], // 仓库列表
       selectWarehouse: '', // 切换仓库选择的仓库
       showWarehousesDialog: false, // 切换仓库弹窗开关
-      // 仓秘书
       centerDialogVisible: false,
       isShowSelectWarehouseIcon: false,
       currentWarehouseId: this.warehouseId,
@@ -130,35 +128,30 @@ export default {
   watch: {
     currentWarehouseId(val) {
       const arr = this.warehouseList;
-      // console.log('改变仓库ID', val, arr);
       // 监听当前选择的仓库名称，如果选中的名称改变，则缓存改仓库的 id
       for (let i = 0; i < arr.length; i += 1) {
         if (val === arr[i].id) {
-          // console.log('改变仓库ID', val, arr);
           this.selectWarehouse = arr[i].name_cn; // 设置仓库名
         }
       }
     },
   },
   computed: {
-    topNavData() {
-      return this.$store.state.routerData.routerMap[0].children;
-    },
     email() {
       return localStorage.getItem('email');
-    },
+    }, // 获取邮箱
     sideNavStatus() {
       return +this.$store.state.config.shutdown_status;
     }, // 隐藏侧边栏标志
     Uavatar() {
       return this.$store.state.config.avatar || localStorage.getItem('setUAvatar');
-    },
+    }, // 用户头像
     UnickName() {
       return this.$store.state.config.nickName || localStorage.getItem('setUnickName');
-    },
+    }, // 用户名
     UType() {
       return +localStorage.getItem('setUType');
-    },
+    }, // 用户类型: 商家或员工
   },
   methods: {
     handleChangeUserinfo() {
@@ -178,22 +171,20 @@ export default {
       this.getWarehouses();
     }, // 切换仓库--确定按钮
     getWarehouses() {
-      $http.warehouses().then((re) => {
-        const data = re.data.data;
+      $http.warehouses().then((res) => {
+        const data = res.data.data;
         this.warehouseList = data;
       });
     }, // 获取仓库列表
     handleConfirm() {
-      console.log(this.currentWarehouseId, '当前仓库id', this.selectWarehouse, '当前仓库name');
       this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
-      this.showWarehousesDialog = false; // 关闭对话框
+      this.showWarehousesDialog = false;
     },
     toggleWarehouseIcon() {
       if (this.warehouseList.length === 1) { return; }
       this.centerDialogVisible = true;
     },
-    // 注销
     logout() {
       this.$confirm('此操作将退出系统, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -220,11 +211,10 @@ export default {
           });
         });
       });
-    },
-    // 关闭导航栏
+    }, // 注销
     closeSideNav() {
       this.$store.commit('config/closeSideNav', !+this.sideNavStatus);
-    },
+    }, // 关闭导航栏
   },
 };
 </script>

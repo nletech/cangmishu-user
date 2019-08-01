@@ -1,157 +1,154 @@
 <template>
-  <div>
     <wms-tags>
-    <el-row>
-      <!-- 搜索框 -->
-      <el-col :span="4" :offset="17">
-              <my-staff-search  @searchStaff="searchStaff"
-                                @clearSearchContent="handleClearSearch">
-              </my-staff-search>
-      </el-col>
-      <!-- 添加员工 -->
-      <el-col   :span="2" :offset="1">
-                <el-button  type="text"
-                            :class="$style.add_btn"
-                            @click="$router.push({name: 'staffAdd'})"
-                            icon="el-icon-plus">
-                            {{$t('staffAdd')}}
-                </el-button>
-      </el-col>
-    </el-row>
-      <!-- 员工列表数据表格 -->
-      <el-table  :data="staff_data"
-                 border>
-                <!-- #序号 -->
-                  <el-table-column  align="center"
-                                    header-align="center"
-                                    type="index"
-                                    label="#"
-                                    width="70">
-                  </el-table-column>
-                <!-- 用户名 -->
-                  <el-table-column  align="center"
-                                    header-align="center"
-                                    prop="nickname"
-                                    label="用户名"
-                                    width="100">
-                                    <template slot-scope="scope">
-                                              <i  class="staffLock_icon"
-                                                  v-show="scope.row.is_locked">
-                                              </i>
-                                              {{scope.row.nickname}}
-                                    </template>
-                  </el-table-column>
-                  <!-- 姓名 -->
-                  <el-table-column  align="center"
-                                    header-align="center"
-                                    prop="staff_name"
-                                    label="姓名"
-                                    width="100">
-                                    <template  slot-scope="scope">
-                                              {{scope.row.name}}
-                                    </template>
-                  </el-table-column>
-                  <!-- 邮箱 -->
-                  <el-table-column  align="center"
-                                    header-align="center"
-                                    prop="staff_email"
-                                    label="邮箱"
-                                    width="200">
-                                    <template   slot-scope="scope">
-                                                {{scope.row.email}}
-                                    </template>
-                  </el-table-column>
-                  <!-- 手机号 -->
-                  <el-table-column  align="center"
-                                    header-align="center"
-                                    prop="phone"
-                                    label="手机号"
-                                    width="160">
-                                    <template slot-scope="scope">
-                                              {{scope.row.phone}}
-                                    </template>
-                  </el-table-column>
-                  <!-- 所属员工组 -->
-                  <el-table-column  header-align="center"
-                                    prop="groups"
-                                    label="所属员工组">
-                                    <template slot-scope="scope">
-                                              <span  :class="$style.GroupName_title"
-                                                    v-for="(item, index) in scope.row.groups"
-                                                    :key="index">
-                                                    {{ item.name }}
-                                              </span>
-                                    </template>
-                  </el-table-column>
-                  <!-- 最后登录时间 -->
-                  <el-table-column  align="center"
-                                    header-align="center"
-                                    prop="last_login_at"
-                                    label="最后登录时间"
-                                    width="180">
-                                    <template   slot-scope="scope">
-                                                <i  class="el-icon-time"
-                                                    v-show="Boolean(scope.row.last_login_at)">
-                                                </i>
-                                                <span>{{scope.row.last_login_at}}</span>
-                                    </template>
-                  </el-table-column>
-                  <!-- 操作 -->
-                  <el-table-column  header-align="center"
-                                    prop="staff_operations"
-                                    label="操作"
-                                    width="240">
-                                    <template slot-scope="scope">
-                                              <el-button  type="primary"
-                                                          style="
-                                                            margin: 10px 0 2px 10px;
-                                                            padding: 8px;
-                                                          "
-                                                          :class="$style.operation_btn"
-                                                          plain
-                                                          size="mini"
-                                                          @click="edit_staff_info(scope.row)">
-                                                          编辑资料
-                                              </el-button>
-                                              <el-button  type="success"
-                                                          style="
-                                                            margin: 10px 0 2px 10px;
-                                                            padding: 8px;
-                                                          "
-                                                          plain
-                                                          size="mini"
-                                                          @click="modify_staff_psw(scope.row)">
-                                                          修改密码
-                                              </el-button>
-                                              <!-- 禁止登录 -->
-                                              <el-button  type="warning"
-                                                          style="
-                                                            margin: 10px 0 2px 10px;
-                                                            padding: 8px;
-                                                          "
-                                                          plain
-                                                          size="mini"
-                                                          @click="forbid_staff_login(scope.row)">
-                                                          {{scope.row.is_locked === 0 ? '禁止登录' : '允许登录'}}
-                                              </el-button>
-                                              <el-button  type="danger"
-                                                          style="
-                                                            margin: 10px 0 2px 10px;
-                                                            padding: 8px;
-                                                          "
-                                                          plain
-                                                          size="mini"
-                                                          @click="delete_staff_account(scope.row)">
-                                                          删除账号
-                                              </el-button>
-                                    </template>
-                  </el-table-column>
-      </el-table>
-
-      <button-pagination :pageParams="params"></button-pagination>
-
+        <el-row>
+          <!-- 搜索框 -->
+          <el-col :span="4" :offset="17">
+                  <my-staff-search  @searchStaff="searchStaff"
+                                    @clearSearchContent="handleClearSearch">
+                  </my-staff-search>
+          </el-col>
+          <!-- 添加员工 -->
+          <el-col   :span="2" :offset="1">
+                    <el-button  type="text"
+                                :class="$style.add_btn"
+                                @click="$router.push({name: 'staffAdd'})"
+                                icon="el-icon-plus">
+                                {{$t('staffAdd')}}
+                    </el-button>
+          </el-col>
+        </el-row>
+        <!-- 员工列表数据表格 -->
+        <el-table
+            :data="staff_data"
+            border>
+            <!-- #序号 -->
+            <el-table-column  align="center"
+                              header-align="center"
+                              type="index"
+                              label="#"
+                              width="70">
+            </el-table-column>
+            <!-- 用户名 -->
+            <el-table-column  align="center"
+                              header-align="center"
+                              prop="nickname"
+                              label="用户名"
+                              width="100">
+                              <template slot-scope="scope">
+                                        <i  class="staffLock_icon"
+                                            v-show="scope.row.is_locked">
+                                        </i>
+                                        {{scope.row.nickname}}
+                              </template>
+            </el-table-column>
+            <!-- 姓名 -->
+            <el-table-column  align="center"
+                              header-align="center"
+                              prop="staff_name"
+                              label="姓名"
+                              width="100">
+                              <template  slot-scope="scope">
+                                        {{scope.row.name}}
+                              </template>
+            </el-table-column>
+            <!-- 邮箱 -->
+            <el-table-column  align="center"
+                              header-align="center"
+                              prop="staff_email"
+                              label="邮箱"
+                              width="200">
+                              <template   slot-scope="scope">
+                                          {{scope.row.email}}
+                              </template>
+            </el-table-column>
+            <!-- 手机号 -->
+            <el-table-column  align="center"
+                              header-align="center"
+                              prop="phone"
+                              label="手机号"
+                              width="160">
+                              <template slot-scope="scope">
+                                        {{scope.row.phone}}
+                              </template>
+            </el-table-column>
+            <!-- 所属员工组 -->
+            <el-table-column  header-align="center"
+                              prop="groups"
+                              label="所属员工组">
+                              <template slot-scope="scope">
+                                        <span  :class="$style.GroupName_title"
+                                              v-for="(item, index) in scope.row.groups"
+                                              :key="index">
+                                              {{ item.name }}
+                                        </span>
+                              </template>
+            </el-table-column>
+            <!-- 最后登录时间 -->
+            <el-table-column  align="center"
+                              header-align="center"
+                              prop="last_login_at"
+                              label="最后登录时间"
+                              width="180">
+                              <template   slot-scope="scope">
+                                          <i  class="el-icon-time"
+                                              v-show="Boolean(scope.row.last_login_at)">
+                                          </i>
+                                          <span>{{scope.row.last_login_at}}</span>
+                              </template>
+            </el-table-column>
+            <!-- 操作 -->
+            <el-table-column  header-align="center"
+                              prop="staff_operations"
+                              label="操作"
+                              width="240">
+                              <template slot-scope="scope">
+                                        <el-button  type="primary"
+                                                    style="
+                                                      margin: 10px 0 2px 10px;
+                                                      padding: 8px;
+                                                    "
+                                                    :class="$style.operation_btn"
+                                                    plain
+                                                    size="mini"
+                                                    @click="edit_staff_info(scope.row)">
+                                                    编辑资料
+                                        </el-button>
+                                        <el-button  type="success"
+                                                    style="
+                                                      margin: 10px 0 2px 10px;
+                                                      padding: 8px;
+                                                    "
+                                                    plain
+                                                    size="mini"
+                                                    @click="modify_staff_psw(scope.row)">
+                                                    修改密码
+                                        </el-button>
+                                        <!-- 禁止登录 -->
+                                        <el-button  type="warning"
+                                                    style="
+                                                      margin: 10px 0 2px 10px;
+                                                      padding: 8px;
+                                                    "
+                                                    plain
+                                                    size="mini"
+                                                    @click="forbid_staff_login(scope.row)">
+                                                    {{scope.row.is_locked === 0 ? '禁止登录' : '允许登录'}}
+                                        </el-button>
+                                        <el-button  type="danger"
+                                                    style="
+                                                      margin: 10px 0 2px 10px;
+                                                      padding: 8px;
+                                                    "
+                                                    plain
+                                                    size="mini"
+                                                    @click="delete_staff_account(scope.row)">
+                                                    删除账号
+                                        </el-button>
+                              </template>
+            </el-table-column>
+        </el-table>
+        <button-pagination :pageParams="params"></button-pagination>
     </wms-tags>
-  </div>
 </template>
 
 <script>

@@ -3,8 +3,8 @@ const loadOnDemand = function loadOnDemand(file) {
   return () => import(/* webpackChunkName: "chunk" */ `@/page/${file}`);
 };
 // 布局
-const LayoutTop = loadOnDemand('NavMenu/top');
-const LayoutSide = loadOnDemand('NavMenu/side');
+const LayoutTop = loadOnDemand('Layout/top');
+const LayoutSide = loadOnDemand('Layout/side');
 // 仓秘书
 
 // 登陆
@@ -402,5 +402,3 @@ export const homeRoute = [
     component: BackPassword,
   },
 ];
-
-// addComponent(homeRoute);

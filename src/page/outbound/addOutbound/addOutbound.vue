@@ -1,78 +1,86 @@
 <template>
 <div class="storeManage">
-  <mdoel-form :colValue="24">
-    <el-form  slot="left" label-width="120px" ref="form" label-position="left">
-      <el-row type="flex" justify="space-between">
-        <el-col :span="8">
-            <!-- 供应商 -->
-            分类
-            <el-select  v-model="form.order_type" size="mini" placeholder="请选择分类">
-                <el-option  v-for="item in outboundTypes"
-                          :key="item.id"
-                          :disabled="!item.is_enabled"
-                          :label="item.name"
-                          :value="item.id">
-              </el-option>
-            </el-select>
-        </el-col>
-        <el-col :span="8"><h2 align="center" style="margin:0px;">商品销售清单</h2></el-col>
-        <el-col :span="8">
-        </el-col>
-    </el-row>
-    <hr/>
-    <label class="label"> 收发件人信息 </label>
-    <!-- 收发件人信息 -->
-    <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
-    <label class="label" style="float:left; width:80px;">出库清单 </label>
-    <!-- 出库清单表 -->
-    <!-- 选择商品的列表 -->
-    <goods-list @get_data="handleGoodsData"  :warehouseId="warehouseId" :specList.sync="selectedSpec"></goods-list>
-    <!-- 备注 -->
-    <el-form-item label="备注"
-                  prop="remark">
-                  <el-input type="textarea"
-                            :maxlength="30"
-                            placeholder="最多不超过30个字"
-                            v-model="form.remark">
-                  </el-input>
-    </el-form-item>
-    <el-row>
-            <el-col :span="10">
+    <mdoel-form :colValue="24">
+        <el-form  slot="left" label-width="120px" ref="form" label-position="left">
+            <el-row type="flex" justify="space-between">
+              <el-col :span="8">
+                  <!-- 供应商 -->
+                  分类
+                  <el-select  v-model="form.order_type" size="mini" placeholder="请选择分类">
+                      <el-option  v-for="item in outboundTypes"
+                                :key="item.id"
+                                :disabled="!item.is_enabled"
+                                :label="item.name"
+                                :value="item.id">
+                    </el-option>
+                  </el-select>
+              </el-col>
+              <el-col :span="8" :pull="8"><h2 align="center" style="margin:0px;">商品销售清单</h2></el-col>
+            </el-row>
+            <hr/>
+            <label class="label"> 收发件人信息 </label>
+            <!-- 收发件人信息 -->
+            <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
+            <label class="label" style="float:left; width:80px;">出库清单 </label>
+            <!-- 出库清单表 -->
+            <!-- 选择商品的列表 -->
+            <goods-list @get_data="handleGoodsData" :warehouseId="warehouseId" :specList.sync="selectedSpec"></goods-list>
+            <!-- 备注 -->
+            <el-form-item
+                label="备注"
+                style="margin: 20px auto;"
+                prop="remark">
+                <el-input
+                    type="textarea"
+                    :maxlength="30"
+                    placeholder="最多不超过30个字"
+                    v-model="form.remark">
+                </el-input>
+            </el-form-item>
+            <el-row>
+                <el-col
+                    :span="10">
                     <!-- 运输方式 -->
-                    <el-form-item  label="运输方式"
-                                  size="small">
-                        <el-input  v-model="form.delivery_type"
-                                   :maxlength="13"
-                                   placeholder="请输入运输方式">
+                    <el-form-item
+                        label="运输方式"
+                        size="small">
+                        <el-input
+                            v-model="form.delivery_type"
+                            :maxlength="13"
+                            placeholder="请输入运输方式">
                         </el-input>
                     </el-form-item>
-            </el-col>
-            <el-col  :span="10"
-                     :offset="2">
-                      <!-- 运单号 -->
-                      <el-form-item label="运单号">
-                            <el-input  placeholder="请输入运单号"
-                                       :maxlength="13"
-                                       v-model="form.express_num"
-                                       size="small">
-                            </el-input>
-                      </el-form-item>
-            </el-col>
-    </el-row>
-    <!-- 提交按钮 -->
-    <el-form-item>
-      <el-row>
-              <el-col :span="2" :offset="10">
-              <el-button :loading="$store.state.config.button_loading"
-                        type="primary"
-                        @click="onSubmit()">
-                        提交
-              </el-button>
-              </el-col>
-      </el-row>
-    </el-form-item>
-    </el-form>
-  </mdoel-form>
+                </el-col>
+                <el-col
+                    :span="10"
+                    :offset="2">
+                    <!-- 运单号 -->
+                    <el-form-item
+                        label="运单号">
+                        <el-input
+                            placeholder="请输入运单号"
+                            :maxlength="13"
+                            v-model="form.express_num"
+                            size="small">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <!-- 提交按钮 -->
+            <el-form-item>
+                <el-row>
+                    <el-col :span="2" :offset="10">
+                        <el-button
+                            :loading="$store.state.config.button_loading"
+                            type="primary"
+                            @click="onSubmit()">
+                            提交
+                        </el-button>
+                    </el-col>
+                </el-row>
+            </el-form-item>
+        </el-form>
+    </mdoel-form>
 </div>
 </template>
 

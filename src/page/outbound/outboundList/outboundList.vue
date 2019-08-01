@@ -28,7 +28,7 @@
                                  <el-table-column  label="状态"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="status_name" width="120">
+                                                   prop="status_name" width="128">
                                  </el-table-column>
                                  <el-table-column  label="出库单号"
                                                    header-align="center"
@@ -48,26 +48,26 @@
                                  <el-table-column  label="下单数量"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="sub_order_qty" width="100">
+                                                   prop="sub_order_qty" width="150">
                                  </el-table-column>
                                  <el-table-column  label="出库数量"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="sub_pick_num" width="100">
+                                                   prop="sub_pick_num" width="150">
                                  </el-table-column>
                                  <el-table-column  label="出库日期"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="delivery_date" width="155">
+                                                   prop="delivery_date" width="150">
                                  </el-table-column>
                                  <el-table-column  label="创建时间"
                                                    header-align="center"
                                                    align="center"
-                                                   prop="created_at" width="155">
+                                                   prop="created_at" width="150">
                                  </el-table-column>
                                  <el-table-column  label="操作"
                                                    header-align="center"
-                                                   width="200" fixed="right">
+                                                   width="200">
                                     <template slot-scope="scope">
                                       <el-tooltip content="查看详情" placement="top">
                                         <el-button size="mini" icon="el-icon-view" round

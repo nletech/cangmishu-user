@@ -1,6 +1,5 @@
 <template>
         <div :class="$style.select_goods">
-              <!-- 选择商品弹窗 -->
                 <!-- 选择商品弹窗 -->
                 <el-dialog  title="选择商品"
                             width="80%"
@@ -42,14 +41,14 @@
                                   ref="table"
                                   border
                                   @selection-change="specRowChange" style="width: 100%; margin-top:10px;">
-                            <el-table-column type="selection" width="60"></el-table-column>
-                            <el-table-column type="index" label="序号" width="60"></el-table-column>
-                            <el-table-column type="index" label="数量" width="160">
+                            <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
+                            <el-table-column type="index" label="序号" width="60" header-align="center" align="center"></el-table-column>
+                            <el-table-column type="index" label="数量" width="160" header-align="center" align="center">
                               <template slot-scope="scope">
                                   <el-input-number size="mini" :min="1" v-model="scope.row.need_num"></el-input-number>
                               </template>
                             </el-table-column>
-                            <el-table-column  label="商品名称及规格" prop="product_name"></el-table-column>
+                            <el-table-column  label="商品名称及规格" prop="product_name" header-align="center" align="center"></el-table-column>
                             <el-table-column  label="参考进货价（元）" prop="purchase_price" align="center"></el-table-column>
                             <el-table-column  label="参考销售价（元）" prop="sale_price" align="center"></el-table-column>
                             <el-table-column  label="当前库存" prop="stockin_num" align="center"></el-table-column>

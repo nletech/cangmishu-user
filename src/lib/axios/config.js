@@ -50,32 +50,31 @@ function responseSuccess(response) {
 function responseError(error) {
   nprogress.done();
   store.commit('config/loading', false);
-  if (error.response && error.response.status === 401) {
+  const ERRORSTATUS = error.response && error.response.status; // 捕获错误状态码
+  if (ERRORSTATUS === 401) {
     store.commit('token/delToken');
     router.push({
       name: 'login',
     });
-    // Message.error('请重新登录');
-  } else if (error.response && error.response.status === 500) {
+  } else if (ERRORSTATUS === 500) {
     Message({
       message: '服务器出错，请稍后重试...',
       type: 'error',
       showClose: true,
     });
-  } else if (error.response && error.response.status === 422) {
-    // Message.error(error.response.data.msg);
+  } else if (ERRORSTATUS === 422) {
     Message({
       message: error.response.data.msg,
       type: 'error',
       showClose: true,
     });
-  } else if (error.response && error.response.status === 404) {
+  } else if (ERRORSTATUS === 404) {
     Message({
       message: error.response.data.msg,
       type: 'error',
       showClose: true,
     });
-  } else if (error.response && error.response.status === 403) {
+  } else if (ERRORSTATUS === 403) {
     Message({
       message: error.response.data.msg,
       type: 'error',

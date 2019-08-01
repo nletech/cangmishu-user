@@ -87,7 +87,7 @@ const $http = {
     return Axios.get(`/order/${id}`);
   }, // 编辑出库单
   //                                                          库存
-  //                                                 货品管理
+  //                                            货品管理
   getProducts(data) {
     return Axios.get('/products', { params: data });
   }, // 获取货品列表
@@ -155,7 +155,7 @@ const $http = {
     return Axios.get('/warning');
   }, // 获取库存报警详情
   //                                                          员工
-  //                                                员工-员工列表
+  //                                              员工列表
   addStaff(data) {
     return Axios.post('/employee', data);
   }, // 添加员工
@@ -174,7 +174,7 @@ const $http = {
   forbidStaff(id, data) {
     return Axios.post(`/employee/${id}/lock`, data);
   }, // 禁止员工登录
-  //                                                员工-员工组列表
+  //                                              员工组列表
   addStaffGroup(data) {
     return Axios.post('/group', data);
   }, // 添加员工组

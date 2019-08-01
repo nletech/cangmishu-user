@@ -2,85 +2,98 @@
   <div :class="$style.storeManage">
         <div :class="$style.body_main">
               <div :class="$style.btn">
-                <i class="el-icon-plus"></i>
-                <span @click="handleClick">
-                  添加仓库
-                </span>
+                  <i class="el-icon-plus"></i>
+                  <span @click="handleClick">添加仓库</span>
               </div>
               <!-- 表格 -->
-              <el-table  :class="$style.table_main"
-                         :data="warehouses"
-                          border>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            type="index"
-                                            width="80"
-                                            label="#">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="code"
-                                            label="编号">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="name_cn"
-                                            label="仓库名称">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="warehouse_address"
-                                            width="300"
-                                            label="地址">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="area"
-                                            label="面积(㎡)">
-                          </el-table-column>
-                          <el-table-column  header-align="center" fixed="right"
-                                            label="操作" width="200">
-                              <template slot-scope="scope">
-                                <el-tooltip content="编辑" placement="top">
-                                        <el-button size="mini" icon="el-icon-edit" round
-                                                   @click="edit(scope.row)">
-                                        </el-button>
-                                </el-tooltip>
-                                <el-tooltip content="配置" placement="top">
-                                        <el-button type="primary" size="mini" icon="el-icon-setting" round
-                                                   @click="config(scope.row)">
-                                        </el-button>
-                                </el-tooltip>
-                                <el-tooltip content="设为默认" placement="top">
-                                        <el-button size="mini"
-                                                   v-if="!scope.row.is_default_warehouse" round
-                                                   icon="el-icon-house"
-                                                   @click="setDefaultWarehouse(scope.row)">
-                                        </el-button>
-                                </el-tooltip>
-                                <el-tooltip content="删除" placement="top">
-                                        <el-button size="mini"
-                                                   type="danger" round
-                                                   v-if="!scope.row.is_default_warehouse"
-                                                   icon="el-icon-delete"
-                                                   @click="deleteWarehouse(scope.row)">
-                                        </el-button>
-                                </el-tooltip>
-                              </template>
-                          </el-table-column>
+              <el-table
+                  :class="$style.table_main"
+                  :data="warehouses"
+                  border>
+                  <el-table-column
+                      header-align="center"
+                      align="center"
+                      type="index"
+                      width="80"
+                      label="#">
+                  </el-table-column>
+                  <el-table-column
+                      header-align="center"
+                      align="center"
+                      prop="code"
+                      label="编号">
+                  </el-table-column>
+                  <el-table-column
+                      header-align="center"
+                      align="center"
+                      prop="name_cn"
+                      label="仓库名称">
+                  </el-table-column>
+                  <el-table-column
+                      header-align="center"
+                      align="center"
+                      prop="warehouse_address"
+                      width="300"
+                      label="地址">
+                  </el-table-column>
+                  <el-table-column
+                      header-align="center"
+                      align="center"
+                      prop="area"
+                      label="面积(㎡)">
+                  </el-table-column>
+                  <el-table-column
+                      header-align="center" fixed="right"
+                      label="操作" width="240">
+                      <template slot-scope="scope">
+                          <el-tooltip
+                              content="编辑" placement="top">
+                              <el-button size="mini" icon="el-icon-edit" round
+                                          @click="edit(scope.row)">
+                              </el-button>
+                          </el-tooltip>
+                          <el-tooltip
+                              content="配置" placement="top">
+                              <el-button type="primary" size="mini" icon="el-icon-setting" round
+                                        @click="config(scope.row)">
+                              </el-button>
+                          </el-tooltip>
+                          <el-tooltip
+                              content="设为默认" placement="top">
+                              <el-button
+                                  size="mini"
+                                  v-if="!scope.row.is_default_warehouse" round
+                                  icon="el-icon-house"
+                                  @click="setDefaultWarehouse(scope.row)">
+                              </el-button>
+                          </el-tooltip>
+                          <el-tooltip
+                              content="删除" placement="top">
+                              <el-button
+                                  size="mini"
+                                  type="danger" round
+                                  v-if="!scope.row.is_default_warehouse"
+                                  icon="el-icon-delete"
+                                  @click="deleteWarehouse(scope.row)">
+                              </el-button>
+                          </el-tooltip>
+                      </template>
+                  </el-table-column>
               </el-table>
               <!-- 分页 -->
-              <el-pagination  :class="$style.pagination"
-                              @current-change="handleCurrentChange"
-                              :current-page="currentPage"
-                              layout="total, prev, pager, next, jumper"
-                              :total="+this.total">
+              <el-pagination
+                  :class="$style.pagination"
+                  @current-change="handleCurrentChange"
+                  :current-page="currentPage"
+                  layout="total, prev, pager, next, jumper"
+                  :total="+this.total">
               </el-pagination>
         </div>
         <!-- 添加仓库 -->
-        <add-warehouse  :visible.sync = "switchFlag"
-                        :row_data="row_data"
-                        @updata_data="handle_updata_data">
+        <add-warehouse
+            :visible.sync = "switchFlag"
+            :row_data="row_data"
+            @updata_data="handle_updata_data">
         </add-warehouse>
   </div>
 </template>

@@ -3,7 +3,6 @@ export default {
     this.extendParams();
     if (!this.$route.query.type) return;
     this.params.type = this.$route.query.type;
-    console.log(this.params.type);
   },
   mounted() {
     if (this.getList) this.getList();

@@ -182,7 +182,10 @@
                     </el-form>
                 </mdoel-form>
                 <!-- 选择商品弹窗 -->
-                <select-spec-dialog :visible.sync="dialogSpecShow" :warehouseId.sync="warehouseId" @selected="onSpecSelected"></select-spec-dialog>
+                <select-spec-dialog :visible.sync="dialogSpecShow"
+                                    :warehouseId.sync="warehouseId"
+                                    @selected="onSpecSelected">
+                </select-spec-dialog>
                 <!-- 供应商管理弹窗 -->
                 <el-dialog  title="供应商管理"
                             :visible.sync="distributorListShow"
@@ -198,17 +201,24 @@
                                             border
                                             style="width: 100%">
                                             <el-table-column  type="index"
-                                                              width="60">
+                                                              width="60"
+                                                              header-align="center"
+                                                              align="center">
                                             </el-table-column>
                                             <el-table-column  prop="name_cn"
-                                                              :label="$t('distributorName')">
+                                                              :label="$t('distributorName')"
+                                                              header-align="center"
+                                                              align="center">
                                             </el-table-column>
                                             <el-table-column  prop="name_en"
-                                                              label="供应商外文名称">
+                                                              label="供应商外文名称"
+                                                              header-align="center"
+                                                              align="center">
                                             </el-table-column>
 
                                             <el-table-column  label="操作"
-                                                              width="200">
+                                                              width="200"
+                                                              header-align="center">
                                                   <template slot-scope="scope">
                                                             <!-- 编辑 -->
                                                             <el-button  @click="distributorEdit(scope.row)"

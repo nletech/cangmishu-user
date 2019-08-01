@@ -96,7 +96,7 @@ export default {
       } else {
         /* eslint-disable */
         this.text_flag = true;
-        this.add_info.name        = this.row_data.name; // 姓名
+        this.add_info.name = this.row_data.name; // 姓名
         this.is_enabled  = `${this.row_data.is_enabled}`; // 是否启用
       }
     },

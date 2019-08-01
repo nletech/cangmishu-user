@@ -105,25 +105,40 @@
                     <el-table-column  type="expand">
                         <template   slot-scope="props">
                                     <el-table   :data="props.row.specs" border>
-                                      <el-table-column  type="index" label="#">
+                                      <el-table-column  type="index"
+                                                        label="#"
+                                                        header-align="center"
+                                                        align="center">
                                       </el-table-column>
                                       <el-table-column  prop="relevance_code"
-                                                        label="SKU">
+                                                        label="SKU"
+                                                        header-align="center"
+                                                        align="center">
                                       </el-table-column>
                                       <el-table-column  prop="name_cn"
-                                                        :label="$t('specificationChineseName')">
+                                                        :label="$t('specificationChineseName')"
+                                                        header-align="center"
+                                                        align="center">
                                       </el-table-column>
                                       <el-table-column  prop="name_en"  v-if="isEnabledLangInput()"
-                                                        :label="$t('specificationEnglishName')">
+                                                        :label="$t('specificationEnglishName')"
+                                                        header-align="center"
+                                                        align="center">
                                       </el-table-column>
                                       <el-table-column  prop="gross_weight"
-                                                        :label="$t('grossWeight') + '(g)'">
+                                                        :label="$t('grossWeight') + '(g)'"
+                                                        header-align="center"
+                                                        align="center">
                                       </el-table-column>
                                       <el-table-column  prop="purchase_price"
-                                                        label="进货价">
+                                                        label="进货价"
+                                                        header-align="center"
+                                                        align="center">
                                       </el-table-column>
                                       <el-table-column  prop="sale_price"
-                                                        label="销售价">
+                                                        label="销售价"
+                                                        header-align="center"
+                                                        align="center">
                                       </el-table-column>
                                     </el-table>
                         </template>
