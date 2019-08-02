@@ -3,9 +3,8 @@ const loadOnDemand = function loadOnDemand(file) {
   return () => import(/* webpackChunkName: "chunk" */ `@/page/${file}`);
 };
 // 布局
-const LayoutTop = loadOnDemand('Layout/top');
-const LayoutSide = loadOnDemand('Layout/side');
-// 仓秘书
+const LayoutTop = loadOnDemand('layout/top');
+const LayoutSide = loadOnDemand('layout/side');
 
 // 登陆
 const Login = loadOnDemand('login/login');
@@ -31,10 +30,9 @@ const EditRecevier = loadOnDemand('outbound/addOutbound/components/editRecevier'
 const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking');// 库存盘点 (新模块)
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage');// 库存管理
 const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存报警
-// 库存旧代码
-const MyGoodsList1 = loadOnDemand('goodsManage/myGoodsList'); // 我的商品库
-const GoodsAdd = loadOnDemand('goodsManage/goodsAdd'); // 商品新增
-const GoodsEdit = loadOnDemand('goodsManage/goodsEdit'); // 商品编辑
+const MyGoodsList = loadOnDemand('inventory/goodsManage/myGoodsList'); // 货品管理
+const GoodsAdd = loadOnDemand('inventory/goodsManage/components/goodsAdd'); // 商品新增
+const GoodsEdit = loadOnDemand('inventory/goodsManage/components/goodsEdit'); // 商品编辑
 
 // 员工管理
 // 员工列表
@@ -55,17 +53,21 @@ const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓�
 const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - demo
 const AddWarehouse = loadOnDemand('storeManagement/components/addWarehouse'); // 添加仓库
 
-/* eslint-disable */
-const basic_setting = 'storeManagement/components/basicSetting/components';
-const AddCargoArea = loadOnDemand(`${basic_setting}/components/addCargoArea`); // 添加货区
-const AddCargoShelf = loadOnDemand(`${basic_setting}/components/addCargoShelf`); // 添加货位
-const EditCargoArea = loadOnDemand(`${basic_setting}/components/editCargoArea`); // 编辑货区
-const EditCargoShelf = loadOnDemand(`${basic_setting}/components/editCargoShelf`); // 编辑货位
+// 仓库列表--基础配置
+const PATH = 'storeManagement/components/basicSetting/components';
+const AddCargoArea = loadOnDemand(`${PATH}/components/addCargoArea`); // 添加货区
+const AddCargoShelf = loadOnDemand(`${PATH}/components/addCargoShelf`); // 添加货位
+const EditCargoArea = loadOnDemand(`${PATH}/components/editCargoArea`); // 编辑货区
+const EditCargoShelf = loadOnDemand(`${PATH}/components/editCargoShelf`); // 编辑货位
 
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
 const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryManagement'); // 货品分类管理
 const Record = loadOnDemand('setting/record/record'); // 出入库单分类
+
+// 店铺管理
+const Shops = loadOnDemand('h5Store/shops'); // 店铺管理
+
 // 帮助
 const Help = loadOnDemand('helpCenter/help'); // 货品分类管理
 
@@ -175,7 +177,7 @@ export const routerMap = [
           {
             name: 'myGoodsList', // 子菜单-货品管理
             path: 'myGoodsList',
-            component: MyGoodsList1,
+            component: MyGoodsList,
             nav: 2,
           },
           {
@@ -355,6 +357,11 @@ export const routerMap = [
             path: 'record',
             component: Record,
             nav: 2,
+          }, {
+            name: 'shops', // 店铺管理--店铺列表
+            path: 'shops',
+            component: Shops,
+            nav: 3,
           },
         ],
       },

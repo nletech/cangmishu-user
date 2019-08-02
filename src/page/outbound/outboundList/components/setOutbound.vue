@@ -183,7 +183,6 @@ export default {
           order_item_id: '',
           pick_num: '',
         };
-        // console.log(len[i], 'len[i]');
         obj.order_item_id = len[i].id;
         obj.pick_num = len[i].pick_num;
         arr.push(obj);

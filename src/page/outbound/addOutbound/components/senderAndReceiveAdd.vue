@@ -1,48 +1,54 @@
 <template>
-      <el-dialog  :title="`添加${addressText}`"
-                  width="800px"
-                  :before-close="handleClose"
-                  :visible.sync="visible_add">
-                    <el-form  :class="$style.staff_form"
-                              label-width="140px"
-                              size="middle"
-                              label-position="left"
-                              :model="form"
-                              ref="form"
-                              :rules="info_Verify_rules">
-                              <el-form-item  prop="full_name"
-                                            label="姓名"
-                                            size="middle">
-                                            <el-input  v-model="form.full_name"></el-input>
-                              </el-form-item>
-                              <el-form-item  prop="phone"
-                                            label="电话"
-                                            size="middle">
-                                            <el-input  v-model="form.phone"></el-input>
-                              </el-form-item>
-                              <el-form-item  prop="address"
-                                            label="省市区"
-                                            size="middle">
-                                            <el-cascader  style="width:100%;"
-                                                          :props="props"
-                                                          :options="addressInfo"
-                                                          v-model="form.address">
-                                            </el-cascader>
-                              </el-form-item>
-                              <el-form-item  prop="addressDetail"
-                                            label="详细地址"
-                                            size="middle">
-                                            <el-input  type="textarea"
-                                                        v-model="form.addressDetail">
-                                            </el-input>
-                              </el-form-item>
-                              <el-form-item>
-                              <el-button type="primary" @click="infoSubmit">
-                                        提交
-                              </el-button>
-                            </el-form-item>
-                    </el-form>
-      </el-dialog>
+    <el-dialog
+        :title="`添加${addressText}`"
+        width="800px"
+        :before-close="handleClose"
+        :visible.sync="visible_add">
+        <el-form
+            :class="$style.staff_form"
+            label-width="140px"
+            size="middle"
+            label-position="left"
+            :model="form"
+            ref="form"
+            :rules="info_Verify_rules">
+            <el-form-item
+                prop="full_name"
+                label="姓名"
+                size="middle">
+                <el-input  v-model="form.full_name"></el-input>
+            </el-form-item>
+            <el-form-item
+                prop="phone"
+                label="电话"
+                size="middle">
+                <el-input  v-model="form.phone"></el-input>
+            </el-form-item>
+            <el-form-item
+                prop="address"
+                label="省市区"
+                size="middle">
+                <el-cascader  style="width:100%;"
+                              :props="addressTagProps"
+                              :options="addressInfo"
+                              v-model="form.address">
+                </el-cascader>
+            </el-form-item>
+            <el-form-item
+                prop="addressDetail"
+                label="详细地址"
+                size="middle">
+                <el-input  type="textarea"
+                            v-model="form.addressDetail">
+                </el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button  type="primary" @click="infoSubmit">
+                            提交
+                </el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
 </template>
 
 <script>
@@ -100,9 +106,9 @@ export default {
         addressDetail: '', // 详细地址
       },
       addressInfo: Address, // 选择地址联动
-      props: {
+      addressTagProps: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
-        value: 'value',
+        value: 'label', // 选中之后拿到的值
         children: 'children',
       },
       formInfo: {}, // 提交的表格
@@ -136,7 +142,7 @@ export default {
     infoSubmit() {
       // 提交的表单信息处理
       /* eslint-disable */
-      this.formInfo.fullname = this.form.full_name;
+      this.formInfo.fullname  = this.form.full_name;
       this.formInfo.phone     = this.form.phone;
       this.formInfo.province  = this.form.address[0];
       this.formInfo.city      = this.form.address[1];

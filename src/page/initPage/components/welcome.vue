@@ -57,7 +57,7 @@
           </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card shadow="hover" @click.native="goToTag('basicSetting')">
+          <el-card shadow="hover" @click.native="goToTag('shops')">
             <i class="el-icon-shopping-cart-1"></i>
             <p>店铺管理</p>
           </el-card>

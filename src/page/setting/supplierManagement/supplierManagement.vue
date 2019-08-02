@@ -83,9 +83,11 @@
 </template>
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'supplierManagement',
+  mixins: [mixin],
   data() {
     return {
       dialogVisible: false,

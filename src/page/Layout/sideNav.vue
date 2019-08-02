@@ -2,69 +2,73 @@
   <div :class="$style.side_nav" class="side_nav">
       <!-- 菜单列表 -->
       <transition name="fade">
-                  <!-- 仓秘书 -->
-                  <div  v-if="!sideNavStatus"
-                        :class="$style.nav"
-                        @mouseleave="handleLeave()">
-                        <!-- 侧边栏导航 -->
-                        <ul  :class="$style.side_nav_ul">
-                              <li  :class="$style.side_nav_li"
-                                  v-for="(item, index) in sideList"
-                                  :key="index"
-                                  @click="handleHomeClick(item.name)"
-                                  @mouseover="showItem(item.name, index)">
-                                  <i  :class="$style.li_icon"
-                                        class="iconfont"
-                                        v-html="item.icon">
-                                  </i>
-                                  <span   :class="$style.li_title">
-                                          {{$t(item.name)}}
-                                  </span>
-                              </li>
-                        </ul>
-                        <!-- 对应的子菜单 -->
-                        <ul  :class="$style.NavChild"
-                            ref="NavChild"
-                            v-show="li_show_switch"
-                            @click="handleClickCloseNavChild">
-                              <li  :class="$style.NavChild_li"
-                                   v-for="item in li_NavChild"
-                                   @click.self="handlerClick(item.name)"
-                                   :key="item.name">
-                                   {{$t(item.name)}}
-                              </li>
-                        </ul>
-                  </div>
+          <!-- 仓秘书 -->
+          <div  v-if="!sideNavStatus"
+                :class="$style.nav"
+                @mouseleave="handleLeave()">
+                <!-- 侧边栏导航 -->
+                <ul  :class="$style.side_nav_ul">
+                      <li  :class="$style.side_nav_li"
+                          v-for="(item, index) in sideList"
+                          :key="index"
+                          @click="handleHomeClick(item.name)"
+                          @mouseover="showItem(item.name, index)">
+                          <i  :class="$style.li_icon"
+                                class="iconfont"
+                                v-html="item.icon">
+                          </i>
+                          <span   :class="$style.li_title">
+                                  {{$t(item.name)}}
+                          </span>
+                      </li>
+                </ul>
+                <!-- 对应的子菜单 -->
+                <ul  :class="$style.NavChild"
+                    ref="NavChild"
+                    v-show="li_show_switch"
+                    @click="handleClickCloseNavChild">
+                      <li  :class="$style.NavChild_li"
+                            v-for="item in li_NavChild"
+                            @click.self="handlerClick(item.name)"
+                            :key="item.name">
+                            {{$t(item.name)}}
+                      </li>
+                </ul>
+          </div>
       </transition>
       <transition name="fade">
-                  <!-- 仓秘书 -->
-                  <div  v-show="sideNavStatus"
-                        @mouseleave="handleLeave1()">
-                        <!-- 侧边栏导航收缩之后 -->
-                        <ul  style="padding: 0;">
-                              <li  v-for="(item, index) in sideList" style="width: 100%; line-height: 80px; height: 80px; text-align: center; list-style: none; cursor: pointer;"
-                                  :key="index"
-                                  @click="handleHomeClick1(item.name)"
-                                  @mouseover="showItem1(item.name, index)">
-                                  <i  class="iconfont"
-                                      v-html="item.icon"
-                                      style="color: #ccc;">
-                                  </i>
-                              </li>
-                        </ul>
-                        <!-- 对应的子菜单 -->
-                        <ul  :class="$style.NavChild1"
-                             ref="NavChild1"
-                             v-show="li_show_switch"
-                             @click="handleClickCloseNavChild">
-                              <li  v-for="item in li_NavChild"
-                                   :class="$style.NavChild_li1"
-                                   @click="handlerClick1(item.name)"
-                                   :key="item.name">
-                                   {{$t(item.name)}}
-                              </li>
-                        </ul>
-                  </div>
+          <!-- 仓秘书 -->
+          <div
+              v-show="sideNavStatus"
+              @mouseleave="handleLeave1()">
+              <!-- 侧边栏导航收缩之后 -->
+              <ul  style="padding: 0;">
+                  <li  v-for="(item, index) in sideList"
+                       style="width: 100%; line-height: 80px;
+                              height: 80px; text-align: center;
+                              list-style: none; cursor: pointer;"
+                      :key="index"
+                      @click="handleHomeClick1(item.name)"
+                      @mouseover="showItem1(item.name, index)">
+                      <i  class="iconfont"
+                          v-html="item.icon"
+                          style="color: #ccc;">
+                      </i>
+                  </li>
+              </ul>
+              <!-- 对应的子菜单 -->
+              <ul  :class="$style.NavChild1"
+                    ref="NavChild1"
+                    v-show="li_show_switch"
+                    @click="handleClickCloseNavChild">
+                    <li  v-for="item in li_NavChild"
+                          :class="$style.NavChild_li1"
+                          @click="handlerClick1(item.name)"
+                          :key="item.name">
+                          {{$t(item.name)}}
+                    </li>
+              </ul>
+          </div>
       </transition>
   </div>
 </template>

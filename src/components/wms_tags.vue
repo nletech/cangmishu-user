@@ -64,19 +64,18 @@ export default {
 
 <style lang="less" module>
 @import '../less/public_variable.less';
-.wms_tag_container {
-  margin: 10px 0 10px 0;
-  padding: 0 20px 0 20px;
-  background: @white;
-  .text_right {
-    text-align: right;
-    line-height: 48px;
-  }
-}
 .wms_tag_container_table {
-  padding: 10px 45px 20px 45px ;
-  .page {
-    margin-top: 10px;
+    margin: 20px 0 0 0;
+  // padding: 10px 45px 20px 45px ;
+  .wms_tag_container {
+    // padding: 0 20px 0 20px;
+    width: @width;
+    margin: 0 auto;
+    background: @white;
+    .text_right {
+      text-align: right;
+      line-height: 48px;
+    }
   }
 }
 </style>

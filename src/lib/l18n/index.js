@@ -325,6 +325,7 @@ export default {
     addAddressee: '添加收件人',
     addSender: '添加发件人',
     editAddressee: '编辑收件人',
+    shops: '店铺管理',
     ...zhLocale,
   },
   en: {
@@ -404,6 +405,7 @@ export default {
     expressNumber: '运单号',
     planInboundTime: '预计入库时间',
     remarks: '备注',
+    shops: '店铺管理',
     ...enLocale,
   },
 };

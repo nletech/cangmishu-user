@@ -5,8 +5,7 @@
       @update:visible="$emit('update:visible', $event)"
       :visible="visible"
       width="60%">
-      <el-row
-          :class="$style.add_warehouse_main">
+      <el-row  :class="$style.add_warehouse_main">
           <!-- 添加信息 -->
           <el-col>
               <el-form

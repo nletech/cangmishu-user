@@ -8,8 +8,8 @@ switch (baseUrl) {
     base = 'https://demo-api.cangmishu.com'; // 仓秘书正式服
     break;
   default:
-    base = 'https://demo-api.cangmishu.com/'; // 仓秘书正式服
-    // base = 'https://dev-api.cangmishu.com/'; // 仓秘书开发服
+    // base = 'https://demo-api.cangmishu.com/'; // 仓秘书正式服
+    base = 'https://dev-api.cangmishu.com/'; // 仓秘书开发服
     break;
 }
 const baseApi = base;

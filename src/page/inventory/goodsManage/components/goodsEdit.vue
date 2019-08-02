@@ -143,16 +143,12 @@ import MdoelForm from '@/components/form';
 import mixin from '@/mixin/form_config';
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
-import MyEditTable from '@/components/my_edit_table';
-import TableFunction from '@/components/my_edit_table/table_function';
 import PictureUpload from '@/components/picture_upload';
 
 export default {
   name: 'goodsEdit',
   components: {
     MdoelForm,
-    MyEditTable,
-    TableFunction,
     PictureUpload,
   },
   mixins: [mixin],
@@ -339,7 +335,8 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../less/public_variable.less';
+@import '../../../../less/public_variable.less';
+
 .label {
   font-size: 18px;
 }

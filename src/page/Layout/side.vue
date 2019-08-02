@@ -34,7 +34,7 @@
     </router-view>
     <!-- 底部产权说明 -->
     <div :class="$style.footer">
-      <div>
+      <div :class="$style.footer_description">
           <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
           <i class="iconfont">&#xe604;</i>
       </div>
@@ -107,15 +107,15 @@ export default {
     background: @white;
     color: @textColor;
     text-align: center;
-    line-height: 80px;
     height: 80px;
     width: 100%;
-    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     i {
       font-size: 40px;
       position: relative;
-      top: 20px;
-      left: 5px;
+      top: 10px;
       color: @separateLine;
     }
   }

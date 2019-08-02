@@ -1,66 +1,72 @@
 <template>
-          <div>
-                <el-row>
-                        <el-col :span="6">
-                                  <el-date-picker  v-model="dateValue"
-                                                   @change="handlerChange"
-                                                    clearable
-                                                    type="daterange"
-                                                    start-placeholder="开始日期"
-                                                    end-placeholder="结束日期"
-                                                    size="small"
-                                                    value-format="yyyy-MM-dd"
-                                                    :default-time="['00:00:00', '23:59:59']">
-                                  </el-date-picker>
-                        </el-col>
-                        <el-col :span="3"
-                                :offset="3">
-                                <el-date-picker  v-model="planDateValue"
-                                                 @change="handlerChange"
-                                                 type="date"
-                                                 size="small"
-                                                 format="yyyy-MM-dd"
-                                                 value-format="yyyy-MM-dd"
-                                                 placeholder="预计出库时间"
-                                                 :default-time="['00:00:00', '23:59:59']">
-                                </el-date-picker>
-                        </el-col>
-                        <el-col :span="4"
-                                :offset="3">
-                                <el-select  v-model="outboundStatus"
-                                            clearable
-                                            size="small"
-                                            @change="handlerChange"
-                                            placeholder="请选择状态">
-                                            <el-option  v-for="item in this.outboundStatusList"
-                                                        :key="item.value"
-                                                        :label="item.name"
-                                                        :value="item.id">
-                                            </el-option>
-                                </el-select>
-                        </el-col>
-                        <el-col :span="4"
-                                :offset="1">
-                                <el-row>
-                                        <el-col :span="20">
-                                                <el-input v-model="outboundCode"
-                                                          clearable
-                                                          @change="handlerChange"
-                                                          @clear="handlerChange"
-                                                          size="small"
-                                                          placeholder="请输入出库单号">
-                                                </el-input>
-                                        </el-col>
-                                        <el-col :span="2">
-                                                <el-button size="small"
-                                                           @click="handlerChange">
-                                                          搜索
-                                                </el-button>
-                                        </el-col>
-                                </el-row>
-                        </el-col>
-                </el-row>
-          </div>
+    <div>
+        <el-col :span="4">
+            <el-date-picker
+                v-model="dateValue"
+                @change="handlerChange"
+                clearable
+                type="daterange"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                size="small"
+                value-format="yyyy-MM-dd"
+                :default-time="['00:00:00', '23:59:59']">
+            </el-date-picker>
+        </el-col>
+        <el-col
+            :span="2"
+            :offset="2">
+            <el-date-picker
+                v-model="planDateValue"
+                @change="handlerChange"
+                type="date"
+                size="small"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                placeholder="预计出库时间"
+                :default-time="['00:00:00', '23:59:59']">
+            </el-date-picker>
+        </el-col>
+        <el-col
+            :span="4"
+            :offset="2">
+            <el-select
+                v-model="outboundStatus"
+                clearable
+                size="small"
+                @change="handlerChange"
+                placeholder="请选择状态">
+                <el-option
+                    v-for="item in this.outboundStatusList"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+        </el-col>
+        <el-col
+            :span="4"
+            :offset="1">
+            <el-row>
+                <el-col :span="16">
+                    <el-input v-model="outboundCode"
+                              clearable
+                              @change="handlerChange"
+                              @clear="handlerChange"
+                              size="small"
+                              placeholder="请输入出库单号">
+                    </el-input>
+                </el-col>
+                <el-col :span="2" :offset="1">
+                        <el-button
+                            size="small"
+                              @click="handlerChange">
+                              搜索
+                        </el-button>
+                </el-col>
+            </el-row>
+        </el-col>
+    </div>
 </template>
 
 <script>

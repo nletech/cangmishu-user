@@ -1,106 +1,103 @@
 <template>
-          <div :class="$style.outboundList">
-                <div  :class="$style.outboundList_main">
-                      <el-row :class="$style.outboundList_tags">
-                              <el-row  :class="$style.outboundList_tags">
-                                       <outbound-list-search @data_cb="handlerCallBackData"></outbound-list-search>
-                              </el-row>
-                              <el-row>
-                                       <el-col>
-                                               <el-button  type="text"
-                                                           :class="$style.btn"
-                                                           @click="addOutbound"
-                                                           icon="el-icon-plus">
-                                                           {{$t('addOutbound')}}
-                                               </el-button>
-                                       </el-col>
-                              </el-row>
-                      </el-row>
-                      <el-table  :data="outbound_list_data"
-                                 :class="$style.outboundList_table"
-                                 border
-                                 style="width:100%;">
-                                 <el-table-column  label="#"
-                                                   header-align="center"
-                                                   align="center"
-                                                   type="index">
-                                 </el-table-column>
-                                 <el-table-column  label="状态"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="status_name" width="128">
-                                 </el-table-column>
-                                 <el-table-column  label="出库单号"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="out_sn" width="150">
-                                 </el-table-column>
-                                 <el-table-column  label="运单号"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="express_num" width="150">
-                                 </el-table-column>
-                                 <el-table-column  label="类型"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="order_type.name" width="150">
-                                 </el-table-column>
-                                 <el-table-column  label="下单数量"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="sub_order_qty" width="150">
-                                 </el-table-column>
-                                 <el-table-column  label="出库数量"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="sub_pick_num" width="150">
-                                 </el-table-column>
-                                 <el-table-column  label="出库日期"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="delivery_date" width="150">
-                                 </el-table-column>
-                                 <el-table-column  label="创建时间"
-                                                   header-align="center"
-                                                   align="center"
-                                                   prop="created_at" width="150">
-                                 </el-table-column>
-                                 <el-table-column  label="操作"
-                                                   header-align="center"
-                                                   width="200">
-                                    <template slot-scope="scope">
-                                      <el-tooltip content="查看详情" placement="top">
-                                        <el-button size="mini" icon="el-icon-view" round
-                                                    @click="viewDetails(scope.row)"
-                                                    :loading="$store.state.config.button_loading"></el-button>
-                                      </el-tooltip>
-                                      <el-tooltip content="设为出库" placement="top">
-                                        <el-button  size="mini" type="primary" icon="el-icon-sell" @click="checkedOutbound(scope.row)" round></el-button>
-                                      </el-tooltip>
-                                      <el-tooltip content="取消订单" placement="top">
-                                        <el-button  size="mini" icon="el-icon-circle-close"
-                                                         v-if="scope.row.status == 1"
-                                                         @click="cancelOrder(scope.row.id)"
-                                                         type="danger" round>
-                                        </el-button>
-                                      </el-tooltip>
-                                  </template>
-                                 </el-table-column>
-                      </el-table>
-                      <el-row>
-                              <el-col :span="6" :offset="18">
-                                      <pagination-public  :params="params"
-                                                          @changePage="handlerChangePage">
-                                      </pagination-public>
-                              </el-col>
-                      </el-row>
-                     <!-- 入库单详情弹框 -->
-                     <DetailDialog  :visible.sync="outboundDialogVisible"
-                                    :id="id"
-                                    :row_data="row_data">
-                     </DetailDialog>
-                </div>
-          </div>
+    <div :class="$style.outboundList">
+        <div  :class="$style.outboundList_main">
+            <el-row :class="$style.outboundList_tags">
+                <outbound-list-search @data_cb="handlerCallBackData"></outbound-list-search>
+                <el-col :span="2" :offset="3">
+                    <el-button
+                        type="text"
+                        :class="$style.btn"
+                        @click="addOutbound"
+                        icon="el-icon-plus">
+                        {{$t('addOutbound')}}
+                    </el-button>
+                </el-col>
+            </el-row>
+            <el-table
+                :data="outbound_list_data"
+                border>
+                <el-table-column  label="#"
+                                  header-align="center"
+                                  align="center"
+                                  type="index">
+                </el-table-column>
+                <el-table-column  label="状态"
+                                  header-align="center"
+                                  align="center"
+                                  prop="status_name">
+                </el-table-column>
+                <el-table-column  label="出库单号"
+                                  header-align="center"
+                                  align="center"
+                                  prop="out_sn">
+                </el-table-column>
+                <el-table-column  label="运单号"
+                                  header-align="center"
+                                  align="center"
+                                  prop="express_num">
+                </el-table-column>
+                <el-table-column  label="类型"
+                                  header-align="center"
+                                  align="center"
+                                  prop="order_type.name">
+                </el-table-column>
+                <el-table-column  label="下单数量"
+                                  header-align="center"
+                                  align="center"
+                                  prop="sub_order_qty">
+                </el-table-column>
+                <el-table-column  label="出库数量"
+                                  header-align="center"
+                                  align="center"
+                                  prop="sub_pick_num">
+                </el-table-column>
+                <el-table-column  label="出库日期"
+                                  header-align="center"
+                                  align="center"
+                                  prop="delivery_date" width="155">
+                </el-table-column>
+                <el-table-column  label="创建时间"
+                                  header-align="center"
+                                  align="center"
+                                  prop="created_at" width="155">
+                </el-table-column>
+                <el-table-column  label="操作"
+                                  header-align="center"
+                                  width="200">
+                  <template slot-scope="scope">
+                    <el-tooltip content="查看详情" placement="top">
+                      <el-button size="mini" icon="el-icon-view" round
+                                  @click="viewDetails(scope.row)"
+                                  :loading="$store.state.config.button_loading"></el-button>
+                    </el-tooltip>
+                    <el-tooltip content="设为出库" placement="top">
+                      <el-button  size="mini" type="primary" icon="el-icon-sell" @click="checkedOutbound(scope.row)" round></el-button>
+                    </el-tooltip>
+                    <el-tooltip content="取消订单" placement="top">
+                      <el-button  size="mini" icon="el-icon-circle-close"
+                                        v-if="scope.row.status == 1"
+                                        @click="cancelOrder(scope.row.id)"
+                                        type="danger" round>
+                      </el-button>
+                    </el-tooltip>
+                </template>
+                </el-table-column>
+            </el-table>
+            <el-row  :class="$style.pagination">
+                <el-col :span="6">
+                        <pagination-public  :params="params"
+                                            @changePage="handlerChangePage">
+                        </pagination-public>
+                </el-col>
+            </el-row>
+            <!-- 入库单详情弹框 -->
+            <DetailDialog
+                :visible.sync="outboundDialogVisible"
+                :id="id"
+                :row_data="row_data">
+            </DetailDialog>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -227,21 +224,22 @@ export default {
 </script>
 
 <style lang="less" module>
+@import '../../../less/public_variable.less';
+
 .outboundList {
-  text-align: left;
-  margin: 30px 0 60px 0 ;
+  margin: @margin;
   .outboundList_main {
-    width: 96%;
+    width: @width;
     margin: 0 auto;
     .outboundList_tags {
       text-align: right;
-      margin: 0 0 10px 0;
       .btn {
-        font-size: 1.2rem;
+        font-size: @fontSize;
       }
     }
-    .outboundList_table {
-      margin: 10px 0 0 0;
+    .pagination {
+      margin: 10px  0 10px 0;
+      float: right;
     }
   }
 }

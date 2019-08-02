@@ -1,64 +1,68 @@
 <template>
-          <div>
-                <el-row :gutter="20">
-                        <el-col :span="8">
-                              <el-date-picker  v-model="dateValue"
-                                               @change="handlerChange"
-                                                clearable
-                                                type="daterange"
-                                                start-placeholder="开始日期"
-                                                end-placeholder="结束日期"
-                                                size="small"
-                                                value-format="yyyy-MM-dd"
-                                                :default-time="['00:00:00', '23:59:59']">
-                              </el-date-picker>
-                        </el-col>
-                        <el-col :span="3">
-                                <el-select  v-model="inboundTypeValue"
-                                            clearable
-                                            @change="handlerChange"
-                                            size="small"
-                                            placeholder="入库单分类">
-                                            <el-option  v-for="item in this.inboundTypeList"
-                                                        :key="item.value"
-                                                        :label="item.name"
-                                                        :value="item.id">
-                                            </el-option>
-                                </el-select>
-                        </el-col>
-                        <el-col :span="3">
-                                <el-select  v-model="inboundStatus"
-                                            clearable
-                                            size="small"
-                                            @change="handlerChange"
-                                            placeholder="入库单状态">
-                                            <el-option  v-for="item in this.inboundStatusList"
-                                                        :key="item.value"
-                                                        :label="item.name"
-                                                        :value="item.id">
-                                            </el-option>
-                                </el-select>
-                        </el-col>
-                        <el-col :span="3">
-                                <el-select  v-model="distributorValue"
-                                            clearable
-                                            size="small"
-                                            @change="handlerChange"
-                                            placeholder="供应商">
-                                            <el-option  v-for="item in this.distributorList"
-                                                        :key="item.value"
-                                                        :label="item.name"
-                                                        :value="item.id">
-                                            </el-option>
-                                </el-select>
-                        </el-col>
-                        <el-col :span="5">
-                            <el-input size="small" placeholder="请输入单据编号" v-model="codeValue" @change="handlerChange" @clear="handlerChange">
-                              <el-button slot="append" icon="el-icon-search" @click="handlerChange"></el-button>
-                            </el-input>
-                        </el-col>
-                </el-row>
-          </div>
+    <div>
+        <el-col :span="4">
+            <el-date-picker
+                v-model="dateValue"
+                @change="handlerChange"
+                clearable
+                type="daterange"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                size="small"
+                value-format="yyyy-MM-dd"
+                :default-time="['00:00:00', '23:59:59']">
+            </el-date-picker>
+        </el-col>
+        <el-col :span="3" :offset="2">
+            <el-select
+                v-model="inboundTypeValue"
+                clearable
+                @change="handlerChange"
+                size="small"
+                placeholder="入库单分类">
+                <el-option  v-for="item in this.inboundTypeList"
+                            :key="item.value"
+                            :label="item.name"
+                            :value="item.id">
+                </el-option>
+            </el-select>
+        </el-col>
+        <el-col :span="3" :offset="1">
+            <el-select
+                v-model="inboundStatus"
+                clearable
+                size="small"
+                @change="handlerChange"
+                placeholder="入库单状态">
+                <el-option
+                    v-for="item in this.inboundStatusList"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+        </el-col>
+        <el-col :span="3" :offset="1">
+            <el-select
+                v-model="distributorValue"
+                clearable
+                size="small"
+                @change="handlerChange"
+                placeholder="供应商">
+                <el-option
+                    v-for="item in this.distributorList"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+        </el-col>
+        <el-col :span="3" :offset="1">
+            <el-input size="small" placeholder="请输入单据编号" v-model="codeValue" @change="handlerChange" @clear="handlerChange">
+              <el-button slot="append" icon="el-icon-search" @click="handlerChange"></el-button>
+            </el-input>
+        </el-col>
+    </div>
 </template>
 
 <script>
