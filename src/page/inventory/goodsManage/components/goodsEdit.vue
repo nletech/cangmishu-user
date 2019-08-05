@@ -129,7 +129,7 @@
                         <el-form-item>
                                       <el-button  @click="onSubmitGoods('form')"
                                                   type="primary"
-                                                  :loading="$store.state.config.button_loading">
+                                                  :loading="isButtonLoading()">
                                                   提交
                                       </el-button>
                         </el-form-item>

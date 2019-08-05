@@ -3,7 +3,7 @@
         <div :class="$style.main">
             <div  :class="$style.header">
                   <el-row>
-                      <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
+                      <!-- <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search> -->
                       <el-col :span="2" :offset="1">
                           <el-button  type="text"
                                       :class="$style.header_btn"
@@ -62,11 +62,6 @@
                 </el-col>
             </el-row>
         </div>
-        <!-- 入库单详情弹框 -->
-        <detail-dialog
-            :visible.sync="inboundDialogVisible"
-            :id="id">
-        </detail-dialog>
     </div>
 </template>
 
@@ -77,65 +72,25 @@ import selectPublic from '@/components/select-public';
 import inputPublic from '@/components/input-public';
 import mixin from '@/mixin/form_config';
 import $http from '@/api';
-import detailDialog from './components/inbound_detail';
-import inboundListSearch from './components/inboundListSearch';
 
 export default {
+  name: 'storeGoods',
   mixins: [mixin],
   components: {
-    detailDialog,
     datePickerPublic,
     selectPublic,
     inputPublic,
     paginationPublic,
-    inboundListSearch,
   },
   data() {
     return {
       params: {}, // 分页数据
       inbound_list_data: [], // 入库单列表
       inboundDialogVisible: false, // 入库单详情弹框
-      inbound_info: {},
-      id: 0,
-      boundList: [],
-      select: [],
-      typeList: [],
-      // 子组件数据
-      select_data_type: {
-        placeholder: '入库单分类',
-        options: [],
-        cb_flag: 0,
-      },
-      select_data_status: {
-        placeholder: '入库单状态',
-        options: [],
-        cb_flag: 1,
-      },
-      select_data_distributor: {
-        placeholder: '供应商',
-        options: [],
-        cb_flag: 2,
-      },
-      select_batch_code: {
-        placeholder: '入库单号或确认单号',
-        flag: 2,
-      },
-      //
-      dateValue: [], // 选择时间
-      inboundTypeValue: '',
-      inboundTypeList: [],
-      inboundStatus: '',
-      inboundStatusList: [],
-      distributorValue: '',
-      distributorList: [],
-      codeValue: '',
     };
   },
   created() {
-    this.getBatchType();
-    this.getData();
-    this.getBatchStatus();
-    this.getDistributors();
+    //
   },
   computed: {
     warehouseId() {
@@ -144,16 +99,10 @@ export default {
   },
   watch: {
     warehouseId() {
-      this.getData();
+      // this.getData();
     },
   },
   methods: {
-    handlerCallBackData(res) {
-      this.inbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-      this.$set(this.params);
-    },
     handlerQuery(res) {
       this.inbound_list_data = res.data.data;
       this.params.total = res.data.total;
@@ -164,23 +113,6 @@ export default {
       this.params.total = res.data.total;
       this.params.currentPage = res.data.current_page;
     }, // 输入框回调
-    getBatchType() {
-      $http.getBatchType()
-        .then((res) => {
-          if (res.status) return;
-          this.select_data_type.options = res.data.data;
-        });
-    }, // 入库单分类列表
-    getBatchStatus() {
-      this.select_data_status.options = this.statusList;
-    }, // 入库单状态列表
-    getDistributors() {
-      $http.getDistributor()
-        .then((res) => {
-          if (res.status) return;
-          this.select_data_distributor.options = res.data.data;
-        });
-    }, // 供应商列表
     handlerChangePage(val) {
       $http.getInboundPage({
         warehouse_id: this.warehouseId,
@@ -192,44 +124,8 @@ export default {
           this.params.currentPage = res.data.current_page;
         });
     },
-    handlerSelect_data(val) {
-      if (val && val.length === 2) {
-        this.getData(val);
-      } else {
-        // 刷新列表
-        this.getData();
-      }
-    },
-    getData(query) {
-      if (!this.warehouseId) return;
-      const obj = {};
-      obj.warehouse_id = this.warehouseId; // 仓库 id 必填
-      // query有几种形式
-      if (Array.isArray(query)) {
-        // 查询时间段
-        obj.created_at_b = query[0]; // 开始时间
-        obj.created_at_e = query[1]; // 结束时间
-      }
-      $http.getInbounds(obj)
-        .then((res) => {
-          this.inbound_list_data = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-          this.$set(this.params);
-        });
+    getData() {
     }, // 获取列表
-    // 以上重写
-    toInbound(info) {
-      // eslint-disable-next-line
-      const batch_id = info.id;
-      this.$router.push({
-        name: 'inboundShelf',
-        query: {
-          warehouse_id: this.warehouse_id, // 仓库 id
-          batch_id, // 入库单 id
-        },
-      });
-    }, // 入库上架
     // 添加入库单
     addInbound() {
       this.$router.push({

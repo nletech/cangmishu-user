@@ -8,6 +8,9 @@ export default {
     }, // 初始化默认仓库
   },
   methods: {
+    isButtonLoading() {
+      return this.$store.state.config.button_loading;
+    },
     getWarehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },

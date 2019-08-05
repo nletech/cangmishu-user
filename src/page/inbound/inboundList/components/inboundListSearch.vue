@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-col :span="4">
+        <el-col :span="3">
             <el-date-picker
                 v-model="dateValue"
                 @change="handlerChange"
@@ -13,7 +13,7 @@
                 :default-time="['00:00:00', '23:59:59']">
             </el-date-picker>
         </el-col>
-        <el-col :span="3" :offset="2">
+        <el-col :span="2" :offset="5">
             <el-select
                 v-model="inboundTypeValue"
                 clearable
@@ -27,7 +27,7 @@
                 </el-option>
             </el-select>
         </el-col>
-        <el-col :span="3" :offset="1">
+        <el-col :span="2" :offset="1">
             <el-select
                 v-model="inboundStatus"
                 clearable
@@ -42,7 +42,7 @@
                 </el-option>
             </el-select>
         </el-col>
-        <el-col :span="3" :offset="1">
+        <el-col :span="2" :offset="1">
             <el-select
                 v-model="distributorValue"
                 clearable
@@ -57,7 +57,7 @@
                 </el-option>
             </el-select>
         </el-col>
-        <el-col :span="3" :offset="1">
+        <el-col :span="4" :offset="1">
             <el-input size="small" placeholder="请输入单据编号" v-model="codeValue" @change="handlerChange" @clear="handlerChange">
               <el-button slot="append" icon="el-icon-search" @click="handlerChange"></el-button>
             </el-input>

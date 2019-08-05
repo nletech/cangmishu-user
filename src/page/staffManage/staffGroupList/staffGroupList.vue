@@ -84,7 +84,7 @@
                                     </el-table-column>
                         </el-table>
                         <el-row>
-                                <el-col :span="6" :offset="18">
+                                <el-col :span="2" :offset="22">
                                         <pagination-public  :class="$style.pagination"
                                                             :params="params"
                                                             @changePage="handlerChangePage">
@@ -226,9 +226,9 @@ export default {
 @import '../../../less/public_variable.less';
 
   .storeManage {
-    margin: 20px 10px 10px 10px;
+    margin: 20px 0 0 0;
     .main {
-      width: 92%;
+      width: @width;
       margin: 0 auto;
       .add_btn {
         display: inline-block;
@@ -236,7 +236,8 @@ export default {
         font-size: 1.2rem;
       }
       .pagination {
-        margin: 10px  0 30px 0;
+        margin: 10px  0 0 0;
+        float: right;
       }
     }
   }

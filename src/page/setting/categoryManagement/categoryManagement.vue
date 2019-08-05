@@ -1,149 +1,154 @@
 <template>
   <div class="addressManagement">
       <div  :class="$style.addressManagement">
-            <div  :class="$style.am_main">
-                  <!-- 标签页 -->
-                  <el-row>
-                        <!-- 添加按钮 -->
-                        <div :class="$style.am_operation_btn">
-                          <span @click="addCategory()">
-                            <i class="iconfont">&#xe618;</i>
-                            添加货品分类
-                          </span>
-                        </div>
-                        <!-- 列表信息-->
-                        <el-table  :data="category_list"
-                                   :class="$style.table_main"
-                                   :fit = true
-                                   border
-                                   style="width: 100%">
-                                   <el-table-column  label="#"
-                                                    type="index"
-                                                    header-align="center"
-                                                    align="center">
-                                   </el-table-column>
-                                   <el-table-column  label="中文名"
-                                                     prop="name_cn"
-                                                     header-align="center"
-                                                     align="center">
-                                   </el-table-column>
-                                   <el-table-column  label="外文名" v-if="isEnabledLangInput()"
-                                                    prop="name_en"
-                                                    header-align="center"
-                                                    align="center">
-                                   </el-table-column>
-                                   <el-table-column  label="SKU属性"
-                                                     prop="need_expiration_date"
-                                                     header-align="center"
-                                                     align="center"
-                                                     width="280px">
-                                                     <template slot-scope="scope">
-                                                              <el-tag type="success"
-                                                                      size="medium"
-                                                                      v-if="scope.row.need_expiration_date == 1">
-                                                                      保质期
-                                                              </el-tag>
-                                                              <el-tag type="success"
-                                                                      size="medium"
-                                                                      v-if="scope.row.need_production_batch_number == 1">
-                                                                      生产批次
-                                                              </el-tag>
-                                                              <el-tag type="success"
-                                                                      size="medium"
-                                                                      v-if="scope.row.need_best_before_date == 1">
-                                                                      最佳食用期
-                                                              </el-tag>
-                                                     </template>
-                                   </el-table-column>
-                                   <el-table-column  label="是否启用"
-                                                     header-align="center"
-                                                     align="center">
-                                                     <template slot-scope="scope">
-                                                               <span v-if="scope.row.is_enabled==1">是</span>
-                                                               <span v-if="scope.row.is_enabled==0">否</span>
-                                                     </template>
-                                   </el-table-column>
-                                   <el-table-column header-align="center"
-                                                  prop="address"
-                                                  width="180"
-                                                  label="操作">
-                                      <template slot-scope="scope">
-                                        <el-tooltip content="编辑" placement="top">
-                                          <el-button size="mini" icon="el-icon-edit" round @click="editCategory(scope.row)"></el-button>
-                                        </el-tooltip>
-                                        <el-tooltip content="删除" placement="top">
-                                          <el-button  size="mini" icon="el-icon-delete" @click="delCategory(scope.row)" type="danger" round>
-                                          </el-button>
-                                        </el-tooltip>
-                                      </template>
-                                   </el-table-column>
-                        </el-table>
-                        <!-- 分页 -->
-                        <el-pagination  :class="$style.pagination"
-                                        v-show="+total"
-                                        :page-size="10"
-                                        @current-change="handleCurrentChange"
-                                        :current-page="currentPage"
-                                        layout="total, prev, pager, next, jumper"
-                                        :total="+total">
-                        </el-pagination>
-                  </el-row>
-            </div>
-      </div>
+          <div  :class="$style.am_main">
+              <el-row>
+                  <div :class="$style.am_operation_btn">
+                      <span @click="addCategory()">
+                        <i class="iconfont">&#xe618;</i>
+                        添加货品分类
+                      </span>
+                  </div>
+                  <el-table
+                      :data="category_list"
+                      :class="$style.table_main"
+                      :fit = true
+                      border
+                      style="width: 100%">
+                      <el-table-column
+                          label="#"
+                          type="index"
+                          header-align="center"
+                          align="center">
+                      </el-table-column>
+                      <el-table-column
+                          label="中文名"
+                          prop="name_cn"
+                          header-align="center"
+                          align="center">
+                      </el-table-column>
+                      <el-table-column
+                          label="外文名"
+                          v-if="isEnabledLangInput()"
+                          prop="name_en"
+                          header-align="center"
+                          align="center">
+                      </el-table-column>
+                      <el-table-column
+                          label="SKU属性"
+                          prop="need_expiration_date"
+                          header-align="center"
+                          align="center"
+                          width="280px">
+                          <template slot-scope="scope">
+                              <el-tag type="success"
+                                      size="medium"
+                                      v-if="scope.row.need_expiration_date == 1">
+                                      保质期
+                              </el-tag>
+                              <el-tag type="success"
+                                      size="medium"
+                                      v-if="scope.row.need_production_batch_number == 1">
+                                      生产批次
+                              </el-tag>
+                              <el-tag type="success"
+                                      size="medium"
+                                      v-if="scope.row.need_best_before_date == 1">
+                                      最佳食用期
+                              </el-tag>
+                          </template>
+                      </el-table-column>
+                      <el-table-column  label="是否启用"
+                                        header-align="center"
+                                        align="center">
+                                        <template slot-scope="scope">
+                                                  <span v-if="scope.row.is_enabled==1">是</span>
+                                                  <span v-if="scope.row.is_enabled==0">否</span>
+                                        </template>
+                      </el-table-column>
+                      <el-table-column header-align="center"
+                                    prop="address"
+                                    width="180"
+                                    label="操作">
+                        <template slot-scope="scope">
+                          <el-tooltip content="编辑" placement="top">
+                            <el-button size="mini" icon="el-icon-edit" round @click="editCategory(scope.row)"></el-button>
+                          </el-tooltip>
+                          <el-tooltip content="删除" placement="top">
+                            <el-button  size="mini" icon="el-icon-delete" @click="delCategory(scope.row)" type="danger" round>
+                            </el-button>
+                          </el-tooltip>
+                        </template>
+                      </el-table-column>
+                  </el-table>
+                  <el-pagination  :class="$style.pagination"
+                                  v-show="+total"
+                                  :page-size="10"
+                                  @current-change="handleCurrentChange"
+                                  :current-page="currentPage"
+                                  layout="total, prev, pager, next, jumper"
+                                  :total="+total">
+                  </el-pagination>
+              </el-row>
+          </div>
+    </div>
       <!-- 编辑货品分类 -->
-      <el-dialog  :title="getDailogTitle()"
-                  :visible.sync="dialogVisible"
-                  width="800">
-                  <el-form  ref="editForm"
-                            :rules="rules"
-                            :model="model"
-                            label-width="140px">
-                    <h4>基本信息</h4>
-                            <el-form-item label="分类中文名:"
-                                          prop="name_cn">
-                                <el-input v-model="model.name_cn" maxlength="10" show-word-limit></el-input>
-                            </el-form-item>
-                            <el-form-item label="分类英文名:"
-                                          prop="name_en"  v-if="isEnabledLangInput()">
-                                <el-input v-model="model.name_en" maxlength="20" show-word-limit></el-input>
-                            </el-form-item>
-                    <h4>选填项</h4>
-                            <el-form-item label="保质期"
-                                          prop="need_expiration_date">
-                                <el-row>
-                                    <el-switch v-model="model.need_expiration_date" :active-value="1" :inactive-value="0"></el-switch>
-                                    <el-popover placement="right-start" title="保质期作用" width="300" trigger="hover"
-                                    content="开启此选项,该分类下面所有货品上架都需要填写保质期,出库将按商品的保质期截止日期从近到远来出库">
-                                    <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
-                                    </el-popover>
-                                </el-row>
-                            </el-form-item>
-                            <el-form-item label="生产批次"
-                                          prop="need_production_batch_number">
-                                <el-switch v-model="model.need_production_batch_number" :active-value="1" :inactive-value="0"></el-switch>
-                                <el-popover placement="right-start" title="生产批次作用" width="300" trigger="hover"
-                                    content="开启此选项,该分类下面所有货品上架都需要填写生产批次,方便出库时候查询到每次出库的批次信息">
-                                    <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
-                                </el-popover>
-                            </el-form-item>
-                            <el-form-item label="最佳食用期"
-                                          prop="need_best_before_date">
-                                <el-switch v-model="model.need_best_before_date" :active-value="1" :inactive-value="0"></el-switch>
-                                <el-popover placement="right-start" title="最佳食用期作用" width="300" trigger="hover"
-                                    content="开启此选项,该分类下面所有货品上架都需要填写最佳食用期,主要用于食品行业">
-                                    <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
-                                </el-popover>
-                            </el-form-item>
-                            <el-form-item label="是否启用"
-                                          prop="is_enabled">
-                                <el-switch v-model="model.is_enabled" :active-value="1" :inactive-value="0"></el-switch>
-                            </el-form-item>
-
-                  </el-form>
-                  <span  slot="footer"
-                         class="dialog-footer">
-                         <el-button type="primary" @click="subimtData">提 交</el-button>
-                  </span>
+      <el-dialog
+          :title="getDailogTitle()"
+          :visible.sync="dialogVisible"
+          width="800">
+          <el-form
+              ref="editForm"
+              :rules="rules"
+              :model="model"
+              label-width="140px">
+            <h4>基本信息</h4>
+                    <el-form-item label="分类中文名:"
+                                  prop="name_cn">
+                        <el-input v-model="model.name_cn" maxlength="10" show-word-limit></el-input>
+                    </el-form-item>
+                    <el-form-item label="分类英文名:"
+                                  prop="name_en"  v-if="isEnabledLangInput()">
+                        <el-input v-model="model.name_en" maxlength="20" show-word-limit></el-input>
+                    </el-form-item>
+            <h4>选填项</h4>
+                <el-form-item label="保质期"
+                              prop="need_expiration_date">
+                    <el-row>
+                        <el-switch v-model="model.need_expiration_date" :active-value="1" :inactive-value="0"></el-switch>
+                        <el-popover placement="right-start" title="保质期作用" width="300" trigger="hover"
+                        content="开启此选项,该分类下面所有货品上架都需要填写保质期,出库将按商品的保质期截止日期从近到远来出库">
+                        <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                        </el-popover>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="生产批次"
+                              prop="need_production_batch_number">
+                    <el-switch v-model="model.need_production_batch_number" :active-value="1" :inactive-value="0"></el-switch>
+                    <el-popover placement="right-start" title="生产批次作用" width="300" trigger="hover"
+                        content="开启此选项,该分类下面所有货品上架都需要填写生产批次,方便出库时候查询到每次出库的批次信息">
+                        <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                    </el-popover>
+                </el-form-item>
+                <el-form-item label="最佳食用期"
+                              prop="need_best_before_date">
+                    <el-switch v-model="model.need_best_before_date" :active-value="1" :inactive-value="0"></el-switch>
+                    <el-popover placement="right-start" title="最佳食用期作用" width="300" trigger="hover"
+                        content="开启此选项,该分类下面所有货品上架都需要填写最佳食用期,主要用于食品行业">
+                        <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                    </el-popover>
+                </el-form-item>
+                <el-form-item label="是否启用"
+                              prop="is_enabled">
+                    <el-switch v-model="model.is_enabled" :active-value="1" :inactive-value="0"></el-switch>
+                </el-form-item>
+          </el-form>
+          <span slot="footer"
+                class="dialog-footer">
+                <el-button type="primary" @click="subimtData">
+                  提 交
+                </el-button>
+          </span>
       </el-dialog>
   </div>
 </template>
@@ -288,16 +293,16 @@ export default {
 @import '../../../less/public_variable.less';
 
 .addressManagement {
-  margin: 80px 0 10px 0;
+  margin: 50px 0 10px 0;
   .am_main {
-    width: 96%;
+    width: @width;
     margin: 0 auto;
     position: relative;
     background-color: #fff;
     .am_operation_btn {
       position: absolute;
-      top: -40px;
-      right: 20px;
+      top: -30px;
+      right: 10px;
       z-index: 3;
       border: none;
       font-size: 1.2rem;

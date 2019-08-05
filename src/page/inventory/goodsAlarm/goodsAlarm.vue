@@ -68,7 +68,7 @@
                 <el-form-item>
                               <el-button  @click="onStock"
                                           type="primary"
-                                          :loading="$store.state.config.button_loading">
+                                          :loading="isButtonLoading()">
                                           保存
                               </el-button>
                 </el-form-item>

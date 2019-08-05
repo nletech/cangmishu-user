@@ -2,7 +2,7 @@
           <div>
               <el-row :class="$style.help_main">
                       <el-col style="text-align: center;">
-                          <div style="font-size: 1.2rem; margin: 0 0 20px 0;"><span>如果您在使用仓秘书的时候有任何疑惑，请添加下方微信二维码</span></div>
+                          <div style="font-size: 1.2rem; margin: 0 0 20px 0;"><span>如果您在使用仓秘书的时候有任何疑惑，请用微信扫描下方二维码</span></div>
                           <div><img src="../../../src/assets/img/help.png" alt="微信二维码"></div>
                       </el-col>
                 </el-row>

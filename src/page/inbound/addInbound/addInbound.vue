@@ -172,7 +172,7 @@
                               <el-form-item style="padding-left:100px;" >
                                   <el-button @click="onSave('form')"
                                             type="primary"
-                                            :loading="$store.state.config.button_loading">
+                                            :loading="isButtonLoading()">
                                             {{$t('submit')}}
                                   </el-button>
                                   <el-button @click="$router.go(-1)">

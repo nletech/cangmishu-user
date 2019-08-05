@@ -5,7 +5,7 @@
                       @update:visible="$emit('update:visible', $event)"
                       :visible="visible">
                       <div :class="$style.inventory_detail">
-                            <h1  :class="$style.details_h1">{{warehouseName}} ({{rowInfo.product_name}})  出入库记录</h1>
+                            <h1  :class="$style.details_h1">({{rowInfo.product_name}}) 出入库记录</h1>
                             <el-row  :class="$style.header">
                                      <el-col  :span="7">
                                               <date-picker-public @select_data="handlerSelect_data">

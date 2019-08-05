@@ -41,7 +41,7 @@
                               </el-form-item>
                               <el-form-item class="user_login_button">
                                             <el-button  type="primary"
-                                                        :loading="$store.state.config.button_loading"
+                                                        :loading="isButtonLoading()"
                                                         @click="goLogin">
                                                         登录
                                             </el-button>
@@ -57,9 +57,11 @@
 </template>
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 import PageModel from './components/page_model';
 
 export default {
+  mixins: [mixin],
   components: {
     PageModel,
   },

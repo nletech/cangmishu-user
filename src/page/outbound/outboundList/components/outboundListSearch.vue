@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-col :span="4">
+        <el-col :span="3">
             <el-date-picker
                 v-model="dateValue"
                 @change="handlerChange"
@@ -13,9 +13,7 @@
                 :default-time="['00:00:00', '23:59:59']">
             </el-date-picker>
         </el-col>
-        <el-col
-            :span="2"
-            :offset="2">
+        <el-col :span="2" :offset="5">
             <el-date-picker
                 v-model="planDateValue"
                 @change="handlerChange"
@@ -27,9 +25,7 @@
                 :default-time="['00:00:00', '23:59:59']">
             </el-date-picker>
         </el-col>
-        <el-col
-            :span="4"
-            :offset="2">
+        <el-col :span="3" :offset="3">
             <el-select
                 v-model="outboundStatus"
                 clearable
@@ -44,11 +40,9 @@
                 </el-option>
             </el-select>
         </el-col>
-        <el-col
-            :span="4"
-            :offset="1">
+        <el-col :span="4" :offset="1">
             <el-row>
-                <el-col :span="16">
+                <el-col :span="21">
                     <el-input v-model="outboundCode"
                               clearable
                               @change="handlerChange"

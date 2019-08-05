@@ -20,8 +20,8 @@
             </el-col>
             <!-- 搜索框 -->
             <el-col
-                :offset="12"
-                :span="4">
+                :offset="10"
+                :span="6">
                 <input-public :select="select_batch_code"
                               @data_cb="handlerInputQuery">
                 </input-public>
@@ -29,7 +29,7 @@
             <!-- 添加货品 -->
             <el-col
                 :span="2"
-                :offset="2">
+                :offset="1">
                 <el-button
                     icon="el-icon-plus"
                     type="text"

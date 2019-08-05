@@ -1,85 +1,87 @@
 <template>
-          <div  class="addressManagement">
-                <div :class="$style.addressManagement">
-                      <div :class="$style.am_main">
-                        <!-- 标签页 -->
-                        <el-row>
-                          <!-- 点击按键 -->
-                          <div :class="$style.am_operation_btn">
-                              <span @click="info_add_btn">
-                                <i class="iconfont">&#xe618;</i>
-                                {{'添加供应商'}}
-                              </span>
-                          </div>
-                        <!-- 对应的标签页内容 -->
-                          <el-table   :class="$style.table_main"
-                                      :data="info_data"
-                                      border>
-                                      <el-table-column  label="#"
-                                                        header-align="center"
-                                                        align="center"
-                                                        type="index"
-                                                        width="80">
-                                      </el-table-column>
-                                      <el-table-column  label="供应商中文名"
-                                                        header-align="center"
-                                                        align="center"
-                                                        prop="name_cn">
-                                      </el-table-column>
-                                      <el-table-column  label="供应商英文名"
-                                                        header-align="center"
-                                                        align="center"
-                                                        prop="name_en" v-if="isEnabledLangInput()">
-                                      </el-table-column>
-                                      <el-table-column  label="操作"
-                                                        header-align="center"
-                                                        width="240">
-                                                        <template   slot-scope="scope">
-                                                                    <el-button  size="mini"
-                                                                                @click="edit(scope.row)">
-                                                                                编辑
-                                                                    </el-button>
-                                                                    <el-button  size="mini"
-                                                                                type="danger"
-                                                                                @click="delete_data(scope.row)">
-                                                                                删除
-                                                                    </el-button>
-                                                        </template>
-                                      </el-table-column>
-                          </el-table>
-                          <el-pagination  :class="$style.pagination"
-                                          v-show="+total"
-                                          @current-change="handleCurrentChange"
-                                          :current-page="currentPage"
-                                          layout="total, prev, pager, next, jumper"
-                                          :total="+total">
-                          </el-pagination>
-                        </el-row>
-                      </div>
+    <div class="addressManagement">
+        <div :class="$style.addressManagement">
+            <div :class="$style.am_main">
+              <!-- 标签页 -->
+              <el-row>
+                <!-- 点击按键 -->
+                <div :class="$style.am_operation_btn">
+                    <span @click="info_add_btn">
+                      <i class="iconfont">&#xe618;</i>
+                      {{'添加供应商'}}
+                    </span>
                 </div>
-                <!-- 添加供应商 -->
-                <el-dialog  :title="this.id ? '编辑供应商' : '添加供应商 '"
-                            :visible.sync="dialogVisible"
-                            width="30%">
-                            <el-form  :rules="rules"
-                                      ref="form"
-                                      :model="distributor"
-                                      label-width="140px">
-                                      <el-form-item  label="供应商中文名:"
-                                                     prop="name_cn">
-                                                     <el-input v-model="distributor.name_cn"></el-input>
-                                      </el-form-item>
-                                      <el-form-item  label="供应商英文名:"
-                                                     prop="name_en">
-                                                     <el-input v-model="distributor.name_en"></el-input>
-                                      </el-form-item>
-                            </el-form>
-                            <span   slot="footer" class="dialog-footer">
-                                    <el-button @click="dialogVisible = false">取 消</el-button>
-                                    <el-button type="primary" @click="submit_form">确 定</el-button>
-                            </span>
-                </el-dialog>
-          </div>
+              <!-- 对应的标签页内容 -->
+                <el-table   :class="$style.table_main"
+                            :data="info_data"
+                            border>
+                            <el-table-column  label="#"
+                                              header-align="center"
+                                              align="center"
+                                              type="index"
+                                              width="80">
+                            </el-table-column>
+                            <el-table-column  label="供应商中文名"
+                                              header-align="center"
+                                              align="center"
+                                              prop="name_cn">
+                            </el-table-column>
+                            <el-table-column  label="供应商英文名"
+                                              header-align="center"
+                                              align="center"
+                                              prop="name_en" v-if="isEnabledLangInput()">
+                            </el-table-column>
+                            <el-table-column  label="操作"
+                                              header-align="center"
+                                              width="240">
+                                              <template   slot-scope="scope">
+                                                          <el-button  size="mini"
+                                                                      @click="edit(scope.row)">
+                                                                      编辑
+                                                          </el-button>
+                                                          <el-button  size="mini"
+                                                                      type="danger"
+                                                                      @click="delete_data(scope.row)">
+                                                                      删除
+                                                          </el-button>
+                                              </template>
+                            </el-table-column>
+                </el-table>
+                <el-pagination  :class="$style.pagination"
+                                v-show="+total"
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                layout="total, prev, pager, next, jumper"
+                                :total="+total">
+                </el-pagination>
+              </el-row>
+            </div>
+        </div>
+        <!-- 添加供应商 -->
+        <el-dialog
+            :title="this.id ? '编辑供应商' : '添加供应商 '"
+            :visible.sync="dialogVisible"
+            width="30%">
+            <el-form
+                :rules="rules"
+                ref="form"
+                :model="distributor"
+                label-width="140px">
+                <el-form-item  label="供应商中文名:"
+                                prop="name_cn">
+                                <el-input v-model="distributor.name_cn"></el-input>
+                </el-form-item>
+                <el-form-item  label="供应商英文名:"
+                                prop="name_en">
+                                <el-input v-model="distributor.name_en"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="submit_form">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
 </template>
 <script>
 import $http from '@/api';
@@ -197,16 +199,16 @@ export default {
 @import '../../../less/public_variable.less';
 
 .addressManagement {
-  margin: 80px 0 10px 0;
+  margin: 50px 0 10px 0;
   .am_main {
-    width: 96%;
+    width: @width;
     margin: 0 auto;
     position: relative;
     background-color: #fff;
     .am_operation_btn {
       position: absolute;
-      top: -40px;
-      right: 20px;
+      top: -30px;
+      right: 10px;
       z-index: 3;
       border: none;
       font-size: 1.2rem;

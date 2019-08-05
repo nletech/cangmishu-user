@@ -71,7 +71,7 @@
                 <el-row>
                     <el-col :span="2" :offset="10">
                         <el-button
-                            :loading="$store.state.config.button_loading"
+                            :loading="isButtonLoading()"
                             type="primary"
                             @click="onSubmit()">
                             提交

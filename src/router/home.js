@@ -67,7 +67,7 @@ const Record = loadOnDemand('setting/record/record'); // 出入库单分类
 
 // 店铺管理
 const Shops = loadOnDemand('h5Store/shops'); // 店铺管理
-
+const StoreGoods = loadOnDemand('h5Store/components/storeGoods'); // 店铺商品管理
 // 帮助
 const Help = loadOnDemand('helpCenter/help'); // 货品分类管理
 
@@ -361,6 +361,11 @@ export const routerMap = [
             name: 'shops', // 店铺管理--店铺列表
             path: 'shops',
             component: Shops,
+            nav: 3,
+          }, {
+            name: 'storeGoods', // 店铺管理--店铺列表
+            path: 'storeGoods',
+            component: StoreGoods,
             nav: 3,
           },
         ],

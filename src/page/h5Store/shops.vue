@@ -20,18 +20,18 @@
                 <el-table-column  prop="url" label="店铺链接地址" header-align="center" align="center" >
                 </el-table-column>
                 <el-table-column  label="操作" width="200" header-align="center">
-                      <template slot-scope="scope">
+                    <template slot-scope="scope">
                         <el-tooltip content="编辑店铺信息" placement="top">
                           <el-button
                               size="mini" icon="el-icon-edit" round
                               @click="editShop(scope.row)"
-                              :loading="$store.state.config.button_loading">
+                              :loading="isButtonLoading()">
                           </el-button>
                         </el-tooltip>
                         <el-tooltip content="管理商品" placement="top">
                           <el-button
                               size="mini" icon="el-icon-goods"
-                              @click="editStore(scope.row.id)"
+                              @click="editStore(scope.row)"
                               type="primary" round>
                           </el-button>
                         </el-tooltip>
@@ -39,26 +39,43 @@
               </el-table-column>
             </el-table>
         </el-row>
-        <el-row  :class="$style.pagination">
-            <pagination-public  :params="params"
+        <el-row>
+            <pagination-public  :class="$style.pagination"
+                                :params="params"
                                 @changePage="handlerChangePage">
             </pagination-public>
         </el-row>
     </div>
+    <add-shops
+        v-if="visible"
+        :row_data="row_data"
+        :status="status"
+        :visible.sync="visible">
+    </add-shops>
   </div>
 </template>
 
 <script>
 import paginationPublic from '@/components/pagination-public';
+import mixin from '@/mixin/form_config';
+import addShops from './components/addShops';
 
 export default {
   name: 'shops',
+  mixins: [mixin],
   components: {
     paginationPublic,
+    addShops,
   },
   data() {
     return {
-      params: {},
+      row_data: {},
+      status: false,
+      visible: false,
+      params: {
+        total: 2,
+        currentPage: 1,
+      },
       shops: [
         {
           name: '店铺一',
@@ -83,14 +100,23 @@ export default {
     handlerChangePage() {
       //
     },
-    editShop() {
-      //
-    },
-    editStore() {
-      //
+    editStore(row) {
+      console.log(row, 'row');
+      this.$router.push({
+        name: 'storeGoods',
+        query: {
+          warehouse_id: this.warehouse_id, // 仓库 id
+        },
+      });
+    }, // 管理商品
+    editShop(row) {
+      this.visible = true;
+      this.status = true;
+      this.row_data = row;
     },
     addShop() {
-      //
+      this.visible = true;
+      this.status = false;
     },
   },
 };
@@ -108,7 +134,7 @@ export default {
       font-size: @fontSize;
     }
     .pagination {
-      margin: 10px  0 10px 0;
+      margin: 10px  0 0 0;
       float: right;
     }
   }

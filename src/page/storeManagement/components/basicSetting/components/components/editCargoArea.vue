@@ -38,7 +38,7 @@
               <el-form-item>
                             <el-button  type="primary"
                                         @click="onSubmit"
-                                        :loading="$store.state.config.button_loading">
+                                        :loading="isButtonLoading()">
                                         {{'提交'}}
                             </el-button>
               </el-form-item>
@@ -49,8 +49,10 @@
 <script>
 import MdoelForm from '@/components/form';
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
+  mixins: [mixin],
   components: {
     MdoelForm,
   },

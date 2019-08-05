@@ -42,7 +42,7 @@ export default {
 </script>
 <style lang="less">
   .pagination_and_buttons{
-    padding: 20px 5px;
+    padding: 10px 0 0 0;
     // background: #fff;
     .el-button+.el-button{
       margin-left: 0;
