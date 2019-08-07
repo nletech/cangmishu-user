@@ -100,15 +100,22 @@
 </template>
 <script>
 import $http from '@/api';
+import paginationPublic from '@/components/pagination-public';
 import AddInfo from './components/addAddressInfo';
+
 
 export default {
   name: 'addressManagement',
   components: {
     AddInfo,
+    paginationPublic,
   },
   data() {
     return {
+      visibleFlag: false,
+      visible_add: false,
+      addressText: 'aaa',
+      //
       tabs: [
         {
           id: 1,
@@ -144,6 +151,12 @@ export default {
     this.active_tab_item = this.tabs[0].name; // 默认选中标签页
   },
   methods: {
+    handle_visible(val) {
+      console.log(val, 'val');
+    },
+    handleAddVisible(val) {
+      console.log(val, 'val');
+    },
     handle_updata_data_list(val) {
       this.active_item_check(val);
     }, // 添加之后更新信息
@@ -152,7 +165,9 @@ export default {
     }, // 编辑信息之后更新信息
     info_add_btn() {
       this.row_data = {};
-      this.switchFlag = true;
+      // this.switchFlag = true;
+      // this.visibleFlag = true;
+      this.visible_add = true;
     }, // 添加信息按钮
     active_item_check(item) {
       this.info_data = [];

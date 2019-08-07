@@ -88,11 +88,12 @@ export default {
   methods: {
     initData() {
       if (!this.status) return; // 编辑信息
-      this.shop_form.name = this.row_data.name;
-      this.shop_form.readme = this.row_data.readme;
-      this.shop_form.owner_name = this.row_data.owner_name;
-      this.shop_form.phone = this.row_data.phone;
-      this.shop_form.address = this.row_data.address;
+      const ROW = this.row_data;
+      this.shop_form.name = ROW.name;
+      this.shop_form.readme = ROW.readme;
+      this.shop_form.owner_name = ROW.owner_name;
+      this.shop_form.phone = ROW.phone;
+      this.shop_form.address = ROW.address;
     }, // 编辑店铺信息
     onSubmit() {
       //

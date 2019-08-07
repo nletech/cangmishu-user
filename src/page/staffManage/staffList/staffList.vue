@@ -164,7 +164,6 @@
 </template>
 
 <script>
-import WmsTags from '@/components/wms_tags';
 import myStaffSearch from '@/components/my_staff_search/index'; // 搜索框
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
@@ -172,7 +171,6 @@ import getStaffList from '@/mixin/staffList';
 
 export default {
   components: {
-    WmsTags,
     buttonPagination,
     myStaffSearch,
   },

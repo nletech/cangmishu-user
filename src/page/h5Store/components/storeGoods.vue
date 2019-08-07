@@ -4,42 +4,34 @@
             <div  :class="$style.header">
                   <el-row>
                       <!-- <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search> -->
-                      <el-col :span="2" :offset="1">
+                      <el-col :span="2" :offset="22">
                           <el-button  type="text"
                                       :class="$style.header_btn"
                                       size="small"
                                       @click="addInbound"
                                       icon="el-icon-plus">
-                                      {{$t('addInbound')}}
+                                      {{'添加商品'}}
                           </el-button>
                       </el-col>
                   </el-row>
             </div>
-            <el-table  :data="inbound_list_data" border>
-                <el-table-column label="#" type="index" width="40" header-align="center" align="center" ></el-table-column>
-                <el-table-column  prop="confirmation_number" label="单据编号" header-align="center" align="center" >
+            <el-table  :data="goodsList" border>
+                <el-table-column type="selection" width="40" header-align="center" align="center" ></el-table-column>
+                <el-table-column  prop="img" label="商品图片" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="batch_type.name" label="类型" header-align="center" align="center" >
+                <el-table-column  prop="name" label="商品名称" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="status_name" label="状态" header-align="center" align="center" >
+                <el-table-column  prop="status_name" label="上架" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="distributor.name_cn" label="供应商" header-align="center" align="center" >
+                <el-table-column  prop="cost" label="进价(元)" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="total_num.total_need_num" label="预计数量" header-align="center" align="center" >
+                <el-table-column  prop="sale" label="售价(元)" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="total_num.total_stockin_num" label="实际数量" header-align="center" align="center" >
-                </el-table-column>
-                <el-table-column  prop="created_at" label="创建时间" width="155" header-align="center" align="center" >
+                <el-table-column  prop="time" label="时间" header-align="center" align="center" >
                 </el-table-column>
                 <el-table-column  label="操作" width="200" header-align="center">
                       <template slot-scope="scope">
-                        <el-tooltip content="查看详情" placement="top">
-                          <el-button  size="mini" icon="el-icon-view" round
-                                      @click="viewDetails(scope.row)"
-                                      :loading="isButtonLoading()">
-                          </el-button>
-                        </el-tooltip>
-                        <el-tooltip content="入库 &amp;上架" placement="top">
+                        <el-tooltip content="编辑" placement="top">
                           <el-button  size="mini" type="primary" icon="el-icon-sell" @click="toInbound(scope.row)" round></el-button>
                         </el-tooltip>
                         <el-tooltip content="删除" placement="top">
@@ -84,8 +76,47 @@ export default {
   },
   data() {
     return {
-      params: {}, // 分页数据
-      inbound_list_data: [], // 入库单列表
+      params: {
+        total: 123,
+      }, // 分页数据
+      goodsList: [
+        {
+          img: 'img',
+          name: '商品一',
+          status_name: '1',
+          cost: 1,
+          sale: 123,
+          time: '2019-07-19',
+        }, {
+          img: 'img',
+          name: '商品一',
+          status_name: '1',
+          cost: 1,
+          sale: 123,
+          time: '2019-07-19',
+        }, {
+          img: 'img',
+          name: '商品一',
+          status_name: '1',
+          cost: 1,
+          sale: 123,
+          time: '2019-07-19',
+        }, {
+          img: 'img',
+          name: '商品一',
+          status_name: '1',
+          cost: 1,
+          sale: 123,
+          time: '2019-07-19',
+        }, {
+          img: 'img',
+          name: '商品一',
+          status_name: '1',
+          cost: 1,
+          sale: 123,
+          time: '2019-07-19',
+        },
+      ], // 入库单列表
       inboundDialogVisible: false, // 入库单详情弹框
     };
   },
@@ -104,14 +135,10 @@ export default {
   },
   methods: {
     handlerQuery(res) {
-      this.inbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
+      console.log(res);
     }, // 选择框回调
     handlerInputQuery(res) {
-      this.inbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
+      console.log(res);
     }, // 输入框回调
     handlerChangePage(val) {
       $http.getInboundPage({
@@ -119,21 +146,22 @@ export default {
         page: val,
       })
         .then((res) => {
-          this.inbound_list_data = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
+          console.log(res);
+          // this.goodsList = res.data.data;
+          // this.params.total = res.data.total;
+          // this.params.currentPage = res.data.current_page;
         });
     },
     getData() {
     }, // 获取列表
     // 添加入库单
     addInbound() {
-      this.$router.push({
-        name: 'addInbound',
-        query: {
-          warehouse_id: this.warehouse_id, // 仓库 id
-        },
-      });
+      // this.$router.push({
+      //   name: 'addInbound',
+      //   query: {
+      //     warehouse_id: this.warehouse_id, // 仓库 id
+      //   },
+      // });
     },
     // 入库单详情弹框
     viewDetails(row) {
@@ -142,20 +170,21 @@ export default {
     },
     // 删除入库单
     inboundDelete(id) {
+      console.log(id, 'id');
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        $http.deleteInbound(id)
-          .then(() => {
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-              showClose: true,
-            });
-            this.getData();
-          });
+        // $http.deleteInbound(id)
+        //   .then(() => {
+        //     this.$message({
+        //       message: '删除成功',
+        //       type: 'success',
+        //       showClose: true,
+        //     });
+        //     this.getData();
+        //   });
       });
     },
   },

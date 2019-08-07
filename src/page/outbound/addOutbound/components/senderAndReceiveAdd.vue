@@ -2,8 +2,9 @@
     <el-dialog
         :title="`添加${addressText}`"
         width="800px"
+        @update:visible_add="$emit('update:visible_add', $event)"
         :before-close="handleClose"
-        :visible.sync="visible_add">
+        :visible="visible_add">
         <el-form
             :class="$style.staff_form"
             label-width="140px"
@@ -157,11 +158,11 @@ export default {
                 this.$emit('update:visible_add', false);
               });
           } else if (this.addressText === '收件人') {
-              $http.addReceiverAddress(this.formInfo)
-                .then((res) => {
-                  if (res.status) return;
-                  this.$emit('update:visible_add', false);
-                })
+            $http.addReceiverAddress(this.formInfo)
+              .then((res) => {
+                if (res.status) return;
+                this.$emit('update:visible_add', false);
+              })
           }
         }
       });
@@ -174,7 +175,7 @@ export default {
 @import '../../../../less/public_variable.less';
 
   .add_sender {
-    margin: 20px 0 10px 0;
+    margin: @margin;
     background-color: #fff !important;
     .am_main {
       width: 90%;

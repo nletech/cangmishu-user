@@ -5,7 +5,7 @@
           <el-col :lg="12" justify="space-between">
             <div  class="address">
                   <label  class="label">
-                      <el-button size="mini" @click="handle_select(0)" icon="el-icon-more" style="float:right"></el-button>
+                      <el-button v-show="isSelectSender()" size="mini" @click="handle_select(0)" icon="el-icon-more" style="float:right"></el-button>
                       发件信息
                   </label>
                   <el-form  label-width="80px" v-if="senderInfo.fullname">
@@ -30,25 +30,28 @@
           <el-col :lg="12" justify="space-between">
             <div  class="address sender">
                   <label class="label">
-                      <el-button size="mini" @click="handle_select(1)" icon="el-icon-more" style="float:right"></el-button>
-                    收件信息
+                      <el-button  v-show="isSelectReceiver()" size="mini" @click="handle_select(1)" icon="el-icon-more" style="float:right"></el-button>
+                      收件信息
                   </label>
                   <el-form  label-width="80px" v-if="receiverInfo.fullname">
-                            <el-form-item label="姓名"
-                                          prop="fullname">
-                                          {{receiverInfo.fullname}}
+                            <el-form-item
+                                label="姓名"
+                                prop="fullname">
+                                {{receiverInfo.fullname}}
                             </el-form-item>
-                            <el-form-item label="电话"
-                                          prop="phone">
-                                          {{receiverInfo.phone}}
+                            <el-form-item
+                                label="电话"
+                                prop="phone">
+                                {{receiverInfo.phone}}
                             </el-form-item>
-                            <el-form-item label="地址"
-                                          prop="address">
-                                          {{receiverInfo.address}}
+                            <el-form-item
+                                label="地址"
+                                prop="address">
+                                {{receiverInfo.address}}
                             </el-form-item>
                   </el-form>
                   <div v-if="!receiverInfo.fullname">
-                    <el-button size="large"  @click="handle_select(1)" type="primary" plain icon="el-icon-s-custom">选择收件人地址</el-button>
+                    <el-button size="large" @click="handle_select(1)" type="primary" plain icon="el-icon-s-custom">选择收件人地址</el-button>
                   </div>
             </div>
           </el-col>
@@ -66,30 +69,31 @@
                                     添加{{addressText}}
                         </el-button>
                   </div>
-                  <el-table :row-style="{cursor: 'pointer'}"
-                            :data="address_list_data"
-                            highlight-current-row
-                            style="width: 100%; margin: 0 0 10px 0;">
-                            <el-table-column  type="index"
-                                              width="55"
-                                              label="#">
-                            </el-table-column>
-                            <el-table-column  prop="fullname"
-                                              :label="`${addressText}姓名`">
-                            </el-table-column>
-                            <el-table-column  prop="phone"
-                                              label="电话">
-                            </el-table-column>
-                            <el-table-column  prop="full_address"
-                                              label="地址">
-                            </el-table-column>
-                            <el-table-column  label="操作"
-                                              width="240">
-                                <template slot-scope="scope">
-                                          <el-button icon="el-icon-check" type="primary" plain @click="handle_confirm_btn(scope.row)">确定</el-button>
-                                          <el-button icon="el-icon-edit" @click="handle_edit_btn(scope.row)">编辑</el-button>
-                                </template>
-                            </el-table-column>
+                  <el-table
+                      :row-style="{cursor: 'pointer'}"
+                      :data="address_list_data"
+                      highlight-current-row
+                      style="width: 100%; margin: 0 0 10px 0;">
+                      <el-table-column  type="index"
+                                        width="55"
+                                        label="#">
+                      </el-table-column>
+                      <el-table-column  prop="fullname"
+                                        :label="`${addressText}姓名`">
+                      </el-table-column>
+                      <el-table-column  prop="phone"
+                                        label="电话">
+                      </el-table-column>
+                      <el-table-column  prop="full_address"
+                                        label="地址">
+                      </el-table-column>
+                      <el-table-column  label="操作"
+                                        width="240">
+                          <template slot-scope="scope">
+                                    <el-button icon="el-icon-check" type="primary" plain @click="handle_confirm_btn(scope.row)">确定</el-button>
+                                    <el-button icon="el-icon-edit" @click="handle_edit_btn(scope.row)">编辑</el-button>
+                          </template>
+                      </el-table-column>
                   </el-table>
                   <el-row>
                           <el-col :span="4" :offset="16">
@@ -100,15 +104,17 @@
                   </el-row>
       </el-dialog>
       <!-- 编辑收发件人信息 -->
-      <edit  :visibleFlag="visibleFlag"
-             :addressText="addressText"
-             :row_data="row_data"
-             @update:visibleFlag="handleVisible($event)">
+      <edit
+          :visibleFlag="visibleFlag"
+          :addressText="addressText"
+          :row_data="row_data"
+          @update:visibleFlag="handleVisible($event)">
       </edit>
       <!-- 添加收发件人信息 -->
-      <add  :visible_add="visible_add"
-            :addressText="addressText"
-            @update:visible_add="handleAddVisible($event)">
+      <add
+          :visible_add="visible_add"
+          :addressText="addressText"
+          @update:visible_add="handleAddVisible($event)">
       </add>
   </div>
 </template>
@@ -160,6 +166,18 @@ export default {
     },
   },
   methods: {
+    isSelectSender() {
+      if (this.senderInfo.id === '') {
+        return false;
+      }
+      return true;
+    }, // 显示操作发件人图标
+    isSelectReceiver() {
+      if (this.receiverInfo.id === '') {
+        return false;
+      }
+      return true;
+    }, // 显示操作收件人图标
     handlerChangePage(val) {
       if (this.addressText === '发件人') {
         $http.checkSenderAddress({

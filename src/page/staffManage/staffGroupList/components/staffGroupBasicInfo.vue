@@ -1,41 +1,41 @@
 <template>
-          <div>
-              <el-row :class="$style.staffGroupAdd_main">
-                      <el-col :span="12" :offset="6">
-                              <el-form  label-width="80px"
-                                        :model="staffGroupBasicInfo_form">
-                                        <el-form-item  label="员工组名">
-                                                      <el-input  v-model="staffGroupBasicInfo_form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item  label="备注">
-                                                      <el-input  type="textarea"
-                                                                 v-model="staffGroupBasicInfo_form.remark">
-                                                      </el-input>
-                                        </el-form-item>
-                                        <el-form-item>
-                                                      <el-row>
-                                                              <el-col :span="2"
-                                                                      :offset="10">
-                                                                      <el-button  :class="$style.submit_btn"
-                                                                                  @click="submit_staffGroupBasicInfo_form">
-                                                                                  保存
-                                                                      </el-button>
-                                                              </el-col>
-                                                      </el-row>
-                                        </el-form-item>
-                              </el-form>
-                      </el-col>
-                </el-row>
-          </div>
+    <div>
+        <el-row :class="$style.staffGroupAdd_main">
+            <el-col :span="12" :offset="6">
+                <el-form
+                    label-width="80px"
+                    :model="staffGroupBasicInfo_form">
+                    <el-form-item  label="员工组名">
+                        <el-input  v-model="staffGroupBasicInfo_form.name"></el-input>
+                    </el-form-item>
+                    <el-form-item  label="备注">
+                        <el-input  type="textarea"
+                                    v-model="staffGroupBasicInfo_form.remark">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-row>
+                            <el-col :span="2"
+                                :offset="10">
+                                <el-button
+                                    :class="$style.submit_btn"
+                                    @click="submit_staffGroupBasicInfo_form">
+                                    保存
+                                </el-button>
+                            </el-col>
+                        </el-row>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script>
-import MdoelForm from '@/components/form';
 import $http from '@/api';
 
 export default {
   components: {
-    MdoelForm,
   },
   mounted() {
     this.getStaffInfo();
@@ -94,11 +94,6 @@ export default {
                 });
                 // 跳转员工列表页
                 this.$router.go(-1);
-              } else {
-                this.$message({
-                  type: 'info',
-                  message: '保存失败',
-                });
               }
             });
         });
@@ -111,7 +106,7 @@ export default {
 @import '../../../../less/public_variable.less';
 
 .staffGroupAdd_main {
-  width: 92%;
+  width: @width;
   min-height: 607px;
   background-color: white;
   margin: 10px auto;

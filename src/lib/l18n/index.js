@@ -326,6 +326,7 @@ export default {
     addSender: '添加发件人',
     editAddressee: '编辑收件人',
     shops: '店铺管理',
+    storeGoods: '商品管理',
     ...zhLocale,
   },
   en: {

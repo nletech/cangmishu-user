@@ -74,7 +74,6 @@
 import datePickerPublic from '@/components/date-picker-public';
 import paginationPublic from '@/components/pagination-public';
 import selectPublic from '@/components/select-public';
-import inputPublic from '@/components/input-public';
 import mixin from '@/mixin/form_config';
 import $http from '@/api';
 import detailDialog from './components/inbound_detail';
@@ -86,7 +85,6 @@ export default {
     detailDialog,
     datePickerPublic,
     selectPublic,
-    inputPublic,
     paginationPublic,
     inboundListSearch,
   },

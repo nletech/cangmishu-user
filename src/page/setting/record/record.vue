@@ -219,9 +219,9 @@ export default {
 @import '../../../less/public_variable.less';
 
 .addressManagement {
-  margin: 20px 0 10px 0;
+  margin: @margin;
   .am_main {
-    width: 96%;
+    width: @width;
     margin: 0 auto;
     position: relative;
     background-color: #fff;
@@ -246,7 +246,7 @@ export default {
         position: relative;
         justify-content: center;
         align-items: center;
-        padding: 10px 0 10px 0;
+        padding: 8px 0 8px 0;
         float: none;
         .el-tabs__item {
           width: 50%;
@@ -257,7 +257,7 @@ export default {
     }
     .el-tabs {
       .el-tabs__content {
-        margin: 80px 0 0 0;
+        margin: 50px 0 0 0;
       }
     }
   }

@@ -106,11 +106,11 @@
                 </el-col>
             </el-row>
             <!-- 入库单详情弹框 -->
-            <DetailDialog
+            <outbound-detail
                 :visible.sync="outboundDialogVisible"
                 :id="id"
                 :row_data="row_data">
-            </DetailDialog>
+            </outbound-detail>
         </div>
     </div>
 </template>
@@ -121,13 +121,21 @@ import $http from '@/api';
 import mixin from '@/mixin/form_config';
 import datePickerPublic from '@/components/date-picker-public';
 import selectPublic from '@/components/select-public';
-import inputPublic from '@/components/input-public';
 import datePickerSingePublic from '@/components/date-picker-singe-public';
-import DetailDialog from './components/outbound_detail';
+import outboundDetail from './components/outbound_detail';
 import outboundListSearch from './components/outboundListSearch';
 
 
 export default {
+  mixins: [mixin],
+  components: {
+    outboundDetail,
+    datePickerPublic,
+    datePickerSingePublic,
+    selectPublic,
+    outboundListSearch,
+    paginationPublic,
+  },
   data() {
     return {
       date: '', // 查询日期
@@ -147,16 +155,6 @@ export default {
       }, // 分页数据
       row_data: {},
     };
-  },
-  mixins: [mixin],
-  components: {
-    DetailDialog,
-    datePickerPublic,
-    datePickerSingePublic,
-    selectPublic,
-    inputPublic,
-    outboundListSearch,
-    paginationPublic,
   },
   created() {
     this.getOutbounds();

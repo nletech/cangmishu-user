@@ -143,7 +143,7 @@ export default {
     loadSpecDataList() {
       if (!this.warehouseId) return;
       this.specList = [];
-      const queryModel = { warehouse_id: this.warehouseId };
+      const queryModel = Object.assign({ warehouse_id: this.warehouseId }, { ...this.params }); // 合并查询参数
       // 获取商品列表(商品是规格)
       if (this.categoryId > 0) {
         queryModel.category_id = this.categoryId;

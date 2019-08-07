@@ -1,77 +1,81 @@
 <template>
-        <div :class="$style.select_goods">
-              <!-- 选择商品弹窗 -->
-              <el-dialog  title="选择商品"
-                          width="80%"
-                          :visible.sync="visible_goods"
-                          :before-close="handleClose">
-                          <el-table  ref="table"
-                                     border
-                                     :data="goodsList"
-                                     style="width: 100%"
-                                     :row-style="{cursor: 'pointer'}">
-                                      <el-table-column  type="expand"
-                                                        width="55">
-                                                        <template slot-scope="scope">
-                                                                  <el-table :data="scope.row.specs"
-                                                                            @row-click="rowClickGoods"
-                                                                            border>
-                                                                            <el-table-column  width="55">
-                                                                                              <template slot-scope="scope">
-                                                                                                        <label  class="el-checkbox">
-                                                                                                                <span  class="el-checkbox__input"
-                                                                                                                       :class="scope.row.checked && 'is-checked'">
-                                                                                                                       <span class="el-checkbox__inner"></span>
-                                                                                                                </span>
-                                                                                                        </label>
-                                                                                              </template>
-                                                                            </el-table-column>
-                                                                            <el-table-column  label="SKU"
-                                                                                              prop="relevance_code">
-                                                                            </el-table-column>
-                                                                            <el-table-column  label="规格中文名"
-                                                                                              prop="name_cn">
-                                                                            </el-table-column>
-                                                                            <el-table-column  label="规格外文名"
-                                                                                              prop="name_en">
-                                                                            </el-table-column>
-                                                                  </el-table>
-                                                        </template>
-                                      </el-table-column>
-                                    <el-table-column  label="商品中文名称"
-                                                      prop="name_cn">
-                                    </el-table-column>
-                                    <el-table-column  prop="name_en"
-                                                      label="商品英文名称">
-                                  </el-table-column>
-                          </el-table>
-                          <!-- 分页 -->
-                          <el-pagination  :class="$style.pagination"
-                                          v-show="+total"
-                                          @current-change="handleCurrentChange"
-                                          :current-page="currentPage"
-                                          layout="total, prev, pager, next, jumper"
-                                          :total="+total">
-                          </el-pagination>
-                          <span slot="footer"
-                                class="dialog-footer">
-                                <el-row>
-                                        <el-col :span="2" :offset="22">
-                                                <el-button  type="primary"
-                                                            @click="confirmSelected"
-                                                            :class="$style.submit_btn"
-                                                            :loading="$store.state.btn_loading">
-                                                            {{$t('submit')}}
-                                                </el-button>
-                                        </el-col>
-                                </el-row>
-                          </span>
-              </el-dialog>
-        </div>
+    <div :class="$style.select_goods">
+        <!-- 选择商品弹窗 -->
+        <el-dialog
+            title="选择商品"
+            width="80%"
+            :visible.sync="visible_goods"
+            :before-close="handleClose">
+            <el-table
+                ref="table"
+                border
+                :data="goodsList"
+                style="width: 100%"
+                :row-style="{cursor: 'pointer'}">
+                <el-table-column  type="expand"
+                                  width="55">
+                                  <template slot-scope="scope">
+                                            <el-table :data="scope.row.specs"
+                                                      @row-click="rowClickGoods"
+                                                      border>
+                                                      <el-table-column  width="55">
+                                                                        <template slot-scope="scope">
+                                                                                  <label  class="el-checkbox">
+                                                                                          <span  class="el-checkbox__input"
+                                                                                                  :class="scope.row.checked && 'is-checked'">
+                                                                                                  <span class="el-checkbox__inner"></span>
+                                                                                          </span>
+                                                                                  </label>
+                                                                        </template>
+                                                      </el-table-column>
+                                                      <el-table-column  label="SKU"
+                                                                        prop="relevance_code">
+                                                      </el-table-column>
+                                                      <el-table-column  label="规格中文名"
+                                                                        prop="name_cn">
+                                                      </el-table-column>
+                                                      <el-table-column  label="规格外文名"
+                                                                        prop="name_en">
+                                                      </el-table-column>
+                                            </el-table>
+                                  </template>
+                </el-table-column>
+                <el-table-column  label="商品中文名称"
+                                  prop="name_cn">
+                </el-table-column>
+                <el-table-column  prop="name_en"
+                                  label="商品英文名称">
+                </el-table-column>
+            </el-table>
+            <!-- 分页 -->
+            <el-pagination
+                :class="$style.pagination"
+                v-show="+total"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                layout="total, prev, pager, next, jumper"
+                :total="+total">
+            </el-pagination>
+            <span slot="footer" class="dialog-footer">
+                <el-row>
+                    <el-col :span="2" :offset="22">
+                        <el-button
+                            type="primary"
+                            @click="confirmSelected"
+                            :class="$style.submit_btn"
+                            :loading="$store.state.btn_loading">
+                            {{$t('submit')}}
+                        </el-button>
+                    </el-col>
+                </el-row>
+            </span>
+        </el-dialog>
+    </div>
 </template>
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'selectGoods',
@@ -81,6 +85,7 @@ export default {
       default: false,
     },
   },
+  mixins: [mixin],
   data() {
     return {
       goodsList: [],
@@ -95,11 +100,6 @@ export default {
       if (this.visible_goods) {
         this.getGoodsList();
       }
-    },
-  },
-  computed: {
-    warehouse_id() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
   methods: {
@@ -132,32 +132,10 @@ export default {
         this.selected.push(arr[i]);
       }
     }, // 将选中项缓存起来
-    // handleClose() {
-    //   this.$emit('update:visible_goods', false);
-    // },
     handleSelectGoods() {
       this.visible_goods = true;
     },
     confirmSelected() {
-      // for (let i = 0; i < this.selected.length; i += 1) {
-      //   this.all_selected.push(this.selected[i]);
-      // }
-      // // 这里对包含对象的数组进行去重（根据对象的id属性）
-      // function removeArrObj(arr) {
-      //   const obj = {}; // 用作记录的对象
-      //   const result = []; // 接收去重后的数组
-      //   // eslint-disable-next-line
-      //   let subObj = arr;
-      //   for (let i = 0; i < subObj.length; i += 1) {
-      //     if (!obj[subObj[i].id]) {
-      //       result.push(subObj[i]);
-      //       obj[subObj[i].id] = true;
-      //     } // 在数组的对象中, id 唯一则推入到 result 数组
-      //   }
-      //   return result;
-      // }
-      // const result = removeArrObj(this.all_selected);
-      // this.all_selected = []; // 初始化
       this.goodsList = [...this.goodsSelected];
       this.$emit('select-goods_data', this.goodsList); // 回传给父组件
       this.$emit('update:visible_goods', false);

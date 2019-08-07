@@ -156,10 +156,8 @@
 <script>
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
-import WmsTags from '@/components/wms_tags';
 import paginationPublic from '@/components/pagination-public';
 import baseApi from '@/lib/axios/base_api';
-import inputPublic from '@/components/input-public';
 import inventoryDetail from './components/inventory_detail';
 import SkuDetails from './components/sku_Details';
 
@@ -189,10 +187,8 @@ export default {
   },
   components: {
     inventoryDetail,
-    WmsTags,
     SkuDetails,
     paginationPublic,
-    inputPublic,
   },
   computed: {
     ownerId() {

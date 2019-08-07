@@ -2,26 +2,29 @@
   <div class="pagination_and_buttons">
     <el-row>
       <el-col :lg="6" :md="8" :sm="8">
-              <el-button  v-for="(item, index) in lists"
-                          :key="index"
-                          @click="item.method"
-                          :loading="item.loading"
-                          :disabled="item.disabled ? item.disabled : false">
-                          {{item.name}}
-                          </el-button>
+          <el-button
+              v-for="(item, index) in lists"
+              :key="index"
+              @click="item.method"
+              :loading="item.loading"
+              :disabled="item.disabled ? item.disabled : false">
+              {{item.name}}
+          </el-button>
       </el-col>
 
-      <el-col  v-if="+pageParams.data_count"
-               :lg="{span: 13, offset: lists?5:11}"
-               :md="{span: 15, offset: lists?1:9}"
-               :sm="{span: 16, offset: lists?0:8}"
-               style="text-align:right;">
-               <el-pagination  @current-change="pageParams.__proto__.handleCurrentChange"
-                               :current-page="pageParams.page"
-                               :page-size="pageParams.size"
-                               layout="total, prev, pager, next, jumper"
-                               :total="+pageParams.data_count">
-               </el-pagination>
+      <el-col
+          v-if="+pageParams.data_count"
+          :lg="{span: 13, offset: lists?5:11}"
+          :md="{span: 15, offset: lists?1:9}"
+          :sm="{span: 16, offset: lists?0:8}"
+          style="text-align:right;">
+          <el-pagination
+              @current-change="$emit('changePage', $event)"
+              :current-page="pageParams.page"
+              :page-size="pageParams.size"
+              layout="total, prev, pager, next, jumper"
+              :total="+pageParams.data_count">
+          </el-pagination>
       </el-col>
     </el-row>
   </div>
