@@ -1,98 +1,104 @@
 <template>
-          <div :class="$style.storeManage">
-                <div :class="$style.main">
-                  <el-row>
-                          <!-- 添加员工组 -->
-                          <el-col :span="4" :offset="21">
-                                  <el-button  type="text"
-                                              :class="$style.add_btn"
-                                              @click="$router.push({name: 'staffGroupAdd'})"
-                                              icon="el-icon-plus">
-                                              {{$t('staffGroupAdd')}}
-                                  </el-button>
-                          </el-col>
-                  </el-row>
-                        <!-- 员工组数据表格 -->
-                        <el-table  :data="staffGroupData"
-                                   border>
-                                   <!-- #序号 -->
-                                   <el-table-column  type="index"
-                                                     align="center"
-                                                     header-align="center"
-                                                     label="#"
-                                                     width="80">
-                                   </el-table-column>
-                                   <!-- 员工组名称 -->
-                                   <el-table-column  prop="nickname"
-                                                     align="center"
-                                                     header-align="center"
-                                                     label="员工组名称">
-                                                     <template slot-scope="scope">
-                                                                {{scope.row.name}}
-                                                     </template>
-                                    </el-table-column>
-                                    <!-- 所属仓库 -->
-                                   <el-table-column  align="center"
-                                                     header-align="center"
-                                                     label="所属仓库"
-                                                     prop="warehouse.name_cn"
-                                                     width="120">
-                                   </el-table-column>
-                                    <!-- 员工数 -->
-                                    <el-table-column  prop="staff_name"
-                                                      align="center"
-                                                      label="员工数">
-                                                      <template slot-scope="scope">
-                                                                {{scope.row.user_amount}}
-                                                      </template>
-                                    </el-table-column>
-                                    <!-- 操作 -->
-                                    <el-table-column  prop="staff_operations"
-                                                      header-align="center"
-                                                      label="操作"
-                                                      width="360">
-                                                      <template slot-scope="scope">
-                                                        <!-- 基本信息 -->
-                                                        <el-button  type="primary"
-                                                                    plain
-                                                                    size="mini"
-                                                                    @click="handleBasicInfo(scope.row)">
-                                                                    基本信息
-                                                        </el-button>
-                                                        <!-- 限权 -->
-                                                        <el-button  type="success"
-                                                                    plain
-                                                                    size="mini"
-                                                                    @click="handlePermissions(scope.row)">
-                                                                    权限
-                                                        </el-button>
-                                                        <!-- 查看员工 -->
-                                                        <el-button  type="danger"
-                                                                    plain
-                                                                    size="mini"
-                                                                    @click="showStaff(scope.row)">
-                                                                    查看员工
-                                                        </el-button>
-                                                        <!-- 删除 -->
-                                                        <el-button  type="danger"
-                                                                    plain
-                                                                    size="mini"
-                                                                    @click="deleteStaffGroup(scope.row)">
-                                                                    删除
-                                                        </el-button>
-                                                      </template>
-                                    </el-table-column>
-                        </el-table>
-                        <el-row>
-                                <el-col :span="2" :offset="22">
-                                        <pagination-public  :class="$style.pagination"
-                                                            :params="params"
-                                                            @changePage="handlerChangePage">
-                                        </pagination-public>
-                                </el-col>
-                        </el-row>
-                </div>
-          </div>
+    <div :class="$style.storeManage">
+        <div :class="$style.main">
+            <el-row>
+                    <!-- 添加员工组 -->
+                    <el-col :span="4" :offset="21">
+                            <el-button  type="text"
+                                        :class="$style.add_btn"
+                                        @click="$router.push({name: 'staffGroupAdd'})"
+                                        icon="el-icon-plus">
+                                        {{$t('staffGroupAdd')}}
+                            </el-button>
+                    </el-col>
+            </el-row>
+            <!-- 员工组数据表格 -->
+            <el-table  :data="staffGroupData"
+                        border>
+                        <!-- #序号 -->
+                        <el-table-column
+                            type="index"
+                            align="center"
+                            header-align="center"
+                            label="#"
+                            width="80">
+                        </el-table-column>
+                        <!-- 员工组名称 -->
+                        <el-table-column
+                            prop="nickname"
+                            align="center"
+                            header-align="center"
+                            label="员工组名称">
+                            <template slot-scope="scope">
+                                      {{scope.row.name}}
+                            </template>
+                        </el-table-column>
+                        <!-- 所属仓库 -->
+                        <el-table-column
+                            align="center"
+                            header-align="center"
+                            label="所属仓库"
+                            prop="warehouse.name_cn"
+                            width="120">
+                        </el-table-column>
+                        <!-- 员工数 -->
+                        <el-table-column
+                            prop="staff_name"
+                            align="center"
+                            label="员工数">
+                            <template slot-scope="scope">
+                                      {{scope.row.user_amount}}
+                            </template>
+                        </el-table-column>
+                        <!-- 操作 -->
+                        <el-table-column
+                            prop="staff_operations"
+                            header-align="center"
+                            label="操作"
+                            width="360">
+                            <template slot-scope="scope">
+                              <!-- 基本信息 -->
+                              <el-button  type="primary"
+                                          plain
+                                          size="mini"
+                                          @click="handleBasicInfo(scope.row)">
+                                          基本信息
+                              </el-button>
+                              <!-- 限权 -->
+                              <el-button  type="success"
+                                          plain
+                                          size="mini"
+                                          @click="handlePermissions(scope.row)">
+                                          权限
+                              </el-button>
+                              <!-- 查看员工 -->
+                              <el-button  type="danger"
+                                          plain
+                                          size="mini"
+                                          @click="showStaff(scope.row)">
+                                          查看员工
+                              </el-button>
+                              <!-- 删除 -->
+                              <el-button  type="danger"
+                                          plain
+                                          size="mini"
+                                          @click="deleteStaffGroup(scope.row)">
+                                          删除
+                              </el-button>
+                            </template>
+                        </el-table-column>
+            </el-table>
+            <el-row>
+                <el-col :span="2" :offset="22">
+                    <pagination-public
+                        :class="$style.pagination"
+                        :params="params"
+                        @changePage="handlerChangePage">
+                    </pagination-public>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -173,6 +179,13 @@ export default {
     },
     // 模块--查看员工
     showStaff(staffGroupInfo) {
+      if (staffGroupInfo.warehouse_id === 0) {
+        this.$message({
+          type: 'error',
+          message: '添加员工之前，请先配置权限!',
+        });
+        return;
+      } // 如果员工组没有权限(即没有分配仓库), 则无法添加员工
       this.$router.push({
         name: 'staffGroupShowEmployee',
         query: {

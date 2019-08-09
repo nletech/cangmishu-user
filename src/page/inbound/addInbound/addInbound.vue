@@ -439,13 +439,13 @@ export default {
       this.dialogSpecShow = true;
     },
     onSpecSelected(data) {
-      console.log('选中的数据', data);
+      // console.log('选中的数据', data);
       for (let i = 0; i < data.length; i += 1) {
         let found = false;
         for (let j = 0; j < this.specList.length; j += 1) {
           if (data[i].id === this.specList[j].id) {
             found = true;
-            console.log('存在数据', data[i]);
+            // console.log('存在数据', data[i]);
             break;
           }
         }

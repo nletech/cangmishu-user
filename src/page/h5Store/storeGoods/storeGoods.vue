@@ -8,8 +8,8 @@
                           <el-button  type="text"
                                       :class="$style.header_btn"
                                       size="small"
-                                      @click="addInbound"
-                                      icon="el-icon-plus">
+                                      @click="addGoods"
+                                       icon="el-icon-plus">
                                       {{'添加商品'}}
                           </el-button>
                       </el-col>
@@ -54,6 +54,11 @@
                 </el-col>
             </el-row>
         </div>
+        <!-- 选择商品弹窗 -->
+        <select-spec-dialog :visible.sync="dialogSpecShow"
+                            :warehouseId.sync="warehouseId"
+                            @selected="onSpecSelected">
+        </select-spec-dialog>
     </div>
 </template>
 
@@ -64,6 +69,7 @@ import selectPublic from '@/components/select-public';
 import inputPublic from '@/components/input-public';
 import mixin from '@/mixin/form_config';
 import $http from '@/api';
+import selectSpecDialog from '@/components/dialog/selectSpec';
 
 export default {
   name: 'storeGoods',
@@ -73,9 +79,11 @@ export default {
     selectPublic,
     inputPublic,
     paginationPublic,
+    selectSpecDialog,
   },
   data() {
     return {
+      dialogSpecShow: false,
       params: {
         total: 123,
       }, // 分页数据
@@ -117,23 +125,31 @@ export default {
           time: '2019-07-19',
         },
       ], // 入库单列表
+      addGoodsList: [],
       inboundDialogVisible: false, // 入库单详情弹框
     };
   },
   created() {
     //
   },
-  computed: {
-    warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
-  },
-  watch: {
-    warehouseId() {
-      // this.getData();
-    },
-  },
   methods: {
+    onSpecSelected(data) {
+      // console.log('选中的数据', data);
+      for (let i = 0; i < data.length; i += 1) {
+        let found = false;
+        for (let j = 0; j < this.addGoodsList.length; j += 1) {
+          if (data[i].id === this.addGoodsList[j].id) {
+            found = true;
+            // console.log('存在数据', data[i]);
+            break;
+          }
+        }
+        if (!found) {
+          this.addGoodsList.push(data[i]);
+        }
+      }
+      console.log(this.addGoodsList, 'this.addGoodsList');
+    },
     handlerQuery(res) {
       console.log(res);
     }, // 选择框回调
@@ -147,21 +163,13 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          // this.goodsList = res.data.data;
-          // this.params.total = res.data.total;
-          // this.params.currentPage = res.data.current_page;
         });
     },
     getData() {
     }, // 获取列表
     // 添加入库单
-    addInbound() {
-      // this.$router.push({
-      //   name: 'addInbound',
-      //   query: {
-      //     warehouse_id: this.warehouse_id, // 仓库 id
-      //   },
-      // });
+    addGoods() {
+      this.dialogSpecShow = true;
     },
     // 入库单详情弹框
     viewDetails(row) {

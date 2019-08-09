@@ -66,8 +66,8 @@ const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryMana
 const Record = loadOnDemand('setting/record/record'); // 出入库单分类
 
 // 店铺管理
-const Shops = loadOnDemand('h5Store/shops'); // 店铺管理
-const StoreGoods = loadOnDemand('h5Store/components/storeGoods'); // 店铺商品管理
+const Shops = loadOnDemand('h5Store/shops/shops'); // 店铺管理
+const StoreGoods = loadOnDemand('h5Store/storeGoods/storeGoods'); // 店铺商品管理
 // 帮助
 const Help = loadOnDemand('helpCenter/help'); // 货品分类管理
 

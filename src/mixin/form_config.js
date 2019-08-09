@@ -20,13 +20,15 @@ export default {
     isEnabledLangInput() {
       return false;
     },
-    successTips(is) {
+    successTips(is, routerGo) {
       this.$message({
         message: !is ? this.$t('addSuccess') : this.$t('editSuccess'),
         type: 'success',
         showClose: true,
       });
-      this.$router.go(-1);
+      if (routerGo) {
+        this.$router.go(-1);
+      }
     },
     errorTips(is) {
       this.$message({

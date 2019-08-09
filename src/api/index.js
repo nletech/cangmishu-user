@@ -375,7 +375,40 @@ const $http = {
   Warning() {
     return Axios.get('warning');
   }, // 已设置的库存报警信息
-  // =========== 以上是仓秘书
+  // 店铺管理
+  getShops(data) {
+    return Axios.get('shop/', { params: data });
+  }, // 创建店铺
+  addNewShop(data) {
+    return Axios.post('shop/', data);
+  }, // 创建店铺
+  editShop(id, data) {
+    return Axios.put(`shop/${id}`, data);
+  }, // 编辑店铺信息
+  deleteShop(id) {
+    return Axios.delete(`shop/${id}`);
+  }, // 删除店铺
+  detailShop(id) {
+    return Axios.get(`shop/${id}`);
+  }, // 店铺详情
+  goodsInShop(shopId) {
+    return Axios.get(`shop/${shopId}/product/`);
+  }, // 店铺商品列表
+  goodsDetailInShop(shopId, goodsId) {
+    return Axios.get(`shop/${shopId}/product/${goodsId}`);
+  }, // 店铺商品详情
+  deleteGoodsInShop(shopId, goodsId) {
+    return Axios.delete(`shop/${shopId}/product/${goodsId}`);
+  }, // 店铺商品详情
+  shelvesStatus(shopId, goodsId, data) {
+    return Axios.patch(`shop/${shopId}/product/${goodsId}`, data);
+  }, // 店铺商品是否上下架
+  addGoodsToShop(shopId, goodsId, data) {
+    return Axios.post(`shop/${shopId}/product/${goodsId}`, data);
+  }, // 添加已有商品至店铺
+  editGoodsInShop(shopId, goodsId, data) {
+    return Axios.put(`shop/${shopId}/product/${goodsId}`, data);
+  }, // 编辑店铺中已有的商品(详情)
 };
 
 export default $http;

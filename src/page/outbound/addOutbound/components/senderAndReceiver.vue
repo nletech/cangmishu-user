@@ -23,7 +23,7 @@
                       </el-form-item>
                   </el-form>
                   <div v-if="!senderInfo.fullname">
-                    <el-button size="large"  @click="handle_select(0)" type="primary" plain icon="el-icon-house">选择发件人地址</el-button>
+                    <el-button size="large"  @click="handle_select(0)" type="primary" plain icon="el-icon-s-custom">选择发件人地址</el-button>
                   </div>
             </div>
           </el-col>
@@ -34,21 +34,21 @@
                       收件信息
                   </label>
                   <el-form  label-width="80px" v-if="receiverInfo.fullname">
-                            <el-form-item
-                                label="姓名"
-                                prop="fullname">
-                                {{receiverInfo.fullname}}
-                            </el-form-item>
-                            <el-form-item
-                                label="电话"
-                                prop="phone">
-                                {{receiverInfo.phone}}
-                            </el-form-item>
-                            <el-form-item
-                                label="地址"
-                                prop="address">
-                                {{receiverInfo.address}}
-                            </el-form-item>
+                      <el-form-item
+                          label="姓名"
+                          prop="fullname">
+                          {{receiverInfo.fullname}}
+                      </el-form-item>
+                      <el-form-item
+                          label="电话"
+                          prop="phone">
+                          {{receiverInfo.phone}}
+                      </el-form-item>
+                      <el-form-item
+                          label="地址"
+                          prop="address">
+                          {{receiverInfo.address}}
+                      </el-form-item>
                   </el-form>
                   <div v-if="!receiverInfo.fullname">
                     <el-button size="large" @click="handle_select(1)" type="primary" plain icon="el-icon-s-custom">选择收件人地址</el-button>

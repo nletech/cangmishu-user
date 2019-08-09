@@ -316,7 +316,7 @@ export default {
             // 编辑接口
             $http.editProducts(this.$route.query.id, this.form)
               .then(() => {
-                this.successTips(this.$route.query.id);
+                this.successTips(this.$route.query.id, true);
                 this.$router.replace({ name: 'myGoodsList' }); // 编辑成功之后进行跳转
               });
           } else {

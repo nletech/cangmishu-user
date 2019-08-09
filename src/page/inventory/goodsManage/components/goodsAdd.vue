@@ -288,7 +288,7 @@ export default {
             this.form.specs = this.specList.filter(res => res.name_cn);
             $http.addProducts(this.form)
               .then(() => {
-                this.successTips(this.$route.query.id);
+                this.successTips(this.$route.query.id, true);
                 this.$router.replace({ name: 'myGoodsList' });
               });
           } else {

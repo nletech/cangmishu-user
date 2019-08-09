@@ -5,8 +5,7 @@
                 <!-- 标签页 -->
                 <el-row>
                     <!-- 点击按键 -->
-                    <div
-                        :class="$style.am_operation_btn">
+                    <div :class="$style.am_operation_btn">
                         <span  @click="info_add_btn">
                                <i class="iconfont">&#xe618;</i>
                                {{`${active_add_text}`}}
@@ -27,48 +26,53 @@
                                 :data="info_data"
                                 :class="$style.table_main"
                                 border>
-                                <el-table-column  label="#"
-                                                  header-align="center"
-                                                  align="center"
-                                                  type="index"
-                                                  width="80">
+                                <el-table-column
+                                    label="#"
+                                    header-align="center"
+                                    align="center"
+                                    type="index"
+                                    width="80">
                                 </el-table-column>
-                                <el-table-column  label="类型名称"
-                                                  header-align="center"
-                                                  align="center"
-                                                  prop="name">
+                                <el-table-column
+                                    label="类型名称"
+                                    header-align="center"
+                                    align="center"
+                                    prop="name">
                                 </el-table-column>
-                                <el-table-column  label="启用状态"
-                                                  header-align="center"
-                                                  align="center">
-                                        <template slot-scope="scope">
-                                                  <span v-if="scope.row.is_enabled==1">是</span>
-                                                  <span v-if="scope.row.is_enabled==0">否</span>
-                                        </template>
+                                <el-table-column
+                                    label="启用状态"
+                                    header-align="center"
+                                    align="center">
+                                    <template slot-scope="scope">
+                                        <span v-if="scope.row.is_enabled==1">是</span>
+                                        <span v-if="scope.row.is_enabled==0">否</span>
+                                    </template>
                                 </el-table-column>
-                                <el-table-column  label="操作"
-                                                  header-align="center"
-                                                  width="240">
-                                      <template slot-scope="scope">
-                                        <el-tooltip content="编辑" placement="top">
-                                          <el-button size="mini" icon="el-icon-edit" round
-                                                      @click="edit(scope.row)"></el-button>
-                                        </el-tooltip>
-                                        <el-tooltip content="删除" placement="top">
-                                          <el-button  size="mini" icon="el-icon-delete"
-                                                            @click="delete_data(scope.row)"
-                                                            type="danger" round>
-                                          </el-button>
-                                        </el-tooltip>
-                                      </template>
+                                <el-table-column
+                                    label="操作"
+                                    header-align="center"
+                                    width="240">
+                                    <template slot-scope="scope">
+                                      <el-tooltip content="编辑" placement="top">
+                                        <el-button size="mini" icon="el-icon-edit" round
+                                                    @click="edit(scope.row)"></el-button>
+                                      </el-tooltip>
+                                      <el-tooltip content="删除" placement="top">
+                                        <el-button  size="mini" icon="el-icon-delete"
+                                                    @click="delete_data(scope.row)"
+                                                    type="danger" round>
+                                        </el-button>
+                                      </el-tooltip>
+                                    </template>
                                 </el-table-column>
                             </el-table>
-                            <el-pagination  :class="$style.pagination"
-                                            v-show="+total"
-                                            @current-change="handleCurrentChange"
-                                            :current-page="currentPage"
-                                            layout="total, prev, pager, next, jumper"
-                                            :total="+total">
+                            <el-pagination
+                                :class="$style.pagination"
+                                v-show="+total"
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                layout="total, prev, pager, next, jumper"
+                                :total="+total">
                             </el-pagination>
                         </el-tab-pane>
                     </el-tabs>
