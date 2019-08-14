@@ -61,7 +61,7 @@
                                                                   <div>{{scope.row.relevance_code}}</div>
                                                           </template>
                                         </el-table-column>
-                                        <el-table-column prop="sale_price" label="销售价格（元）" width="120" align="center">
+                                        <el-table-column prop="sale_price" label="销售单价（元）" width="120" align="center">
                                         </el-table-column>
                                         <el-table-column prop="amount" label="下单数量*" width="100" align="center">
                                         </el-table-column>

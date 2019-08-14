@@ -40,7 +40,7 @@
                           </el-button>
                         </el-tooltip>
                         <el-tooltip content="入库 &amp;上架" placement="top">
-                          <el-button  size="mini" type="primary" icon="el-icon-sell" @click="toInbound(scope.row)" round></el-button>
+                          <el-button  size="mini" type="primary" icon="el-icon-sell" v-if="scope.row.status !== 3" @click="toInbound(scope.row)" round></el-button>
                         </el-tooltip>
                         <el-tooltip content="删除" placement="top">
                           <el-button

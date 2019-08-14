@@ -87,7 +87,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="进货价格（元）"
+                            label="进货单价（元）"
                             min-width="80px">
                               <template slot-scope="scope">
                                   <el-input size="mini"

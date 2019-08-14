@@ -1,13 +1,12 @@
 <template>
   <el-select
-  size="small"
-  :value="selectValue"
-  :clearable="clearable"
-  :placeholder=placeholder
-  @change="updateValue"
-  style="width: 100%">
-    <slot>
-    </slot>
+    size="small"
+    :value="selectValue"
+    :clearable="clearable"
+    :placeholder=placeholder
+    @change="updateValue"
+    style="width: 100%">
+    <slot></slot>
   </el-select>
 </template>
 

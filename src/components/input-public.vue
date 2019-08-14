@@ -1,29 +1,31 @@
 <template>
-          <div>
-                <el-row>
-                        <el-col :span="20">
-                                <el-input v-model="value"
-                                          clearable
-                                          @change="handlerChange"
-                                          @clear="handlerClear"
-                                          size="small"
-                                          :placeholder="select.placeholder">
-                                </el-input>
-                        </el-col>
-                        <el-col :span="2">
-                                <el-button size="small"
-                                           @click="handlerSearch">
-                                           搜索
-                                </el-button>
-                        </el-col>
-                </el-row>
-          </div>
+    <div>
+        <el-row>
+            <el-col :span="20">
+                    <el-input v-model="value"
+                              clearable
+                              @change="handlerChange"
+                              @clear="handlerClear"
+                              size="small"
+                              :placeholder="select.placeholder">
+                    </el-input>
+            </el-col>
+            <el-col :span="2">
+                <el-button size="small"
+                            @click="handlerSearch">
+                            搜索
+                </el-button>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'inputPublic',
+  mixins: [mixin],
   props: {
     select: {
       type: Object,
@@ -34,24 +36,12 @@ export default {
       value: '',
     };
   },
-  computed: {
-    warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
-  },
   methods: {
     handlerSearch() {
       if (!this.value) return;
       if (this.select.flag === 1) {
-        $http.getOutbound({ // 搜索出库单
-          warehouse_id: this.warehouseId,
-          keywords: this.value,
-        })
-          .then((res) => {
-            this.$emit('data_cb', res);
-          });
-      } else if (this.select.flag === 2) { // 搜索入库单
-        $http.getInboundPage({
+        if (!this.select.shopId) return;
+        $http.goodsInShop(this.select.shopId, { // 查询货商品名称
           warehouse_id: this.warehouseId,
           keywords: this.value,
         })
@@ -66,54 +56,17 @@ export default {
           .then((res) => {
             this.$emit('data_cb', res);
           });
-      } else if (this.select.flag === 4) {
-        $http.getStocks({ // 查询货品（通过货品和sku）
-          warehouse_id: this.warehouseId,
-          keywords: this.value,
-        })
-          .then((res) => {
-            this.$emit('data_cb', res);
-          });
-      } else if (this.select.flag === 10) {
-        $http.getProducts({ // 查询货品（通过货品和sku）
-          warehouse_id: this.warehouseId,
-          keywords: this.value,
-        })
-          .then((res) => {
-            this.$emit('data_cb', res);
-          });
       }
     },
     handlerClear() {
       if (this.select.flag === 1) {
-        $http.getOutbound({
-          warehouse_id: this.warehouseId,
-        })
-          .then((res) => {
-            this.$emit('data_cb', res);
-          });
-      } else if (this.select.flag === 2) {
-        $http.getInbounds({
+        $http.goodsInShop({
           warehouse_id: this.warehouseId,
         })
           .then((res) => {
             this.$emit('data_cb', res);
           });
       } else if (this.select.flag === 3) {
-        $http.getProducts({
-          warehouse_id: this.warehouseId,
-        })
-          .then((res) => {
-            this.$emit('data_cb', res);
-          });
-      } else if (this.select.flag === 4) {
-        $http.getStocks({
-          warehouse_id: this.warehouseId,
-        })
-          .then((res) => {
-            this.$emit('data_cb', res);
-          });
-      } else if (this.select.flag === 10) {
         $http.getProducts({
           warehouse_id: this.warehouseId,
         })

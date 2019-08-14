@@ -1,53 +1,60 @@
 <template>
-          <div  :class="$style.add_warehouse">
-                <div  :class="$style.main">
-                      <el-row  :class="$style.add_warehouse_main">
-                                <el-col >
-                                        <el-form  ref="rule_form"
-                                                  label-width="140px"
-                                                  size="middle"
-                                                  :rules="rules"
-                                                  label-position="left"
-                                                  :model="warehouseInfo">
-                                                  <el-form-item  prop="name_cn"
-                                                                label="仓库名称"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.name_cn"></el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="code"
-                                                                label="仓库编码"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.code"></el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="address"
-                                                                label="省市区"
-                                                                size="middle">
-                                                                <el-cascader  :props="props"
-                                                                              :options="addressInfo"
-                                                                              v-model="warehouseInfo.address"
-                                                                              style="width: 100%;">
-                                                                </el-cascader>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="addressDetail"
-                                                                label="详细地址"
-                                                                size="middle">
-                                                                <el-input  type="textarea"
-                                                                            v-model="warehouseInfo.addressDetail">
-                                                                </el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="area"
-                                                                label="面积 (平方米)"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.area"></el-input>
-                                                  </el-form-item>
-                                                  <el-form-item>
-                                                  <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
-                                                </el-form-item>
-                                        </el-form>
-                                </el-col>
-                      </el-row>
-                </div>
-          </div>
+    <div  :class="$style.add_warehouse">
+        <div  :class="$style.main">
+            <el-row  :class="$style.add_warehouse_main">
+                <el-col >
+                    <el-form
+                        ref="rule_form"
+                        label-width="140px"
+                        size="middle"
+                        :rules="rules"
+                        label-position="left"
+                        :model="warehouseInfo">
+                        <el-form-item
+                            prop="name_cn"
+                            label="仓库名称"
+                            size="middle">
+                            <el-input  v-model="warehouseInfo.name_cn"></el-input>
+                        </el-form-item>
+                        <el-form-item
+                            prop="code"
+                            label="仓库编码"
+                            size="middle">
+                            <el-input  v-model="warehouseInfo.code"></el-input>
+                        </el-form-item>
+                        <el-form-item
+                            prop="address"
+                            label="省市区"
+                            size="middle">
+                            <el-cascader
+                                :props="props"
+                                :options="addressInfo"
+                                v-model="warehouseInfo.address"
+                                style="width: 100%;">
+                            </el-cascader>
+                        </el-form-item>
+                        <el-form-item
+                            prop="addressDetail"
+                            label="详细地址"
+                            size="middle">
+                            <el-input  type="textarea"
+                                        v-model="warehouseInfo.addressDetail">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item
+                            prop="area"
+                            label="面积 (平方米)"
+                            size="middle">
+                            <el-input  v-model="warehouseInfo.area"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -61,14 +68,14 @@ export default {
     const check = {
       name_cn: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入姓名'));
+          callback(new Error('请输入仓库名称'));
         } else {
           callback();
         }
       },
       code: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入电话'));
+          callback(new Error('请输入仓库编码'));
         } else {
           callback();
         }

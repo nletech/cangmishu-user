@@ -60,12 +60,14 @@
                                       <el-tooltip content="编辑" placement="top">
                                           <el-button
                                               size="mini" icon="el-icon-edit" round
+                                              :loading="isButtonLoading()"
                                               @click="edit(scope.row)">
                                           </el-button>
                                       </el-tooltip>
                                       <el-tooltip content="删除" placement="top">
                                           <el-button
                                               size="mini" icon="el-icon-delete"
+                                              :loading="isButtonLoading()"
                                               @click="delete_data(scope.row)"
                                               type="danger" round>
                                           </el-button>
@@ -88,7 +90,7 @@
         </div>
         <!-- 添加收发人信息 -->
         <add-info
-            :visible.sync = "switchFlag"
+            :visible.sync ="switchFlag"
             :tabs="tabs"
             :active_tab_item="active_tab_item"
             :active_add_text="active_add_text"
@@ -100,22 +102,21 @@
 </template>
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
 import AddInfo from './components/addAddressInfo';
 
 
 export default {
   name: 'addressManagement',
+  mixins: [mixin],
   components: {
     AddInfo,
     paginationPublic,
   },
   data() {
     return {
-      visibleFlag: false,
-      visible_add: false,
-      addressText: 'aaa',
-      //
+      switchFlag: false,
       tabs: [
         {
           id: 1,
@@ -130,7 +131,6 @@ export default {
       row_data: {}, // 行数据
       active_tab_item: '', // 默认选择的标签页 (主要判断标志)
       active_add_text: '', // 默认添加按钮文字
-      switchFlag: false,
       info_data: [], // 数据
       total: '', // 列表总条数
       currentPage: 1, // 当前页
@@ -165,9 +165,7 @@ export default {
     }, // 编辑信息之后更新信息
     info_add_btn() {
       this.row_data = {};
-      // this.switchFlag = true;
-      // this.visibleFlag = true;
-      this.visible_add = true;
+      this.switchFlag = true;
     }, // 添加信息按钮
     active_item_check(item) {
       this.info_data = [];

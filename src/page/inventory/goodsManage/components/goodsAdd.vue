@@ -1,140 +1,148 @@
 <template>
 <div class="goods_edit">
-  <mdoel-form :colValue="24">
-              <el-form  :model="form"
-                slot="left"
-                label-width="120px"
-                :rules="formValidator"
-                ref="form">
-                <label class="label"> {{'基本信息'}} </label>
-                <el-row>
-                  <el-col :span="10">
-                      <!-- 供应商 -->
-                      <el-form-item label="货品分类" label-position="right"
-                                    prop="category_id">
-                      <el-select  v-model="form.category_id">
-                                 <el-option  v-for="item in typeList"
-                                             :label="item.name_cn"
-                                             :value="item.id"
-                                             :disabled="item.is_enabled === 0"
-                                             :key="item.id">
-                                 </el-option>
-                      </el-select>
-                      <el-button @click="addCategory" icon="el-icon-more"></el-button>
-                      </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-form-item  label="中文名称"
-                               prop="name_cn"
-                               style="width:70%">
-                               <el-input v-model="form.name_cn">
-                               </el-input>
+    <mdoel-form :colValue="24">
+        <el-form  :model="form"
+          slot="left"
+          label-width="120px"
+          :rules="formValidator"
+          ref="form">
+          <label class="label"> {{'基本信息'}} </label>
+          <el-row>
+            <el-col :span="10">
+                <el-form-item
+                    label="货品分类"
+                    label-position="right"
+                    prop="category_id">
+                    <el-select  v-model="form.category_id">
+                        <el-option
+                            v-for="item in typeList"
+                            :label="item.name_cn"
+                            :value="item.id"
+                            :disabled="item.is_enabled === 0"
+                            :key="item.id">
+                        </el-option>
+                    </el-select>
+                <el-button @click="addCategory" icon="el-icon-more"></el-button>
                 </el-form-item>
-                <el-form-item  v-if="isEnabledLangInput()"  label="外文名称"
-                               prop="name_en"
-                               style="width:70%">
-                               <el-input  v-model="form.name_en"></el-input>
-                </el-form-item>
-                <el-row style="margin-top:20px;">
-                  <el-col>
-                    <label class="label" style="float:left; width:80px;">货品规格 </label>
-                    <div style="float:left; width:300px; padding-top:20px;">
-                        <el-button size="mini" @click="addNewLine" type="primary" plain>添加行 <i class="el-icon-more el-icon--right"></i> </el-button>
-                        <span class="sub-title">带*为必填项</span>
-                    </div>
+            </el-col>
+          </el-row>
+          <el-form-item
+              label="中文名称"
+              prop="name_cn"
+              style="width:70%">
+              <el-input v-model="form.name_cn"></el-input>
+          </el-form-item>
+          <el-form-item
+              v-if="isEnabledLangInput()"
+              label="外文名称"
+              prop="name_en"
+              style="width:70%">
+              <el-input  v-model="form.name_en"></el-input>
+          </el-form-item>
+          <el-row style="margin-top:20px;">
+            <el-col>
+              <label class="label" style="float:left; width:80px;">货品规格 </label>
+              <div style="float:left; width:300px; padding-top:20px;">
+                  <el-button size="mini" @click="addNewLine" type="primary" plain>添加行 <i class="el-icon-more el-icon--right"></i> </el-button>
+                  <span class="sub-title">带*为必填项</span>
+              </div>
+            </el-col>
+          </el-row>
+              <el-row>
+                <el-col>
+                    <el-table  :data="specList" empty-text="请添加商品规格">
+                        <el-table-column  type="index"
+                                          label="#" fixed>
+                        </el-table-column>
+                        <el-table-column label="规格名称*" prop="name_cn" width="200px">
+                          <template slot-scope="scope">
+                            <el-input type="text" placeholder="请输入规格名称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
+                          </template>
+                        </el-table-column>
+                        <el-table-column v-if="isEnabledLangInput()" label="规格外文名*" prop="name_en" width="200px">
+                          <template slot-scope="scope">
+                            <el-input type="text" placeholder="请输入规格外文称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="SKU*" prop="relevance_code" width="200px">
+                          <template slot="header" slot-scope="scope">
+                            SKU *
+                            <el-popover placement="top-start" title="SKU" width="200" trigger="hover"
+                                content="SKU是商品唯一编码，保存后不能更改，且不能重复">
+                                <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                            </el-popover>
+                          </template>
+                          <template slot-scope="scope">
+                            <el-input type="text" :isDisabled="!!$route.query.id" placeholder="请输入SKU" maxlength="20" show-word-limit v-model="scope.row.relevance_code"></el-input>
+                          </template>
+                        </el-table-column>
+                        <!-- 零售价 -->
+                        <el-table-column  prop="purchase_price"
+                                          align="center"
+                                          header-align="center"
+                                          label="参考进货单价（元）"
+                                          width="150">
+                          <template slot-scope="scope">
+                            <el-input type="number" maxlength="10" show-word-limit v-model="scope.row.purchase_price" :min="0"></el-input>
+                          </template>
+                        </el-table-column>
+                        <el-table-column  prop="sale_price"
+                                          align="center"
+                                          header-align="center"
+                                          label="参考销售单价（元）"
+                                          width="150">
+                          <template slot-scope="scope">
+                            <el-input type="number" maxlength="10" show-word-limit v-model="scope.row.sale_price" :min="0"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column  prop="sale_price"
+                                          align="center"
+                                          header-align="center"
+                                          label="毛重(g)"
+                                          width="120">
+                          <template slot-scope="scope">
+                            <el-input type="number" placeholder="请输入克" maxlength="10" show-word-limit v-model="scope.row.gross_weight" :min="0"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column min-width="60px">
+                          <template slot-scope="scope">
+                            <el-tooltip content="删除" placement="top">
+                              <el-button  size="mini" icon="el-icon-delete"
+                                                @click="delSpec(scope.row, scope.$index)"
+                                                type="danger" round>
+                              </el-button>
+                            </el-tooltip>
+                          </template>
+                        </el-table-column>
+                    </el-table>
                   </el-col>
-                </el-row>
-                        <el-row>
-                          <el-col>
-                              <el-table  :data="specList" empty-text="请添加商品规格">
-                                  <el-table-column  type="index"
-                                                    label="#" fixed>
-                                  </el-table-column>
-                                  <el-table-column label="规格名称*" prop="name_cn" width="200px">
-                                    <template slot-scope="scope">
-                                      <el-input type="text" placeholder="请输入规格名称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
-                                    </template>
-                                  </el-table-column>
-                                  <el-table-column v-if="isEnabledLangInput()" label="规格外文名*" prop="name_en" width="200px">
-                                    <template slot-scope="scope">
-                                      <el-input type="text" placeholder="请输入规格外文称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
-                                    </template>
-                                  </el-table-column>
-                                  <el-table-column label="SKU*" prop="relevance_code" width="200px">
-                                    <template slot="header" slot-scope="scope">
-                                      SKU *
-                                      <el-popover placement="top-start" title="SKU" width="200" trigger="hover"
-                                          content="SKU是商品唯一编码，保存后不能更改，且不能重复">
-                                          <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
-                                      </el-popover>
-                                    </template>
-                                    <template slot-scope="scope">
-                                      <el-input type="text" :isDisabled="!!$route.query.id" placeholder="请输入SKU" maxlength="20" show-word-limit v-model="scope.row.relevance_code"></el-input>
-                                    </template>
-                                  </el-table-column>
-                                  <!-- 零售价 -->
-                                  <el-table-column  prop="purchase_price"
-                                                    align="center"
-                                                    header-align="center"
-                                                    label="进货价（元）"
-                                                    width="150">
-                                    <template slot-scope="scope">
-                                      <el-input type="number" placeholder="进货价" maxlength="10" show-word-limit v-model="scope.row.purchase_price" :min="0"></el-input>
-                                    </template>
-                                  </el-table-column>
-                                  <el-table-column  prop="sale_price"
-                                                    align="center"
-                                                    header-align="center"
-                                                    label="销售价（元）"
-                                                    width="150">
-                                    <template slot-scope="scope">
-                                      <el-input type="number" placeholder="销售价" maxlength="10" show-word-limit v-model="scope.row.sale_price" :min="0"></el-input>
-                                      </template>
-                                  </el-table-column>
-                                  <el-table-column  prop="sale_price"
-                                                    align="center"
-                                                    header-align="center"
-                                                    label="毛重(g)"
-                                                    width="120">
-                                    <template slot-scope="scope">
-                                      <el-input type="number" placeholder="请输入克" maxlength="10" show-word-limit v-model="scope.row.gross_weight" :min="0"></el-input>
-                                      </template>
-                                  </el-table-column>
-                                  <el-table-column min-width="60px">
-                                    <template slot-scope="scope">
-                                      <el-tooltip content="删除" placement="top">
-                                        <el-button  size="mini" icon="el-icon-delete"
-                                                         @click="delSpec(scope.row, scope.$index)"
-                                                         type="danger" round>
-                                        </el-button>
-                                      </el-tooltip>
-                                    </template>
-                                  </el-table-column>
-                              </el-table>
-                            </el-col>
-                        </el-row>
-                        <label class="label" style="padding-top:20px;"> {{'选填信息'}} </label>
-                        <el-form-item :label="$t('goodsRemark')"
-                                      style="width:70%">
-                                      <el-input  v-model="form.remark"
-                                                 type="textarea"
-                                                 :autosize="{ minRows: 4, maxRows: 6}">
-                                      </el-input>
-                        </el-form-item>
-                        <el-form-item :label="$t('goodsPhoto')">
-                                      <picture-upload :photo.sync="form.photos">
-                                      </picture-upload>
-                                      <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
-                        </el-form-item>
-                        <el-form-item>
-                                      <el-button  @click="onSubmitGoods('form')"
-                                                  type="primary"
-                                                  :loading="isButtonLoading()"
-                                                  v-if="!$route.query.isCheck">
-                                                  提交
-                                      </el-button>
-                        </el-form-item>
-              </el-form>
+              </el-row>
+              <label class="label" style="padding-top:20px;"> {{'选填信息'}} </label>
+              <el-form-item
+                  :label="$t('goodsRemark')"
+                  style="width:70%">
+                  <el-input
+                      v-model="form.remark"
+                      type="textarea"
+                      :autosize="{ minRows: 4, maxRows: 6}">
+                  </el-input>
+              </el-form-item>
+              <el-form-item
+                  :label="$t('goodsPhoto')">
+                  <picture-upload :photo.sync="form.photos">
+                  </picture-upload>
+                  <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
+              </el-form-item>
+              <el-form-item>
+                  <el-button
+                      @click="onSubmitGoods('form')"
+                      type="primary"
+                      :loading="isButtonLoading()"
+                      v-if="!$route.query.isCheck">
+                      提交
+                  </el-button>
+              </el-form-item>
+        </el-form>
     </mdoel-form>
 </div>
 </template>
@@ -216,6 +224,13 @@ export default {
     },
   },
   methods: {
+    addCategory() {
+      this.$confirm('添加货品分类将会离开当前界面,确定?').then(() => {
+        this.$router.push({
+          name: 'categoryManagement',
+        });
+      });
+    },
     resetData() {
       this.specModel = {
         id: 0,

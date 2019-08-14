@@ -391,20 +391,20 @@ const $http = {
   detailShop(id) {
     return Axios.get(`shop/${id}`);
   }, // 店铺详情
-  goodsInShop(shopId) {
-    return Axios.get(`shop/${shopId}/product/`);
+  goodsInShop(shopId, data) {
+    return Axios.get(`shop/${shopId}/product`, { params: data });
   }, // 店铺商品列表
   goodsDetailInShop(shopId, goodsId) {
     return Axios.get(`shop/${shopId}/product/${goodsId}`);
   }, // 店铺商品详情
   deleteGoodsInShop(shopId, goodsId) {
     return Axios.delete(`shop/${shopId}/product/${goodsId}`);
-  }, // 店铺商品详情
+  }, // 删除店铺商品
   shelvesStatus(shopId, goodsId, data) {
-    return Axios.patch(`shop/${shopId}/product/${goodsId}`, data);
+    return Axios.put(`shop/${shopId}/product/${goodsId}`, data);
   }, // 店铺商品是否上下架
-  addGoodsToShop(shopId, goodsId, data) {
-    return Axios.post(`shop/${shopId}/product/${goodsId}`, data);
+  addGoodsToShop(shopId, data) {
+    return Axios.post(`shop/${shopId}/product`, data);
   }, // 添加已有商品至店铺
   editGoodsInShop(shopId, goodsId, data) {
     return Axios.put(`shop/${shopId}/product/${goodsId}`, data);

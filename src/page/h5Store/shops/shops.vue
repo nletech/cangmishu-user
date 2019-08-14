@@ -17,7 +17,10 @@
                 <el-table-column label="#" type="index" width="80" header-align="center" align="center" ></el-table-column>
                 <el-table-column  prop="name_cn" label="店铺名称" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="banner_background" label="店铺链接地址" header-align="center" align="center" >
+                <el-table-column label="店铺二维码" header-align="center" align="center" >
+                  <template slot-scope="scope">
+                    <img width="100px" height="100px" v-if="scope.row.weapp_qrcode" :src="scope.row.weapp_qrcode" alt="二维码">
+                  </template>
                 </el-table-column>
                 <el-table-column  label="操作" width="200" header-align="center">
                     <template slot-scope="scope">
@@ -83,6 +86,11 @@ export default {
   created() {
     this.getShops(); // 获取店铺列表
   },
+  watch: {
+    warehouseId() {
+      this.getShops();
+    },
+  },
   methods: {
     finishCallback(val) {
       if (val) {
@@ -106,11 +114,13 @@ export default {
         });
     }, // 获取店铺列表(耦合分页查询)
     editStore(row) {
-      console.log(row, 'row');
       this.$router.push({
         name: 'storeGoods',
         query: {
-          warehouse_id: this.warehouse_id, // 仓库 id
+          warehouse_id: this.warehouseId, // 仓库 id
+          shopId: row.id,
+          shopName_cn: row.name_cn,
+          shopName_en: row.name_en,
         },
       });
     }, // 管理商品

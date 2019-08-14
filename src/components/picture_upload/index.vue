@@ -7,8 +7,9 @@
     :on-remove="handleRemove"
     :on-exceed="handleExceed"
     :action=api
-    :limit="1"
+    :limit="limit"
     :file-list="fileList"
+    list-type="picture"
     name="image">
     <img v-if="this.photo"
     :src="this.photo"
@@ -28,12 +29,35 @@ export default {
     disabled: {
       type: Boolean,
     },
+    limit: {
+      type: Number,
+    },
+    pictures: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    fileList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
       // myPhoto: this.photo,
-      fileList: [],
+      muiltPicture: [], // 上传多个文件
     };
+  },
+  watch: {
+    muiltPicture: {
+      handler() {
+        this.$emit('update:pictures', this.muiltPicture);
+      },
+      immediate: true,
+    },
   },
   computed: {
     Authorization() {
@@ -53,7 +77,17 @@ export default {
     // 上传截图成功回调
     handleAvatarSuccess(res) {
       if (res.status === 0) {
-        this.$emit('update:photo', res.data.url);
+        switch (this.limit) {
+          case 1:
+            this.$emit('update:photo', res.data.url); // 上传一个图片
+            return;
+          case 3:
+            this.muiltPicture.push(res.data.url); // 上传三个图片
+            console.log(res, '上传三个图片');
+            return;
+          default:
+            throw Error('picture upload went wrong');
+        }
       } else if (res.status === 1) {
         this.$notify({
           message: res.msg,
@@ -61,8 +95,24 @@ export default {
         });
       }
     },
-    handleRemove() {
-      this.$emit('update:photo', '');
+    handleRemove(file, fileList) {
+      switch (this.limit) {
+        case 1:
+          this.$emit('update:photo', '');
+          return;
+        case 3:
+          console.log(fileList, '删除三个图片fileList');
+          console.log(file, '删除三个图片');
+          for (let i = 0; i < this.muiltPicture.length; i += 1) {
+            if ((file.response.data && this.muiltPicture[i] === file.response.data.url) || this.muiltPicture[i] === fileList.url) {
+              this.muiltPicture.splice(i, 1);
+            }
+          } // 删除数组中已有的 Url
+          console.log(this.muiltPicture, 'this.muiltPicture');
+          return;
+        default:
+          throw Error('picture upload went wrong');
+      }
     },
   },
 };

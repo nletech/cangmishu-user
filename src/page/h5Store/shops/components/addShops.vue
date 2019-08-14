@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-      :title="status ? '编辑店铺' : '新增店铺'"
+      :title="isEdit ? '编辑店铺' : '新增店铺'"
       width="90%"
       @update:visible="$emit('update:visible', $event)"
       :visible="visible">
@@ -56,6 +56,21 @@
                         v-model="shop_form.contact.address">
                     </el-input>
                 </el-form-item>
+                <label
+                  style="font-size: 16px;
+                  position: relative;
+                  display: inline-block;
+                  font-weight: bold;
+                  margin: 0 0 20px 0">
+                  {{'选填信息'}}
+                </label>
+                <el-form-item :label="'上传头像'">
+                    <picture-upload
+                        :photo.sync="shop_form.logo"
+                        :limit="1"
+                        :pictures="[]">
+                    </picture-upload>
+                </el-form-item>
                 <el-form-item>
                   <el-row>
                       <el-col :span="2" :offset="10">
@@ -72,10 +87,14 @@
 import $http from '@/api/index';
 import Address from '@/assets/address.json';
 import mixin from '@/mixin/form_config';
+import pictureUpload from '@/components/picture_upload';
 
 export default {
   name: 'addShops',
   mixins: [mixin],
+  components: {
+    pictureUpload,
+  },
   props: {
     visible: {
       type: Boolean,
@@ -104,6 +123,7 @@ export default {
       shop_form: {
         name_cn: '', // 店铺名称
         remark: '', // 店铺简介
+        logo: '', // logo
         contact: {
           fullname: '', // 店主名称
           phone: '', // 电话
@@ -113,12 +133,28 @@ export default {
       },
     };
   },
+  computed: {
+    isEdit() {
+      return this.status === 2;
+    },
+  },
   watch: {
     visible() {
-      if (this.visible && this.status === 2) {
-        console.log(this.row_data, 'row_data');
+      if (this.visible && this.status === 2) { // 编辑操作
         this.editInit(this.row_data);
-      }
+      } else if (!this.visible) {
+        const InitObject = {
+          name_cn: '', // 店铺名称
+          remark: '', // 店铺简介
+          contact: {
+            fullname: '', // 店主名称
+            phone: '', // 电话
+            pre_address: '', // 省市区
+            address: '', // 详细地址
+          },
+        };
+        this.shop_form = InitObject;
+      } // 关闭弹窗初始化表单
     },
   },
   methods: {

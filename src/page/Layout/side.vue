@@ -10,7 +10,7 @@
     <div :class="$style.title">
       <el-row :class="[$style.title_text, $style.title_texts][sideNavStatus]">
         <el-col :span="12">
-          {{$t(key)}}
+          {{$t(key)}}&nbsp;/&nbsp;&nbsp;{{shopName}}
         </el-col>
         <el-col
           :span="12"
@@ -61,6 +61,9 @@ export default {
     },
     key() {
       return this.$route.name;
+    },
+    shopName() {
+      return this.$route.query.shopName_cn;
     },
     sideNavStatus() {
       return +this.$store.state.config.shutdown_status;

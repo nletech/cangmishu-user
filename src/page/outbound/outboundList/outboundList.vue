@@ -83,13 +83,19 @@
                           </el-button>
                       </el-tooltip>
                       <el-tooltip content="设为出库" placement="top">
-                          <el-button  size="mini" type="primary" icon="el-icon-sell" @click="checkedOutbound(scope.row)" round></el-button>
+                          <el-button
+                            size="mini" type="primary"
+                            icon="el-icon-sell"
+                            v-if="scope.row.status == 0"
+                            @click="checkedOutbound(scope.row)"
+                            round>
+                          </el-button>
                       </el-tooltip>
                       <el-tooltip content="取消订单" placement="top">
                           <el-button
                               size="mini" icon="el-icon-circle-close"
                               v-if="scope.row.status == 1"
-                              @click="cancelOrder(scope.row.id)"
+                              @click="cancelOrder(scope.row)"
                               type="danger" round>
                           </el-button>
                       </el-tooltip>
@@ -158,11 +164,6 @@ export default {
   },
   created() {
     this.getOutbounds();
-  },
-  computed: {
-    warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
   },
   watch: {
     warehouseId() {

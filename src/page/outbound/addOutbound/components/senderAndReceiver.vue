@@ -87,11 +87,12 @@
                       <el-table-column  prop="full_address"
                                         label="地址">
                       </el-table-column>
-                      <el-table-column  label="操作"
-                                        width="240">
+                      <el-table-column
+                          label="操作"
+                          width="240">
                           <template slot-scope="scope">
-                                    <el-button icon="el-icon-check" type="primary" plain @click="handle_confirm_btn(scope.row)">确定</el-button>
-                                    <el-button icon="el-icon-edit" @click="handle_edit_btn(scope.row)">编辑</el-button>
+                                    <el-button icon="el-icon-check" :loading="isButtonLoading()" type="primary" plain @click="handle_confirm_btn(scope.row)">确定</el-button>
+                                    <el-button icon="el-icon-edit" :loading="isButtonLoading()" @click="handle_edit_btn(scope.row)">编辑</el-button>
                           </template>
                       </el-table-column>
                   </el-table>
@@ -121,12 +122,14 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
 import Edit from './senderAndReceiverEdit';
 import Add from './senderAndReceiveAdd';
 
 export default {
   name: 'senderAndReceiver',
+  mixins: [mixin],
   components: {
     Edit,
     Add,
