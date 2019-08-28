@@ -230,10 +230,9 @@ export default {
     loadData() {
       this.emptyData();
       this.dialogVisible = false;
-      $http.getCategoryManagement()
+      $http.getCategoryManagement({ warehouse_id: this.warehouseId })
         .then((re) => {
           if (re.status) return;
-          // console.log(re.data, 'data   getCategoryManagement');
           this.category_list = re.data.data;
           this.total = re.data.total;
         });

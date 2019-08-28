@@ -1,130 +1,153 @@
 <template>
         <div :class="$style.setOutbound">
               <div :class="$style.background">
-                    <el-row>
-                            <el-col :span="6" :class="$style.systemInfo">
-                                    <h1>仓秘书仓储系统</h1>
-                            </el-col>
-                    </el-row>
-                    <el-row>
-                            <el-col :span="4">
-                                    <h2>普通出库单</h2>
-                            </el-col>
-                            <el-col :span="3" :offset="12">
-                                    <div :class="$style.img">
-                                        <img v-if="row_data" :src="row_data.out_sn_barcode" alt="">
-                                    </div>
-                                    <div>
-                                        <span v-if="row_data">{{row_data.out_sn}}</span>
-                                    </div>
-                            </el-col>
-                    </el-row>
-                    <el-row :gutter="12" v-if="row_data" :class="$style.contact">
-                      <el-col :span="12">
-                        <el-card shadow="never">
-                            <el-row >
-                                    <el-col :span="4">发件信息:</el-col>
+                  <el-form label-width="150px" label-position="left">
+                      <el-row>
+                              <el-col :span="6" :class="$style.systemInfo">
+                                      <h1>仓秘书仓储系统</h1>
+                              </el-col>
+                      </el-row>
+                      <el-row>
+                              <el-col :span="4">
+                                      <h2>普通出库单</h2>
+                              </el-col>
+                              <el-col :span="3" :offset="12">
+                                      <div :class="$style.img">
+                                          <img v-if="row_data" :src="row_data.out_sn_barcode" alt="">
+                                      </div>
+                                      <div>
+                                          <span v-if="row_data">{{row_data.out_sn}}</span>
+                                      </div>
+                              </el-col>
+                      </el-row>
+                      <el-row :gutter="12" v-if="row_data" :class="$style.contact">
+                        <el-col :span="12">
+                          <el-card shadow="never">
+                              <el-row >
+                                      <el-col :span="4">发件信息:</el-col>
+                              </el-row>
+                              <el-row >
+                                      <el-col>{{row_data.send_fullname}} {{row_data.send_phone}}</el-col>
+                              </el-row>
+                              <el-row>
+                                  <el-col>{{row_data.send_province}}{{row_data.send_city}}{{row_data.send_district}}{{row_data.send_address}}</el-col>
+                              </el-row>
+                          </el-card>
+                        </el-col>
+                        <el-col :span="12">
+                          <el-card shadow="never">
+                              <el-row>
+                                  <el-col :span="4">收件信息:</el-col>
                             </el-row>
                             <el-row >
-                                    <el-col>{{row_data.send_fullname}} {{row_data.send_phone}}</el-col>
+                                  <el-col>{{row_data.receiver_fullname}} {{row_data.receiver_phone}}</el-col>
                             </el-row>
                             <el-row>
-                                    <el-col>{{row_data.send_full_address}}</el-col>
+                                  <el-col>{{row_data.receiver_province}}{{row_data.receiver_city}}{{row_data.receiver_district}}{{row_data.receiver_address}}</el-col>
                             </el-row>
-                        </el-card>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-card shadow="never">
-                           <el-row>
-                                <el-col :span="4">收件信息:</el-col>
-                          </el-row>
-                          <el-row >
-                                <el-col>{{row_data.receiver_fullname}} {{row_data.receiver_phone}}</el-col>
-                          </el-row>
-                          <el-row>
-                                <el-col>{{row_data.receiver_full_address}}</el-col>
-                          </el-row>
-                        </el-card>
-                      </el-col>
-                    </el-row>
-                    <br/>
-                    <el-row>
-                            <el-col>
-                                    <el-table  v-if="row_data" :data="row_data.order_items" border>
-                                        <el-table-column type="index" width="60">
-                                        </el-table-column>
-                                        <el-table-column prop="name_cn" label="中文名称">
-                                        </el-table-column>
-                                        <el-table-column prop="relevance_code" label="SKU">
-                                                          <template slot-scope="scope">
-                                                                  <div><img :src="scope.row.relevance_code_barcode"/></div>
-                                                                  <div>{{scope.row.relevance_code}}</div>
-                                                          </template>
-                                        </el-table-column>
-                                        <el-table-column prop="sale_price" label="销售单价（元）" width="120" align="center">
-                                        </el-table-column>
-                                        <el-table-column prop="amount" label="下单数量*" width="100" align="center">
-                                        </el-table-column>
-                                        <el-table-column label="实际出库数量*" prop="pick_num, amount">
+                          </el-card>
+                        </el-col>
+                      </el-row>
+                      <br/>
+                      <el-row>
+                              <el-col>
+                                      <el-table  v-if="row_data" :data="row_data.order_items" border>
+                                          <el-table-column type="index" width="60">
+                                          </el-table-column>
+                                          <el-table-column prop="name_cn" label="中文名称">
+                                              <template slot-scope="scope">
+                                                {{scope.row.name_cn}}({{scope.row.spec_name_cn}})
+                                              </template>
+                                          </el-table-column>
+                                          <el-table-column prop="relevance_code" label="SKU">
+                                                            <template slot-scope="scope">
+                                                                    <div><img :src="scope.row.relevance_code_barcode"/></div>
+                                                                    <div>{{scope.row.relevance_code}}</div>
+                                                            </template>
+                                          </el-table-column>
+                                          <el-table-column prop="sale_price" label="销售单价（元）" width="120" align="center">
+                                          </el-table-column>
+                                          <el-table-column prop="amount" label="下单数量*" width="100" align="center">
+                                          </el-table-column>
+                                          <el-table-column label="仓库库存" width="100" align="center">
                                             <template slot-scope="scope">
-                                                      <el-input-number size="mini" type="number"
-                                                                       :min="0"
-                                                                       :max="scope.row.amount"
-                                                                       v-model="scope.row.pick_num">
-                                                      </el-input-number>
+                                              {{scope.row.spec.total_shelf_num}}
                                             </template>
-                                        </el-table-column>
-                                    </el-table>
-                            </el-col>
-                    </el-row>
-                    <el-row :class="$style.desc_detail">
-                            <el-col>
-                                    <div  :class="$style.desc_main">
-                                          <div  :class="$style.desc_item">
-                                                <span>备注:</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.remark}}</span>
-                                          </div>
-                                          <div  :class="$style.desc_item">
-                                                <span>仓库:</span><span v-if="row_data.warehouse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
-                                          </div>
-                                          <div  :class="$style.desc_item">
-                                                <span>创建日期:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
-                                          </div>
-                                          <div  :class="$style.desc_item">
-                                                <span>出库日期:</span>
-                                                <span>&nbsp;&nbsp;
-                                                      <el-date-picker  v-model="delivery_date"
-                                                                       style="margin: 20px 0 20px 0;"
-                                                                       type="date"
-                                                                       size="small"
-                                                                       format="yyyy 年 MM 月 dd 日"
-                                                                       value-format="yyyy-MM-dd"
-                                                                       placeholder="预计出库时间">
-                                                      </el-date-picker>
-                                                </span>
-                                          </div>
+                                          </el-table-column>
+                                          <el-table-column label="实际出库数量*" prop="pick_num, amount">
+                                              <template slot-scope="scope">
+                                                        <el-input-number
+                                                            size="mini" type="number"
+                                                            :min="0"
+                                                            :max="scope.row.amount"
+                                                            v-model="scope.row.pick_num">
+                                                        </el-input-number>
+                                              </template>
+                                          </el-table-column>
+                                      </el-table>
+                              </el-col>
+                      </el-row>
+                      <el-row :class="$style.desc_detail">
+                          <el-col>
+                              <div  :class="$style.desc_main">
+                                    <div  :class="$style.desc_item">
+                                          <span>备注:</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.remark}}</span>
                                     </div>
-                                    <el-row>
-                                            <hr />
-                                    </el-row>
-                                    <el-row>
-                                            <el-col :span="6">运输方式:{{row_data.delivery_type}}</el-col>
-                                            <el-col :span="6" :offset="1">运单号:{{row_data.express_num}}</el-col>
-                                    </el-row>
-                                    <el-row>
-                                            <el-col :span="10" :offset="14">
-                                                    <span>仓秘书免费的共享仓储管理系统  http://www.cangmishu.com</span>
-                                            </el-col>
-                                    </el-row>
-                            </el-col>
-                    </el-row>
-                    <el-row>
+                                    <div  :class="$style.desc_item">
+                                          <span>仓库:</span><span v-if="row_data.warehouse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
+                                    </div>
+                                    <div  :class="$style.desc_item">
+                                          <span>创建日期:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
+                                    </div>
+                                    <div  :class="$style.desc_item">
+                                          <span>出库日期:</span>
+                                          <span>&nbsp;&nbsp;
+                                                <el-date-picker  v-model="delivery_date"
+                                                                  style="margin: 20px 0 20px 0;"
+                                                                  type="date"
+                                                                  size="small"
+                                                                  format="yyyy 年 MM 月 dd 日"
+                                                                  value-format="yyyy-MM-dd"
+                                                                  placeholder="预计出库时间">
+                                                </el-date-picker>
+                                          </span>
+                                    </div>
+                              </div>
+                              <el-row>
+                                      <hr />
+                              </el-row>
+                              <el-row>
+                                <el-col :span="10">
+                                    <el-form-item label="运输方式(选填):">
+                                        <el-select
+                                            v-model="express_code"
+                                            size="mini">
+                                            <el-option
+                                              v-for="item in expressList"
+                                              :key="item.code"
+                                              :label="item.name"
+                                              :value="item.code">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="9" :offset="1">
+                                    <el-form-item label="运单号(选填):">
+                                        <el-input size="mini" v-model="express_num" maxlength="40"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                              </el-row>
+                          </el-col>
+                      </el-row>
+                      <el-row>
                           <el-col :span="4" :offset="10">
                                   <el-button :class="$style.btn"
-                                             @click="handlerSubmit">
-                                             确认出库
+                                              @click="handlerSubmit">
+                                              提交
                                   </el-button>
                           </el-col>
-                    </el-row>
+                      </el-row>
+                  </el-form>
               </div>
         </div>
 </template>
@@ -158,10 +181,14 @@ export default {
         express_num: '',
       },
       delivery_date: '',
+      express_code: '',
+      express_num: '',
+      expressList: [],
     };
   },
   mounted() {
     this.get_data();
+    this.getExpressList();
   },
   computed: {
     warehouseId() {
@@ -169,6 +196,13 @@ export default {
     },
   },
   methods: {
+    getExpressList() {
+      $http.AllExpress()
+        .then((res) => {
+          if (res.status) return;
+          this.expressList = res.data;
+        });
+    },
     handlerSubmit() {
       if (!this.delivery_date) {
         this.$message({
@@ -191,6 +225,8 @@ export default {
         warehouse_id: this.warehouseId,
         order_id: this.$route.query.order_id,
         delivery_date: this.delivery_date,
+        express_code: this.express_code,
+        express_num: this.express_num,
         items: arr,
       })
         .then((res) => {

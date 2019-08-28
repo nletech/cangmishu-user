@@ -51,11 +51,11 @@ const $http = {
   toInbound(data) {
     return Axios.post('/batch/shelf', data);
   }, // 入库单上架
-  downloadInbound(id) {
-    return Axios.get(`/batch/${id}/download`);
+  downloadInbound(id, template) {
+    return Axios.get(`/batch/${id}/download/${template}`);
   }, // 入库单下载
-  previewInbound(id) {
-    return Axios.get(`/batch/${id}/pdf`);
+  previewInbound(id, template) {
+    return Axios.get(`/batch/${id}/pdf/${template}`);
   }, // 入库单预览(查看详情)
   checkSku(skuId, data) {
     return Axios.get(`/stock/sku/${skuId}`, { params: data });
@@ -69,7 +69,7 @@ const $http = {
     return Axios.get('/order', { params: data });
   }, // 获取出库单列表
   cancelOutbound(id, data) {
-    return Axios.put(`/order/status/${id}`, data);
+    return Axios.put(`/order/cancel/${id}`, data);
   }, // 取消出库单(取消订单)
   checkedOutbound(data) {
     return Axios.post('/order/out', data);
@@ -258,8 +258,8 @@ const $http = {
   addSenderAddress(data) {
     return Axios.post('/senderAddress', data);
   }, // 添加发件人信息
-  getSenderAddress() {
-    return Axios.get('/senderAddress');
+  getSenderAddress(data) {
+    return Axios.get('/senderAddress', { params: data });
   }, // 获取发件人信息列表
   getASenderAddress(id) {
     return Axios.get(`/senderAddress/${id}`);
@@ -276,8 +276,8 @@ const $http = {
   addReceiverAddress(data) {
     return Axios.post('/receiverAddress', data);
   }, // 添加收件人信息
-  getReceiverAddress() {
-    return Axios.get('/receiverAddress');
+  getReceiverAddress(data) {
+    return Axios.get('/receiverAddress', { params: data });
   }, // 获取收件人信息列表
   getAReceiverAddress(id) {
     return Axios.get(`/receiverAddress/${id}`);
@@ -295,8 +295,8 @@ const $http = {
   addDistributor(data) {
     return Axios.post('/distributor', data);
   }, // 添加供应商
-  getDistributor() {
-    return Axios.get('/distributor');
+  getDistributor(data) {
+    return Axios.get('/distributor', { params: data });
   }, // 获取供应商列表
   checkDistributor(data) {
     return Axios.get('/distributor', { params: data });
@@ -311,8 +311,8 @@ const $http = {
     return Axios.put(`/distributor/${id}`, data);
   }, // 编辑供应商
   //                                                            设置-货品分类管理
-  getCategoryManagement() {
-    return Axios.get('/categories');
+  getCategoryManagement(data) {
+    return Axios.get('/categories', { params: data });
   }, // 获取货品分类列表
   addCategoryManagement(data) {
     return Axios.post('/categories', data);
@@ -328,8 +328,8 @@ const $http = {
   }, // 删除货品分类信息
   //                                                            设置-出入库分类
   //                               入库单分类
-  getBatchType() {
-    return Axios.get('/batchType');
+  getBatchType(data) {
+    return Axios.get('/batchType', { params: data });
   }, // 获取入库单分类
   getBatchCode(data) {
     return Axios.post('/batchCode', data);
@@ -347,8 +347,8 @@ const $http = {
     return Axios.get('/batchType', { params: data });
   }, // 分页查询--入库单分类
   //                               出库单分类
-  getOrderType() {
-    return Axios.get('/orderType');
+  getOrderType(data) {
+    return Axios.get('/orderType', { params: data });
   }, // 获取出库单分类列表
   addOrderType(data) {
     return Axios.post('/orderType', data);
@@ -400,8 +400,8 @@ const $http = {
   deleteGoodsInShop(shopId, goodsId) {
     return Axios.delete(`shop/${shopId}/product/${goodsId}`);
   }, // 删除店铺商品
-  shelvesStatus(shopId, goodsId, data) {
-    return Axios.put(`shop/${shopId}/product/${goodsId}`, data);
+  shelvesStatus(shopId, data) {
+    return Axios.put(`shop/${shopId}/product`, data);
   }, // 店铺商品是否上下架
   addGoodsToShop(shopId, data) {
     return Axios.post(`shop/${shopId}/product`, data);
@@ -409,6 +409,52 @@ const $http = {
   editGoodsInShop(shopId, goodsId, data) {
     return Axios.put(`shop/${shopId}/product/${goodsId}`, data);
   }, // 编辑店铺中已有的商品(详情)
+  // ==== 新增
+  editReceiveStatus(outBoundId) {
+    return Axios.put(`order/completed/${outBoundId}`);
+  }, // 确认签收
+  AllExpress() {
+    return Axios.get('open/express');
+  }, // 快递公司列表
+  changeOutboundStatus(outBoundId, data) {
+    return Axios.put(`order/express/${outBoundId}`, data);
+  }, // 更改发货状态(填写运单号)
+  // 盘点新增
+  checkStockList(data) {
+    return Axios.get('recount', { params: data });
+  }, // 盘点列表
+  addCheckStock(data) {
+    return Axios.post('recount', data);
+  }, // 新增盘点
+  checkStockDetail(StockId) {
+    return Axios.get(`recount/${StockId}`);
+  }, // 盘点清单详细
+  queryLocations(data) {
+    return Axios.post('specs/locations', data);
+  }, // 通过规格查货位 id
+  OutboundDetails(outboundId, template) {
+    return Axios.get(`order/${outboundId}/pdf/${template}`);
+  }, // 获取出库单 拣货单
+  downloadOutboundDetails(outboundId, template) {
+    return Axios.get(`order/${outboundId}/download/${template}`);
+  }, // 下载出库单 拣货单
+  Stockpreview(StockId) {
+    return Axios.get(`recount/${StockId}/pdf/`);
+  }, // 获取出库单 拣货单
+  exportOrder(data) {
+    return Axios.get('order/export/', { params: data });
+  }, // 导出出库单
+  payStatus() {
+    return Axios.get('order/pay/status');
+  }, // 支付状态列表
+  payTypes() {
+    return Axios.get('order/pay/type');
+  }, // 支付方式列表
+  ChangPayment(OrderId, data) {
+    return Axios.put(`order/pay/${OrderId}`, data);
+  }, // 支付方式列表
+  stocktypes() {
+    return Axios.get('stock/log/types');
+  },
 };
-
 export default $http;

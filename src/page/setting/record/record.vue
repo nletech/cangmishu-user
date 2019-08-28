@@ -94,10 +94,12 @@
 </template>
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 import AddRecordInfo from './components/addRecordInfo';
 
 export default {
   name: 'record',
+  mixins: [mixin],
   components: {
     AddRecordInfo,
   },
@@ -134,6 +136,9 @@ export default {
         : this.active_add_text = this.tabs[1].btn_text;
       this.active_item_check(active_tag); // 点击不同的标签页显示不同的数据
     }, // 选中不同标签页，显示不同的添加按钮
+    warehouseId() {
+      this.active_item_check(this.active_tab_item);
+    },
   },
   created() {
     this.active_tab_item = this.tabs[0].name; // 默认选中标签页
@@ -153,7 +158,7 @@ export default {
     active_item_check(item) {
       this.info_data = [];
       if (item === '入库单分类') {
-        $http.getBatchType()
+        $http.getBatchType({ warehouse_id: this.warehouseId })
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -161,7 +166,7 @@ export default {
             this.current_page = re.data.current_page;
           })
       } else {
-        $http.getOrderType()
+        $http.getOrderType({ warehouse_id: this.warehouseId })
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -173,14 +178,20 @@ export default {
     handleCurrentChange(val) {
       this.current_page = val;
       if (this.active_tab_item === '入库单分类') {
-        $http.checkBatchType({ page: val })
+        $http.checkBatchType({
+          page: val,
+          warehouse_id: this.warehouseId,
+        })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
       } else {
-        $http.checkOrderType({ page: val })
+        $http.checkOrderType({
+          page: val,
+          warehouse_id: this.warehouseId,
+        })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;

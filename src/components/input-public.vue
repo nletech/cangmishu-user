@@ -60,7 +60,7 @@ export default {
     },
     handlerClear() {
       if (this.select.flag === 1) {
-        $http.goodsInShop({
+        $http.goodsInShop(this.select.shopId, {
           warehouse_id: this.warehouseId,
         })
           .then((res) => {

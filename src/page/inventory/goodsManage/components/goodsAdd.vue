@@ -56,12 +56,12 @@
                         </el-table-column>
                         <el-table-column label="规格名称*" prop="name_cn" width="200px">
                           <template slot-scope="scope">
-                            <el-input type="text" placeholder="请输入规格名称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
+                            <el-input type="text" placeholder="请输入规格名称" maxlength="20" show-word-limit v-model="scope.row.name_cn"></el-input>
                           </template>
                         </el-table-column>
                         <el-table-column v-if="isEnabledLangInput()" label="规格外文名*" prop="name_en" width="200px">
                           <template slot-scope="scope">
-                            <el-input type="text" placeholder="请输入规格外文称" maxlength="10" show-word-limit v-model="scope.row.name_cn"></el-input>
+                            <el-input type="text" placeholder="请输入规格外文称" maxlength="20" show-word-limit v-model="scope.row.name_cn"></el-input>
                           </template>
                         </el-table-column>
                         <el-table-column label="SKU*" prop="relevance_code" width="200px">
@@ -107,9 +107,10 @@
                         <el-table-column min-width="60px">
                           <template slot-scope="scope">
                             <el-tooltip content="删除" placement="top">
-                              <el-button  size="mini" icon="el-icon-delete"
-                                                @click="delSpec(scope.row, scope.$index)"
-                                                type="danger" round>
+                              <el-button
+                                  size="mini" icon="el-icon-delete"
+                                  @click="delSpec(scope.row, scope.$index)"
+                                  type="danger" round>
                               </el-button>
                             </el-tooltip>
                           </template>
@@ -129,7 +130,7 @@
               </el-form-item>
               <el-form-item
                   :label="$t('goodsPhoto')">
-                  <picture-upload :photo.sync="form.photos">
+                  <picture-upload :photo.sync="form.photos" :limit="1">
                   </picture-upload>
                   <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
               </el-form-item>

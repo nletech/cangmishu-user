@@ -10,6 +10,7 @@
                         v-model="selectCategory_id"
                         @change="handlerSelect"
                         @clear="handlerClear"
+                        size="mini"
                         placeholder="请选择分类">
                         <el-option
                             v-for="item in typeList"
@@ -19,8 +20,16 @@
                         </el-option>
                     </el-select>
                 </el-col>
+                <!-- 低于库存 -->
+                <el-col  :span="2">
+                    <div style="position: relative; top: 5px; font-size: 1.2rem;">
+                        <el-checkbox :true-label="1" @change="handlerInventorySwitch" v-model="inventorySwitch">
+                          低于库存
+                        </el-checkbox>
+                    </div>
+                </el-col>
                 <!-- 搜索框 -->
-                <el-col :offset="13"
+                <el-col :offset="11"
                     :span="4">
                     <input-public :select="select_batch_code"
                                   @data_cb="handlerInputQuery">
@@ -35,7 +44,7 @@
                         type="text"
                         style="font-size: 1.2rem;"
                         @click="dialogVisible = true"
-                        size="large">
+                        size="mini">
                         {{$t('addGoods')}}
                     </el-button>
                     <!-- 弹窗 -->
@@ -90,21 +99,6 @@
                                       导入货品表
                                   </el-button>
                                 </el-upload>
-                                <el-upload
-                                    :data=uploadData
-                                    :class="[$style.uploaddemo, $style.text_modify]"
-                                    :action=specapi
-                                    :on-success="handleSuccess"
-                                    :headers="Authorization"
-                                    name="file"
-                                    :show-file-list="false">
-                                    <el-button
-                                        slot="trigger"
-                                        style="width: 144px;"
-                                        size="medium">
-                                        导入货品规格表
-                                    </el-button>
-                                </el-upload>
                             </el-col>
                         </el-row>
                     </el-dialog>
@@ -115,8 +109,7 @@
         <el-table
             :data="goods_list_data"
             @selection-change="handleSelectionChange"
-            border
-            style="margin:10px auto 0;">
+            border>
             <!-- 右箭头 -->
             <el-table-column  type="expand">
                 <template
@@ -165,6 +158,12 @@
                             header-align="center"
                             align="center">
                         </el-table-column>
+                        <el-table-column
+                            prop="total_stock_num"
+                            align="center"
+                            header-align="center"
+                            label="库存">
+                        </el-table-column>
                       </el-table>
                 </template>
             </el-table-column>
@@ -196,42 +195,60 @@
                 header-align="center"
                 label="参考进货单价（元）">
             </el-table-column>
-            <!-- 零售价 -->
             <el-table-column
                 prop="sale_price"
                 align="center"
                 header-align="center"
                 label="参考销售单价（元）">
             </el-table-column>
+            <el-table-column
+                prop="total_stock_num"
+                align="center"
+                header-align="center"
+                label="库存">
+            </el-table-column>
             <!-- 最后修改时间 -->
             <el-table-column
                 prop="updated_at"
                 align="center"
                 header-align="center"
-                label="最后修改时间" width="200">
+                label="最后修改时间">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.updated_at }}</span>
                 </template>
             </el-table-column>
             <!-- 操作 -->
-            <el-table-column  :label="$t('operation')" header-align="center" width="150" fixed="right">
+            <el-table-column
+                border
+                :label="$t('operation')"
+                header-align="center">
                 <template slot-scope="scope">
                     <el-tooltip content="编辑" placement="top">
-                        <el-button  size="mini" icon="el-icon-edit"
-                                    @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)">
+                        <el-button
+                            :loading="isButtonLoading()"
+                            size="mini"
+                            icon="el-icon-edit"
+                            @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)">
                         </el-button>
                     </el-tooltip>
                     <el-tooltip content="删除" placement="top">
-                        <el-button  type="danger" size="mini" icon="el-icon-delete" @click="deleteCommodity(scope.row.id)">
+                        <el-button
+                            :loading="isButtonLoading()"
+                            type="danger"
+                            size="mini"
+                            icon="el-icon-delete"
+                            @click="deleteCommodity(scope.row.id)">
                         </el-button>
                     </el-tooltip>
                 </template>
             </el-table-column>
         </el-table>
         <el-row>
-            <el-col :span="2" :offset="17">
-                <pagination-public  :params="params"
-                                    @changePage="handlerChangePage">
+            <el-col :span="2" :offset="22">
+                <pagination-public
+                    :class="$style.pagination"
+                    :params="params"
+                    @changePage="handlerChangePage">
                 </pagination-public>
             </el-col>
         </el-row>
@@ -259,6 +276,7 @@
             class="dialog-footer">
             <el-button
                 v-if = "this.selectGoods.length > 0"
+                :loading="isButtonLoading()"
                 @click="centerDialogVisible = false">
                 取 消
             </el-button>
@@ -273,7 +291,6 @@
 </template>
 
 <script>
-import getListData from '@/mixin/list';
 import MyInput from '@/components/my_input';
 import MySelect from '@/components/my_select';
 import MyGroup from '@/components/my_group';
@@ -286,6 +303,7 @@ import paginationPublic from '@/components/pagination-public';
 export default {
   data() {
     return {
+      inventorySwitch: 0, // 低于库存
       params: {
         total: 1,
       }, // 分页参数
@@ -302,6 +320,13 @@ export default {
         placeholder: '货品名或SKU',
         flag: 3,
       },
+      query: {
+        warehouse_id: '',
+        category: '',
+        keywords: '',
+        page: '',
+        show_low_stock: '',
+      },
     };
   },
   components: {
@@ -311,7 +336,7 @@ export default {
     inputPublic,
     paginationPublic,
   },
-  mixins: [getListData, mixin],
+  mixins: [mixin],
   filters: {
     is_warning_filter(val) {
       // eslint-disable-next-line
@@ -324,6 +349,8 @@ export default {
     },
   },
   created() {
+    this.query.warehouse_id = this.warehouseId;
+    this.getList(this.query);
     this.getTypeList();
   },
   mounted() {
@@ -342,23 +369,58 @@ export default {
   },
   watch: {
     warehouseId() {
-      this.getList();
+      this.query.warehouse_id = this.warehouseId;
+      this.getList(this.query);
       this.getTypeList();
-    },
-    typeList() {
-      this.getList();
     },
   },
   methods: {
+    /*
+    * 说明: 获取货品列表以及复合查询接口
+    * @query {Object} 必须
+    */
+    getList(query) {
+      if (!this.query.warehouse_id) return;
+      $http.getProducts(query)
+        .then((res) => {
+          if (res.status) return;
+          console.log(res, 'getList');
+          this.goods_list_data = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
+    },
+    handlerInventorySwitch(val) {
+      if (val === 1) {
+        this.query.show_low_stock = 1;
+      } else {
+        this.query.show_low_stock = '';
+      }
+      this.getList(this.query);
+    }, // 查询库存
     handlerClear() {
-      this.getList();
+      this.query.warehouse_id = this.warehouseId;
+      this.query.category = '';
+      this.query.keywords = '';
+      this.query.page = '';
+      this.query.show_low_stock = '';
+      this.getList(this.query);
     }, // 清空选择框回调
     handlerSelect(categoryId) {
-      this.getList('category', { category_id: categoryId });
+      if (categoryId === 0) {
+        this.query.category_id = '';
+      } else {
+        this.query.category_id = categoryId;
+      }
+      this.getList(this.query);
     }, // 选择货品分类回调
     handlerChangePage(pageVal) {
-      // console.log(val, 'val');
-      this.getList('page', { page: pageVal });
+      if (pageVal === 0) {
+        this.query.page = '';
+      } else {
+        this.query.page = pageVal;
+      }
+      this.getList(this.query);
     },
     handlerInputQuery(res) {
       this.goods_list_data = res.data.data;
@@ -387,7 +449,7 @@ export default {
             type: 'warning',
           });
         }
-        this.getList();
+        this.getList(this.query);
       } else if (res.msg) {
         this.$notify({
           message: res.msg,
@@ -412,7 +474,7 @@ export default {
             type: 'success',
           });
           this.centerDialogVisible = false;
-          this.getList();
+          this.getList(this.query);
         });
     },
     setGoodsType() {
@@ -464,37 +526,8 @@ export default {
                 message: '操作成功',
                 type: 'success',
               });
-              this.getList();
+              this.getList(this.query);
             });
-        });
-    },
-    /*
-    * 说明: 获取货品列表以及复合查询接口
-    * @query {Object} 必须
-    */
-    getList(flag, query) {
-      if (!this.warehouseId) return;
-      const form = {
-        warehouse_id: this.warehouseId,
-      };
-      if (flag !== '' && typeof query === 'object') {
-        if (flag === 'category' && query.category_id) {
-          form.category_id = query.category_id;
-        } // 查询货品分类
-        if (flag === 'keywords' && query.keywords) {
-          form.keywords = query.keywords;
-        } // 查询货品名或者 SKU
-        if (flag === 'page' && query.page) {
-          form.page = query.page;
-        } // 查询货品名或者 SKU
-      }
-      // this.params.warehouse_id = this.warehouseId;
-      $http.getProducts(form)
-        .then((res) => {
-          if (res.status) return;
-          this.goods_list_data = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
         });
     },
   },
@@ -543,6 +576,10 @@ export default {
   width: 2px;
   height: 120px;
   border-right: 1px solid #ccc;
+}
+.pagination {
+  margin: 10px 0 0 0;
+  float: right;
 }
 </style>
 

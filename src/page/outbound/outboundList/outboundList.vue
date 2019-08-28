@@ -2,7 +2,20 @@
     <div :class="$style.outboundList">
         <div  :class="$style.outboundList_main">
             <el-row :class="$style.outboundList_tags">
-                <outbound-list-search @data_cb="handlerCallBackData"></outbound-list-search>
+                <outbound-list-search
+                    @data_cb="handlerCallBackData"
+                    @queryParams="handlerQueryParams">
+                </outbound-list-search>
+            </el-row>
+            <el-row>
+                <el-col :span="2" :offset="19">
+                    <el-button
+                        size="small"
+                        :disabled="isDisabled"
+                        @click="handlerExportOrder">
+                        导出订单
+                    </el-button>
+                </el-col>
                 <el-col :span="2" :offset="1">
                     <el-button
                         type="text"
@@ -14,6 +27,7 @@
                 </el-col>
             </el-row>
             <el-table
+                stripe
                 :data="outbound_list_data"
                 border>
                 <el-table-column
@@ -23,16 +37,21 @@
                     type="index">
                 </el-table-column>
                 <el-table-column
+                    label="出库单号"
+                    header-align="center"
+                    align="center"
+                    width="200"
+                    prop="out_sn">
+                    <template slot-scope="scope">
+                      <span>{{scope.row.out_sn}}</span>
+                      <i v-if="scope.row.pay_status === 2" style="position: relative; left: 10px; color: red; font-weight: 400;" class="iconfont">&#xe668;</i>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     label="状态"
                     header-align="center"
                     align="center"
                     prop="status_name">
-                </el-table-column>
-                <el-table-column
-                    label="出库单号"
-                    header-align="center"
-                    align="center"
-                    prop="out_sn">
                 </el-table-column>
                 <el-table-column
                     label="运单号"
@@ -41,10 +60,17 @@
                     prop="express_num">
                 </el-table-column>
                 <el-table-column
-                    label="类型"
+                    prop="source"
+                    label="订单来源"
+                    header-align="center"
+                    align="center" >
+                </el-table-column>
+                <el-table-column
+                    label="出库单类型"
                     header-align="center"
                     align="center"
-                    prop="order_type.name">
+                    prop="order_type.name"
+                    width="100">
                 </el-table-column>
                 <el-table-column
                     label="下单数量"
@@ -62,7 +88,7 @@
                     label="出库日期"
                     header-align="center"
                     align="center"
-                    prop="delivery_date" width="155">
+                    prop="delivery_date" width="100">
                 </el-table-column>
                 <el-table-column
                     label="创建时间"
@@ -74,31 +100,204 @@
                     label="操作"
                     header-align="center"
                     width="200">
+                    <template slot="header">
+                        <span>操作</span>
+                        <el-popover
+                            placement="top-start"
+                            title="Tips:"
+                            width="360"
+                            trigger="hover"
+                            >
+                            <span>使用<span style="color: red; font-size: 1.1rem; font-weight: 400;">编辑物流</span>功能, 将改变订单状态(待发货 --> 配送中)</span>
+                            <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
+                        </el-popover>
+                    </template>
                     <template slot-scope="scope">
                       <el-tooltip content="查看详情" placement="top">
                           <el-button
+                              style="margin: 8px 0 0 0;"
                               size="mini" icon="el-icon-view" round
                               @click="viewDetails(scope.row)"
                               :loading="isButtonLoading()">
                           </el-button>
                       </el-tooltip>
-                      <el-tooltip content="设为出库" placement="top">
+                      <el-tooltip content="核对出库单" placement="top">
                           <el-button
+                            v-if="scope.row.status === 1"
+                            style="margin: 8px 0 0 0;"
                             size="mini" type="primary"
                             icon="el-icon-sell"
-                            v-if="scope.row.status == 0"
+                            :loading="isButtonLoading()"
                             @click="checkedOutbound(scope.row)"
                             round>
                           </el-button>
                       </el-tooltip>
                       <el-tooltip content="取消订单" placement="top">
                           <el-button
+                              v-if="scope.row.status === 1"
+                              style="margin: 8px 0 0 0;"
                               size="mini" icon="el-icon-circle-close"
-                              v-if="scope.row.status == 1"
+                              :loading="isButtonLoading()"
                               @click="cancelOrder(scope.row)"
                               type="danger" round>
                           </el-button>
                       </el-tooltip>
+                      <el-tooltip content="编辑物流" placement="top">
+                          <el-button
+                              v-if="scope.row.status === 4 || scope.row.status === 5"
+                              style="margin: 8px 0 0 0;"
+                              size="mini" icon="el-icon-truck"
+                              :loading="isButtonLoading()"
+                              @click="showExpressDialog(scope.row)" round>
+                          </el-button>
+                      </el-tooltip>
+                      <el-tooltip content="确认签收" placement="top">
+                            <el-button
+                                v-if="scope.row.status === 5"
+                                style="margin: 8px 0 0 0;"
+                                size="mini" icon="el-icon-finished"
+                                :loading="isButtonLoading()"
+                                @click="showReceviceDialog(scope.row)" round>
+                            </el-button>
+                      </el-tooltip>
+                      <el-tooltip content="打印拣货单" placement="top">
+                            <el-button
+                                v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
+                                style="margin: 8px 0 0 0;"
+                                size="mini" icon="el-icon-printer"
+                                :loading="isButtonLoading()"
+                                @click="onPrint(scope.row)" round>
+                            </el-button>
+                      </el-tooltip>
+                      <el-tooltip content="跟踪" placement="top">
+                            <el-button
+                                v-if="scope.row.status === 5"
+                                style="margin: 8px 0 0 0;"
+                                size="mini" icon="el-icon-position"
+                                :loading="isButtonLoading()"
+                                @click="handlerTrack(scope.row)" round>
+                            </el-button>
+                      </el-tooltip>
+                      <el-tooltip content="实收" placement="top">
+                            <el-button
+                                v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
+                                style="margin: 8px 0 0 0;"
+                                size="mini" icon="el-icon-money"
+                                :loading="isButtonLoading()"
+                                @click="onPayment(scope.row)" round>
+                            </el-button>
+                      </el-tooltip>
+                      <!-- 确认签收 -->
+                      <el-dialog
+                        align="center"
+                        title="是否确认签收"
+                        :visible.sync="receviceDialog"
+                        width="20%">
+                        <span slot="footer" class="dialog-footer">
+                          <el-button
+                              @click="receviceDialog = false"
+                              :loading="isButtonLoading()"
+                              size="mini">
+                              取 消
+                          </el-button>
+                          <el-button
+                              type="primary"
+                              :loading="isButtonLoading()"
+                              @click="confirmRecevice()"
+                              size="mini">
+                              确 定
+                          </el-button>
+                        </span>
+                      </el-dialog>
+                      <!-- 确认签收 -->
+                      <el-dialog
+                        title="编辑物流"
+                        :visible.sync="expressDialog"
+                        width="60%">
+                        <el-row>
+                          <el-col :span="18" :offset="3">
+                            <el-form
+                                :model="expressForm"
+                                :rules="rules"
+                                label-width="160px">
+                                <el-form-item label="快递公司">
+                                    <el-select v-model="expressForm.express_code" placeholder="请选择">
+                                        <el-option
+                                          v-for="item in expressList"
+                                          :key="item.name"
+                                          :label="item.name"
+                                          :value="item.code">
+                                        </el-option>
+                                      </el-select>
+                                </el-form-item>
+                                <el-form-item label="物流单号">
+                                    <el-input value="number" v-model="expressForm.express_num" maxlength="20" show-word-limit></el-input>
+                                </el-form-item>
+                                <el-form-item label="备注">
+                                    <el-input type="textarea" v-model="expressForm.shop_remark" maxlength="100" show-word-limit></el-input>
+                                </el-form-item>
+                            </el-form>
+                          </el-col>
+                        </el-row>
+                        <span slot="footer" class="dialog-footer">
+                          <el-button :loading="isButtonLoading()" @click="expressDialog = false" size="mini">取 消</el-button>
+                          <el-button :loading="isButtonLoading()" type="primary" @click="editExpress()" size="mini">确 定</el-button>
+                        </span>
+                      </el-dialog>
+                      <el-dialog
+                          :visible.sync="paymentDialog"
+                          width="60%">
+                          <el-row>
+                              <el-col :span="18" :offset="3">
+                                  <el-form
+                                      :model="payment"
+                                      :rules="rules"
+                                      label-width="160px">
+                                      <el-form-item label="支付方式">
+                                          <el-select v-model="payment.pay_type" placeholder="请选择">
+                                            <el-option
+                                              v-for="item in paymentType"
+                                              :key="item.id"
+                                              :label="item.name"
+                                              :value="item.id">
+                                            </el-option>
+                                          </el-select>
+                                      </el-form-item>
+                                      <el-form-item label="支付状态">
+                                          <el-select v-model="payment.pay_status" placeholder="请选择">
+                                            <el-option
+                                              v-for="item in paymentStatus"
+                                              :key="item.id"
+                                              :label="item.name"
+                                              :value="item.id">
+                                            </el-option>
+                                          </el-select>
+                                      </el-form-item>
+                                      <el-form-item label="实收金额（元）">
+                                          <el-input value="number" v-model="payment.sub_pay" maxlength="15"></el-input>
+                                      </el-form-item>
+                                      <el-form-item label="流水单号">
+                                          <el-input v-model="payment.payment_account_number" maxlength="100"></el-input>
+                                      </el-form-item>
+                                  </el-form>
+                              </el-col>
+                          </el-row>
+                          <span slot="footer" class="dialog-footer">
+                              <el-button
+                                  :loading="isButtonLoading()"
+                                  @click="paymentDialog = false"
+                                  size="mini">
+                                  取 消
+                              </el-button>
+                              <el-button
+                                  :loading="isButtonLoading()"
+                                  type="primary"
+                                  @click="ChangPayment(scope.row)"
+                                  size="mini">
+                                  确 定
+                              </el-button>
+                          </span>
+                      </el-dialog>
                     </template>
                 </el-table-column>
             </el-table>
@@ -124,6 +323,7 @@
 <script>
 import paginationPublic from '@/components/pagination-public';
 import $http from '@/api';
+import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
 import datePickerPublic from '@/components/date-picker-public';
 import selectPublic from '@/components/select-public';
@@ -144,6 +344,15 @@ export default {
   },
   data() {
     return {
+      rules: {},
+      expressForm: {
+        express_code: '', // 快递公司代码
+        express_num: '', // 快递单号
+        shop_remark: '', // 备注
+      },
+      expressList: [], // 快递公司列表
+      expressDialog: false, // 编辑物流
+      receviceDialog: false, // 确认收货
       date: '', // 查询日期
       outbound_date: '', // 预计出库日期
       outbound_status: '', // 出库状态
@@ -160,17 +369,157 @@ export default {
         currentPage: 1,
       }, // 分页数据
       row_data: {},
+      outboundId: '', // 临时 出库单 id
+      tempParmas: {},
+      tempStr: '',
+      isDisabled: false,
+      paymentStatus: [],
+      paymentType: [],
+      paymentDialog: false,
+      payment: {
+        pay_type: 0,
+        pay_status: 0,
+        sub_pay: '',
+        payment_account_number: '',
+      },
+      payId: 0,
     };
   },
   created() {
     this.getOutbounds();
+    this.getExpressList();
+    this.getPayStatus(); // 实收
+    this.getPayTypes(); // 实收
+  },
+  computed: {
+    api() {
+      return this.$store.state.token.token.substring(7);
+    },
   },
   watch: {
+    paymentDialog() {
+      if (!this.paymentDialog) {
+        const copy = {
+          pay_type: 0,
+          pay_status: 0,
+          sub_pay: '',
+          payment_account_number: '',
+        };
+        this.payment = copy;
+      }
+    },
     warehouseId() {
       this.getOutbounds();
     },
+    expressDialog() {
+      if (!this.expressDialog) {
+        const clearExpressForm = {
+          id: '', // 订单 id
+          express_code: '', // 快递公司代码
+          express_num: '', // 快递单号
+          shop_remark: '', // 备注
+        };
+        this.expressForm = clearExpressForm;
+      }
+    },
   },
   methods: {
+    onPayment(row) {
+      this.payId = row.id;
+      this.paymentDialog = true;
+      this.payment.pay_type = row.pay_type || 1;
+      this.payment.pay_status = row.pay_status;
+      this.payment.sub_pay = row.sub_pay || '';
+      this.payment.payment_account_number = row.payment_account_number || '';
+    },
+    handlerTrack(row) {
+      if (row.track_url === '') return;
+      window.open(`${row.track_url}`);
+    }, // 跟踪
+    onPrint(row) {
+      window.open(`${baseApi}order/${row.id}/download/pick/?api_token=${this.api}&lang`);
+    }, // 打印拣货单
+    getPayStatus() {
+      $http.payStatus().then((res) => {
+        this.paymentStatus = res.data;
+      });
+    }, // 支付状态
+    getPayTypes() {
+      $http.payTypes().then((res) => {
+        this.paymentType = res.data;
+      });
+    }, // 支付类型
+    ChangPayment() {
+      if (!this.payId) return;
+      $http.ChangPayment(this.payId, this.payment).then((res) => {
+        if (res.status) return;
+        this.paymentDialog = false;
+        this.getOutbounds();
+      });
+    },
+    handlerQueryParams(params) {
+      this.tempParmas = params;
+      // eslint-disable-next-line
+      let str = '';
+      // eslint-disable-next-line
+      for (const item in this.tempParmas) {
+        if (Object.prototype.hasOwnProperty.call(this.tempParmas, item)) {
+          if (!this.tempParmas[item]) {
+            this.tempParmas[item] = '';
+          }
+          str += `${item}=${this.tempParmas[item]}&`;
+        }
+      }
+      this.tempStr = str;
+    },
+    handlerExportOrder() {
+      if (!this.warehouseId) return;
+      this.isDisabled = true;
+      const timer = setTimeout(() => {
+        this.isDisabled = false;
+        clearTimeout(timer);
+      }, 2000);
+      window.open(`${baseApi}order/export?api_token=${this.api}&warehouse_id=${this.warehouseId}&${this.tempStr}`);
+    },
+    showExpressDialog(row) {
+      this.outboundId = '';
+      this.outboundId = row.id;
+      // 编辑
+      this.expressForm.express_code = row.express_code;
+      this.expressForm.express_num = row.express_num;
+      this.expressForm.shop_remark = row.shop_remark;
+      this.expressDialog = true;
+    }, // 编辑物流弹窗
+    showReceviceDialog(row) {
+      this.outboundId = '';
+      this.outboundId = row.id;
+      this.receviceDialog = true;
+    }, // 签收弹窗
+    confirmRecevice() {
+      if (!this.outboundId) return;
+      $http.editReceiveStatus(this.outboundId)
+        .then((res) => {
+          if (res.status) return;
+          this.getOutbounds();
+        });
+      this.receviceDialog = false;
+    },
+    editExpress() {
+      if (!this.outboundId) return;
+      $http.changeOutboundStatus(this.outboundId, this.expressForm)
+        .then((res) => {
+          if (res.status) return;
+          this.getOutbounds();
+        });
+      this.expressDialog = false;
+    },
+    getExpressList() {
+      $http.AllExpress()
+        .then((res) => {
+          if (res.status) return;
+          this.expressList = res.data;
+        });
+    },
     handlerChangePage(val) {
       $http.getOutbound({
         warehouse_id: this.warehouseId,
@@ -256,6 +605,9 @@ export default {
     .pagination {
       margin: 10px  0 10px 0;
       float: right;
+    }
+    .btn {
+      font-size: 1.2rem;
     }
   }
 }

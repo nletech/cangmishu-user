@@ -1,71 +1,77 @@
 <template>
-          <el-dialog  title="编辑仓库信息"
-                      :center="true"
-                      @update:visible="$emit('update:visible', $event)"
-                      :visible="visible"
-                      width="80%">
-                                      <el-form
-                                                label-width="140px"
-                                                :rules="rules"
-                                                ref="rule_form"
-                                                label-position="left"
-                                                :model="warehouseInfo">
-                                                <label class="label">基础信息</label>
-                                                <el-form-item  prop="name_cn"
-                                                               label="仓库名称"
-                                                               size="medium">
-                                                    <el-input  v-model="warehouseInfo.name_cn"  maxlength="30" show-word-limit></el-input>
-                                                </el-form-item>
-                                                <el-form-item  prop="code"
-                                                               label="仓库编码"
-                                                               size="medium">
-                                                    <el-col :span="5">
-                                                    <el-input  v-model="warehouseInfo.code"  maxlength="10" show-word-limit></el-input>
-                                                    <div class="sub-title">仓库代码是唯一标识</div>
-                                                    </el-col>
-                                                </el-form-item>
-                                                <el-form-item  prop="address"
-                                                               label="省市区"
-                                                               size="medium">
-                                                               <el-cascader  :props="props"
-                                                                             :options="addressInfo"
-                                                                             v-model="warehouseInfo.address"
-                                                                             style="width: 100%;">
-                                                               </el-cascader>
-                                                </el-form-item>
-                                                <el-form-item  prop="addressDetail"
-                                                               label="详细地址"
-                                                               size="medium">
-                                                               <el-input
-                                                                          v-model="warehouseInfo.addressDetail">
-                                                               </el-input>
-                                                </el-form-item>
-
-                                                <label class="label">扩展信息</label>
-                                                <el-form-item  prop="area"
-                                                               label="仓库面积"
-                                                               size="medium">
-                                                  <el-col :span="5">
-                                                      <el-input placeholder="平方米" v-model="warehouseInfo.area">
-                                                        <template slot="append">m²</template>
-                                                      </el-input>
-                                                  </el-col>
-                                                </el-form-item>
-                                                <el-form-item  label="启用多语言输入">
-                                                    <el-switch
-                                                      v-model="warehouseInfo.isEnabledLang"
-                                                      active-text="开启"
-                                                      :active-value="1"
-                                                      :inactive-value="0">
-                                                    </el-switch>
-                                                    <div class="sub-title">开启后商品库、分类都需要填写外文名称</div>
-                                                </el-form-item>
-                                                <el-form-item>
-                                                  <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
-                                                  <el-button @click="visible = false">取消</el-button>
-                                                </el-form-item>
-                                      </el-form>
-          </el-dialog>
+    <el-dialog
+        title="编辑仓库信息"
+        :center="true"
+        :visible.sync="visible"
+        :before-close="handleClose"
+        width="80%">
+        <el-form
+            label-width="140px"
+            :rules="rules"
+            ref="rule_form"
+            label-position="left"
+            :model="warehouseInfo">
+            <label class="label">基础信息</label>
+            <el-form-item
+                prop="name_cn"
+                label="仓库名称"
+                size="medium">
+                <el-input  v-model="warehouseInfo.name_cn"  maxlength="30" show-word-limit></el-input>
+            </el-form-item>
+            <!-- <el-form-item
+                prop="code"
+                label="仓库编码"
+                size="medium">
+                <el-col :span="5">
+                <el-input  v-model="warehouseInfo.code"  maxlength="10" show-word-limit></el-input>
+                <div :class="$style.tips">仓库编码是唯一标识</div>
+                </el-col>
+            </el-form-item> -->
+            <el-form-item
+                prop="address"
+                label="省市区"
+                size="medium">
+                <el-cascader
+                    :props="props"
+                    :options="addressInfo"
+                    v-model="warehouseInfo.address"
+                    style="width: 100%;">
+                </el-cascader>
+            </el-form-item>
+            <el-form-item
+                prop="addressDetail"
+                label="详细地址"
+                size="medium">
+                <el-input
+                          v-model="warehouseInfo.addressDetail">
+                </el-input>
+            </el-form-item>
+            <label class="label">扩展信息</label>
+            <el-form-item
+                prop="area"
+                label="仓库面积"
+                size="medium">
+                <el-col :span="5">
+                    <el-input placeholder="平方米" v-model="warehouseInfo.area">
+                      <template slot="append">m²</template>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+            <!-- <el-form-item  label="启用多语言输入">
+                <el-switch
+                  v-model="warehouseInfo.isEnabledLang"
+                  active-text="开启"
+                  :active-value="1"
+                  :inactive-value="0">
+                </el-switch>
+                <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
+            </el-form-item> -->
+            <el-form-item>
+              <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
+              <el-button @click="handleClose">取消</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
 </template>
 
 <script>
@@ -141,7 +147,7 @@ export default {
         address: [],
         addressDetail: '',
         area: '',
-        isEnabledLang: 0,
+        // isEnabledLang: 0,
       },
       id: '',
       text_flag: '',
@@ -155,11 +161,6 @@ export default {
     };
   },
   watch: {
-    visible() {
-      if (!this.visible) {
-        this.$emit('update:visible', false); // 关闭弹窗
-      }
-    },
     row_data() {
       if (!Object.keys(this.row_data).length) {
         this.text_flag = false;
@@ -172,11 +173,14 @@ export default {
         this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
         this.warehouseInfo.addressDetail = this.row_data.door_no;
         this.warehouseInfo.area          = this.row_data.area;
-        this.warehouseInfo.isEnabledLang = this.row_data.is_enabled_lang;
+        // this.warehouseInfo.isEnabledLang = this.row_data.is_enabled_lang;
       }
     },
   },
   methods: {
+    handleClose() {
+      this.$emit('update:visible', false);
+    },
     message(status, success_msg, fail_msg) {
       if (!status) {
         this.$message({
@@ -211,8 +215,7 @@ export default {
       this.formInfo.street = this.warehouseInfo.address[2];
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
-      this.formInfo.is_enabled_lang = this.warehouseInfo.isEnabledLang;
-      //
+      // this.formInfo.is_enabled_lang = this.warehouseInfo.isEnabledLang;
       this.$refs.rule_form.validate((validate) => {
         if (validate) {
           let id = this.row_data.id; // 用于编辑
@@ -221,9 +224,9 @@ export default {
               .then((res) => {
                 if (res.status) return;
                 this.$emit('updata_data', true); // 更新数据列表
+                this.$emit('update:visible', false); // 关闭弹窗
               });
           }
-          this.$emit('update:visible', false); // 关闭弹窗
         } else {
           return false;
         }
@@ -235,31 +238,7 @@ export default {
 
 <style lang="less" module>
 @import '../../../less/public_variable.less';
-.add_warehouse_main {
-  width: 100%;
-  height: 50%;
-  margin: 0 auto;
-  padding: 30px 0 0 0;
-  background-color: white;
-  .avatar_name {
-    display: inline-block;
-    margin: 20px 0 10px 20px;
-  }
-  .submit_btn {
-    background-color: @ThemeColor;
-    color: @white;
-  }
-}
-.staff_form {
-  width: 120%;
-  height: 120%;
-  margin: 0 auto;
-  background-color: white;
-}
-.staff_title {
-  display: inline-block;
-  margin: 10px 0 40px 0;
-  font-size: 16px;
-  font-weight: 400;
+.tips {
+  color: red;
 }
 </style>

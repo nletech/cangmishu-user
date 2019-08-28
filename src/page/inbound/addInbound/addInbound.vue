@@ -1,9 +1,9 @@
 <template>
     <div  class="storeManage">
-        <mdoel-form   :colValue="24">
+        <mdoel-form :colValue="24">
             <el-form
                 slot="left"
-                :rules="formValidator"
+                :rules="rules"
                 :model="form" label-width="100px"
                 ref="form">
                 <el-row type="flex" justify="space-between">
@@ -11,9 +11,11 @@
                     </el-col>
                     <el-col :span="7"><h2 align="center" style="margin:0px;">商品采购清单</h2></el-col>
                     <el-col :span="8">
-                    <!-- 确认入库单编号 -->
-                    <el-form-item label="单据编号" label-position="right"
-                                prop="confirmation_number" style="float:right" class="noborder">
+                    <el-form-item
+                        label="单据编号"
+                        label-position="right"
+                        prop="confirmation_number"
+                        class="noborder">
                         <el-input v-model="form.confirmation_number" prefix-icon="el-icon-tickets">
                           <el-button slot="append" @click="getBatchCode" icon="el-icon-refresh"></el-button>
                         </el-input>
@@ -25,8 +27,10 @@
               <!-- 入库单分类 -->
               <el-row type="flex" justify="space-between">
                 <el-col :span="8">
-                  <el-form-item label="分类" label-position="right" prop="order_type">
-                    <!-- 供应商 -->
+                  <el-form-item
+                      label="分类"
+                      label-position="right"
+                      prop="type_id">
                     <el-select v-model="form.type_id">
                         <el-option
                             v-for="item in batchTypeList"
@@ -37,9 +41,9 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="5">
                 </el-col>
-                <el-col :span="9">
+                <el-col :span="10">
                     <!-- 供应商 -->
                     <el-form-item
                         label="供应商"
@@ -70,20 +74,22 @@
                 <el-col>
                     <el-table
                         :data="specList" empty-text="请选择商品规格">
-                        <el-table-column  type="index"
-                                          label="#" fixed>
+                        <el-table-column
+                            type="index"
+                            label="#" fixed>
                         </el-table-column>
                         <el-table-column label="商品规格名称" prop="product_name" width="200px" fixed></el-table-column>
                         <el-table-column label="SKU" prop="relevance_code" width="150px"></el-table-column>
                         <el-table-column
                             :label="$t('inboundNumbers')"
                             width="150px;">
-                            <template slot-scope="scope">
-                                      <el-input-number
-                                        size="mini"
-                                        v-model="scope.row.need_num"
-                                        :min="1">
-                                      </el-input-number>
+                            <template
+                                slot-scope="scope">
+                                <el-input-number
+                                  size="mini"
+                                  v-model="scope.row.need_num"
+                                  :min="1">
+                                </el-input-number>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -91,7 +97,7 @@
                             min-width="80px">
                               <template slot-scope="scope">
                                   <el-input size="mini"
-                                            v-model="scope.row.purchase_price">
+                                      v-model="scope.row.purchase_price">
                                   </el-input>
                               </template>
                         </el-table-column>
@@ -120,70 +126,76 @@
                       <el-row>
                         <el-col>
                           <el-form-item :label="$t('planInboundTime')">
-                                    <el-row>
-                                      <el-col :span="12"
-                                              style="padding:0;">
-                                              <el-date-picker v-model="startDate"
-                                                              type="date"
-                                                              :placeholder="$t('startDate')"
-                                                              :picker-options="pickerOptions"
-                                                              value-format="yyyy-MM-dd"
-                                                              size="small">
-                                              </el-date-picker>
-                                      </el-col>
-                                      <el-col  :span="5"  :offset="1">
-                                                <el-time-select  v-model="startTime"
-                                                                :picker-options="{
-                                                                  start: '00:00',
-                                                                  step: '00:30',
-                                                                  end: '23:30'
-                                                                }"
-                                                                :placeholder="$t('startTime')"
-                                                                size="small">
-                                                </el-time-select>
-                                        </el-col>
-                                      </el-row>
-                                      <el-row>
-                                      <el-col  :span="12">
-                                                <el-date-picker  v-model="endDate"
-                                                                type="date"
-                                                                :placeholder="$t('endDate')"
-                                                                :picker-options="pickerOptions"
-                                                                value-format="yyyy-MM-dd"
-                                                                size="small">
-                                                </el-date-picker>
-                                      </el-col>
-                                      <el-col :span="5"  :offset="1">
-                                              <el-time-select  v-model="endTime"
-                                                              :picker-options="{
-                                                                start: '00:00',
-                                                                step: '00:30',
-                                                                end: '23:30'
-                                                              }"
-                                                              :placeholder="$t('endTime')"
-                                                              size="small">
-                                              </el-time-select>
-                                        </el-col>
-                                    </el-row>
+                              <el-row>
+                                <el-col :span="12"
+                                        style="padding:0;">
+                                        <el-date-picker
+                                            v-model="startDate"
+                                            type="date"
+                                            :placeholder="$t('startDate')"
+                                            :picker-options="pickerOptions"
+                                            value-format="yyyy-MM-dd"
+                                            size="small">
+                                        </el-date-picker>
+                                </el-col>
+                                <el-col  :span="5"  :offset="1">
+                                    <el-time-select
+                                        v-model="startTime"
+                                        :picker-options="{
+                                          start: '00:00',
+                                          step: '00:30',
+                                          end: '23:30'
+                                        }"
+                                        :placeholder="$t('startTime')"
+                                        size="small">
+                                    </el-time-select>
+                                  </el-col>
+                                </el-row>
+                                <el-row>
+                                <el-col  :span="12">
+                                    <el-date-picker
+                                        v-model="endDate"
+                                        type="date"
+                                        :placeholder="$t('endDate')"
+                                        :picker-options="pickerOptions"
+                                        value-format="yyyy-MM-dd"
+                                        size="small">
+                                    </el-date-picker>
+                                </el-col>
+                                <el-col :span="5"  :offset="1">
+                                        <el-time-select
+                                            v-model="endTime"
+                                            :picker-options="{
+                                              start: '00:00',
+                                              step: '00:30',
+                                              end: '23:30'
+                                            }"
+                                            :placeholder="$t('endTime')"
+                                            size="small">
+                                        </el-time-select>
+                                  </el-col>
+                              </el-row>
                             </el-form-item>
                           </el-col>
                       </el-row>
                       <el-row :gutter="20">
                         <el-col>
                           <el-form-item :label="$t('remarks')" >
-                                  <el-input v-model="form.remark"
-                                            type="textarea"
-                                            placeholder="最多不超过30个字"
-                                            :maxlength="30">
+                                  <el-input
+                                      v-model="form.remark"
+                                      type="textarea"
+                                      placeholder="最多不超过30个字"
+                                      :maxlength="30">
                                   </el-input>
                           </el-form-item>
                         </el-col>
                       </el-row>
                       <el-form-item style="padding-left:100px;" >
-                          <el-button @click="onSave('form')"
-                                    type="primary"
-                                    :loading="isButtonLoading()">
-                                    {{$t('submit')}}
+                          <el-button
+                              @click="onSave('form')"
+                              type="primary"
+                              :loading="isButtonLoading()">
+                              {{$t('submit')}}
                           </el-button>
                           <el-button @click="$router.go(-1)">
                                     {{$t('cancel')}}
@@ -192,21 +204,24 @@
             </el-form>
         </mdoel-form>
         <!-- 选择商品弹窗 -->
-        <select-spec-dialog :visible.sync="dialogSpecShow"
-                            :warehouseId.sync="warehouseId"
-                            @selected="onSpecSelected">
+        <select-spec-dialog
+            :visible.sync="dialogSpecShow"
+            :warehouseId.sync="warehouseId"
+            @selected="onSpecSelected">
         </select-spec-dialog>
         <!-- 供应商管理弹窗 -->
         <el-dialog
             title="供应商管理"
             :visible.sync="distributorListShow"
+            @close="handlerDistributorListClose"
             width="80%">
             <div class="distributor_main">
                 <div
                     :class="$style.distributorUtil">
-                    <el-button  @click="addDistributor"
-                                size="large">
-                                {{$t('add')}}
+                    <el-button
+                        @click="addDistributor"
+                        size="large">
+                        {{$t('add')}}
                     </el-button>
                 </div>
                 <el-table
@@ -236,19 +251,21 @@
                         width="200"
                         header-align="center">
                         <template slot-scope="scope">
-                                  <!-- 编辑 -->
-                                  <el-button  @click="distributorEdit(scope.row)"
-                                              size="small"
-                                              >
-                                              {{$t('edit')}}
-                                  </el-button>
-                                  <!-- 删除 -->
-                                  <el-button  @click="distributorDelete(scope.row.id)"
-                                              type="danger"
-                                              size="small"
-                                              plain>
-                                              {{$t('delete')}}
-                                  </el-button>
+                            <!-- 编辑 -->
+                            <el-button
+                                @click="distributorEdit(scope.row)"
+                                size="small"
+                                >
+                                {{$t('edit')}}
+                            </el-button>
+                            <!-- 删除 -->
+                            <el-button
+                                @click="distributorDelete(scope.row.id)"
+                                type="danger"
+                                size="small"
+                                plain>
+                                {{$t('delete')}}
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -282,12 +299,14 @@
             </el-row>
             <span  slot="footer"
                   class="dialog-footer">
-                  <el-button  @click="cancelDistributor">
-                              {{$t('cancel')}}
+                  <el-button
+                      @click="cancelDistributor">
+                      {{$t('cancel')}}
                   </el-button>
-                  <el-button  type="primary"
-                              @click="onDistributorSave">
-                              {{$t('submit')}}
+                  <el-button
+                      type="primary"
+                      @click="onDistributorSave">
+                      {{$t('submit')}}
                   </el-button>
             </span>
         </el-dialog>
@@ -301,7 +320,6 @@ import mixin from '@/mixin/form_config';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
 import MyGroup from '@/components/my_group';
-import { OnlyLetterAndNumber } from '@/lib/validateForm';
 import selectSpecDialog from '@/components/dialog/selectSpec';
 
 export default {
@@ -345,6 +363,17 @@ export default {
       // 以下重写
       distributor: {},
       distributorSelectList: [], // 供应商列表
+      rules: {
+        confirmation_number: [
+          { required: true, message: '请输入单据编号', trigger: 'blur' },
+        ],
+        type_id: [
+          { required: true, message: '请选择入库单分类', trigger: 'change' },
+        ],
+        distributor_id: [
+          { required: true, message: '请选择供应商', trigger: 'change' },
+        ],
+      },
     };
   },
   created() {
@@ -354,41 +383,19 @@ export default {
     this.getBatchCode();
   },
   computed: {
-    formValidator() {
-      const validatorOrdernumber = (rule, value, callback) => {
-        if (!OnlyLetterAndNumber(value)) {
-          return callback(Error('只能输入字母和数字'));
-        }
-        return callback();
-      };
-      return {
-        warehouse_id: [
-          { required: true, message: '请选择入库仓库', trigger: 'change' },
-        ],
-        type_id: [
-          { required: true, message: '请选择入库单分类', trigger: 'change' },
-        ],
-        batch_code: [
-          { required: true, message: '请输入入库单编号', trigger: 'blur' },
-          { validator: validatorOrdernumber, trigger: 'blur' },
-        ],
-        confirmation_number: [
-          { required: true, message: '请输入确认单编号', trigger: 'blur' },
-          { validator: validatorOrdernumber, trigger: 'blur' },
-        ],
-        distributor_id: [
-          { required: true, message: '请选择供应商', trigger: 'change' },
-        ],
-        waybill_number: [
-          { validator: validatorOrdernumber, trigger: 'blur' },
-        ],
-      };
-    },
     ownerId() {
       return this.$store.state.token.id;
     },
   },
   methods: {
+    handlerDistributorListClose() {
+      this.queryAllDistributor();
+      for (let i = 0; i < this.distributorSelectList.length; i += 1) {
+        if (this.distributorSelectList[i].id === this.form.distributor_id) {
+          this.form.distributor_id = this.distributorSelectList[i].id;
+        }
+      }
+    },
     getBatchCode() {
       // 获取批次号)
       $http.getBatchCode({ warehouse_id: this.warehouseId })
@@ -434,18 +441,15 @@ export default {
           this.distributor.size = res.data.per_page;
         });
     }, // 供应商分页
-    // 待入库货品弹出框
     showDialog() {
       this.dialogSpecShow = true;
-    },
+    }, // 待入库货品弹出框
     onSpecSelected(data) {
-      // console.log('选中的数据', data);
       for (let i = 0; i < data.length; i += 1) {
         let found = false;
         for (let j = 0; j < this.specList.length; j += 1) {
           if (data[i].id === this.specList[j].id) {
             found = true;
-            // console.log('存在数据', data[i]);
             break;
           }
         }
@@ -454,25 +458,23 @@ export default {
         }
       }
     },
-    // 删除已选择货品
     removeGoods(index) {
       this.specList.splice(index, 1);
-    },
-    // 入库单提交
+    }, // 删除已选择货品
+
     onSave(formName) {
       this.items = [];
       // eslint-disable-next-line
       for (const item of this.specList) {
         this.items.push({
-          // id: item.product_id,
           spec_id: item.id,
           relevance_code: item.relevance_code,
           need_num: item.need_num,
-          // pieces_num: item.pieces_num || '',
+          purchase_price: item.purchase_price,
           distributor_code: item.distributor_code,
           remark: item.remark || '',
         });
-      }
+      } // 入库单提交
       this.form.product_stock = this.items;
       if (this.startDate && this.startTime && this.endDate && this.endTime) {
         this.form.plan_time = `${this.startDate} ${this.startTime}:00`;
@@ -489,8 +491,14 @@ export default {
       this.form.warehouse_id = this.warehouseId;
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if (this.specList.length === 0) {
+            this.$message({
+              type: 'error',
+              message: '商品清单必填!',
+            });
+            return;
+          }
           $http.addInbound(this.form).then(() => {
-            // this.successTips();
             this.$router.push({
               name: 'inboundList',
             });
@@ -506,13 +514,12 @@ export default {
           });
           return false;
         }
-        return true;
       });
     },
     // 供应商管理弹出框
     onDistributor() {
       this.distributorListShow = true;
-      // this.getDistributorList();
+      this.getDistributorList();
     },
     // 删除供应商
     distributorDelete(id) {

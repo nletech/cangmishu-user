@@ -37,39 +37,10 @@
                     v-model="form.remark">
                 </el-input>
             </el-form-item>
-            <el-row>
-                <el-col
-                    :span="10">
-                    <!-- 运输方式 -->
-                    <el-form-item
-                        label="运输方式"
-                        size="small">
-                        <el-input
-                            v-model="form.delivery_type"
-                            :maxlength="13"
-                            placeholder="请输入运输方式">
-                        </el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col
-                    :span="10"
-                    :offset="2">
-                    <!-- 运单号 -->
-                    <el-form-item
-                        label="运单号">
-                        <el-input
-                            placeholder="请输入运单号"
-                            :maxlength="13"
-                            v-model="form.express_num"
-                            size="small">
-                        </el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
             <!-- 提交按钮 -->
             <el-form-item>
                 <el-row>
-                    <el-col :span="2" :offset="10">
+                    <el-col :span="2" :offset="22">
                         <el-button
                             :loading="isButtonLoading()"
                             type="primary"
@@ -105,8 +76,6 @@ export default {
         warehouse_id: 0, // 仓库id
         order_type: '', // 出库单分类
         goods_data: [], // 出库清单货物列表
-        delivery_type: '', // 运输方式
-        express_num: '', // 运单号
         remark: '', // 备注
         sender_id: 0, // 发件人 id
         receiver_id: 0, // 收件人 id
@@ -136,11 +105,10 @@ export default {
       }
     },
     getOrderTypes() {
-      $http.getOrderType()
+      $http.getOrderType({ warehouse_id: this.warehouseId })
         .then((res) => {
           if (res.status) return;
           this.outboundTypes = res.data.data;
-          // console.log(res, 'getOrderTypes');
         })
         .catch();
     }, // 获取出库单分类

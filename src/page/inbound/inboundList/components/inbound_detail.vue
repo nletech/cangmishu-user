@@ -1,102 +1,141 @@
 <template>
   <el-dialog  title="查看入库单"
-              :fullscreen="true"
-              @close="close"
+              width="90%"
               @update:visible="$emit('update:visible', $event)"
               :visible="visible">
-              <div v-html="content" v-if="visible">
-              </div>
-              <el-row>
-                      <el-col :span="4" :offset="10">
-                              <el-button  @click="handleDownload"
-                                          style="background-color: #5745c5;
-                                          color: #fff;">
-                                          下载入库单
-                              </el-button>
-                      </el-col>
-              </el-row>
+              <el-tabs
+                @tab-click="handlerTabClick"
+                v-model="activeName"
+                stretch
+                type="border-card">
+                <el-tab-pane label="入库单" name="entry">
+                    <div v-html="content" v-if="visible">
+                    </div>
+                    <el-row>
+                        <el-col :span="2" :offset="11">
+                            <el-button
+                                :disabled="disable"
+                                :loading="isButtonLoading()"
+                                @click="handleDownload('entry')"
+                                style="background-color: #5745c5;
+                                color: #fff;">
+                                下载入库单
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="采购单" name="purchase">
+                    <div v-html="content" v-if="visible">
+                    </div>
+                    <el-row>
+                        <el-col :span="2" :offset="11">
+                            <el-button
+                                :loading="isButtonLoading()"
+                                :disabled="disable"
+                                @click="handleDownload('purchase')"
+                                style="background-color: #5745c5;
+                                color: #fff;">
+                                下载采购单
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="入库批次号" name="batchno">
+                    <div v-html="content" v-if="visible">
+                    </div>
+                    <el-row>
+                        <el-col :span="2" :offset="11">
+                            <el-tooltip content="推荐使用70mm*50mm标签纸打印" placement="top">
+                                  <el-button
+                                      :disabled="disable"
+                                      :loading="isButtonLoading()"
+                                      @click="handleDownload('batchno')"
+                                      style="background-color: #5745c5;
+                                      color: #fff;">
+                                      下载入库批次号
+                                  </el-button>
+                            </el-tooltip>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+              </el-tabs>
   </el-dialog>
 </template>
 
 <script>
-import Axios from 'axios';
-/* eslint-disable */
 import $http from '@/api';
-import baseApi from '@/lib/axios/base_api'
-import getListData from '@/mixin/list';
-import buttonPagination from '@/components/pagination_and_buttons';
+import baseApi from '@/lib/axios/base_api';
+import mixin from '@/mixin/form_config';
 
 export default {
+  mixins: [mixin],
   props: {
     visible: Boolean,
-    // inboundInfo: Object,
     id: Number,
   },
   mounted() {
-    this.pdf = `${baseApi}/batch/7/download`
-    console.log(this.pdf, 'axios');
+    this.pdf = `${baseApi}/batch/7/download`;
   },
   data() {
     return {
       pdf: '',
       content: '',
-      pdfUrl: `${Axios}/batch/${this.id}/pdf.pdf`,
-      inboundInfo: {},
-      inboundList: [],
-      batch_id: '',
-      tableLoading: false,
-      order_status_list: [],
-      warehouse_name: '',
-      distributor_name: '',
-      category_name: '',
-      total_need_num: '',
+      disable: false,
+      activeName: 'entry',
     };
   },
-  components: {
-    buttonPagination,
-  },
-  mixins: [getListData],
   computed: {
     warehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
     api() {
-      return this.$store.state.token.token.substring(7) ;
+      return this.$store.state.token.token.substring(7);
     },
   },
   watch: {
     warehouseId() {
-      this.getList();
-      // this.getTypeList();
+      this.activeName = 'entry';
+      this.getList('entry');
     },
     id: {
-      handler(value) {
-        this.getList();
+      handler() {
+        this.activeName = 'entry';
+        this.getList('entry');
       },
       deep: true,
     },
   },
   methods: {
-    close() {
-      // this.page_params.page = 1;
+    handlerTabClick(tab) {
+      switch (+tab.index) {
+        case 0: // 入库单
+          this.getList('entry');
+          return;
+        case 1: // 采购单
+          this.getList('purchase');
+          return;
+        case 2: // 入库批次号
+          this.getList('batchno');
+          // eslint-disable-next-line
+          return;
+        default:
+          // eslint-disable-next-line
+          return;
+      }
     },
-    getList() {
+    getList(template) {
       if (!this.id || !this.warehouseId) return;
-      this.params.warehouse_id = this.warehouseId
-      $http.previewInbound(this.id).then((res) => {
+      $http.previewInbound(this.id, template).then((res) => {
         this.content = res;
       });
     },
-    handleDownload() {
-      $http.downloadInbound(this.id).then((res) => {
-        // console.log(res, 'res');
-        this.$message({
-          message: '下载成功!',
-          type: 'success',
-          showClose: true,
-        });
-        window.open(`${baseApi}/batch/${this.id}/download?api_token=${this.api}&lang`);
-      });
+    handleDownload(template) {
+      window.open(`${baseApi}batch/${this.id}/download/${template}/?api_token=${this.api}&lang`);
+      this.disable = true;
+      const timer = setTimeout(() => {
+        this.disable = false;
+        clearTimeout(timer);
+      }, 500);
     },
   },
 };

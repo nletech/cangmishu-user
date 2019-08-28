@@ -66,15 +66,22 @@
                       </el-table-column>
                       <el-table-column label="SKU*" prop="relevance_code" width="200px">
                         <template slot="header" slot-scope="scope">
-                          SKU *
-                          <el-popover placement="top-start" title="SKU" width="200" trigger="hover"
-                              content="SKU是商品唯一编码，保存后不能更改，且不能重复">
-                              <el-button size="mini"  type="text" slot="reference" icon="el-icon-question"></el-button>
-                          </el-popover>
+                            SKU *
+                            <el-popover placement="top-start" title="SKU" width="200" trigger="hover"
+                                content="SKU是商品唯一编码，保存后不能更改，且不能重复">
+                                <el-button size="mini"  type="text" slot="reference" icon="el-icon-question"></el-button>
+                            </el-popover>
                         </template>
                         <template slot-scope="scope">
-                          <el-input type="text" v-if="!scope.row.id" placeholder="请输入SKU" maxlength="20" show-word-limit v-model="scope.row.relevance_code"></el-input>
-                          <span  v-if="scope.row.id">{{scope.row.relevance_code}}</span>
+                            <el-input
+                                type="text"
+                                v-if="!scope.row.id"
+                                placeholder="请输入SKU"
+                                maxlength="20"
+                                show-word-limit
+                                v-model="scope.row.relevance_code">
+                            </el-input>
+                            <span  v-if="scope.row.id">{{scope.row.relevance_code}}</span>
                         </template>
                       </el-table-column>
                       <!-- 零售价 -->
@@ -85,7 +92,13 @@
                           label="参考进货单价（元）"
                           width="150">
                           <template slot-scope="scope">
-                            <el-input type="number" maxlength="10" show-word-limit v-model="scope.row.purchase_price" :min="0"></el-input>
+                              <el-input
+                                  type="number"
+                                  maxlength="10"
+                                  show-word-limit
+                                  v-model="scope.row.purchase_price"
+                                  :min="0">
+                              </el-input>
                           </template>
                       </el-table-column>
                       <el-table-column
@@ -111,10 +124,11 @@
                       <el-table-column min-width="60px">
                         <template slot-scope="scope">
                           <el-tooltip content="删除" placement="top">
-                            <el-button  size="mini" icon="el-icon-delete"
-                                        @click="delSpec(scope.row, scope.$index)"
-                                        type="danger" round>
-                            </el-button>
+                              <el-button
+                                  size="mini" icon="el-icon-delete"
+                                  @click="delSpec(scope.row, scope.$index)"
+                                  type="danger" round>
+                              </el-button>
                           </el-tooltip>
                         </template>
                       </el-table-column>
@@ -122,24 +136,29 @@
                 </el-col>
             </el-row>
             <label class="label" style="padding-top:20px;"> {{'选填信息'}} </label>
-            <el-form-item :label="$t('goodsRemark')"
-                          style="width:70%">
-                          <el-input  v-model="form.remark"
-                                      type="textarea"
-                                      :autosize="{ minRows: 4, maxRows: 6}">
-                          </el-input>
+            <el-form-item
+                :label="$t('goodsRemark')"
+                style="width:70%">
+                <el-input
+                    v-model="form.remark"
+                    type="textarea"
+                    :autosize="{ minRows: 4, maxRows: 6}">
+                </el-input>
             </el-form-item>
             <el-form-item :label="$t('goodsPhoto')">
-                          <picture-upload :photo.sync="form.photos">
-                          </picture-upload>
-                          <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
+                <picture-upload
+                    :photo.sync="form.photos"
+                    :limit="1">
+                </picture-upload>
+                <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
             </el-form-item>
             <el-form-item>
-                          <el-button  @click="onSubmitGoods('form')"
-                                      type="primary"
-                                      :loading="isButtonLoading()">
-                                      提交
-                          </el-button>
+                <el-button
+                    @click="onSubmitGoods('form')"
+                    type="primary"
+                    :loading="isButtonLoading()">
+                    提交
+                </el-button>
             </el-form-item>
       </el-form>
     </mdoel-form>

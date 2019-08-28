@@ -21,11 +21,10 @@
                 size="small"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
-                placeholder="预计出库时间"
-                :default-time="['00:00:00', '23:59:59']">
+                placeholder="预计出库时间">
             </el-date-picker>
         </el-col>
-        <el-col :span="3" :offset="3">
+        <el-col :span="3" :offset="4">
             <el-select
                 v-model="outboundStatus"
                 clearable
@@ -40,7 +39,7 @@
                 </el-option>
             </el-select>
         </el-col>
-        <el-col :span="4" :offset="1">
+        <el-col :span="4" :offset="2">
             <el-row>
                 <el-col :span="21">
                     <el-input v-model="outboundCode"
@@ -76,7 +75,9 @@ export default {
       outboundStatusList: [
         { id: 0, name: '订单已取消' },
         { id: 1, name: '待拣货' },
-        { id: 2, name: '已出库' },
+        { id: 4, name: '待发货' },
+        { id: 5, name: '配送中' },
+        { id: 7, name: '已收货' },
       ],
       outboundCode: '', // 输入的出库单号
     };
@@ -107,6 +108,7 @@ export default {
       $http.queryOrder(query)
         .then((res) => {
           this.$emit('data_cb', res);
+          this.$emit('queryParams', query);
         });
     },
   },

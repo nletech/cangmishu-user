@@ -170,7 +170,7 @@ export default {
     active_item_check(item) {
       this.info_data = [];
       if (item === '发件人信息') {
-        $http.getSenderAddress()
+        $http.getSenderAddress({ warehouse_id: this.warehouseId })
             .then((re) => {
               if (re.status) return;
               // console.log(re, '发件人信息');
@@ -179,7 +179,7 @@ export default {
               this.current_page = re.data.current_page;
             });
       } else {
-        $http.getReceiverAddress()
+        $http.getReceiverAddress({ warehouse_id: this.warehouseId })
           .then((re) => {
             if (re.status) return;
             this.info_data = re.data.data;
@@ -192,13 +192,19 @@ export default {
     handleCurrentChange(val) {
       this.current_page = val;
       this.active_tab_item === '发件人信息'
-      ? $http.checkSenderAddress({ page: val })
+      ? $http.checkSenderAddress({
+        page: val,
+        warehouse_id: this.warehouseId,
+      })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;
             this.current_page = re.data.current_page;
           })
-      : $http.checkReceiverAddress({ page: val })
+      : $http.checkReceiverAddress({
+        page: val,
+        warehouse_id: this.warehouseId,
+      })
           .then((re) => {
             this.info_data = re.data.data;
             this.total = re.data.total;

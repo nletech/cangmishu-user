@@ -4,13 +4,15 @@
             <div  :class="$style.header">
                   <el-row>
                       <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
-                      <el-col :span="2" :offset="1">
-                          <el-button  type="text"
-                                      :class="$style.header_btn"
-                                      size="small"
-                                      @click="addInbound"
-                                      icon="el-icon-plus">
-                                      {{$t('addInbound')}}
+                      <el-col :span="1" :offset="1">
+                          <el-button
+                              type="text"
+                              :class="$style.header_btn"
+                              size="small"
+                              @click="addInbound"
+                              icon="el-icon-plus"
+                              :loading="isButtonLoading()">
+                              {{$t('addInbound')}}
                           </el-button>
                       </el-col>
                   </el-row>
@@ -19,9 +21,9 @@
                 <el-table-column label="#" type="index" width="40" header-align="center" align="center" ></el-table-column>
                 <el-table-column  prop="confirmation_number" label="单据编号" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="batch_type.name" label="类型" header-align="center" align="center" >
-                </el-table-column>
                 <el-table-column  prop="status_name" label="状态" header-align="center" align="center" >
+                </el-table-column>
+                <el-table-column  prop="batch_type.name" label="类型" header-align="center" align="center" >
                 </el-table-column>
                 <el-table-column  prop="distributor.name_cn" label="供应商" header-align="center" align="center" >
                 </el-table-column>
@@ -34,20 +36,29 @@
                 <el-table-column  label="操作" width="200" header-align="center">
                       <template slot-scope="scope">
                         <el-tooltip content="查看详情" placement="top">
-                          <el-button  size="mini" icon="el-icon-view" round
-                                      @click="viewDetails(scope.row)"
-                                      :loading="isButtonLoading()">
+                          <el-button
+                              size="mini" icon="el-icon-view" round
+                              @click="viewDetails(scope.row)"
+                              :loading="isButtonLoading()">
                           </el-button>
                         </el-tooltip>
-                        <el-tooltip content="入库 &amp;上架" placement="top">
-                          <el-button  size="mini" type="primary" icon="el-icon-sell" v-if="scope.row.status !== 3" @click="toInbound(scope.row)" round></el-button>
+                        <el-tooltip content="入库&上架" placement="top">
+                          <el-button
+                              size="mini"
+                              type="primary"
+                              icon="el-icon-sell"
+                              v-if="scope.row.status !== 3"
+                              @click="toInbound(scope.row)" round
+                              :loading="isButtonLoading()">
+                          </el-button>
                         </el-tooltip>
                         <el-tooltip content="删除" placement="top">
                           <el-button
                               size="mini" icon="el-icon-delete"
                               v-if="scope.row.status !== 3"
                               @click="inboundDelete(scope.row.id)"
-                              type="danger" round>
+                              type="danger" round
+                              :loading="isButtonLoading()">
                           </el-button>
                         </el-tooltip>
                     </template>
@@ -55,9 +66,10 @@
             </el-table>
             <el-row>
                 <el-col :span="2" :offset="22">
-                    <pagination-public  :class="$style.pagination"
-                                        :params="params"
-                                        @changePage="handlerChangePage">
+                    <pagination-public
+                        :class="$style.pagination"
+                        :params="params"
+                        @changePage="handlerChangePage">
                     </pagination-public>
                 </el-col>
             </el-row>
@@ -90,7 +102,9 @@ export default {
   },
   data() {
     return {
-      params: {}, // 分页数据
+      params: {
+        total: 0,
+      }, // 分页数据
       inbound_list_data: [], // 入库单列表
       inboundDialogVisible: false, // 入库单详情弹框
       inbound_info: {},
@@ -135,11 +149,6 @@ export default {
     this.getBatchStatus();
     this.getDistributors();
   },
-  computed: {
-    warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
-  },
   watch: {
     warehouseId() {
       this.getData();
@@ -147,6 +156,7 @@ export default {
   },
   methods: {
     handlerCallBackData(res) {
+      console.log(res, 'Cb_res');
       this.inbound_list_data = res.data.data;
       this.params.total = res.data.total;
       this.params.currentPage = res.data.current_page;
@@ -163,7 +173,7 @@ export default {
       this.params.currentPage = res.data.current_page;
     }, // 输入框回调
     getBatchType() {
-      $http.getBatchType()
+      $http.getBatchType({ warehouse_id: this.warehouseId })
         .then((res) => {
           if (res.status) return;
           this.select_data_type.options = res.data.data;
@@ -213,7 +223,6 @@ export default {
           this.inbound_list_data = res.data.data;
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;
-          this.$set(this.params);
         });
     }, // 获取列表
     // 以上重写

@@ -16,10 +16,18 @@
                   {{'店铺信息'}}
                 </label>
                 <el-form-item :label="'店铺名称'">
-                    <el-input v-model="shop_form.name_cn"></el-input>
+                    <el-input
+                        v-model="shop_form.name_cn"
+                        :maxlength="50"
+                        show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item :label="'店铺简介'">
-                    <el-input v-model="shop_form.remark"></el-input>
+                    <el-input
+                        v-model="shop_form.remark"
+                        type="textarea"
+                        :maxlength="500"
+                        show-word-limit>
+                    </el-input>
                 </el-form-item>
                 <label
                   style="font-size: 16px;
@@ -30,19 +38,26 @@
                   {{'联系方式'}}
                 </label>
                 <el-form-item :label="'店主姓名'">
-                    <el-input v-model="shop_form.contact.fullname"></el-input>
+                    <el-input
+                        v-model="shop_form.contact.fullname"
+                        :maxlength="10"
+                        show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item :label="'联系方式'">
-                    <el-input v-model="shop_form.contact.phone"></el-input>
+                    <el-input
+                        v-model="shop_form.contact.phone"
+                        :maxlength="20"
+                        show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item
                     prop="address"
                     label="省市区"
                     size="middle">
-                    <el-cascader  style="width:100%;"
-                                  :props="props"
-                                  :options="addressInfo"
-                                  v-model="shop_form.contact.pre_address">
+                    <el-cascader
+                        style="width:100%;"
+                        :props="props"
+                        :options="addressInfo"
+                        v-model="shop_form.contact.pre_address">
                     </el-cascader>
                 </el-form-item>
                 <el-form-item
@@ -56,6 +71,14 @@
                         v-model="shop_form.contact.address">
                     </el-input>
                 </el-form-item>
+                <el-form-item
+                    label="选择货币形式">
+                    <el-radio-group @change="handlerRadioChnange" v-model="shop_form.default_currency">
+                        <el-radio :label="'CNY'">人民币(￥)</el-radio>
+                        <el-radio :label="'EUR'">欧元(€)</el-radio>
+                        <el-radio :label="'USD'">美元($)</el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <label
                   style="font-size: 16px;
                   position: relative;
@@ -67,14 +90,18 @@
                 <el-form-item :label="'上传头像'">
                     <picture-upload
                         :photo.sync="shop_form.logo"
-                        :limit="1"
-                        :pictures="[]">
+                        :limit="1">
                     </picture-upload>
                 </el-form-item>
                 <el-form-item>
                   <el-row>
                       <el-col :span="2" :offset="10">
-                          <el-button type="primary" @click.native="onSubmit">提交</el-button>
+                          <el-button
+                              :loading="isButtonLoading()"
+                              type="primary"
+                              @click.native="onSubmit">
+                              提交
+                          </el-button>
                       </el-col>
                   </el-row>
                 </el-form-item>
@@ -84,6 +111,7 @@
   </el-dialog>
 </template>
 <script>
+import baseApi from '@/lib/axios/base_api';
 import $http from '@/api/index';
 import Address from '@/assets/address.json';
 import mixin from '@/mixin/form_config';
@@ -130,6 +158,7 @@ export default {
           pre_address: '', // 省市区
           address: '', // 详细地址
         },
+        default_currency: 'CNY', // 默认货币形式
       },
     };
   },
@@ -137,31 +166,48 @@ export default {
     isEdit() {
       return this.status === 2;
     },
+    Authorization() {
+      return { Authorization: this.$store.state.token.token };
+    },
+    api() {
+      return `${baseApi}/upload/image`;
+    },
   },
   watch: {
     visible() {
-      if (this.visible && this.status === 2) { // 编辑操作
+      if (this.isEdit) { // 编辑操作
         this.editInit(this.row_data);
-      } else if (!this.visible) {
+      } else {
+        this.shop_form.default_currency = 'CNY';
+      }
+      if (!this.visible) {
         const InitObject = {
           name_cn: '', // 店铺名称
           remark: '', // 店铺简介
+          logo: '', // 店铺 logo
           contact: {
             fullname: '', // 店主名称
             phone: '', // 电话
             pre_address: '', // 省市区
             address: '', // 详细地址
           },
+          default_currency: 'CNY', // 默认货币形式
         };
         this.shop_form = InitObject;
       } // 关闭弹窗初始化表单
     },
   },
   methods: {
+    handlerRadioChnange(val) {
+      this.shop_form.default_currency = val;
+    },
+    handlerLogoUpload(response) {
+      this.shop_form.log = response.data.url;
+    },
     onSubmit() {
-      if (this.status === 1) {
+      if (!this.isEdit) {
         this.addShop();
-      } else if (this.status === 2) {
+      } else {
         this.editShop(this.row_data.id);
       }
     },
@@ -170,6 +216,7 @@ export default {
       this.shop_form.contact.province = this.shop_form.contact.pre_address[0];
       this.shop_form.contact.city = this.shop_form.contact.pre_address[1];
       this.shop_form.contact.district = this.shop_form.contact.pre_address[2];
+      this.shop_form.default_currency =
       $http.addNewShop({ warehouse_id: this.warehouseId, ...this.shop_form })
         .then((res) => {
           if (res.status) return;
@@ -194,6 +241,8 @@ export default {
     editInit(rowData) {
       this.shop_form.name_cn = rowData.name;
       this.shop_form.remark = rowData.remark;
+      this.shop_form.logo = rowData.logo;
+      this.shop_form.default_currency = rowData.default_currency;
       this.shop_form.contact.fullname = rowData.sender_address.fullname;
       this.shop_form.contact.phone = rowData.sender_address.phone;
       this.shop_form.contact.address = rowData.sender_address.address;

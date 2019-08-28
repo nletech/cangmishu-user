@@ -66,9 +66,11 @@
 <script>
 import $http from '@/api';
 import Address from '@/assets/address.json';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'addAddressInfo',
+  mixins: [mixin],
   props: {
     visible: [Boolean],
     tabs: [Array],
@@ -171,6 +173,7 @@ export default {
         if (validate) {
           let active_item = this.active_tab_item; // 活动标签
           let id = this.row_data.id; // 用于编辑
+          this.formInfo.warehouse_id = this.warehouseId;
           // 如果 id 存在, 则为编辑信息，否则是添加信息
           if (id) {
             if (this.active_tab_item === '发件人信息') {

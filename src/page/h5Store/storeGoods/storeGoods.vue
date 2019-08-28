@@ -37,7 +37,21 @@
                         alt="商品图片">
                   </template>
                 </el-table-column>
-                <el-table-column  prop="name" label="商品名称" header-align="center" align="center" >
+                <el-table-column label="商品名称" header-align="center" align="center" >
+                    <template slot-scope="scope">
+                        <span>{{scope.row.name}}</span>
+                        <el-popover
+                            transition
+                            placement="right"
+                            trigger="hover">
+                            <img
+                              v-if="scope.row.weapp_qrcode"
+                              style="width: 150px; height: 150px;"
+                              :src="scope.row.weapp_qrcode"
+                              alt="商品二维码">
+                            <i slot="reference" class="el-icon-view el-icon--right"></i>
+                        </el-popover>
+                    </template>
                 </el-table-column>
                 <el-table-column  prop="sale_price" label="售价(元)" header-align="center" align="center" >
                 </el-table-column>
@@ -46,7 +60,7 @@
                 <el-table-column label="上架" header-align="center" align="center" >
                     <template slot-scope="scope">
                         <el-switch
-                          @change="handlerShelf($event, scope.row)"
+                          @change="handlerShelfSlef($event, scope.row)"
                           :loading="isButtonLoading()"
                           v-model="scope.row.is_shelf"
                           :inactive-value="0"
@@ -61,8 +75,7 @@
                               @click="editGoods(scope.row)"
                               :loading="isButtonLoading()"
                               size="mini"
-                              type="primary"
-                              icon="el-icon-sell"
+                              icon="el-icon-edit"
                               round>
                           </el-button>
                         </el-tooltip>
@@ -78,10 +91,10 @@
                 </el-table-column>
             </el-table>
             <el-row>
-                <el-col :span="6" style="position: relative; top: 10px;">
+                <el-col :span="8" style="position: relative; top: 8px;">
+                  <div v-if="this.goodsList.length">
                     <span style="color: rgb(121, 106, 209); font-weight: bold; font-size: 1.2rem;">批量操作:</span>
                     <el-button
-                      type="primary"
                       size="mini"
                       round
                       :disabled="isSelected"
@@ -91,7 +104,6 @@
                       上架
                     </el-button>
                     <el-button
-                      type="primary"
                       size="mini"
                       round
                       :loading="isButtonLoading()"
@@ -101,7 +113,6 @@
                       下架
                     </el-button>
                     <el-button
-                      type="primary"
                       size="mini"
                       round
                       :disabled="isSelected"
@@ -110,8 +121,9 @@
                       @click="handlerSeleteionAllDelete">
                       删除
                     </el-button>
+                  </div>
                 </el-col>
-                <el-col :span="2" :offset="16">
+                <el-col :span="2" :offset="14">
                     <pagination-public  :class="$style.pagination"
                                         :params="params"
                                         @changePage="handlerChangePage">
@@ -123,7 +135,6 @@
         <select-spec-dialog
             :visible.sync="dialogSpecShow"
             :warehouseId.sync="warehouseId"
-            :isShopsOperation="isShopsOperation()"
             @selected="onSpecSelected">
         </select-spec-dialog>
         <edit-goods-in-shop
@@ -139,7 +150,7 @@ import mixin from '@/mixin/form_config';
 import $http from '@/api';
 import paginationPublic from '@/components/pagination-public';
 import inputPublic from '@/components/input-public';
-import selectSpecDialog from '@/components/dialog/selectSpec';
+import selectSpecDialog from './components/selectSpec';
 import editGoodsInShop from './components/editGoodsInShop';
 
 export default {
@@ -176,23 +187,45 @@ export default {
     }, // 是否已选择
   },
   methods: {
-
+    handlerShelfSlef(val, row) {
+      this.handlerShelf(this.isShopsOperation(), row.id, val);
+    }, // 单个商品上下架
     handlerSeleteionAllInShelf() {
-      //
+      this.handlerShelf(this.isShopsOperation(), this.selectionList, 1);
     }, // 批量上架
     handlerSeleteionAllOutShelf() {
-      //
+      this.handlerShelf(this.isShopsOperation(), this.selectionList, 0);
     }, // 批量下架
     handlerSeleteionAllDelete() {
-      console.log(this.selectionList.toString(), 'arr.toString()');
       this.delGoods(this.selectionList.toString());
     }, // 批量删除
+    /*
+     * @params shopId   { Number  }  店铺 id
+     *         id       { Number  }  商品 id
+     *         isShelf  { Number }  是否上下架 上架：1, 下架：0
+     */
+    handlerShelf(shopId, id, isShelf) {
+      // eslint-disable-next-line
+      let ArrayId = [];
+      if (Array.isArray(id)) { // 如果是数组则合并
+        ArrayId = id;
+      } else {
+        ArrayId.push(id);
+      }
+      $http.shelvesStatus(shopId, {
+        is_shelf: isShelf,
+        id: ArrayId,
+      })
+        .then((res) => {
+          if (res.status) return;
+          this.getGoodsInShop({ page: this.params.currentPage });
+        });
+    }, // 上下架单独方法
     handleSelectionChange(val) {
       this.selectionList = [];
       val.forEach((e) => {
         this.selectionList.push(e.id);
       });
-      console.log(this.selectionList, 'this.selectionList.push');
     },
     delGoods(id) {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
@@ -211,13 +244,6 @@ export default {
           });
       });
     },
-    handlerShelf(val, row) {
-      $http.shelvesStatus(this.isShopsOperation(), row.id, { is_shelf: val })
-        .then((res) => {
-          if (res.status) return;
-          this.getGoodsInShop({ page: this.params.currentPage });
-        });
-    }, // 单个商品上架开关
     handlerInputQuery(res) {
       this.goodsList = res.data.data;
       this.params.total = res.data.total;
@@ -229,12 +255,13 @@ export default {
     },
     isShopsOperation() {
       return +this.$route.query.shopId;
-    },
+    }, // 店铺 id
     onSpecSelected(data) {
+      console.log(data, 'goodsData');
       // eslint-disable-next-line
       let productsTemp = [];
       for (let i = 0; i < data.length; i += 1) {
-        productsTemp.push(data[i].product_id);
+        productsTemp.push(data[i].id);
       } // 预处理数据
       // eslint-disable-next-line
       let perData = {

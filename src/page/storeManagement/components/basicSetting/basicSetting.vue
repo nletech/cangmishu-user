@@ -17,18 +17,19 @@
 </template>
 <script>
 import CmsModel from '@/components/cms-model/cms-model';
-import mixin from '@/mixin/form_config';
 import WarehouseArea from './components/warehouseArea';
 import WarehouseShelf from './components/warehouseShelf';
 
 export default {
   created() {
+    if (this.$route.query.quickTag) {
+      this.tempWarehouseId = localStorage.getItem('warehouseId');
+    }
     if (this.$route.query.add_shelf_back) {
       this.active_tab_name = '货位';
     } // 用于添加货位之后的返回操作
   },
   name: 'basicSetting',
-  mixins: [mixin],
   components: {
     CmsModel,
     WarehouseArea,
@@ -41,6 +42,7 @@ export default {
   },
   data() {
     return {
+      tempWarehouseId: '',
       tabs: [
         {
           id: 1,
@@ -56,18 +58,26 @@ export default {
       show_data: '',
     };
   },
+  computed: {
+    queryWarehouseId() {
+      if (+this.$route.query.warehouse_id) {
+        return +this.$route.query.warehouse_id;
+      }
+      return this.tempWarehouseId;
+    },
+  },
   methods: {
     handle_add_callback(val) {
       if (val === '货区') {
         this.$router.push({
           name: 'addCargoArea',
-          query: { warehouse_id: this.warehouseId },
+          query: { warehouse_id: this.queryWarehouseId },
         });
         //
       } else if (val === '货位') {
         this.$router.push({
           name: 'addCargoShelf',
-          query: { warehouse_id: this.warehouseId },
+          query: { warehouse_id: this.queryWarehouseId },
         });
       }
     },

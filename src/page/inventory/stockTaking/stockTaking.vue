@@ -3,22 +3,8 @@
         <div :class="$style.stockTaking_main">
             <div :class="$style.stockTaking_table">
               <el-row>
-                    <el-col  :span="6">
-                            <el-input placeholder="请输入货位或者入库批次"
-                                      v-model="code"
-                                      size="small">
-                                      <i  style="color: #000;"
-                                          class="iconfont el-input__icon"
-                                          slot="suffix">
-                                          &#xe623;
-                                      </i>
-                            </el-input>
-                    </el-col>
-                    <el-col :span="1">
-                            <el-button size="small"
-                                        @click="handleSearch">
-                                        确定
-                            </el-button>
+                    <el-col  :span="2" :offset="22">
+                        <el-button @click="handlerCheckStock">新增盘点</el-button>
                     </el-col>
               </el-row>
             </div>
@@ -26,61 +12,67 @@
                 :data="outbound_list_data"
                 border
                 style="width:100%">
-                <el-table-column  label="#"
-                                  type="index"
-                                  header-align="center"
-                                  align="center">
+                <el-table-column
+                    label="#"
+                    type="index"
+                    header-align="center"
+                    align="center">
                 </el-table-column>
-                <el-table-column  label="入库批次"
-                                  prop="sku"
-                                  header-align="center"
-                                  align="center">
+                <el-table-column
+                    label="单据编号"
+                    prop="recount_no"
+                    header-align="center"
+                    align="center">
                 </el-table-column>
-                <el-table-column  label="SKU"
-                                  prop="relevance_code"
-                                  header-align="center"
-                                  align="center">
+                <el-table-column
+                    label="盘点商品"
+                    header-align="center"
+                    align="center">
+                    <template slot-scope="scope">
+                      <div
+                          v-for="(item, index) of scope.row.stocks"
+                          :key="index">
+                          <span v-if="index === 0">{{item.name_cn}}&nbsp;...</span>
+                      </div>
+                    </template>
                 </el-table-column>
-                <el-table-column  label="商品名(规格)"
-                                  prop="product_name"
-                                  header-align="center"
-                                  align="center">
+                <el-table-column
+                    label="盘点状态"
+                    prop="product_name"
+                    header-align="center"
+                    align="center">
+                    <template slot-scope="scope">
+                      {{scope.row.status | statusFilter}}
+                    </template>
                 </el-table-column>
-                <el-table-column  label="仓库库存"
-                                  prop="shelf_num"
-                                  header-align="center"
-                                  align="center">
+                <el-table-column
+                    label="盘点日期"
+                    prop="updated_at"
+                    header-align="center"
+                    align="center">
                 </el-table-column>
-                <el-table-column  label="EAN码"
-                                  prop="ean"
-                                  header-align="center"
-                                  align="center">
-                </el-table-column>
-                <el-table-column  label="操作"
-                                  header-align="center"
-                                  width="180">
-                                  <template slot-scope="scope">
-                                            <el-button  size="mini"
-                                                        @click="handleCheck(scope.row)"
-                                                        :loading="isButtonLoading()">
-                                                        盘点
-                                            </el-button>
-                                            <el-button  size="mini"
-                                                        @click="handleRecord(scope.row)"
-                                                        :loading="isButtonLoading()">
-                                                        记录
-                                            </el-button>
-                                  </template>
+                <el-table-column
+                    label="操作"
+                    header-align="center"
+                    width="180">
+                    <template slot-scope="scope">
+                        <el-button
+                            size="mini"
+                            @click="handleCheck(scope.row)"
+                            :loading="isButtonLoading()">
+                            明细
+                        </el-button>
+                    </template>
                 </el-table-column>
             </el-table>
-            <el-pagination
-                v-show="+total"
-                :class="$style.pagination"
-                layout=" total, prev, pager, next, jumper"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :total="+total">
-            </el-pagination>
+            <el-row>
+                <el-col :span="2" :offset="22">
+                    <pagination-public  :class="$style.pagination"
+                                        :params="params"
+                                        @changePage="handlerChangePage">
+                    </pagination-public>
+                </el-col>
+            </el-row>
             <!-- 盘点弹框 -->
             <stock-taking-check
                 :visible.sync="showCheckSwitch"
@@ -89,16 +81,43 @@
                 @close="handleClose">
             </stock-taking-check>
             <!-- 记录 -->
-            <record :row="row"
-                    :visible.sync="record_visible">
+            <record
+              :row="row"
+              :visible.sync="record_visible">
             </record>
+            <!-- 明细 -->
+            <el-dialog
+              :visible.sync="visible"
+              width="90%"
+              style="width: 100%;"
+              title="盘点明细预览">
+              <el-row>
+                <el-col>
+                  <div v-html="content" v-if="visible"></div>
+                </el-col>
+              </el-row>
+              <el-row>
+                  <el-col :span="2" :offset="21">
+                      <el-button
+                          :disable="disable"
+                          :loading="isButtonLoading()"
+                          style="margin-top: 20px;"
+                          type="primary"
+                          @click="onDownload">
+                          下载
+                      </el-button>
+                  </el-col>
+              </el-row>
+            </el-dialog>
         </div>
     </div>
 </template>
 
 <script>
 import $http from '@/api';
+import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
+import paginationPublic from '@/components/pagination-public';
 import stockTakingCheck from './components/stockTakingCheck'; // 盘点弹框
 import Record from './components/record'; // 记录弹框
 
@@ -106,11 +125,13 @@ export default {
   name: 'stockTaking',
   mixins: [mixin],
   components: {
+    paginationPublic,
     stockTakingCheck,
     Record,
   },
   data() {
     return {
+      params: { total: 1 }, // 分页数据
       row: {},
       record_visible: false, // 记录
       row_data: {},
@@ -124,14 +145,79 @@ export default {
       //
       total: '', // 列表总条数
       currentPage: 1, // 当前页
+      content: '',
+      visible: false,
+      stockId: '',
+      disable: false,
     };
   },
+  filters: {
+    statusFilter(val) {
+      switch (+val) {
+        case 0:
+          return '无盈亏';
+        case 1:
+          return '有盈亏';
+        default:
+          return '无盈亏';
+      }
+    },
+  },
+  created() {
+    this.checkStockList();
+  },
+  watch: {
+    visible() {
+      if (this.visible) {
+        this.previewStockDetails(this.stockId);
+      }
+    },
+  },
   computed: {
-    warehouseId() {
-      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
+    api() {
+      return this.$store.state.token.token.substring(7);
     },
   },
   methods: {
+    previewStockDetails(stockId) {
+      if (!this.warehouseId) return;
+      $http.Stockpreview(stockId)
+        .then((res) => {
+          if (res.status) return;
+          this.content = res;
+        });
+    },
+    onDownload() {
+      if (!this.stockId) return;
+      this.disable = true;
+      this.visible = false;
+      window.open(`${baseApi}recount/${this.stockId}/download/?api_token=${this.api}&lang`);
+      this.disable = false;
+    },
+    handlerChangePage(val) {
+      this.checkStockList({ page: val });
+    }, // 分页回调
+    handlerCheckStock() {
+      this.$router.push({
+        name: 'addCheckStock',
+      });
+    },
+    checkStockList(query) {
+      if (!this.warehouseId) return;
+      const data = {
+        warehouse_id: this.warehouseId,
+      };
+      if (query && query.page) {
+        data.page = query.page;
+      } // 分页查询
+      $http.checkStockList(data)
+        .then((res) => {
+          if (res.status) return;
+          this.outbound_list_data = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
+        });
+    },
     handleSuccess(val, sku) {
       if (val) {
         $http.queryInventory({
@@ -163,8 +249,15 @@ export default {
         });
     },
     handleCheck(rowInfo) {
-      this.showCheckSwitch = true;
-      this.row_data = rowInfo;
+      // this.$router.push({
+      //   name: 'checkStockDetail',
+      //   query: {
+      //     stockId: rowInfo.id,
+      //   },
+      // });
+      console.log(rowInfo, 'rowInfo');
+      this.stockId = rowInfo.id;
+      this.visible = true;
     },
     handleRecord(rowInfo) {
       this.record_visible = true;

@@ -90,11 +90,11 @@
               </el-pagination>
         </div>
         <!-- 添加仓库 -->
-        <add-warehouse
-            :visible.sync = "switchFlag"
+        <edit-warehouse
+            :visible.sync="switchFlag"
             :row_data="row_data"
             @updata_data="handle_updata_data">
-        </add-warehouse>
+        </edit-warehouse>
   </div>
 </template>
 
@@ -102,7 +102,7 @@
 import cms from '@/components/cms';
 import PaginationAndButtons from '@/components/pagination_and_buttons';
 import $http from '@/api';
-import AddWarehouse from './components/editWarehouse';
+import EditWarehouse from './components/editWarehouse';
 
 export default {
   name: 'storeManage',
@@ -120,7 +120,7 @@ export default {
   components: {
     cms,
     PaginationAndButtons,
-    AddWarehouse,
+    EditWarehouse,
   },
   created() {
     this.getWarehouse(); // 拉取仓库列表

@@ -30,7 +30,13 @@
           <el-col :lg="12" justify="space-between">
             <div  class="address sender">
                   <label class="label">
-                      <el-button  v-show="isSelectReceiver()" size="mini" @click="handle_select(1)" icon="el-icon-more" style="float:right"></el-button>
+                      <el-button
+                          :loading="isButtonLoading()"
+                          v-show="isSelectReceiver()"
+                          size="mini"
+                          @click="handle_select(1)"
+                          icon="el-icon-more" style="float:right">
+                          </el-button>
                       收件信息
                   </label>
                   <el-form  label-width="80px" v-if="receiverInfo.fullname">
@@ -51,7 +57,14 @@
                       </el-form-item>
                   </el-form>
                   <div v-if="!receiverInfo.fullname">
-                    <el-button size="large" @click="handle_select(1)" type="primary" plain icon="el-icon-s-custom">选择收件人地址</el-button>
+                      <el-button
+                          size="large"
+                          :loading="isButtonLoading()"
+                          @click="handle_select(1)"
+                          type="primary" plain
+                          icon="el-icon-s-custom">
+                          选择收件人地址
+                      </el-button>
                   </div>
             </div>
           </el-col>
@@ -64,6 +77,7 @@
                   <div  class="add_button">
                         <el-button  class="title"
                                     icon="el-icon-plus"
+                                    :loading="isButtonLoading()"
                                     @click="addSenderAndReceiver()"
                                     size="large">
                                     添加{{addressText}}
@@ -97,11 +111,12 @@
                       </el-table-column>
                   </el-table>
                   <el-row>
-                          <el-col :span="4" :offset="16">
-                                  <pagination-public  :params="params"
-                                                      @changePage="handlerChangePage">
-                                  </pagination-public>
-                          </el-col>
+                      <el-col :span="4" :offset="16">
+                          <pagination-public
+                              :params="params"
+                              @changePage="handlerChangePage">
+                          </pagination-public>
+                      </el-col>
                   </el-row>
       </el-dialog>
       <!-- 编辑收发件人信息 -->

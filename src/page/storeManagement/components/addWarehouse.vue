@@ -6,7 +6,6 @@
                     <el-form
                         ref="rule_form"
                         label-width="140px"
-                        size="middle"
                         :rules="rules"
                         label-position="left"
                         :model="warehouseInfo">
@@ -16,12 +15,15 @@
                             size="middle">
                             <el-input  v-model="warehouseInfo.name_cn"></el-input>
                         </el-form-item>
-                        <el-form-item
+                        <!-- <el-form-item
                             prop="code"
                             label="仓库编码"
                             size="middle">
-                            <el-input  v-model="warehouseInfo.code"></el-input>
-                        </el-form-item>
+                            <el-col :span="5">
+                            <el-input  v-model="warehouseInfo.code"  maxlength="10" show-word-limit></el-input>
+                            <div :class="$style.tips">仓库编码是唯一标识</div>
+                            </el-col>
+                        </el-form-item> -->
                         <el-form-item
                             prop="address"
                             label="省市区"
@@ -41,12 +43,26 @@
                                         v-model="warehouseInfo.addressDetail">
                             </el-input>
                         </el-form-item>
+                        <label class="label">扩展信息</label>
                         <el-form-item
                             prop="area"
-                            label="面积 (平方米)"
-                            size="middle">
-                            <el-input  v-model="warehouseInfo.area"></el-input>
+                            label="仓库面积"
+                            size="medium">
+                            <el-col :span="5">
+                                <el-input placeholder="平方米" v-model="warehouseInfo.area">
+                                  <template slot="append">m²</template>
+                                </el-input>
+                            </el-col>
                         </el-form-item>
+                        <!-- <el-form-item  label="启用多语言输入">
+                            <el-switch
+                              v-model="warehouseInfo.isEnabledLang"
+                              active-text="开启"
+                              :active-value="1"
+                              :inactive-value="0">
+                            </el-switch>
+                            <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
+                        </el-form-item> -->
                         <el-form-item>
                             <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
                         </el-form-item>
@@ -126,6 +142,7 @@ export default {
         address: [],
         addressDetail: '',
         area: '',
+        // isEnabledLang: 0,
       },
       id: '',
       text_flag: '',
@@ -138,38 +155,33 @@ export default {
       },
     };
   },
-  watch: {
-    visible() {
-      if (!this.visible) {
-        this.$emit('update:visible', false); // 关闭弹窗
-      }
-    },
-    row_data() {
-      if (!Object.keys(this.row_data).length) {
-        this.text_flag = false;
-        this.warehouseInfo = {};
-      } else {
-        /* eslint-disable */
-        this.text_flag = true;
-        this.warehouseInfo.name_cn       = this.row_data.name_cn;
-        this.warehouseInfo.code          = this.row_data.code;
-        this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
-        this.warehouseInfo.addressDetail = this.row_data.door_no;
-        this.warehouseInfo.area          = this.row_data.area;
-      }
-    },
-  },
+  // watch: {
+  //   row_data() {
+  //     if (!Object.keys(this.row_data).length) {
+  //       this.text_flag = false;
+  //       this.warehouseInfo = {};
+  //     } else {
+  //       /* eslint-disable */
+  //       this.text_flag = true;
+  //       this.warehouseInfo.name_cn       = this.row_data.name_cn;
+  //       this.warehouseInfo.code          = this.row_data.code;
+  //       this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
+  //       this.warehouseInfo.addressDetail = this.row_data.door_no;
+  //       this.warehouseInfo.area          = this.row_data.area;
+  //     }
+  //   },
+  // },
   methods: {
-    message(status, success_msg, fail_msg) {
+    message(status, successMsg, failMsg) {
       if (!status) {
         this.$message({
           type: 'success',
-          message: `${success_msg}`,
+          message: `${successMsg}`,
         });
       } else {
         this.$message({
           type: 'info',
-          message: `${fail_msg}`,
+          message: `${failMsg}`,
         });
       }
     },
@@ -199,14 +211,14 @@ export default {
       this.formInfo.street = this.warehouseInfo.address[2];
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
-      //
+      // this.formInfo.is_enabled_lang = this.warehouseInfo.isEnabledLang;
       this.$refs.rule_form.validate((validate) => {
         if (validate) {
-              $http.addWarehouse(this.formInfo)
-                .then((res) => {
-                  if (res.status) return;
-                  this.$router.push({ name: 'storeManage'});
-                });
+          $http.addWarehouse(this.formInfo)
+            .then((res) => {
+              if (res.status) return;
+              this.$router.replace({ name: 'storeManage' });
+            });
         } else {
           return false;
         }
@@ -238,6 +250,9 @@ export default {
         height: 120%;
         margin: 0 auto;
       }
+    }
+    .tips {
+      color: red;
     }
   }
 }

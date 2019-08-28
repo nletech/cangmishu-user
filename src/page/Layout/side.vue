@@ -10,7 +10,7 @@
     <div :class="$style.title">
       <el-row :class="[$style.title_text, $style.title_texts][sideNavStatus]">
         <el-col :span="12">
-          {{$t(key)}}&nbsp;/&nbsp;&nbsp;{{shopName}}
+          {{$t(key)}}&nbsp;<span v-if="shopName">/</span>&nbsp;&nbsp;<span></span>{{shopName}}
         </el-col>
         <el-col
           :span="12"

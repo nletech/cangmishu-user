@@ -1,44 +1,49 @@
 <template>
-          <el-dialog  width="80%"
-                      @update:visible="$emit('update:visible', $event)"
-                      :visible="visible">
-                      <div  :class="$style.main">
-                            <h1  :class="$style.details_h1">
-                                {{rowInfo.sku}}出入库记录
-                            </h1>
-                            <el-row  :class="$style.header">
-                                    <el-col :span="6">
-                                            <date-picker-public @select_data="handlerSelect_data">
-                                            </date-picker-public>
-                                    </el-col>
-                                    <el-col  :span="4" :offset="14">
-                                            <select-public  :select="select_data_status"
-                                                            @data_cb="handlerQuery">
-                                            </select-public>
-                                    </el-col>
-                            </el-row>
-                            <el-table   :data="SkuList" border style="width: 100%">
-                                        <el-table-column type="index" width="60">
-                                        </el-table-column>
-                                        <el-table-column label="类型" prop="type">
-                                        </el-table-column>
-                                        <el-table-column label="操作数量" prop="operation_num">
-                                        </el-table-column>
-                                        <el-table-column prop="sku_total_stockin_num" label="仓库库存">
-                                        </el-table-column>
-                                        <el-table-column prop="created_at" label="操作时间">
-                                        </el-table-column>
-                                        <el-table-column prop="order_sn" label="相关单号">
-                                        </el-table-column>
-                                        <el-table-column prop="remark" label="备注">
-                                        </el-table-column>
-                            </el-table>
-                            <pagination-public  :params="params"
-                                                :class="$style.pagination"
-                                                @changePage="handlerChangePage">
-                            </pagination-public>
-                      </div>
-          </el-dialog>
+    <el-dialog
+        width="80%"
+        @update:visible="$emit('update:visible', $event)"
+        :visible="visible">
+        <div  :class="$style.main">
+            <h1  :class="$style.details_h1">
+                {{rowInfo.sku}}出入库记录
+            </h1>
+            <el-row  :class="$style.header">
+                    <el-col :span="6">
+                            <date-picker-public @select_data="handlerSelect_data">
+                            </date-picker-public>
+                    </el-col>
+                    <el-col  :span="4" :offset="14">
+                            <select-public  :select="select_data_status"
+                                            @data_cb="handlerQuery">
+                            </select-public>
+                    </el-col>
+            </el-row>
+            <el-table
+                :data="SkuList"
+                border
+                style="width: 100%">
+                        <el-table-column type="index" width="60">
+                        </el-table-column>
+                        <el-table-column label="类型" prop="type">
+                        </el-table-column>
+                        <el-table-column label="操作数量" prop="operation_num">
+                        </el-table-column>
+                        <el-table-column prop="sku_total_stock_num" label="仓库库存">
+                        </el-table-column>
+                        <el-table-column prop="created_at" label="操作时间">
+                        </el-table-column>
+                        <el-table-column prop="order_sn" label="相关单号">
+                        </el-table-column>
+                        <el-table-column prop="remark" label="备注">
+                        </el-table-column>
+            </el-table>
+            <pagination-public
+                :params="params"
+                :class="$style.pagination"
+                @changePage="handlerChangePage">
+            </pagination-public>
+        </div>
+    </el-dialog>
 </template>
 
 <script>
@@ -64,33 +69,36 @@ export default {
     datePickerPublic,
     paginationPublic,
   },
-  created() {
-    this.getDatas();
-  },
   data() {
     return {
       params: {}, // 分页数据
       select_data_status: {
         placeholder: '类型',
-        options: [
-          { id: 1, name: '入库上架' },
-          { id: 2, name: '出库' },
-          { id: 3, name: '盘点' },
-        ],
+        options: [],
         cb_flag: 5,
-        stock_id: this.rowInfo.stock_id,
+        stock_id: '',
       },
       SkuList: [],
       date: [],
     };
   },
   watch: {
-    stock_id(val) {
-      if (!val) return;
-      this.getDatas();
-    }, // 如果ID发生变化则重新拉取记录
+    visible() {
+      if (this.visible) {
+        this.getDatas();
+        this.getStockTypes();
+      }
+    },
   },
   methods: {
+    getStockTypes() {
+      $http.stocktypes().then((res) => {
+        if (res.status) return;
+        this.$nextTick(() => {
+          this.select_data_status.options = res.data;
+        });
+      });
+    },
     handlerSelect_data(val) {
       if (val && val.length === 2) {
         this.getDatas(val);
@@ -99,7 +107,6 @@ export default {
       }
     },
     handlerChangePage(val) {
-      // console.log(val, 'pagination val');
       $http.getStocks({
         warehouse_id: this.warehouseId,
         page: val,
@@ -131,6 +138,7 @@ export default {
           this.SkuList = res.data.data;
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;
+          this.select_data_status.stock_id = this.stock_id;
         });
     }, // 拉取单个货品出入库记录
   },

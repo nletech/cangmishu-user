@@ -84,7 +84,7 @@ export default {
         width: 50%;
         height: 670px;
         overflow: hidden;
-        background-image: url('../../../assets/img/bg.png');
+        background-image: url('../../../assets/img/bg.jpg');
         position: relative;
         text-align: center;
         .left_text {

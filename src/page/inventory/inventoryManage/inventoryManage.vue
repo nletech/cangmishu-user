@@ -7,7 +7,7 @@
                             size="small"
                             @clear="handlerClear"
                             clearable
-                            v-model="search_stock_value"
+                            v-model="query.product_name"
                             placeholder="货品名称">
                         </el-input>
                     </el-col>
@@ -16,7 +16,7 @@
                             size="small"
                             clearable
                             @clear="handlerClear"
-                            v-model="search_sku_value"
+                            v-model="query.sku"
                             placeholder="入库批次号">
                         </el-input>
                     </el-col>
@@ -26,55 +26,61 @@
                                     搜索
                         </el-button>
                     </el-col>
-                    <el-col :span="2" :offset="11">
-                        <el-button  icon="el-icon-plus"
-                                    type="text"
-                                    :class="$style.header_btn"
-                                    :loading="isButtonLoading()"
-                                    @click="dialogVisible = true">
-                                    导出商品库存
+                    <!-- 低于库存 -->
+                    <el-col :span="2" :offset="1">
+                        <div style="position: relative; top: 5px; font-size: 1.2rem;">
+                            <el-checkbox
+                                :true-label="1"
+                                @change="handlerInventorySwitch"
+                                v-model="query.show_low_stock">
+                              低于库存
+                            </el-checkbox>
+                        </div>
+                    </el-col>
+                    <el-col :span="2" :offset="9">
+                        <el-button
+                            icon="el-icon-plus"
+                            type="text"
+                            :class="$style.header_btn"
+                            :loading="isButtonLoading()"
+                            @click="dialogVisible = true">
+                            导出商品库存
                         </el-button>
                     </el-col>
             </el-row>
             <el-table  :data="stockList"
                         border>
                         <el-table-column  type="expand">
-                                        <template  slot-scope="props">
-                                                    <el-table   :data="props.row.stocks"
-                                                                border>
-                                                                <el-table-column label="入库批次" prop="sku">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="最佳食用期" prop="best_before_date">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="保质期" prop="expiration_date">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="生产批次号" prop="production_batch_number">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="EAN" prop="ean">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="仓库库存" prop="stockin_num">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="盘点次数" prop="edit_count">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="位置" prop="location_code">
-
-                                                                </el-table-column>
-                                                                <el-table-column label="出入库记录">
-                                                                                <template slot-scope="scope">
-                                                                                  <el-button
-                                                                                  size="small"
-                                                                                  @click="showStockDetail(scope.row)">详情</el-button>
-                                                                                </template>
-                                                                </el-table-column>
-                                                    </el-table>
+                            <template  slot-scope="props">
+                                <el-table
+                                    :data="props.row.stocks"
+                                    border>
+                                    <el-table-column label="入库批次" prop="sku">
+                                    </el-table-column>
+                                    <el-table-column label="最佳食用期" prop="best_before_date">
+                                    </el-table-column>
+                                    <el-table-column label="保质期" prop="expiration_date">
+                                    </el-table-column>
+                                    <el-table-column label="生产批次号" prop="production_batch_number">
+                                    </el-table-column>
+                                    <el-table-column label="EAN" prop="ean">
+                                    </el-table-column>
+                                    <el-table-column label="仓库库存" prop="stock_num">
+                                    </el-table-column>
+                                    <el-table-column label="盘点次数" prop="recount_times">
+                                    </el-table-column>
+                                    <el-table-column label="位置" prop="warehouse_location_code">
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="出入库记录">
+                                        <template slot-scope="scope">
+                                          <el-button
+                                          size="small"
+                                          @click="showStockDetail(scope.row)">详情</el-button>
                                         </template>
+                                    </el-table-column>
+                                </el-table>
+                            </template>
                       </el-table-column>
                       <el-table-column  type="index"
                                         label="#">
@@ -92,24 +98,24 @@
                       <el-table-column  prop="relevance_code"
                                         label="SKU">
                       </el-table-column>
-                      <el-table-column  prop="stock_in_warehouse"
+                      <el-table-column  prop="total_stock_num"
                                         label="仓库库存">
                       </el-table-column>
                       <el-table-column  label="入库次数/数量">
-                                        <template slot-scope="scope">
-                                                  {{scope.row.stock_entrance_times}} / {{scope.row.stock_entrance_qty}}
-                                        </template>
+                          <template slot-scope="scope">
+                              {{scope.row.total_stockin_times}} / {{scope.row.total_stockin_num}}
+                          </template>
                       </el-table-column>
                       <el-table-column  prop="stock_out_times"
                                         label="出库次数/数量">
-                                        <template slot-scope="scope">
-                                                  {{scope.row.stock_out_times}} / {{scope.row.stock_out_qty}}
-                                          </template>
+                          <template slot-scope="scope">
+                              {{scope.row.total_stockout_times}} / {{scope.row.total_stockout_num}}
+                          </template>
                       </el-table-column>
                       <el-table-column  label="出入库记录">
-                                        <template slot-scope="scope">
-                                                  <el-button size="mini" @click="viewDetails(scope.row)">详情</el-button>
-                                        </template>
+                          <template slot-scope="scope">
+                              <el-button size="mini" @click="viewDetails(scope.row)">详情</el-button>
+                          </template>
                       </el-table-column>
             </el-table>
             <el-row>
@@ -143,6 +149,7 @@
             :warehouseName="warehouseName"
             :id="id">
         </inventory-detail>
+        <!-- SKU详情 弹窗 -->
         <SkuDetails
             :visible.sync="skuDetalisSwitch"
             :stock_id="stock_id"
@@ -163,11 +170,13 @@ import SkuDetails from './components/sku_Details';
 
 export default {
   mixins: [mixin],
+  components: {
+    inventoryDetail,
+    SkuDetails,
+    paginationPublic,
+  },
   data() {
     return {
-      search_stock_value: '', // 搜索货品名称
-      search_sku_value: '', // 搜索SKU
-      // 重写
       params: {
         total: '',
         currentPage: 1,
@@ -183,12 +192,14 @@ export default {
       inventoryDialogVisible: false,
       skuDetalisSwitch: false,
       stock_id: 0,
+      query: {
+        warehouse_id: '',
+        show_low_stock: 0, // 低于库存
+        product_name: '', // 搜索货品名称
+        sku: '', // 搜索SKU
+        page: '', // 分页
+      },
     };
-  },
-  components: {
-    inventoryDetail,
-    SkuDetails,
-    paginationPublic,
   },
   computed: {
     ownerId() {
@@ -197,63 +208,18 @@ export default {
   },
   watch: {
     warehouseId() {
-      this.getStocks();
+      this.query.warehouse_id = this.warehouseId;
+      this.getStocks(this.query);
     },
   },
   created() {
-    this.getStocks();
+    this.query.warehouse_id = this.warehouseId;
+    this.getStocks(this.query);
   },
   methods: {
-    handlerSearch() {
-      // eslint-disable-next-line
-      if (!this.search_stock_value && !this.search_sku_value) return; // 无输入数据, 则不处理
-      $http.getStocks({ // 查询货品（通过货品和sku）
-        warehouse_id: this.warehouseId,
-        product_name: this.search_stock_value || '',
-        sku: this.search_sku_value || '',
-      })
-        .then((res) => {
-          this.stockList = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
-    }, // 搜索响应
-    handlerClear() {
-      // eslint-disable-next-line
-      $http.getStocks({ // 查询货品（通过货品和sku）
-        warehouse_id: this.warehouseId,
-        product_name: this.search_stock_value || '',
-        sku: this.search_sku_value || '',
-      })
-        .then((res) => {
-          this.stockList = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
-    }, // 清除输入框
-    handlerInputQuery(res) {
-      this.stockList = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-    }, // 输入框回调
-    handlerChangePage(val) {
-      $http.getStocks({
-        warehouse_id: this.warehouseId,
-        page: val,
-      })
-        .then((res) => {
-          this.stockList = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
-    }, // 分页响应
-    showStockDetail(row) {
-      this.skuDetalisSwitch = true;
-      this.stock_id = row.stock_id;
-      this.rowInfo = row;
-    }, // sku 的详情
-    getStocks() {
-      $http.getStocks({ warehouse_id: this.warehouseId })
+    getStocks(query) {
+      if (!query.warehouse_id) return;
+      $http.getStocks(query)
         .then((res) => {
           if (res.status) return;
           this.stockList = res.data.data;
@@ -261,10 +227,40 @@ export default {
           this.params.currentPage = res.data.current_page;
         });
     }, // 获取库存列表
+    handlerInventorySwitch(val) {
+      if (val === 1) {
+        this.query.show_low_stock = 1;
+      } else {
+        this.query.show_low_stock = 0;
+      }
+      this.getStocks(this.query);
+    }, // 查询库存
+    handlerSearch() {
+      // eslint-disable-next-line
+      if (!this.query.product_name && !this.search_sku_value) return; // 无输入数据, 则不处理
+      this.getStocks(this.query);
+    }, // 搜索响应
+    handlerClear() {
+      this.getStocks(this.query);
+    }, // 清除输入框
+    handlerInputQuery(res) {
+      this.stockList = res.data.data;
+      this.params.total = res.data.total;
+      this.params.currentPage = res.data.current_page;
+    }, // 输入框回调
+    handlerChangePage(val) {
+      this.query.page = val;
+      this.getStocks(this.query);
+    }, // 分页响应
+    showStockDetail(row) {
+      this.skuDetalisSwitch = true;
+      this.stock_id = row.id;
+      this.rowInfo = row;
+    }, // sku 的详情
     // eslint-disable-next-line
     exportStock() {
       // eslint-disable-next-line
-      const exportParams = `&product_name=${this.search_stock_value}&sku=${this.search_sku_value}`;
+      const exportParams = `&product_name=${this.query.product_name}&sku=${this.query.sku}`;
       if (this.export_data.length === 0) {
         this.$message({
           type: 'warning',

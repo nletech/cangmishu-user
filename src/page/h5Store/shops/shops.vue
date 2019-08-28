@@ -34,6 +34,7 @@
                         <el-tooltip content="管理商品" placement="top">
                           <el-button
                               size="mini" icon="el-icon-goods"
+                              :loading="isButtonLoading()"
                               @click="editStore(scope.row)"
                               type="primary" round>
                           </el-button>
@@ -43,9 +44,10 @@
             </el-table>
         </el-row>
         <el-row>
-            <pagination-public  :class="$style.pagination"
-                                :params="params"
-                                @changePage="handlerChangePage">
+            <pagination-public
+                :class="$style.pagination"
+                :params="params"
+                @changePage="handlerChangePage">
             </pagination-public>
         </el-row>
     </div>

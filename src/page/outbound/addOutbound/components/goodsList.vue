@@ -34,16 +34,22 @@
                         <el-table-column label="操作">
                           <template slot-scope="scope">
                               <el-tooltip content="删除" placement="top">
-                                <el-button  size="mini" icon="el-icon-delete"
-                                                 @click="removeSpec(scope.$index)"
-                                                 type="danger" round>
+                                <el-button
+                                    size="mini"
+                                    icon="el-icon-delete"
+                                    @click="removeSpec(scope.$index)"
+                                    type="danger" round>
                                 </el-button>
                               </el-tooltip>
                           </template>
                         </el-table-column>
               </el-table>
               <!-- 选择商品弹窗 -->
-              <select-spec :visible.sync="dialogShow" :warehouseId.sync="warehouseId" @selected="onSpecSelected" :onlyShowStock="true">
+              <select-spec
+                  :visible.sync="dialogShow"
+                  :warehouseId.sync="warehouseId"
+                  @selected="onSpecSelected"
+                  :onlyShowStock="true">
               </select-spec>
         </div>
 </template>
@@ -73,13 +79,11 @@ export default {
   },
   methods: {
     onSpecSelected(data) {
-      console.log('选中的数据', data);
       for (let i = 0; i < data.length; i += 1) {
         let found = false;
         for (let j = 0; j < this.specList.length; j += 1) {
           if (data[i].id === this.specList[j].id) {
             found = true;
-            console.log('存在数据', data[i]);
             break;
           }
         }
@@ -92,7 +96,6 @@ export default {
       this.specList.splice(index, 1);
     },
     handleShowDialog() {
-      console.log(this.dialogShow, '打开选择商品规格窗口');
       this.dialogShow = true;
     }, // 打开选择商品弹窗
   },

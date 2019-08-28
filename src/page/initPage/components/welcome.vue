@@ -89,6 +89,11 @@ export default {
     this.activeLabel = '1';
     this.gethomeWarehouseData();
   },
+  watch: {
+    warehouseId() {
+      this.gethomeWarehouseData();
+    },
+  },
   methods: {
     gethomeWarehouseData() {
       $http.homeWarehouseData({ warehouse_id: this.warehouseId }).then((res) => {

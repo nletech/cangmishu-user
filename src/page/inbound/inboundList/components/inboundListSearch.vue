@@ -58,8 +58,17 @@
             </el-select>
         </el-col>
         <el-col :span="4" :offset="1">
-            <el-input size="small" placeholder="请输入单据编号" v-model="codeValue" @change="handlerChange" @clear="handlerChange">
-              <el-button slot="append" icon="el-icon-search" @click="handlerChange"></el-button>
+            <el-input
+                size="small"
+                placeholder="请输入单据编号"
+                v-model="codeValue"
+                @change="handlerChange"
+                @clear="handlerChange">
+                    <el-button
+                        slot="append"
+                        icon="el-icon-search"
+                        @click="handlerChange">
+                    </el-button>
             </el-input>
         </el-col>
     </div>
@@ -67,9 +76,11 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'inboundListSearch',
+  mixins: [mixin],
   data() {
     return {
       dateValue: [], // 选择时间
@@ -97,7 +108,7 @@ export default {
   methods: {
     getTypeList() {
       if (!this.warehouseId) return;
-      $http.getBatchType()
+      $http.getBatchType({ warehouse_id: this.warehouseId })
         .then((res) => {
           this.inboundTypeList = res.data.data;
         });
@@ -133,7 +144,7 @@ export default {
         type_id: this.inboundTypeValue,
         keywords: this.codeValue,
       };
-      $http.getInboundPage(query)
+      $http.getInbounds(query)
         .then((res) => {
           this.$emit('data_cb', res);
         });

@@ -2,55 +2,60 @@
   <div :class="$style.side_nav" class="side_nav">
       <!-- 菜单列表 -->
       <transition name="fade">
-          <!-- 仓秘书 -->
-          <div  v-if="!sideNavStatus"
-                :class="$style.nav"
-                @mouseleave="handleLeave()">
-                <!-- 侧边栏导航 -->
-                <ul  :class="$style.side_nav_ul">
-                      <li  :class="$style.side_nav_li"
-                          v-for="(item, index) in sideList"
-                          :key="index"
-                          @click="handleHomeClick(item.name)"
-                          @mouseover="showItem(item.name, index)">
-                          <i  :class="$style.li_icon"
-                                class="iconfont"
-                                v-html="item.icon">
-                          </i>
-                          <span   :class="$style.li_title">
-                                  {{$t(item.name)}}
-                          </span>
-                      </li>
-                </ul>
-                <!-- 对应的子菜单 -->
-                <ul  :class="$style.NavChild"
-                    ref="NavChild"
-                    v-show="li_show_switch"
-                    @click="handleClickCloseNavChild">
-                      <li  :class="$style.NavChild_li"
-                            v-for="item in li_NavChild"
-                            @click.self="handlerClick(item.name)"
-                            :key="item.name">
+          <div
+              v-if="!sideNavStatus"
+              :class="$style.nav"
+              @mouseleave="handleLeave()">
+              <!-- 侧边栏导航 -->
+              <ul  :class="$style.side_nav_ul">
+                    <li
+                        :class="$style.side_nav_li"
+                        v-for="(item, index) in sideList"
+                        :key="index"
+                        @click="handleHomeClick(item.name)"
+                        @mouseover="showItem(item.name, index)">
+                        <i
+                            :class="$style.li_icon"
+                            class="iconfont"
+                            v-html="item.icon">
+                        </i>
+                        <span
+                            :class="$style.li_title">
                             {{$t(item.name)}}
-                      </li>
-                </ul>
+                        </span>
+                    </li>
+              </ul>
+              <!-- 对应的子菜单 -->
+              <ul  :class="$style.NavChild"
+                  ref="NavChild"
+                  v-show="li_show_switch"
+                  @click="handleClickCloseNavChild">
+                    <li  :class="$style.NavChild_li"
+                          v-for="item in li_NavChild"
+                          @click.self="handlerClick(item.name)"
+                          :key="item.name">
+                          {{$t(item.name)}}
+                    </li>
+              </ul>
           </div>
       </transition>
       <transition name="fade">
-          <!-- 仓秘书 -->
           <div
               v-show="sideNavStatus"
               @mouseleave="handleLeave1()">
               <!-- 侧边栏导航收缩之后 -->
-              <ul  style="padding: 0;">
-                  <li  v-for="(item, index) in sideList"
-                       style="width: 100%; line-height: 80px;
+              <ul
+                  style="padding: 0;">
+                  <li
+                      v-for="(item, index) in sideList"
+                      style="width: 100%; line-height: 80px;
                               height: 80px; text-align: center;
                               list-style: none; cursor: pointer;"
                       :key="index"
                       @click="handleHomeClick1(item.name)"
                       @mouseover="showItem1(item.name, index)">
-                      <i  class="iconfont"
+                      <i
+                          class="iconfont"
                           v-html="item.icon"
                           style="color: #ccc;">
                       </i>
@@ -124,16 +129,16 @@ export default {
     // 子菜单操作
     showItem(itemName, index) {
       this.$refs.NavChild.style.position = ``; // 初始化
-      this.$refs.NavChild.style.bottom = ``; // 初始化
+      // this.$refs.NavChild.style.bottom = ``; // 初始化
       /* eslint-disable */
       let subMeanu = []; // 缓存子菜单
       let distance; // 缓存计算的距离
       let innerHeight = window.innerHeight; // 当前窗口的高度
       let subMeanuInnerHeight = ''; // 子路由列表的总 innerHeight
-      const menu = this.checkedSideNavList();
+      let menu = this.checkedSideNavList();
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
-          if (index === 0 ||index === 6 ) {
+          if (index === 0 || index === 4 || index === 6 ) {
             this.li_show_switch = false;
             return;
           } // 鼠标悬浮到侧边栏 首页 和 帮助 模块的时候不显示子列表
@@ -148,8 +153,8 @@ export default {
         }
       } // 这个循环实现的思路：通过点击不同的侧边栏导航项来展示不同的导航项对应的子菜单
       if (subMeanuInnerHeight > innerHeight) { // 兼容小屏幕
-        this.$refs.NavChild.style.position = `fixed `; // 沉底
-        this.$refs.NavChild.style.bottom = `0 `; // 沉底c
+        // this.$refs.NavChild.style.position = `fixed `; // 沉底
+        // this.$refs.NavChild.style.bottom = `0 `; // 沉底
       } else {
         this.$refs.NavChild.style.margin = `${distance}px 0 0 0 `; // 输出处理后的子菜单 margin 计算值
       }
@@ -160,6 +165,7 @@ export default {
     }, // 点击关闭子菜单
     handleLeave() {
       this.li_show_switch = false;
+      this.$refs.NavChild.style.margin = 'none'; // 输出处理后的子菜单 margin 计算值
     }, // 移出鼠标，关闭子菜单
     handleHomeClick(name) {
       if (name === 'initPage') {
@@ -167,6 +173,9 @@ export default {
       }
       if (name === 'help') {
         this.$router.push({ name: 'helpCenter' });
+      }
+      if (name === 'shops') {
+        this.$router.push({ name: 'shops' });
       }
     }, // 只有点击侧边栏 首页 路由跳转才生效
     // 以下是收缩之后
@@ -181,7 +190,7 @@ export default {
       const menu = this.checkedSideNavList();
       for (let i = 0; i < menu.length; i += 1) {
         if (menu[i].name === itemName) {
-          if (index === 0 ||index === 6 ) {
+          if (index === 0 || index === 4 || index === 6  ) {
             this.li_show_switch = false;
             return;
           } // 鼠标悬浮到侧边栏首页不展示子列表
@@ -209,6 +218,9 @@ export default {
       }
       if (name === 'help') {
         this.$router.push({ name: 'helpCenter' });
+      }
+      if (name === 'shops') {
+        this.$router.push({ name: 'shops' });
       }
     }, // 只有点击侧边栏 首页 路由跳转才生效
     checkedSideNavList () {

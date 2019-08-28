@@ -27,27 +27,28 @@ const EditSender = loadOnDemand('outbound/addOutbound/components/editSender');//
 const EditRecevier = loadOnDemand('outbound/addOutbound/components/editRecevier');// 编辑收件人信息
 
 // 库存
-const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking');// 库存盘点 (新模块)
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage');// 库存管理
-const InventoryAlarm = loadOnDemand('inventory/goodsAlarm/goodsAlarm');// 库存报警
-const MyGoodsList = loadOnDemand('inventory/goodsManage/myGoodsList'); // 货品管理
+const InventoryAlarm = loadOnDemand('inventory/inventoryAlarm/inventoryAlarm');// 库存报警
+const GoodsManage = loadOnDemand('inventory/goodsManage/goodsManage'); // 货品管理
 const GoodsAdd = loadOnDemand('inventory/goodsManage/components/goodsAdd'); // 商品新增
 const GoodsEdit = loadOnDemand('inventory/goodsManage/components/goodsEdit'); // 商品编辑
-
+const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking');// 库存盘点 (新模块)
+const AddCheckStock = loadOnDemand('inventory/stockTaking/components/addCheckStock');// 库存盘点 (新模块)
+const CheckStockDetail = loadOnDemand('inventory/stockTaking/components/checkStockDetail');// 库存盘点 (新模块)
 // 员工管理
 // 员工列表
-const StaffList = loadOnDemand('staffManage/staffList/staffList'); // 员工列表
-const StaffAdd = loadOnDemand('staffManage/staffList/components/staffAdd'); // 新增员工
-const EditStaffData = loadOnDemand('staffManage/staffList/components/editStaffData'); // 编辑资料
-const ModifyStaffPsw = loadOnDemand('staffManage/staffList/components/modifyStaffPsw'); // 修改密码
+// const StaffList = loadOnDemand('staffManage/staffList/staffList'); // 员工列表
+// const StaffAdd = loadOnDemand('staffManage/staffList/components/staffAdd'); // 新增员工
+// const EditStaffData = loadOnDemand('staffManage/staffList/components/editStaffData'); // 编辑资料
+// const ModifyStaffPsw = loadOnDemand('staffManage/staffList/components/modifyStaffPsw'); // 修改密码
 
-// 员工组列表
-const StaffGroupList = loadOnDemand('staffManage/staffGroupList/staffGroupList'); // 员工组列表
-const StaffGroupAdd = loadOnDemand('staffManage/staffGroupList/components/staffGroupAdd'); // 添加员工组
-const StaffGroupBasicInfo = loadOnDemand('staffManage/staffGroupList/components/staffGroupBasicInfo'); // 基本信息
-const StaffGroupShowEmployee = loadOnDemand('staffManage/staffGroupList/components/staffGroupShowEmployee'); // 添加员工组
-const StaffGroupAddEmployee = loadOnDemand('staffManage/staffGroupList/components/staffGroupAddEmployee'); // (查看员工组)添加员工
-const StaffGroupPermissions = loadOnDemand('staffManage/staffGroupList/components/staffGroupPermissions'); // 权限
+// // 员工组列表
+// const StaffGroupList = loadOnDemand('staffManage/staffGroupList/staffGroupList'); // 员工组列表
+// const StaffGroupAdd = loadOnDemand('staffManage/staffGroupList/components/staffGroupAdd'); // 添加员工组
+// const StaffGroupBasicInfo = loadOnDemand('staffManage/staffGroupList/components/staffGroupBasicInfo'); // 基本信息
+// const StaffGroupShowEmployee = loadOnDemand('staffManage/staffGroupList/components/staffGroupShowEmployee'); // 添加员工组
+// const StaffGroupAddEmployee = loadOnDemand('staffManage/staffGroupList/components/staffGroupAddEmployee'); // (查看员工组)添加员工
+// const StaffGroupPermissions = loadOnDemand('staffManage/staffGroupList/components/staffGroupPermissions'); // 权限
 // 设置
 const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓库管理
 const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - demo
@@ -175,9 +176,9 @@ export const routerMap = [
         index: 4, // 后端路由鉴权
         children: [
           {
-            name: 'myGoodsList', // 子菜单-货品管理
-            path: 'myGoodsList',
-            component: MyGoodsList,
+            name: 'GoodsManage', // 子菜单-货品管理
+            path: 'goodsManage',
+            component: GoodsManage,
             nav: 2,
           },
           {
@@ -200,89 +201,118 @@ export const routerMap = [
           },
           {
             name: 'goodsAdd', // 模块 货品管理--添加货品
-            path: 'myGoodsList/goodsAdd',
+            path: 'goodsManage/goodsAdd',
             component: GoodsAdd,
             nav: 3,
           },
           {
             name: 'goodsEdit', // 模块  // 模块 货品管理--编辑货品
-            path: 'myGoodsList/goodsEdit',
+            path: 'goodsManage/goodsEdit',
             component: GoodsEdit,
+            nav: 3,
+          },
+          {
+            name: 'addCheckStock', // 模块  // 模块 货品管理--编辑货品
+            path: 'stockTaking/addCheckStock',
+            component: AddCheckStock,
+            nav: 3,
+          },
+          {
+            name: 'checkStockDetail', // 模块  // 模块 货品管理--编辑货品
+            path: 'stockTaking/checkStockDetail',
+            component: CheckStockDetail,
             nav: 3,
           },
         ],
       },
       {
-        name: 'staff', // 大菜单 员工
-        path: 'staff',
+        name: 'shops', // 店铺管理--店铺列表
+        path: 'shops',
         component: LayoutSide,
         icon: '&#xeb3e;',
+        redirect: '/shops/shopsManagement',
         nav: 1,
-        id: 'staff',
+        id: 'shops',
         index: 6, // 后端路由鉴权
         children: [
           {
-            name: 'staffList', // 子菜单-员工列表
-            path: 'staffList',
-            component: StaffList,
-            nav: 2,
-          },
-          {
-            name: 'staffGroupList', // 子菜单-员工组列表
-            path: 'staffGroupList',
-            component: StaffGroupList,
-            nav: 2,
-          },
-          {
-            name: 'staffAdd', // 模块-添加员工
-            path: 'staffAdd',
-            component: StaffAdd,
+            name: 'shopsManagement', // 子菜单-员工列表
+            path: 'shopsManagement',
+            component: Shops,
             nav: 3,
-          },
-          {
-            name: 'editStaffData', // 模块-编辑员工信息
-            path: 'editStaffData',
-            component: EditStaffData,
-            nav: 3,
-          },
-          {
-            name: 'modifyStaffPsw', // 模块-修改员工密码
-            path: 'modifyStaffPsw',
-            component: ModifyStaffPsw,
-            nav: 3,
-          },
-          {
-            name: 'staffGroupAdd', // 模块-添加员工组
-            path: 'staffGroupAdd',
-            component: StaffGroupAdd,
-            nav: 3,
-          },
-          {
-            name: 'staffGroupBasicInfo', // 模块-员工组基本信息
-            path: 'staffGroupBasicInfo',
-            component: StaffGroupBasicInfo,
-            nav: 3,
-          },
-          {
-            name: 'staffGroupShowEmployee', // 模块-员工组查看员工
-            path: 'staffGroupShowEmployee',
-            component: StaffGroupShowEmployee,
-            nav: 3,
-          },
-          {
-            name: 'staffGroupAddEmployee', // 模块-员工组添加员工
-            path: 'staffGroupAddEmployee',
-            component: StaffGroupAddEmployee,
-            nav: 3,
-          },
-          {
-            name: 'staffGroupPermissions', // 模块-员工组权限
-            path: 'staffGroupPermissions',
-            component: StaffGroupPermissions,
-            nav: 3,
-          },
-        ],
+          }],
       },
+      // {
+      //   name: 'staff', // 大菜单 员工
+      //   path: 'staff',
+      //   component: LayoutSide,
+      //   icon: '&#xeb3e;',
+      //   nav: 1,
+      //   id: 'staff',
+      //   index: 6, // 后端路由鉴权
+      //   children: [
+      //     {
+      //       name: 'staffList', // 子菜单-员工列表
+      //       path: 'staffList',
+      //       component: StaffList,
+      //       nav: 2,
+      //     },
+      //     {
+      //       name: 'staffGroupList', // 子菜单-员工组列表
+      //       path: 'staffGroupList',
+      //       component: StaffGroupList,
+      //       nav: 2,
+      //     },
+      //     {
+      //       name: 'staffAdd', // 模块-添加员工
+      //       path: 'staffAdd',
+      //       component: StaffAdd,
+      //       nav: 3,
+      //     },
+      //     {
+      //       name: 'editStaffData', // 模块-编辑员工信息
+      //       path: 'editStaffData',
+      //       component: EditStaffData,
+      //       nav: 3,
+      //     },
+      //     {
+      //       name: 'modifyStaffPsw', // 模块-修改员工密码
+      //       path: 'modifyStaffPsw',
+      //       component: ModifyStaffPsw,
+      //       nav: 3,
+      //     },
+      //     {
+      //       name: 'staffGroupAdd', // 模块-添加员工组
+      //       path: 'staffGroupAdd',
+      //       component: StaffGroupAdd,
+      //       nav: 3,
+      //     },
+      //     {
+      //       name: 'staffGroupBasicInfo', // 模块-员工组基本信息
+      //       path: 'staffGroupBasicInfo',
+      //       component: StaffGroupBasicInfo,
+      //       nav: 3,
+      //     },
+      //     {
+      //       name: 'staffGroupShowEmployee', // 模块-员工组查看员工
+      //       path: 'staffGroupShowEmployee',
+      //       component: StaffGroupShowEmployee,
+      //       nav: 3,
+      //     },
+      //     {
+      //       name: 'staffGroupAddEmployee', // 模块-员工组添加员工
+      //       path: 'staffGroupAddEmployee',
+      //       component: StaffGroupAddEmployee,
+      //       nav: 3,
+      //     },
+      //     {
+      //       name: 'staffGroupPermissions', // 模块-员工组权限
+      //       path: 'staffGroupPermissions',
+      //       component: StaffGroupPermissions,
+      //       nav: 3,
+      //     },
+      //   ],
+      // },
       {
         name: 'setting', // 大菜单 设置
         path: 'setting',
@@ -357,12 +387,20 @@ export const routerMap = [
             path: 'record',
             component: Record,
             nav: 2,
-          }, {
-            name: 'shops', // 店铺管理--店铺列表
-            path: 'shops',
-            component: Shops,
-            nav: 3,
-          }, {
+          },
+          {
+            name: 'areaAndShelf', // 仓库管理-货区货位
+            redirect: {
+              name: 'basicSetting',
+              query: {
+                quickTag: true,
+              },
+            },
+            path: '/setting/basicSetting',
+            component: BasicSetting,
+            nav: 2,
+          },
+          {
             name: 'storeGoods', // 店铺管理--店铺列表
             path: 'storeGoods',
             component: StoreGoods,

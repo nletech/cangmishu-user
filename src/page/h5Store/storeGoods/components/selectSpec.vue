@@ -15,11 +15,10 @@
                     <el-col  :span="16">
                         <el-input
                             clearable
-                            v-model="keywords"
                             @clear="hanlderClearKeywords"
-                            placeholder="请输入关键词">
+                            placeholder="请输入关键词"
+                            v-model="keywords">
                             <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                            <i slot="append" @click="handlerSearchKeyWords">搜索</i>
                         </el-input>
                     </el-col>
                     <!-- 添加商品 -->
@@ -40,7 +39,8 @@
                     :data="categoryListData"
                     default-expand-all
                     @node-click="onCategoryChange"
-                    :expand-on-click-node="false"></el-tree>
+                    :expand-on-click-node="false">
+                  </el-tree>
               </el-col>
               <el-col :span="19"  style="border-left:1px solid #ccc">
                   <!-- 数据表 -->
@@ -51,14 +51,7 @@
                       @selection-change="specRowChange" style="width: 100%; margin-top:10px;">
                       <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
                       <el-table-column type="index" label="序号" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column type="index" label="数量" width="160" header-align="center" align="center">
-                        <template slot-scope="scope">
-                            <el-input-number size="mini" :min="1" :step="1" v-model="scope.row.need_num"></el-input-number>
-                        </template>
-                      </el-table-column>
-                      <el-table-column  label="商品名称及规格" prop="product_name" header-align="center" align="center"></el-table-column>
-                      <el-table-column  label="参考进货价（元）" prop="purchase_price" align="center"></el-table-column>
-                      <el-table-column  label="参考销售价（元）"  prop="sale_price" align="center"></el-table-column>
+                      <el-table-column  label="商品名称" prop="name_cn" header-align="center" align="center"></el-table-column>
                       <el-table-column  label="当前库存" prop="total_stock_num" align="center"></el-table-column>
                   </el-table>
                   <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
@@ -78,7 +71,7 @@
                       :disabled="!this.specSelected.length">
                       提交
                   </el-button>
-                  <el-button @click="handleClose()" :loading="isButtonLoading">取消</el-button>
+                  <el-button :loading="isButtonLoading" @click="handleClose()" >取消</el-button>
                 </div>
               </el-col>
             </el-row>
@@ -123,12 +116,8 @@ export default {
       specSelected: [], // 弹出框选中货品
       categoryListData: [], // 商品分类列表
       categoryId: 0,
-      keywords: '',
+      keywords: '', // 关键字
     };
-  },
-  created() {
-    this.loadCategoryList(); // 货品分类
-    this.loadSpecDataList(); // 货品分类
   },
   watch: {
     keywords() {
@@ -147,10 +136,11 @@ export default {
       return this.$store.state.config.button_loading;
     },
   },
+  created() {
+    this.loadCategoryList(); // 货品分类
+    this.loadSpecDataList(); // 规格
+  },
   methods: {
-    handlerSearchKeyWords() {
-      //
-    },
     handlerAllCatergroy() {
       this.categoryId = 0;
       this.keywords = '';
@@ -184,15 +174,16 @@ export default {
       if (!this.warehouseId) return;
       this.specList = [];
       const queryModel = Object.assign({ warehouse_id: this.warehouseId }, { ...this.params }); // 合并查询参数
-      // 获取商品列表(商品是规格)
+      // 获取商品列表
       if (this.categoryId > 0) {
         queryModel.category_id = this.categoryId;
       }
       if (this.keywords !== '') {
-        queryModel.keywords = this.keywords.trim();
+        queryModel.keywords = this.keywords;
       }
-      $http.querySpecs(queryModel)
+      $http.getProducts(queryModel)
         .then((res) => {
+          if (res.status) return;
           this.specList = res.data.data;
           this.params.data_count = res.data.total;
         });

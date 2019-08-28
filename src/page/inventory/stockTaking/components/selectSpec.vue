@@ -51,14 +51,7 @@
                       @selection-change="specRowChange" style="width: 100%; margin-top:10px;">
                       <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
                       <el-table-column type="index" label="序号" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column type="index" label="数量" width="160" header-align="center" align="center">
-                        <template slot-scope="scope">
-                            <el-input-number size="mini" :min="1" :step="1" v-model="scope.row.need_num"></el-input-number>
-                        </template>
-                      </el-table-column>
                       <el-table-column  label="商品名称及规格" prop="product_name" header-align="center" align="center"></el-table-column>
-                      <el-table-column  label="参考进货价（元）" prop="purchase_price" align="center"></el-table-column>
-                      <el-table-column  label="参考销售价（元）"  prop="sale_price" align="center"></el-table-column>
                       <el-table-column  label="当前库存" prop="total_stock_num" align="center"></el-table-column>
                   </el-table>
                   <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
@@ -95,10 +88,6 @@ export default {
   name: 'selectSpec',
   props: {
     visible: {
-      type: Boolean,
-      default: false,
-    },
-    onlyShowStock: {
       type: Boolean,
       default: false,
     },
@@ -166,8 +155,20 @@ export default {
       this.loadSpecDataList();
     },
     confirmSelected() {
-      this.$emit('selected', this.specSelected); // 回传给父组件
-      this.handleClose();
+      if (!this.warehouseId) return;
+      const selectedId = [];
+      for (let i = 0; i < this.specSelected.length; i += 1) {
+        selectedId.push(this.specSelected[i].id);
+      }
+      const data = {
+        warehouse_id: this.warehouseId,
+        spec: selectedId,
+      };
+      $http.queryLocations(data)
+        .then((res) => {
+          this.$emit('selected', res.data); // 回传给父组件
+          this.handleClose();
+        });
     },
     onCategoryChange(item) {
       this.categoryId = item.id;
@@ -182,6 +183,7 @@ export default {
     }, // 加载所有分类
     loadSpecDataList() {
       if (!this.warehouseId) return;
+      this.params.recount = 1; // 过滤盘点商品
       this.specList = [];
       const queryModel = Object.assign({ warehouse_id: this.warehouseId }, { ...this.params }); // 合并查询参数
       // 获取商品列表(商品是规格)
