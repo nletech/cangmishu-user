@@ -44,7 +44,9 @@
                     prop="out_sn">
                     <template slot-scope="scope">
                       <span>{{scope.row.out_sn}}</span>
-                      <i v-if="scope.row.pay_status === 2" style="position: relative; left: 10px; color: red; font-weight: 400;" class="iconfont">&#xe668;</i>
+                      <el-tooltip  effect="light" content="已付款" placement="top">
+                          <i v-if="scope.row.pay_status === 2" style="position: relative; left: 10px; color: red; font-weight: 400;" class="iconfont">&#xe668;</i>
+                      </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -132,6 +134,15 @@
                             round>
                           </el-button>
                       </el-tooltip>
+                      <el-tooltip content="打印拣货单" placement="top">
+                            <el-button
+                                v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
+                                style="margin: 8px 0 0 0;"
+                                size="mini" icon="el-icon-printer"
+                                :loading="isButtonLoading()"
+                                @click="onPrint(scope.row)" round>
+                            </el-button>
+                      </el-tooltip>
                       <el-tooltip content="取消订单" placement="top">
                           <el-button
                               v-if="scope.row.status === 1"
@@ -160,15 +171,6 @@
                                 @click="showReceviceDialog(scope.row)" round>
                             </el-button>
                       </el-tooltip>
-                      <el-tooltip content="打印拣货单" placement="top">
-                            <el-button
-                                v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
-                                style="margin: 8px 0 0 0;"
-                                size="mini" icon="el-icon-printer"
-                                :loading="isButtonLoading()"
-                                @click="onPrint(scope.row)" round>
-                            </el-button>
-                      </el-tooltip>
                       <el-tooltip content="跟踪" placement="top">
                             <el-button
                                 v-if="scope.row.status === 5"
@@ -180,7 +182,7 @@
                       </el-tooltip>
                       <el-tooltip content="实收" placement="top">
                             <el-button
-                                v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
+                                v-if="scope.row.status === 1 ||scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
                                 style="margin: 8px 0 0 0;"
                                 size="mini" icon="el-icon-money"
                                 :loading="isButtonLoading()"
@@ -190,21 +192,23 @@
                       <!-- 确认签收 -->
                       <el-dialog
                         align="center"
-                        title="是否确认签收"
                         :visible.sync="receviceDialog"
                         width="20%">
+                        <div>
+                          <span style="font-size: 1.4rem;">确认签收?</span>
+                        </div>
                         <span slot="footer" class="dialog-footer">
                           <el-button
                               @click="receviceDialog = false"
                               :loading="isButtonLoading()"
-                              size="mini">
+                              size="small">
                               取 消
                           </el-button>
                           <el-button
                               type="primary"
                               :loading="isButtonLoading()"
                               @click="confirmRecevice()"
-                              size="mini">
+                              size="small">
                               确 定
                           </el-button>
                         </span>

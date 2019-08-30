@@ -94,9 +94,7 @@ export default {
     getStockTypes() {
       $http.stocktypes().then((res) => {
         if (res.status) return;
-        this.$nextTick(() => {
-          this.select_data_status.options = res.data;
-        });
+        this.select_data_status.options = res.data;
       });
     },
     handlerSelect_data(val) {

@@ -112,9 +112,7 @@ export default {
       $http.stocktypes().then((res) => {
         if (res.status) return;
         this.stockTypes = res.data;
-        this.$nextTick(() => {
-          this.select_data_status.options = this.stockTypes;
-        });
+        this.select_data_status.options = this.stockTypes;
       });
     },
     handlerQuery(res) {
@@ -131,7 +129,7 @@ export default {
       }
     }, // 用日期查询记录
     handlerChangePage(val) {
-      $http.getStockLogs({
+      $http.getStockLogs(this.id, {
         warehouse_id: this.warehouseId,
         page: val,
       })

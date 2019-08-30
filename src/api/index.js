@@ -1,8 +1,11 @@
 import Axios from '@/lib/axios/config';
 
 const $http = {
-  getVerificationCode(data) {
-    return Axios.post('/code', data);
+  getVerificationEmailCode(data) {
+    return Axios.post('/emailCode', data);
+  }, // 获取验证码
+  getVerificationPhoneCode(data) {
+    return Axios.post('/smsCode', data);
   }, // 获取验证码
   register(data) {
     return Axios.post('/register', data);
@@ -455,6 +458,9 @@ const $http = {
   }, // 支付方式列表
   stocktypes() {
     return Axios.get('stock/log/types');
+  },
+  openCaptcha() {
+    return Axios.get('open/captcha');
   },
 };
 export default $http;

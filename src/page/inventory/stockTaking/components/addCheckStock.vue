@@ -222,9 +222,11 @@ export default {
     },
     onSubmit() {
       if (!this.warehouseId) return;
+      if (!this.stock_list.length) return;
+      console.log(this.stock_list);
       let flag = false;
       for (let i = 0; i < this.stock_list.length; i += 1) {
-        if (!this.stock_list[i].num) {
+        if (`${this.stock_list[i].num}` === 'undefined') {
           flag = true;
         }
       }

@@ -301,6 +301,7 @@ import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
 
 export default {
+  name: 'goodsManage',
   data() {
     return {
       inventorySwitch: 0, // 低于库存
@@ -384,7 +385,6 @@ export default {
       $http.getProducts(query)
         .then((res) => {
           if (res.status) return;
-          console.log(res, 'getList');
           this.goods_list_data = res.data.data;
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;

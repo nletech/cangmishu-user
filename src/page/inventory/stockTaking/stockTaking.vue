@@ -30,6 +30,7 @@
                     align="center">
                     <template slot-scope="scope">
                       <div
+                          :title="scope.row.stocks | filtersTitle"
                           v-for="(item, index) of scope.row.stocks"
                           :key="index">
                           <span v-if="index === 0">{{item.name_cn}}&nbsp;...</span>
@@ -152,6 +153,15 @@ export default {
     };
   },
   filters: {
+    filtersTitle(val) {
+      if (Array.isArray(val)) {
+        let title = '';
+        for (let i = 0; i < val.length; i += 1) {
+          title += `${val[i].name_cn},`;
+        }
+        return title;
+      }
+    },
     statusFilter(val) {
       switch (+val) {
         case 0:
@@ -255,7 +265,6 @@ export default {
       //     stockId: rowInfo.id,
       //   },
       // });
-      console.log(rowInfo, 'rowInfo');
       this.stockId = rowInfo.id;
       this.visible = true;
     },
