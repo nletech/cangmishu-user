@@ -366,7 +366,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (!this.warehouse_id) return;
+        if (!this.warehouseId) return;
         this.$router.push({
           name: 'basicSetting',
           query: {
@@ -378,7 +378,6 @@ export default {
     handleEditConfirm() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          console.log('');
           if (!this.form.editFlag) {
             this.form.stockin_num = `${this.form.stockin_num.replace(/\b(0+)/gi, "")}`; // 去除数字前面的零
             for (let i = 0; i < this.inboundList.length; i += 1) {
@@ -509,9 +508,9 @@ export default {
     padding: 4px 4px 4px 4px;
     border: 1px solid #ccc;
     border-radius: 50%;
-    position: relative;
-    top: -30px;
-    right: -320px;
+    position: absolute;
+    top: 5px;
+    left: 310px;
   }
 }
 </style>

@@ -96,9 +96,14 @@ export default {
   created() {
     this.Warning();
   },
+  watch: {
+    warehouseId() {
+      this.Warning();
+    },
+  },
   methods: {
     Warning() {
-      $http.Warning()
+      $http.Warning({ warehouse_id: this.warehouseId })
         .then((res) => {
           if (res.status) return;
           this.stockList = res.data.warning_data;
@@ -113,6 +118,7 @@ export default {
           warning_stock: item.warning_stock,
         });
       });
+      this.form.warehouse_id = this.warehouseId;
       this.$refs.form.validate((valid) => {
         if (valid) {
           $http.addWarning(this.form).then(() => {

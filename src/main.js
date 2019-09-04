@@ -1,7 +1,6 @@
 import ElementUI from 'element-ui';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-
 import App from './App';
 import router from './router';
 import './lib/elementUi/index.css';
@@ -16,7 +15,6 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
 Vue.use(VueI18n);
-
 Vue.component('my-table-header', MyTableHeader);
 Vue.component('my-table-item', MyTableItem);
 Vue.component('cancel-button', CancelButton);

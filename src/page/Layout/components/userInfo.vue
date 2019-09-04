@@ -1,53 +1,53 @@
 <template>
-          <el-dialog  title="修改个人资料"
-                      width="40%"
-                      @update:visible="$emit('update:visible', $event)"
-                      :visible="visible"
-                      center>
-                      <el-form  label-width="120px"
-                                :rules="rules"
-                                ref="validator"
-                                :model="form">
-                                <el-form-item label="邮箱"
-                                              prop="userEmail">
-                                              <el-input type="small"
-                                                        disabled
-                                                        v-model="userEmail">
-                                              </el-input>
-                                </el-form-item>
-                                <el-form-item label="用户名"
-                                              prop="nickname">
-                                              <el-input type="small"
-                                                        v-model="form.nickname">
-                                              </el-input>
-                                </el-form-item>
-                                <el-form-item label="头像"
-                                              prop="avatar">
-                                              <el-upload  class="avatar-uploader"
-                                                          :action="api"
-                                                          :headers="Authorization"
-                                                          :show-file-list="false"
-                                                          name="image"
-                                                          :file-list="fileList"
-                                                          :on-success="handleAvatarSuccess"
-                                                          :before-upload="beforeAvatarUpload">
-                                                          <img  v-if="imageUrl"
-                                                                :src="imageUrl"
-                                                                class="avatar">
-                                                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                              </el-upload>
-                                </el-form-item>
-                      </el-form>
-                      <span slot="footer"
-                            class="dialog-footer">
-                            <el-button type="primary" @click="submit">确 定</el-button>
-                      </span>
-          </el-dialog>
+    <el-dialog
+        title="修改个人资料"
+        width="40%"
+        @update:visible="$emit('update:visible', $event)"
+        :visible="visible"
+        center>
+        <el-form
+            label-width="120px"
+            :rules="rules"
+            ref="validator"
+            :model="form">
+            <el-form-item
+                label="邮箱"
+                prop="userEmail">
+                <el-input type="small"
+                          disabled
+                          v-model="userEmail">
+                </el-input>
+            </el-form-item>
+            <el-form-item
+                label="用户名"
+                prop="nickname">
+                <el-input type="small"
+                          v-model="form.nickname">
+                </el-input>
+            </el-form-item>
+            <el-form-item
+                label="头像"
+                prop="avatar">
+                  <my-upload
+                      :img.sync="imageUrl"
+                      :width="180"
+                      :height="180"
+                      @uploadSuccessCallBack="handlerUploadSuccessCallBack">
+                      <template slot="btnTitle">上传头像</template>
+                  </my-upload>
+            </el-form-item>
+        </el-form>
+        <span slot="footer"
+              class="dialog-footer">
+              <el-button type="primary" @click="submit">确 定</el-button>
+        </span>
+    </el-dialog>
 </template>
 
 <script>
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
+import myUpload from '@/components/imageUpload/index';
 
 export default {
   name: 'userInfo',
@@ -55,9 +55,7 @@ export default {
     visible: [Boolean],
   },
   components: {
-    api() {
-      return `${baseApi}/upload/image`;
-    },
+    myUpload,
   },
   data() {
     return {
@@ -95,6 +93,9 @@ export default {
     }, // 上传图片
   },
   methods: {
+    handlerUploadSuccessCallBack(url) {
+      this.imageUrl = url;
+    },
     handleAvatarSuccess(res) {
       if (res.status === 0) {
         this.imageUrl = res.data.url;

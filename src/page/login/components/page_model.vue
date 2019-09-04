@@ -4,7 +4,7 @@
       <div :class="$style.model_left">
         <div :class="$style.left_text">
           <p>{{'欢迎使用仓秘书'}}</p>
-          <p>{{'为您提供免费、专业的互联网仓库解决方案'}}</p>
+          <p>{{'仓秘书满足企业精细化库存管理需求同时结合移动订货系统，为您提供免费、专业的互联网'}}<span style="color: #CC9900;">仓库+订货</span>{{'管理解决方案'}}</p>
         </div>
       </div>
       <div :class="$style.model_right">
@@ -90,7 +90,8 @@ export default {
         .left_text {
           position: absolute;
           top: 246px;
-          left: 159px;
+          left: 12%;
+          text-align: left;
           color: @white;
           p:nth-child(1) {
             font-size: 3.42rem;

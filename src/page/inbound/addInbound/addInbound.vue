@@ -121,86 +121,86 @@
                     </el-table>
                 </el-col>
               </el-row>
-                      <!-- 运输方式 -->
-                      <label class="label"> {{$t('notNecessaryInfo')}} </label>
-                      <el-row>
-                        <el-col>
-                          <el-form-item :label="$t('planInboundTime')">
-                              <el-row>
-                                <el-col :span="12"
-                                        style="padding:0;">
-                                        <el-date-picker
-                                            v-model="startDate"
-                                            type="date"
-                                            :placeholder="$t('startDate')"
-                                            :picker-options="pickerOptions"
-                                            value-format="yyyy-MM-dd"
-                                            size="small">
-                                        </el-date-picker>
-                                </el-col>
-                                <el-col  :span="5"  :offset="1">
-                                    <el-time-select
-                                        v-model="startTime"
-                                        :picker-options="{
-                                          start: '00:00',
-                                          step: '00:30',
-                                          end: '23:30'
-                                        }"
-                                        :placeholder="$t('startTime')"
-                                        size="small">
-                                    </el-time-select>
-                                  </el-col>
-                                </el-row>
-                                <el-row>
-                                <el-col  :span="12">
-                                    <el-date-picker
-                                        v-model="endDate"
-                                        type="date"
-                                        :placeholder="$t('endDate')"
-                                        :picker-options="pickerOptions"
-                                        value-format="yyyy-MM-dd"
-                                        size="small">
-                                    </el-date-picker>
-                                </el-col>
-                                <el-col :span="5"  :offset="1">
-                                        <el-time-select
-                                            v-model="endTime"
-                                            :picker-options="{
-                                              start: '00:00',
-                                              step: '00:30',
-                                              end: '23:30'
-                                            }"
-                                            :placeholder="$t('endTime')"
-                                            size="small">
-                                        </el-time-select>
-                                  </el-col>
-                              </el-row>
-                            </el-form-item>
+                <!-- 运输方式 -->
+                <label class="label"> {{$t('notNecessaryInfo')}} </label>
+                <el-row>
+                  <el-col>
+                    <el-form-item :label="$t('planInboundTime')">
+                        <el-row>
+                          <el-col :span="12"
+                                  style="padding:0;">
+                                  <el-date-picker
+                                      v-model="startDate"
+                                      type="date"
+                                      :placeholder="$t('startDate')"
+                                      :picker-options="pickerOptions"
+                                      value-format="yyyy-MM-dd"
+                                      size="small">
+                                  </el-date-picker>
                           </el-col>
-                      </el-row>
-                      <el-row :gutter="20">
-                        <el-col>
-                          <el-form-item :label="$t('remarks')" >
-                                  <el-input
-                                      v-model="form.remark"
-                                      type="textarea"
-                                      placeholder="最多不超过30个字"
-                                      :maxlength="30">
-                                  </el-input>
-                          </el-form-item>
-                        </el-col>
-                      </el-row>
-                      <el-form-item style="padding-left:100px;" >
-                          <el-button
-                              @click="onSave('form')"
-                              type="primary"
-                              :loading="isButtonLoading()">
-                              {{$t('submit')}}
-                          </el-button>
-                          <el-button @click="$router.go(-1)">
-                                    {{$t('cancel')}}
-                          </el-button>
+                          <el-col  :span="5"  :offset="1">
+                              <el-time-select
+                                  v-model="startTime"
+                                  :picker-options="{
+                                    start: '00:00',
+                                    step: '00:30',
+                                    end: '23:30'
+                                  }"
+                                  :placeholder="$t('startTime')"
+                                  size="small">
+                              </el-time-select>
+                            </el-col>
+                          </el-row>
+                          <el-row>
+                          <el-col  :span="12">
+                              <el-date-picker
+                                  v-model="endDate"
+                                  type="date"
+                                  :placeholder="$t('endDate')"
+                                  :picker-options="pickerOptions"
+                                  value-format="yyyy-MM-dd"
+                                  size="small">
+                              </el-date-picker>
+                          </el-col>
+                          <el-col :span="5"  :offset="1">
+                                  <el-time-select
+                                      v-model="endTime"
+                                      :picker-options="{
+                                        start: '00:00',
+                                        step: '00:30',
+                                        end: '23:30'
+                                      }"
+                                      :placeholder="$t('endTime')"
+                                      size="small">
+                                  </el-time-select>
+                            </el-col>
+                        </el-row>
                       </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col>
+                    <el-form-item :label="$t('remarks')" >
+                            <el-input
+                                v-model="form.remark"
+                                type="textarea"
+                                placeholder="最多不超过30个字"
+                                :maxlength="30">
+                            </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-form-item style="padding-left:100px;" >
+                    <el-button
+                        @click="onSave('form')"
+                        type="primary"
+                        :loading="isButtonLoading()">
+                        {{$t('submit')}}
+                    </el-button>
+                    <el-button @click="$router.go(-1)">
+                              {{$t('cancel')}}
+                    </el-button>
+                </el-form-item>
             </el-form>
         </mdoel-form>
         <!-- 选择商品弹窗 -->
@@ -240,12 +240,12 @@
                         header-align="center"
                         align="center">
                     </el-table-column>
-                    <el-table-column
+                    <!-- <el-table-column
                         prop="name_en"
                         label="供应商外文名称"
                         header-align="center"
                         align="center">
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                         label="操作"
                         width="200"
@@ -291,12 +291,12 @@
                             <el-input v-model="distributorInfo.name_cn"></el-input>
                     </el-col>
             </el-row>
-            <el-row :gutter="20">
+            <!-- <el-row :gutter="20">
                     <el-col :span="5">{{'供应商英文名'}}</el-col>
                     <el-col :span="10">
                             <el-input v-model="distributorInfo.name_en"></el-input>
                     </el-col>
-            </el-row>
+            </el-row> -->
             <span  slot="footer"
                   class="dialog-footer">
                   <el-button

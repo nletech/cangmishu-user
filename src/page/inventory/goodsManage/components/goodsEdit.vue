@@ -256,7 +256,7 @@ export default {
     },
     // 货品分类列表
     getTypeList() {
-      $http.getCategoryManagement().then((res) => {
+      $http.getCategoryManagement({ warehouse_id: this.warehouseId }).then((res) => {
         this.typeList = res.data.data;
       });
     },
@@ -334,14 +334,13 @@ export default {
       if (ctr) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log(this.form, 'this.form');
             this.form.warehouse_id = this.warehouseId || this.$route.query.warehouseId;
             this.form.specs = this.specList.filter(res => res.name_cn);
             // 编辑接口
             $http.editProducts(this.$route.query.id, this.form)
               .then(() => {
                 this.successTips(this.$route.query.id, true);
-                this.$router.replace({ name: 'myGoodsList' }); // 编辑成功之后进行跳转
+                this.$router.replace({ name: 'goodsManage' }); // 编辑成功之后进行跳转
               });
           } else {
             this.$message({

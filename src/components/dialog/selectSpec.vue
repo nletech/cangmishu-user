@@ -175,7 +175,7 @@ export default {
     },
     loadCategoryList() {
       if (!this.warehouseId) return;
-      $http.getCategoryManagement()
+      $http.getCategoryManagement({ warehouse_id: this.warehouseId })
         .then((res) => {
           this.categoryListData = res.data.data;
         });

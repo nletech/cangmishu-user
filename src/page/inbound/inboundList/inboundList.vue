@@ -156,7 +156,6 @@ export default {
   },
   methods: {
     handlerCallBackData(res) {
-      console.log(res, 'Cb_res');
       this.inbound_list_data = res.data.data;
       this.params.total = res.data.total;
       this.params.currentPage = res.data.current_page;

@@ -22,6 +22,11 @@
                     <img width="100px" height="100px" v-if="scope.row.weapp_qrcode" :src="scope.row.weapp_qrcode" alt="二维码">
                   </template>
                 </el-table-column>
+                <el-table-column label="店铺Logo" header-align="center" align="center" >
+                  <template slot-scope="scope">
+                    <img width="100px" height="100px" v-if="scope.row.logo" :src="scope.row.logo" alt="二维码">
+                  </template>
+                </el-table-column>
                 <el-table-column  label="操作" width="200" header-align="center">
                     <template slot-scope="scope">
                         <el-tooltip content="编辑店铺信息" placement="top">

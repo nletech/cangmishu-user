@@ -87,11 +87,14 @@
                   margin: 0 0 20px 0">
                   {{'选填信息'}}
                 </label>
-                <el-form-item :label="'上传头像'">
-                    <picture-upload
-                        :photo.sync="shop_form.logo"
-                        :limit="1">
-                    </picture-upload>
+                <el-form-item>
+                    <my-upload
+                      :width="180"
+                      :height="180"
+                      :img.sync="shop_form.logo"
+                      @uploadSuccessCallBack="handlerUploadSuccessCallBack">
+                      <template slot="btnTitle">上传店铺Logo</template>
+                    </my-upload>
                 </el-form-item>
                 <el-form-item>
                   <el-row>
@@ -116,12 +119,14 @@ import $http from '@/api/index';
 import Address from '@/assets/address.json';
 import mixin from '@/mixin/form_config';
 import pictureUpload from '@/components/picture_upload';
+import myUpload from '@/components/imageUpload/index';
 
 export default {
   name: 'addShops',
   mixins: [mixin],
   components: {
     pictureUpload,
+    myUpload,
   },
   props: {
     visible: {
@@ -141,6 +146,9 @@ export default {
   },
   data() {
     return {
+      showCutter: true,
+      url: '',
+      myCroppa: {},
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
         value: 'value',
@@ -198,6 +206,9 @@ export default {
     },
   },
   methods: {
+    handlerUploadSuccessCallBack(res) {
+      this.shop_form.log = res.data.url;
+    },
     handlerRadioChnange(val) {
       this.shop_form.default_currency = val;
     },
@@ -216,7 +227,6 @@ export default {
       this.shop_form.contact.province = this.shop_form.contact.pre_address[0];
       this.shop_form.contact.city = this.shop_form.contact.pre_address[1];
       this.shop_form.contact.district = this.shop_form.contact.pre_address[2];
-      this.shop_form.default_currency =
       $http.addNewShop({ warehouse_id: this.warehouseId, ...this.shop_form })
         .then((res) => {
           if (res.status) return;

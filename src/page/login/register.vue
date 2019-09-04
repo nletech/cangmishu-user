@@ -37,14 +37,14 @@
                                       <i @click="sendVerificationCodeForEmail(form.email, false)" class="el-icon-refresh"></i>
                                     </template>
                                 </el-input>
-                                <img :src="vEmailPicture" style=" width:100px; height: 30px; position: relative; top: 18px; left: 15px;" />
+                                <img :src="vEmailPicture" style=" width:100px; height: 30px; position: absolute; top: 46px; left: 250px;" />
                             </div>
                             <el-row  :class="$style.item_picture_btn">
                                 <el-col :span="2" :offset="14">
-                                    <el-button size="small" @click="handlerCloseVerifyBox">取消</el-button>
+                                    <el-button :loading="isButtonLoading()" size="small" @click="handlerCloseVerifyBox">取消</el-button>
                                 </el-col>
                                 <el-col :span="2" :offset="3">
-                                    <el-button size="small" @click="handlerGetEmailCode">确定</el-button>
+                                    <el-button :loading="isButtonLoading()" size="small" @click="handlerGetEmailCode">确定</el-button>
                                 </el-col>
                             </el-row>
                         </div>
@@ -101,15 +101,18 @@
                     </el-form-item>
                     <el-form-item class="user_login_button">
                         <el-button
+                            :loading="isButtonLoading()"
                             @click="goRegister('email')"
                             type="primary">
                             注册
                         </el-button>
                     </el-form-item>
-                    <div  class="user_account_exist"
+                    <el-button
+                          type="text"
+                          class="user_account_exist"
                           @click="$router.push({name: 'login'})">
                           我有账号
-                    </div>
+                    </el-button>
               </el-form>
           </el-tab-pane>
           <!-- 手机 -->
@@ -128,6 +131,7 @@
                           size="small">
                           <template slot="append">
                               <el-button
+                                  :loading="isButtonLoading()"
                                   type="text"
                                   style="cursor: pointer; padding: 12px"
                                   @click="flag && sendVerificationCodeForPhone(formPhone.mobile, true)">
@@ -152,14 +156,14 @@
                                     </i>
                                   </template>
                               </el-input>
-                              <img style=" width:100px; height: 30px; position: relative; top: 18px; left: 15px;" :src="vPicture" />
+                              <img style=" width:100px; height: 30px; position: absolute; top: 46px; left: 250px;" :src="vPicture" />
                           </div>
                           <el-row  :class="$style.item_picture_btn">
                               <el-col :span="2" :offset="14">
-                                  <el-button size="small" @click="handlerCloseVerifyBox">取消</el-button>
+                                  <el-button :loading="isButtonLoading()" size="small" @click="handlerCloseVerifyBox">取消</el-button>
                               </el-col>
                               <el-col :span="2" :offset="3">
-                                  <el-button size="small" @click="handlerGetPhoneCode">确定</el-button>
+                                  <el-button :loading="isButtonLoading()" size="small" @click="handlerGetPhoneCode">确定</el-button>
                               </el-col>
                           </el-row>
                       </div>
@@ -220,15 +224,19 @@
                   </el-form-item>
                   <el-form-item class="user_login_button">
                       <el-button
+                          :loading="isButtonLoading()"
                           @click="goRegister('phone')"
                           type="primary">
                           注册
                       </el-button>
                   </el-form-item>
-                  <div  class="user_account_exist"
-                        @click="$router.push({name: 'login'})">
-                        我有账号
-                  </div>
+                  <el-button
+                      class="user_account_exist"
+                      type="text"
+                      :loading="isButtonLoading()"
+                      @click="$router.push({name: 'login'})">
+                      我有账号
+                  </el-button>
               </el-form>
           </el-tab-pane>
       </el-tabs>

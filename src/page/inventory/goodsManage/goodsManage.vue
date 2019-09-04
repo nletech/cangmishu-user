@@ -486,7 +486,7 @@ export default {
     // 货品分类列表
     getTypeList() {
       if (!this.warehouseId) return;
-      $http.getCategoryManagement()
+      $http.getCategoryManagement({ warehouse_id: this.warehouseId })
         .then((res) => {
           this.typeList = res.data.data;
         });

@@ -375,8 +375,8 @@ const $http = {
   modifyUserAvatar(id, data) {
     return Axios.post(`user/${id}/avatar`, data);
   }, // 修改头像
-  Warning() {
-    return Axios.get('warning');
+  Warning(data) {
+    return Axios.get('warning', { params: data });
   }, // 已设置的库存报警信息
   // 店铺管理
   getShops(data) {

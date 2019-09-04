@@ -250,7 +250,7 @@ export default {
     },
     // 货品分类列表
     getTypeList() {
-      $http.getCategoryManagement().then((res) => {
+      $http.getCategoryManagement({ warehouse_id: this.warehouseId }).then((res) => {
         this.typeList = res.data.data;
       });
     },
@@ -305,7 +305,7 @@ export default {
             $http.addProducts(this.form)
               .then(() => {
                 this.successTips(this.$route.query.id, true);
-                this.$router.replace({ name: 'myGoodsList' });
+                this.$router.replace({ name: 'goodsManage' });
               });
           } else {
             this.$message({

@@ -18,26 +18,17 @@
                   </span>
                 </el-form-item>
                 <el-form-item :label="'商品轮播图'">
-                    <el-upload
-                      ref="el-upload"
-                      :disabled="CarouselImgs.length >= 3"
-                      :headers="Authorization"
-                      :action="api"
-                      :on-success="handlerSuccessCarouselImgs"
-                      :limit="is3Img"
-                      :showFileList="false"
-                      multiple
-                      name="image">
-                      <el-button
-                          size="mini"
-                          :disabled="CarouselImgs.length >= 3">
-                          点击上传
-                      </el-button>
-                      <div slot="tip" class="el-upload__tip">
-                        最多<span style="color: red; font-size: 1.1rem;">&nbsp;3&nbsp;</span>张,
-                        建议尺寸<span style="color: red; font-size: 1.1rem;">&nbsp;800*800&nbsp;</span>
-                      </div>
-                    </el-upload>
+                    <my-upload
+                      :width="400"
+                      :height="400"
+                      :disable="imgNumberMoreThanThree"
+                      @uploadSuccessCallBack="handlerSuccessCarouselImgs">
+                      <template slot="btnTitle">上传图片</template>
+                    </my-upload>
+                    <div>
+                      最多<span style="color: red; font-size: 1.1rem;">&nbsp;3&nbsp;</span>张,
+                      建议尺寸<span style="color: red; font-size: 1.1rem;">&nbsp;400*400&nbsp;</span>
+                    </div>
                     <image-list :line="false" :list="CarouselImgs"></image-list>
                 </el-form-item>
                 <el-form-item :label="'商品简介'">
@@ -50,26 +41,17 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item :label="'商品详情页图'">
-                    <el-upload
-                      ref="el-upload"
-                      :disabled="descriptionImgs.length >= 10"
-                      :headers="Authorization"
-                      :action="api"
-                      :on-success="handlerSuccessDescriptionImgs"
-                      :limit="is10Img"
-                      :showFileList="false"
-                      multiple
-                      name="image">
-                      <el-button
-                          size="mini"
-                          :disabled="descriptionImgs.length >= 10">
-                          点击上传
-                      </el-button>
-                      <div slot="tip" class="el-upload__tip">
-                        最多<span style="color: red; font-size: 1.1rem;">&nbsp;10&nbsp;</span>张,
-                        建议尺寸<span style="color: red; font-size: 1.1rem;">&nbsp;800*800&nbsp;</span>
-                      </div>
-                    </el-upload>
+                    <my-upload
+                      :width="400"
+                      :height="400"
+                      :disable="imgNumberMoreThanTen"
+                      @uploadSuccessCallBack="handlerSuccessDescriptionImgs">
+                      <template slot="btnTitle">上传图片</template>
+                    </my-upload>
+                    <div>
+                      最多<span style="color: red; font-size: 1.1rem;">&nbsp;10&nbsp;</span>张,
+                      建议尺寸<span style="color: red; font-size: 1.1rem;">&nbsp;400*400&nbsp;</span>
+                    </div>
                     <image-list :line="false" :list="descriptionImgs"></image-list>
                 </el-form-item>
                 <el-form-item :label="'商品规格'">
@@ -110,6 +92,7 @@
 
 <script>
 import pictureUpload from '@/components/picture_upload';
+import myUpload from '@/components/imageUpload/index';
 import $http from '@/api/index';
 import mixin from '@/mixin/form_config';
 import baseApi from '@/lib/axios/base_api';
@@ -122,6 +105,7 @@ export default {
   components: {
     pictureUpload,
     imageList,
+    myUpload,
   },
   props: {
     visible: {
@@ -161,12 +145,6 @@ export default {
     },
   },
   computed: {
-    is3Img() {
-      return 3 - this.CarouselImgs.length; // 只能上传三张图片
-    },
-    is10Img() {
-      return 10 - this.CarouselImgs.length; // 只能上传十张图片
-    },
     picsa() {
       return 1;
     },
@@ -176,12 +154,20 @@ export default {
     api() {
       return `${baseApi}/upload/image`;
     },
+    imgNumberMoreThanThree() {
+      return this.CarouselImgs.length >= 3;
+    },
+    imgNumberMoreThanTen() {
+      return this.descriptionImgs.length >= 10;
+    },
   },
   methods: {
     handlerSuccessCarouselImgs(response) {
+      if (this.imgNumberMoreThanThree) return;
       this.CarouselImgs.push(response.data);
     },
     handlerSuccessDescriptionImgs(response) {
+      if (this.imgNumberMoreThanTen) return;
       this.descriptionImgs.push(response.data);
     },
     getDataList(shopId, goodsId) {

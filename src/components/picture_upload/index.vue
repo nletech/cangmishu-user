@@ -46,6 +46,7 @@ export default {
         switch (this.limit) {
           case 1:
             this.$emit('update:photo', res.data.url); // 上传一个图片
+            console.log(res, 'res');
             return;
           default:
             throw Error('picture upload went wrong');

@@ -1,59 +1,66 @@
 <template>
-        <page-model>
-                    <el-form  ref="refelogin"
-                              :model="form"
-                              :rules="rules"
-                              :class="$style.input_item">
-                              <el-form-item  prop="email"
-                                             class="login_model_form">
-                                             <el-input  :placeholder="$t('PleaseEnterTheMailbox')"
-                                                        clearable
-                                                        v-model="form.email"
-                                                        @keyup.enter.native="goLogin"
-                                                        size="small">
-                                             </el-input>
-                              </el-form-item>
-                              <el-form-item prop="password"
-                                            :class="$style.item_password"
-                                            class="login_model_form">
-                                            <el-input  v-model="form.password"
-                                                       @keyup.enter.native="goLogin"
-                                                       :type="input_type ? 'password' : 'text'"
-                                                       :placeholder="$t('PleaseInputApassword')" size="small">
-                                                       <i  slot="suffix"
-                                                           @click="input_type = !input_type"
-                                                           class="el-input__icon el-icon-view">
-                                                       </i>
-                                            </el-input>
-                              </el-form-item>
-                              <el-form-item :class="$style.save_user_info">
-                                            <div :class="$style.item_user_info">
-                                                  <div :class="$style.user_info_left"
-                                                       class="user_info_left">
-                                                        <el-checkbox v-model="keep">
-                                                          保存用户信息
-                                                        </el-checkbox>
-                                                  </div>
-                                                  <div :class="$style.user_info_right">
-                                                       <router-link :to="{name: 'backPassword'}">忘记密码</router-link>
-                                                  </div>
-                                            </div>
-                              </el-form-item>
-                              <el-form-item class="user_login_button">
-                                            <el-button  type="primary"
-                                                        :loading="isButtonLoading()"
-                                                        @click="goLogin">
-                                                        登录
-                                            </el-button>
-                              </el-form-item>
-                              <el-form-item class="user_register_button">
-                                            <el-button  @click="$router.push({name: 'register'})"
-                                                        plain>
-                                                        一步注册为用户
-                                            </el-button>
-                              </el-form-item>
-                    </el-form>
-        </page-model>
+    <page-model>
+        <el-form
+            ref="refelogin"
+            :model="form"
+            :rules="rules"
+            :class="$style.input_item">
+            <el-form-item
+                prop="email"
+                class="login_model_form">
+                <el-input  :placeholder="$t('PleaseEnterTheMailbox')"
+                          clearable
+                          v-model="form.email"
+                          @keyup.enter.native="goLogin"
+                          size="small">
+                </el-input>
+            </el-form-item>
+            <el-form-item
+                prop="password"
+                :class="$style.item_password"
+                class="login_model_form">
+                <el-input  v-model="form.password"
+                            @keyup.enter.native="goLogin"
+                            :type="input_type ? 'password' : 'text'"
+                            :placeholder="$t('PleaseInputApassword')" size="small">
+                            <i  slot="suffix"
+                                @click="input_type = !input_type"
+                                class="el-input__icon el-icon-view">
+                            </i>
+                </el-input>
+            </el-form-item>
+            <el-form-item
+                :class="$style.save_user_info">
+                <div :class="$style.item_user_info">
+                      <div :class="$style.user_info_left"
+                            class="user_info_left">
+                            <el-checkbox v-model="keep">
+                              保存用户信息
+                            </el-checkbox>
+                      </div>
+                      <div :class="$style.user_info_right">
+                            <router-link :to="{name: 'backPassword'}">忘记密码</router-link>
+                      </div>
+                </div>
+            </el-form-item>
+            <el-form-item class="user_login_button">
+                          <el-button  type="primary"
+                                      :loading="isButtonLoading()"
+                                      @click="goLogin">
+                                      登录
+                          </el-button>
+            </el-form-item>
+            <el-form-item class="user_register_button">
+                          <el-button
+                              @click="$router.push({name: 'register'})"
+                              type="text"
+                              :loading="isButtonLoading()"
+                              plain>
+                              一步注册为用户
+                          </el-button>
+            </el-form-item>
+        </el-form>
+    </page-model>
 </template>
 <script>
 import $http from '@/api';
@@ -110,7 +117,6 @@ export default {
         $http.login(this.form)
           .then((res) => {
             if (res.status) return;
-            // console.log(res, '登录信息');
             // 将token保存到本地
             this.$store.commit('token/addToken', {
               token: res.data.token.token_value,
@@ -120,6 +126,7 @@ export default {
             // 存入用户信息
             this.$store.commit('config/setWarehouseName', res.data.user.default_warehouse.name_cn);
             this.$store.commit('config/setWarehouseId', res.data.user.default_warehouse.id);
+            this.$store.commit('config/setUserInfo', res.data.user.avatar);
             localStorage.setItem('setUser', res.data.user.id); // 存入用户 id
             localStorage.setItem('setUAvatar', res.data.user.avatar); // 存入用户 头像
             localStorage.setItem('setUnickName', res.data.user.nickname); // 存入用户 昵称
