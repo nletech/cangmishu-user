@@ -1,6 +1,7 @@
 import ElementUI from 'element-ui';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
+import 'babel-polyfill';
 import App from './App';
 import router from './router';
 import './lib/elementUi/index.css';

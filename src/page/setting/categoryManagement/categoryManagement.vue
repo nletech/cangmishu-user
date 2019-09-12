@@ -278,7 +278,10 @@ export default {
     handleCurrentChange(val) {
       // 缓存当前页
       this.current_page = val;
-      $http.checkCategoryManagement({ page: val })
+      $http.checkCategoryManagement({
+        page: val,
+        warehouse_id: this.warehouseId,
+      })
         .then((res) => {
           this.category_list = res.data.data;
           this.total = res.data.total;

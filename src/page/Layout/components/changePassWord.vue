@@ -10,14 +10,23 @@
                                 :model="form">
                                 <el-form-item label="新密码"
                                               prop="password">
-                                              <el-input type="small"
-                                                        v-model="form.password">
+                                              <el-input  v-model="form.password"
+                                                          :type="input_type ? 'password' : 'text'">
+                                                          <i  slot="suffix"
+                                                              @click="input_type = !input_type"
+                                                              class="el-input__icon el-icon-view">
+                                                          </i>
                                               </el-input>
                                 </el-form-item>
                                 <el-form-item label="确认密码"
                                               prop="password_confirmation">
-                                              <el-input type="small"
-                                                        v-model="form.password_confirmation"></el-input>
+                                              <el-input  v-model="form.password_confirmation"
+                                                          :type="input_type2 ? 'password' : 'text'">
+                                                          <i  slot="suffix"
+                                                              @click="input_type2 = !input_type2"
+                                                              class="el-input__icon el-icon-view">
+                                                          </i>
+                                              </el-input>
                                 </el-form-item>
                       </el-form>
                       <span slot="footer"
@@ -36,6 +45,8 @@ export default {
   },
   data() {
     return {
+      input_type: true,
+      input_type2: true,
       form: {
         password: '',
         password_confirmation: '',
@@ -53,6 +64,16 @@ export default {
   computed: {
     user_id() {
       return +localStorage.getItem('setUser');
+    },
+  },
+  watch: {
+    visible() {
+      if (!this.visible) {
+        this.input_type = true;
+        this.input_type2 = true;
+        this.form.password = '';
+        this.form.password_confirmation = '';
+      }
     },
   },
   methods: {

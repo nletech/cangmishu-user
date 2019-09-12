@@ -82,12 +82,21 @@ export default {
       outboundCode: '', // 输入的出库单号
     };
   },
+  created() {
+    this.getOutboundTypes();
+  },
   computed: {
     warehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
   },
   methods: {
+    getOutboundTypes() {
+      $http.getOutboundTypes()
+        .then((res) => {
+          this.outboundStatusList = res.data;
+        });
+    },
     handlerChange() {
       // eslint-disable-next-line
       let data = [];

@@ -63,16 +63,14 @@
                             <el-input v-model="scope.row.sale_price"></el-input>
                           </template>
                         </el-table-column>
-                        <el-table-column :label="'操作'">
+                        <el-table-column :label="'是否上架'">
                           <template slot-scope="scope">
-                            <el-tooltip content="删除" placement="top">
-                              <el-button
-                                  size="mini" icon="el-icon-delete"
-                                  :disabled="true"
-                                  @click="delGoods(scope.row)"
-                                  type="danger" round>
-                              </el-button>
-                            </el-tooltip>
+                            <el-switch
+                              v-model="scope.row.is_shelf"
+                              :active-value="1"
+                              :inactive-value="0"
+                              inactive-color="#ff4949">
+                            </el-switch>
                           </template>
                         </el-table-column>
                     </el-table>
@@ -189,14 +187,14 @@ export default {
         });
       });
     },
-    delGoods(row) {
-      const arr = this.shop_form.specs;
-      for (let i = 0; i < arr.length; i += 1) {
-        if (arr[i].id === row.id) {
-          arr.splice(i, 1);
-        }
-      }
-    },
+    // delGoods(row) {
+    //   const arr = this.shop_form.specs;
+    //   for (let i = 0; i < arr.length; i += 1) {
+    //     if (arr[i].id === row.id) {
+    //       arr.splice(i, 1);
+    //     }
+    //   }
+    // },
     handleClose() {
       this.CarouselImgs = [];
       this.descriptionImgs = [];
@@ -223,6 +221,10 @@ export default {
             if (item === 'name_en') {
               // eslint-disable-next-line
               obj.name_en = this.shop_form.specs[i][item];
+            }
+            if (item === 'is_shelf') {
+              // eslint-disable-next-line
+              obj.is_shelf = this.shop_form.specs[i][item];
             }
           }
         }

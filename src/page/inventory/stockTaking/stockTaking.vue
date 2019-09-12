@@ -4,7 +4,13 @@
             <div :class="$style.stockTaking_table">
               <el-row>
                     <el-col  :span="2" :offset="22">
-                        <el-button @click="handlerCheckStock">新增盘点</el-button>
+                        <el-button
+                            type="text"
+                            :class="$style.btn"
+                            @click="handlerCheckStock"
+                            icon="el-icon-plus">
+                            新增盘点
+                        </el-button>
                     </el-col>
               </el-row>
             </div>
@@ -182,6 +188,9 @@ export default {
         this.previewStockDetails(this.stockId);
       }
     },
+    warehouseId() {
+      this.checkStockList();
+    },
   },
   computed: {
     api() {
@@ -304,6 +313,9 @@ export default {
   }
   .stockTaking_table {
     margin: 0 0 20px 0;
+  }
+  .btn {
+    font-size: @fontSize;
   }
   .pagination {
     margin: 10px 0 0 0;

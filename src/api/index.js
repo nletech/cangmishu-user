@@ -71,6 +71,9 @@ const $http = {
   getOutbound(data) {
     return Axios.get('/order', { params: data });
   }, // 获取出库单列表
+  getOutboundTypes() {
+    return Axios.get('/order/status');
+  }, // 获取出库单列表
   cancelOutbound(id, data) {
     return Axios.put(`/order/cancel/${id}`, data);
   }, // 取消出库单(取消订单)
@@ -461,6 +464,12 @@ const $http = {
   },
   openCaptcha() {
     return Axios.get('open/captcha');
+  },
+  LoginQR() {
+    return Axios.get('open/wechat/qr');
+  },
+  LoginQRCheck(data) {
+    return Axios.get('open/wechat/scan/login_callback', { params: data });
   },
 };
 export default $http;

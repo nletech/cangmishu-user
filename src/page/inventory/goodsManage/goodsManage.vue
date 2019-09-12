@@ -77,7 +77,7 @@
                                     :show-file-list="false">
                                     <el-button
                                         size="medium"
-                                        style="width: 144px;"
+                                        style="width: 144px; margin: 0 0 10px 0;"
                                         :class="$style.text_modify"
                                         @click="downloadTemplate">
                                         下载模板
@@ -440,15 +440,10 @@ export default {
     handleSuccess(res) {
       if (res.status === 0) {
         this.$message({
-          message: res.msg,
+          message: '导入成功',
           type: 'success',
         });
-        if (res.data[0].error[0]) {
-          this.$message({
-            message: res.data[0].error[0],
-            type: 'warning',
-          });
-        }
+        this.dialogVisible = false;
         this.getList(this.query);
       } else if (res.msg) {
         this.$notify({
@@ -486,7 +481,10 @@ export default {
     // 货品分类列表
     getTypeList() {
       if (!this.warehouseId) return;
-      $http.getCategoryManagement({ warehouse_id: this.warehouseId })
+      $http.getCategoryManagement({
+        warehouse_id: this.warehouseId,
+        page_size: 200,
+      })
         .then((res) => {
           this.typeList = res.data.data;
         });

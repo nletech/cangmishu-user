@@ -37,7 +37,7 @@
                             </el-checkbox>
                         </div>
                     </el-col>
-                    <el-col :span="2" :offset="9">
+                    <el-col :span="2" :offset="8">
                         <el-button
                             icon="el-icon-plus"
                             type="text"
@@ -237,7 +237,7 @@ export default {
     }, // 查询库存
     handlerSearch() {
       // eslint-disable-next-line
-      if (!this.query.product_name && !this.search_sku_value) return; // 无输入数据, 则不处理
+      if (!this.query.product_name && !this.query.sku) return; // 无输入数据, 则不处理
       this.getStocks(this.query);
     }, // 搜索响应
     handlerClear() {

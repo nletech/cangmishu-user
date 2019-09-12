@@ -143,7 +143,6 @@ export default {
         width: 1432px;
         margin-top: 20px;
         text-align: center;
-        background-color: RGBA(50, 50, 50, 1);
         color: @white;
         .footer_main_logo {
           background-image: url('../../../assets/img/homeLogin.png');
@@ -223,7 +222,6 @@ export default {
   }
 }
 .user_register_button {
-  margin-top: -5px;
   .el-button {
     width: 100%;
     font-size: 18px;

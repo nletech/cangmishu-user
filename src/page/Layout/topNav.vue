@@ -356,12 +356,13 @@ export default {
         margin: 20px 15px 28px 37px;
       }
       .UnickName {
-        width: 80px;
+        width: 100px;
         height: 100%;
         display: flex; // 文字垂直居中
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         overflow: hidden; // 以下样式 单行超出用 省略号代替
+        text-align: left;
         span {
           white-space: nowrap;
           text-overflow:ellipsis;

@@ -32,7 +32,7 @@
         <el-button type="primary" @click="SendMail">{{buttonText}}</el-button>
       </el-form-item>
     </el-form>
-    <span slot="bottom_text" style="position: relative; top: -260px;" @click="$router.push({ name: 'login' })">返回登录</span>
+    <span slot="bottom_text" style="position: relative; top: -300px;" @click="$router.push({ name: 'login' })">返回登录</span>
   </page-model>
 </template>
 <script>

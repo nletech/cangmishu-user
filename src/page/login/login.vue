@@ -1,65 +1,88 @@
 <template>
     <page-model>
-        <el-form
-            ref="refelogin"
-            :model="form"
-            :rules="rules"
-            :class="$style.input_item">
-            <el-form-item
-                prop="email"
-                class="login_model_form">
-                <el-input  :placeholder="$t('PleaseEnterTheMailbox')"
-                          clearable
-                          v-model="form.email"
-                          @keyup.enter.native="goLogin"
-                          size="small">
-                </el-input>
-            </el-form-item>
-            <el-form-item
-                prop="password"
-                :class="$style.item_password"
-                class="login_model_form">
-                <el-input  v-model="form.password"
-                            @keyup.enter.native="goLogin"
-                            :type="input_type ? 'password' : 'text'"
-                            :placeholder="$t('PleaseInputApassword')" size="small">
-                            <i  slot="suffix"
-                                @click="input_type = !input_type"
-                                class="el-input__icon el-icon-view">
-                            </i>
-                </el-input>
-            </el-form-item>
-            <el-form-item
-                :class="$style.save_user_info">
-                <div :class="$style.item_user_info">
-                      <div :class="$style.user_info_left"
-                            class="user_info_left">
-                            <el-checkbox v-model="keep">
-                              保存用户信息
-                            </el-checkbox>
-                      </div>
-                      <div :class="$style.user_info_right">
-                            <router-link :to="{name: 'backPassword'}">忘记密码</router-link>
-                      </div>
+        <el-tabs
+            stretch
+            v-model="activeName"
+            style="position: relative; top: -40px;">
+            <el-tab-pane label="账号密码" name="account">
+                <el-form
+                    ref="refelogin"
+                    :model="form"
+                    :rules="rules"
+                    :class="$style.input_item">
+                    <el-form-item
+                        prop="email"
+                        class="login_model_form">
+                        <el-input  :placeholder="$t('PleaseEnterTheMailbox')"
+                                  clearable
+                                  v-model="form.email"
+                                  @keyup.enter.native="goLogin"
+                                  size="small">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item
+                        prop="password"
+                        :class="$style.item_password"
+                        class="login_model_form">
+                        <el-input  v-model="form.password"
+                                    @keyup.enter.native="goLogin"
+                                    :type="input_type ? 'password' : 'text'"
+                                    :placeholder="$t('PleaseInputApassword')" size="small">
+                                    <i  slot="suffix"
+                                        @click="input_type = !input_type"
+                                        class="el-input__icon el-icon-view">
+                                    </i>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item
+                        :class="$style.save_user_info">
+                        <div :class="$style.item_user_info">
+                              <div :class="$style.user_info_left">
+                                    <el-checkbox v-model="keep">
+                                      保存用户信息
+                                    </el-checkbox>
+                              </div>
+                              <div :class="$style.user_info_right">
+                                    <router-link :to="{name: 'backPassword'}">忘记密码</router-link>
+                              </div>
+                        </div>
+                    </el-form-item>
+                    <el-form-item class="user_login_button">
+                                  <el-button  type="primary"
+                                              style="position: relative; margin-top: 30px;"
+                                              @click="goLogin">
+                                              登录
+                                  </el-button>
+                    </el-form-item>
+                    <el-form-item class="user_register_button">
+                        <slot name="bottom_text">
+                            <el-button
+                                @click="$router.push({name: 'register'})"
+                                type="text"
+                                plain>
+                                没有账号,立即注册
+                            </el-button>
+                        </slot>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="微信快捷登录" name="wechat">
+                <div style="text-align: center;">
+                  <img style="display: inline-block; padding: 2px; margin: 10px; border: 1px solid #ccc;" width="200px" height="200px" :src="qr" alt="">
+                  <span style="display: inline-block; font-size: 1.2rem;">无需注册，微信扫码关注公众号即可登录</span>
                 </div>
-            </el-form-item>
-            <el-form-item class="user_login_button">
-                          <el-button  type="primary"
-                                      :loading="isButtonLoading()"
-                                      @click="goLogin">
-                                      登录
-                          </el-button>
-            </el-form-item>
-            <el-form-item class="user_register_button">
-                          <el-button
-                              @click="$router.push({name: 'register'})"
-                              type="text"
-                              :loading="isButtonLoading()"
-                              plain>
-                              一步注册为用户
-                          </el-button>
-            </el-form-item>
-        </el-form>
+                <div class="user_register_button" style="margin: 20px 0 0 0;">
+                    <slot name="bottom_text">
+                        <el-button
+                            @click="$router.push({name: 'register'})"
+                            type="text"
+                            plain>
+                            没有账号,立即注册
+                        </el-button>
+                    </slot>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
     </page-model>
 </template>
 <script>
@@ -76,9 +99,11 @@ export default {
     return {
       input_type: true, // 密码显示开关
       keep: false, // 保存用户信息开关
+      qr: '', // 登录二维码
+      qr_key: '',
       rules: {
         email: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { required: true, message: '请输入您的邮箱或电话号码', trigger: 'blur' },
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -88,6 +113,9 @@ export default {
         email: '', // 用户邮箱
         password: '', // 用户密码
       },
+      activeName: 'account',
+      timer: '',
+      timer1: '',
     };
   },
   mounted() {
@@ -99,8 +127,51 @@ export default {
     } else {
       this.keep = true;
     }
+    this.getQR();
+  },
+  watch: {
+    activeName: {
+      handler(val) {
+        if (val === 'wechat') {
+          this.timer = setInterval(() => {
+            this.getQR();
+          }, 120 * 1000);
+          this.timer1 = setInterval(() => {
+            this.getQRChecked();
+          }, 2000);
+        } else {
+          clearInterval(this.timer);
+          clearInterval(this.timer1);
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
+    getQR() {
+      $http.LoginQR()
+        .then((res) => {
+          if (res.status) return;
+          this.qr = res.data.qr;
+          this.qr_key = res.data.qr_key;
+        });
+    },
+    getQRChecked() {
+      $http.LoginQRCheck({ qr_key: this.qr_key })
+        .then((res) => {
+          if (res.status) return;
+          console.log(res);
+          if (res.data.is_valid) {
+            if (!res.data.token) {
+              console.log('绑定账号');
+            } else {
+              console.log('直接登录');
+            }
+            clearInterval(this.timer);
+            clearInterval(this.timer1);
+          }
+        });
+    },
     // 登陆
     goLogin() {
       if (this.keep) {
