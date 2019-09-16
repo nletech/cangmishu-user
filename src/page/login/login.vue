@@ -66,7 +66,7 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane label="微信快捷登录" name="wechat">
+            <el-tab-pane label="微信公众号(快捷)" name="wechat">
                 <div style="text-align: center;">
                   <img style="display: inline-block; padding: 2px; margin: 10px; border: 1px solid #ccc;" width="200px" height="200px" :src="qr" alt="">
                   <span style="display: inline-block; font-size: 1.2rem;">无需注册，微信扫码关注公众号即可登录</span>
@@ -127,14 +127,18 @@ export default {
     } else {
       this.keep = true;
     }
-    this.getQR();
+    this.getWeChatQR(); // 初始化
+  },
+  destoryed() {
+    clearInterval(this.timer);
+    clearInterval(this.timer1);
   },
   watch: {
     activeName: {
       handler(val) {
         if (val === 'wechat') {
           this.timer = setInterval(() => {
-            this.getQR();
+            this.getWeChatQR();
           }, 120 * 1000);
           this.timer1 = setInterval(() => {
             this.getQRChecked();
@@ -145,34 +149,52 @@ export default {
         }
       },
       immediate: true,
-    },
+    }, // 监听微信扫码登录
   },
   methods: {
-    getQR() {
+
+    getWeChatQR() {
       $http.LoginQR()
         .then((res) => {
           if (res.status) return;
           this.qr = res.data.qr;
           this.qr_key = res.data.qr_key;
         });
-    },
+    }, // 获取微信二维码
+
     getQRChecked() {
       $http.LoginQRCheck({ qr_key: this.qr_key })
         .then((res) => {
           if (res.status) return;
-          console.log(res);
           if (res.data.is_valid) {
-            if (!res.data.token) {
-              console.log('绑定账号');
-            } else {
-              console.log('直接登录');
-            }
+            this.hadnlerLoginData(res);
             clearInterval(this.timer);
             clearInterval(this.timer1);
           }
         });
-    },
-    // 登陆
+    }, // 校验微信二维码
+
+    hadnlerLoginData(data) {
+      this.$store.commit('token/addToken', {
+        token: data.data.token.token_value,
+        keep: this.keep,
+        id: data.data.token.id,
+      }); // 将token保存到本地
+      // 存入用户信息
+      this.$store.commit('config/setWarehouseName', data.data.user.default_warehouse.name_cn);
+      this.$store.commit('config/setWarehouseId', data.data.user.default_warehouse.id);
+      this.$store.commit('config/setUserInfo', data.data.user.avatar);
+      localStorage.setItem('setUser', data.data.user.id); // 存入用户 id
+      localStorage.setItem('setUAvatar', data.data.user.avatar); // 存入用户 头像
+      localStorage.setItem('setUnickName', data.data.user.nickname); // 存入用户 昵称
+      localStorage.setItem('setUEmail', data.data.user.email); // 存入用户 昵称
+      localStorage.setItem('setUModules', JSON.stringify(data.data.modules)); // 存入用户 昵称
+      localStorage.setItem('setUType', data.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
+      this.$router.push({
+        name: 'home',
+      }); // 跳转到首页
+    }, // 处理登录信息
+
     goLogin() {
       if (this.keep) {
         localStorage.setItem('myEmail', this.form.email);
@@ -188,29 +210,10 @@ export default {
         $http.login(this.form)
           .then((res) => {
             if (res.status) return;
-            // 将token保存到本地
-            this.$store.commit('token/addToken', {
-              token: res.data.token.token_value,
-              keep: this.keep,
-              id: res.data.token.id,
-            });
-            // 存入用户信息
-            this.$store.commit('config/setWarehouseName', res.data.user.default_warehouse.name_cn);
-            this.$store.commit('config/setWarehouseId', res.data.user.default_warehouse.id);
-            this.$store.commit('config/setUserInfo', res.data.user.avatar);
-            localStorage.setItem('setUser', res.data.user.id); // 存入用户 id
-            localStorage.setItem('setUAvatar', res.data.user.avatar); // 存入用户 头像
-            localStorage.setItem('setUnickName', res.data.user.nickname); // 存入用户 昵称
-            localStorage.setItem('setUEmail', res.data.user.email); // 存入用户 昵称
-            localStorage.setItem('setUModules', JSON.stringify(res.data.modules)); // 存入用户 昵称
-            localStorage.setItem('setUType', res.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
-            // 跳转到首页
-            this.$router.push({
-              name: 'home',
-            });
+            this.hadnlerLoginData(res);
           });
       });
-    },
+    }, // 邮箱手机登陆
   },
 };
 </script>

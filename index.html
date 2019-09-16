@@ -1,17 +1,43 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]><html class="ie6"></html><![endif]-->
-<!--[if IE7]><html class="ie7"></html><![endif]-->
-<!--[if IE8]><html class="ie8"></html><![endif]-->
-<!--[if IE9]><html class="ie9"></html><![endif]-->
+  <!--[if lt IE 9.0]>
+    <html id="ieLt8">
+      <script src="./static/ie.js"></script>
+    </html>
+  <![endif]-->
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>仓秘书——免费的仓储订货平台系统</title>
     <link rel="shortcut icon" href="./static/cang.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./static/tips.css">
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <div id="ieTips" calss="main" style="display: none;">
+        <div class="tips">
+          <span>温馨提示：您当前的浏览器版本过低，存在安全风险，建议升级浏览器</span>
+        </div>
+        <div class="recomment">
+          <div class="recomment-tips">
+              <span>浏览器建议升级：</span>
+          </div>
+          <div class="recomment-img">
+              <div class="recomment-img-item">
+                  <img src="./static/asset/Chrome.png" alt="">
+                  <span><a href="www.google.cn/chrome/">谷歌Chrome</a></span>
+              </div>
+              <div class="recomment-img-item">
+                  <img src="./static/asset/ie.png" alt="">
+                  <span><a href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads">IE浏览器</a></span>
+              </div>
+              <div class="recomment-img-item">
+                  <img src="./static/asset/qq.png" alt="">
+                  <span><a href="https://browser.qq.com/">QQ浏览器</a></span>
+              </div>
+          </div>
+        </div>
+    </div>
   </body>
 </html>

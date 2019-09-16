@@ -51,35 +51,43 @@ function responseError(error) {
   nprogress.done();
   store.commit('config/loading', false);
   const ERRORSTATUS = error.response && error.response.status; // 捕获错误状态码
-  if (ERRORSTATUS === 401) {
-    store.commit('token/delToken');
-    router.push({
-      name: 'login',
-    });
-  } else if (ERRORSTATUS === 500) {
-    Message({
-      message: '服务器出错，请稍后重试...',
-      type: 'error',
-      showClose: true,
-    });
-  } else if (ERRORSTATUS === 422) {
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      showClose: true,
-    });
-  } else if (ERRORSTATUS === 404) {
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      showClose: true,
-    });
-  } else if (ERRORSTATUS === 403) {
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      showClose: true,
-    });
+  switch (ERRORSTATUS) {
+    case 401:
+      store.commit('token/delToken');
+      router.push({
+        name: 'login',
+      });
+      break;
+    case 403:
+      Message({
+        message: error.response.data.msg,
+        type: 'error',
+        showClose: true,
+      });
+      break;
+    case 404:
+      Message({
+        message: error.response.data.msg,
+        type: 'error',
+        showClose: true,
+      });
+      break;
+    case 422:
+      Message({
+        message: error.response.data.msg,
+        type: 'error',
+        showClose: true,
+      });
+      break;
+    case 500:
+      Message({
+        message: '服务器出错，请稍后重试...',
+        type: 'error',
+        showClose: true,
+      });
+      break;
+    default:
+      break;
   }
   return Promise.reject(error);
 }

@@ -53,13 +53,15 @@
          </div>
          <div :class="$style.user">
               <div  :class="$style.img"
+                    @mouseover="handlerAvatarMouseOver"
+                    @mouseleave="handlerAvatarMouseLeave"
                     @click="handleChangeUserinfo">
                     <span v-if="!Uavatar" style="border: 1px solid;">管</span>
                     <img  v-else :class="$style.avatar"
-                          style="display: inline-block; width: 100%;
-                                height: 100%;
-                                border-radius: 50%;"
                           :src="Uavatar">
+                    <div  :class="$style.avatar_hover_text">
+                          <span v-show="visible_avatar_text">修改资料</span>
+                    </div>
               </div>
               <div :class="$style.UnickName">
                    <span v-html="UnickName"></span>
@@ -104,13 +106,17 @@ import UserInfo from './components/userInfo'; // 修改个人资料
 
 export default {
   name: 'topNav',
+
   components: {
     ChangePassWord,
     UserInfo,
   },
+
   mixins: [mixin],
+
   data() {
     return {
+      visible_avatar_text: false,
       show_user_info_flag: false,
       show_psw_flag: false,
       warehouseList: [], // 仓库列表
@@ -121,11 +127,13 @@ export default {
       currentWarehouseId: this.warehouseId,
     };
   },
+
   created() {
     this.getWarehouses(); // 获取仓库列表
   },
 
   watch: {
+
     currentWarehouseId(val) {
       const arr = this.warehouseList;
       // 监听当前选择的仓库名称，如果选中的名称改变，则缓存改仓库的 id
@@ -135,56 +143,78 @@ export default {
         }
       }
     },
+
   },
   computed: {
     email() {
       return localStorage.getItem('email');
     }, // 获取邮箱
+
     sideNavStatus() {
       return +this.$store.state.config.shutdown_status;
     }, // 隐藏侧边栏标志
+
     Uavatar() {
       return this.$store.state.config.avatar || localStorage.getItem('setUAvatar');
     }, // 用户头像
+
     UnickName() {
       return this.$store.state.config.nickName || localStorage.getItem('setUnickName');
     }, // 用户名
+
     UType() {
       return +localStorage.getItem('setUType');
     }, // 用户类型: 商家或员工
+
   },
   methods: {
+    handlerAvatarMouseOver() {
+      this.visible_avatar_text = true;
+    },
+
+    handlerAvatarMouseLeave() {
+      this.visible_avatar_text = false;
+    },
+
     handleChangeUserinfo() {
       this.show_user_info_flag = true;
     }, // 修改个人资料
+
     handleChangePassWord() {
       this.show_psw_flag = true;
     }, // 修改密码
+
     to_store_management() {
       this.$router.replace({ name: 'storeManage' });
     }, // 跳转到-----仓库管理
+
     to_create_store() {
       this.$router.replace({ name: 'addWarehouse' });
     }, // 跳转到-----创建仓库
+
     shift_warehouse() {
       this.showWarehousesDialog = true;
       this.getWarehouses();
     }, // 切换仓库--确定按钮
+
     getWarehouses() {
       $http.warehouses().then((res) => {
         const data = res.data.data;
         this.warehouseList = data;
       });
     }, // 获取仓库列表
+
     handleConfirm() {
       this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
       this.showWarehousesDialog = false;
     },
+
     toggleWarehouseIcon() {
       if (this.warehouseList.length === 1) { return; }
       this.centerDialogVisible = true;
     },
+
     logout() {
       this.$confirm('此操作将退出系统, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -212,9 +242,11 @@ export default {
         });
       });
     }, // 注销
+
     closeSideNav() {
       this.$store.commit('config/closeSideNav', !+this.sideNavStatus);
     }, // 关闭导航栏
+
   },
 };
 </script>
@@ -346,14 +378,40 @@ export default {
       height: 80px;
       text-align: center;
       .img {
-        width: 41px;
-        height: 41px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
-        // border: 1px solid;
         cursor: pointer;
-        line-height: 41px;
         color: @ThemeColor;
-        margin: 20px 15px 28px 37px;
+        margin: 0 10px 0 10px;
+        position: relative;
+        transform: scale(0.8);
+        .avatar {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+        .avatar_hover_text {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          vertical-align: middle;
+          border-radius: 50%;
+          font-size: 1.1rem;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:hover {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .5);
+            transition: all .3s ease-in-out;
+          }
+        }
       }
       .UnickName {
         width: 100px;

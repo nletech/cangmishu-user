@@ -27,14 +27,15 @@
               </ul>
               <!-- 对应的子菜单 -->
               <ul  :class="$style.NavChild"
-                  ref="NavChild"
-                  v-show="li_show_switch"
-                  @click="handleClickCloseNavChild">
-                    <li  :class="$style.NavChild_li"
-                          v-for="item in li_NavChild"
-                          @click.self="handlerClick(item.name)"
-                          :key="item.name">
-                          {{$t(item.name)}}
+                   ref="NavChild"
+                   v-show="li_show_switch"
+                   @click="handleClickCloseNavChild">
+                    <li
+                        :class="$style.NavChild_li"
+                        v-for="item in li_NavChild"
+                        @click.self="handlerClick(item.name)"
+                        :key="item.name">
+                        {{$t(item.name)}}
                     </li>
               </ul>
           </div>
@@ -44,8 +45,7 @@
               v-show="sideNavStatus"
               @mouseleave="handleLeave1()">
               <!-- 侧边栏导航收缩之后 -->
-              <ul
-                  style="padding: 0;">
+              <ul style="padding: 0;">
                   <li
                       v-for="(item, index) in sideList"
                       style="width: 100%; line-height: 80px;

@@ -31,6 +31,7 @@ Vue.filter('storeType', (val) => {
   }
   return name;
 });
+
 Vue.filter('temperatureType', (val) => {
   let name = '';
   switch (+val) {
@@ -52,6 +53,7 @@ Vue.filter('temperatureType', (val) => {
   }
   return name;
 });
+
 Vue.filter('statusType', (val) => {
   let name = '';
   switch (+val) {
@@ -70,6 +72,7 @@ Vue.filter('statusType', (val) => {
   }
   return name;
 });
+
 Vue.filter('num_is_no', (val) => {
   if (!val) {
     return 0;
