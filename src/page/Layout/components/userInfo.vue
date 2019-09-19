@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="修改个人资料"
+        title="个人资料"
         width="40%"
         @update:visible="$emit('update:visible', $event)"
         :visible="visible"
@@ -11,7 +11,7 @@
             ref="validator"
             :model="form">
             <el-form-item
-                label="邮箱"
+                :label="$t('email')"
                 prop="userEmail">
                 <el-input type="small"
                           disabled
@@ -19,14 +19,14 @@
                 </el-input>
             </el-form-item>
             <el-form-item
-                label="用户名"
+                :label="$t('nick_name')"
                 prop="nickname">
                 <el-input type="small"
                           v-model="form.nickname">
                 </el-input>
             </el-form-item>
             <el-form-item
-                label="头像"
+                :label="$t('avatar')"
                 prop="avatar">
                   <my-upload
                       :img.sync="imageUrl"
@@ -39,7 +39,12 @@
         </el-form>
         <span slot="footer"
               class="dialog-footer">
-              <el-button type="primary" @click="submit">确 定</el-button>
+              <el-button
+                  type="primary"
+                  :loading="isButtonLoading()"
+                  @click="submit">
+                  {{$t('confirm')}}
+              </el-button>
         </span>
     </el-dialog>
 </template>
@@ -48,9 +53,11 @@
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import myUpload from '@/components/imageUpload/index';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'userInfo',
+  mixins: [mixin],
   props: {
     visible: [Boolean],
   },

@@ -1,5 +1,5 @@
 <template>
-    <page-model>
+    <page-model :title="$t('log_in')">
         <el-tabs
             stretch
             v-model="activeName"
@@ -39,11 +39,13 @@
                         <div :class="$style.item_user_info">
                               <div :class="$style.user_info_left">
                                     <el-checkbox v-model="keep">
-                                      保存用户信息
+                                      {{$t('AutoFill')}}
                                     </el-checkbox>
                               </div>
                               <div :class="$style.user_info_right">
-                                    <router-link :to="{name: 'backPassword'}">忘记密码</router-link>
+                                    <router-link :to="{name: 'backPassword'}">
+                                      {{$t('ForgetPassword')}}
+                                    </router-link>
                               </div>
                         </div>
                     </el-form-item>
@@ -51,7 +53,7 @@
                                   <el-button  type="primary"
                                               style="position: relative; margin-top: 30px;"
                                               @click="goLogin">
-                                              登录
+                                              {{$t('log_in')}}
                                   </el-button>
                     </el-form-item>
                     <el-form-item class="user_register_button">
@@ -60,7 +62,7 @@
                                 @click="$router.push({name: 'register'})"
                                 type="text"
                                 plain>
-                                没有账号,立即注册
+                                {{$t('register')}}
                             </el-button>
                         </slot>
                     </el-form-item>
@@ -77,7 +79,7 @@
                             @click="$router.push({name: 'register'})"
                             type="text"
                             plain>
-                            没有账号,立即注册
+                            {{$t('register')}}
                         </el-button>
                     </slot>
                 </div>

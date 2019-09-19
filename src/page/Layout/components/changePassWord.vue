@@ -1,39 +1,50 @@
 <template>
-          <el-dialog  title="修改密码"
-                      width="40%"
-                      @update:visible="$emit('update:visible', $event)"
-                      :visible="visible"
-                      center>
-                      <el-form  label-width="120px"
-                                :rules="rules"
-                                ref="validator"
-                                :model="form">
-                                <el-form-item label="新密码"
-                                              prop="password">
-                                              <el-input  v-model="form.password"
-                                                          :type="input_type ? 'password' : 'text'">
-                                                          <i  slot="suffix"
-                                                              @click="input_type = !input_type"
-                                                              class="el-input__icon el-icon-view">
-                                                          </i>
-                                              </el-input>
-                                </el-form-item>
-                                <el-form-item label="确认密码"
-                                              prop="password_confirmation">
-                                              <el-input  v-model="form.password_confirmation"
-                                                          :type="input_type2 ? 'password' : 'text'">
-                                                          <i  slot="suffix"
-                                                              @click="input_type2 = !input_type2"
-                                                              class="el-input__icon el-icon-view">
-                                                          </i>
-                                              </el-input>
-                                </el-form-item>
-                      </el-form>
-                      <span slot="footer"
-                            class="dialog-footer">
-                            <el-button type="primary" @click="submit">确 定</el-button>
-                      </span>
-          </el-dialog>
+    <el-dialog
+        :title="$t('ChangePassword')"
+        width="40%"
+        @update:visible="$emit('update:visible', $event)"
+        :visible="visible"
+        center>
+        <el-form
+            label-width="120px"
+            :rules="rules"
+            ref="validator"
+            :model="form">
+            <el-form-item
+                :label="$t('oldPassword')"
+                prop="password">
+                <el-input
+                    v-model="form.password"
+                    :type="input_type ? 'password' : 'text'">
+                    <i  slot="suffix"
+                        @click="input_type = !input_type"
+                        class="el-input__icon el-icon-view">
+                    </i>
+                </el-input>
+            </el-form-item>
+            <el-form-item
+                :label="$t('newPassword')"
+                prop="password_confirmation">
+                <el-input
+                    v-model="form.password_confirmation"
+                    :type="input_type2 ? 'password' : 'text'">
+                    <i  slot="suffix"
+                        @click="input_type2 = !input_type2"
+                        class="el-input__icon el-icon-view">
+                    </i>
+                </el-input>
+            </el-form-item>
+        </el-form>
+        <span
+            slot="footer"
+            class="dialog-footer">
+            <el-button
+                type="primary"
+                @click="submit">
+                {{$t('confirm')}}
+            </el-button>
+        </span>
+    </el-dialog>
 </template>
 <script>
 import $http from '@/api';
@@ -53,10 +64,10 @@ export default {
       },
       rules: {
         password: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { required: true, message: this.$t('inputPsw'), trigger: 'blur' },
         ],
         password_confirmation: [
-          { required: true, message: '请确认密码', trigger: 'blur' },
+          { required: true, message: this.$t('inputPsw'), trigger: 'blur' },
         ],
       },
     };

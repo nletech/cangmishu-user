@@ -43,13 +43,13 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'login',
   props: {
     title: {
       type: String,
-      default: '登录',
     },
     type: {
       type: Boolean,
@@ -62,6 +62,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" module>
   @import '../../../less/public_variable.less';
   .page_model {
@@ -202,6 +203,7 @@ export default {
     }
   }
 </style>
+
 <style lang="less">
 @import '../../../less/public_variable.less';
 .login_model_form {

@@ -214,12 +214,15 @@ export default {
         ],
       };
     },
+
     Authorization() {
       return { Authorization: this.$store.state.token.token };
     },
+
     api() {
       return `${baseApi}/upload/image`;
     },
+
     imgUrl() {
       return `${baseApi}${this.form.photos}`;
     },
@@ -232,6 +235,7 @@ export default {
         });
       });
     },
+
     resetData() {
       this.specModel = {
         id: 0,
@@ -245,19 +249,23 @@ export default {
 
       return this.specModel;
     },
+
     addNewLine() {
       this.specList.push(this.resetData());
     },
+
     // 货品分类列表
     getTypeList() {
       $http.getCategoryManagement({ warehouse_id: this.warehouseId }).then((res) => {
         this.typeList = res.data.data;
       });
     },
+
     // 删除规格
     delSpec(row, index) {
       this.specList.splice(index, 1);
     },
+
     // 提交商品信息
     onSubmitGoods(formName) {
       let ctr = true;

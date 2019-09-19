@@ -48,83 +48,87 @@
                         </el-button>
                     </el-col>
             </el-row>
-            <el-table  :data="stockList"
-                        border>
-                        <el-table-column  type="expand">
-                            <template  slot-scope="props">
-                                <el-table
-                                    :data="props.row.stocks"
-                                    border>
-                                    <el-table-column label="入库批次" prop="sku">
-                                    </el-table-column>
-                                    <el-table-column label="最佳食用期" prop="best_before_date">
-                                    </el-table-column>
-                                    <el-table-column label="保质期" prop="expiration_date">
-                                    </el-table-column>
-                                    <el-table-column label="生产批次号" prop="production_batch_number">
-                                    </el-table-column>
-                                    <el-table-column label="EAN" prop="ean">
-                                    </el-table-column>
-                                    <el-table-column label="仓库库存" prop="stock_num">
-                                    </el-table-column>
-                                    <el-table-column label="盘点次数" prop="recount_times">
-                                    </el-table-column>
-                                    <el-table-column label="位置" prop="warehouse_location_code">
-                                    </el-table-column>
-                                    <el-table-column
-                                        label="出入库记录">
-                                        <template slot-scope="scope">
-                                          <el-button
-                                          size="small"
-                                          @click="showStockDetail(scope.row)">详情</el-button>
-                                        </template>
-                                    </el-table-column>
-                                </el-table>
-                            </template>
-                      </el-table-column>
-                      <el-table-column  type="index"
-                                        label="#">
-                      </el-table-column>
-                      <el-table-column  label="货品名称">
-                                        <template slot-scope="scope">
-                                                  {{scope.row.product_name}}
-                                        </template>
-                      </el-table-column>
-                      <el-table-column  label="中文规格">
-                                        <template slot-scope="scope">
-                                                  {{scope.row.name_cn}}
-                                        </template>
-                      </el-table-column>
-                      <el-table-column  prop="relevance_code"
-                                        label="SKU">
-                      </el-table-column>
-                      <el-table-column  prop="total_stock_num"
-                                        label="仓库库存">
-                      </el-table-column>
-                      <el-table-column  label="入库次数/数量">
-                          <template slot-scope="scope">
-                              {{scope.row.total_stockin_times}} / {{scope.row.total_stockin_num}}
-                          </template>
-                      </el-table-column>
-                      <el-table-column  prop="stock_out_times"
-                                        label="出库次数/数量">
-                          <template slot-scope="scope">
-                              {{scope.row.total_stockout_times}} / {{scope.row.total_stockout_num}}
-                          </template>
-                      </el-table-column>
-                      <el-table-column  label="出入库记录">
-                          <template slot-scope="scope">
-                              <el-button size="mini" @click="viewDetails(scope.row)">详情</el-button>
-                          </template>
-                      </el-table-column>
+            <el-table
+                element-loading-text="loading"
+                v-loading="isButtonLoading()"
+                :data="stockList"
+                border>
+                <el-table-column  type="expand">
+                      <template  slot-scope="props">
+                          <el-table
+                              :data="props.row.stocks"
+                              border>
+                              <el-table-column label="入库批次" prop="sku">
+                              </el-table-column>
+                              <el-table-column label="最佳食用期" prop="best_before_date">
+                              </el-table-column>
+                              <el-table-column label="保质期" prop="expiration_date">
+                              </el-table-column>
+                              <el-table-column label="生产批次号" prop="production_batch_number">
+                              </el-table-column>
+                              <el-table-column label="EAN" prop="ean">
+                              </el-table-column>
+                              <el-table-column label="仓库库存" prop="stock_num">
+                              </el-table-column>
+                              <el-table-column label="盘点次数" prop="recount_times">
+                              </el-table-column>
+                              <el-table-column label="位置" prop="warehouse_location_code">
+                              </el-table-column>
+                              <el-table-column
+                                  label="出入库记录">
+                                  <template slot-scope="scope">
+                                    <el-button
+                                    size="small"
+                                    @click="showStockDetail(scope.row)">详情</el-button>
+                                  </template>
+                              </el-table-column>
+                          </el-table>
+                      </template>
+                </el-table-column>
+                <el-table-column  type="index"
+                                  label="#">
+                </el-table-column>
+                <el-table-column  label="货品名称">
+                                  <template slot-scope="scope">
+                                            {{scope.row.product_name}}
+                                  </template>
+                </el-table-column>
+                <el-table-column  label="中文规格">
+                                  <template slot-scope="scope">
+                                            {{scope.row.name_cn}}
+                                  </template>
+                </el-table-column>
+                <el-table-column  prop="relevance_code"
+                                  label="SKU">
+                </el-table-column>
+                <el-table-column  prop="total_stock_num"
+                                  label="仓库库存">
+                </el-table-column>
+                <el-table-column  label="入库次数/数量">
+                    <template slot-scope="scope">
+                        {{scope.row.total_stockin_times}} / {{scope.row.total_stockin_num}}
+                    </template>
+                </el-table-column>
+                <el-table-column  prop="stock_out_times"
+                                  label="出库次数/数量">
+                    <template slot-scope="scope">
+                        {{scope.row.total_stockout_times}} / {{scope.row.total_stockout_num}}
+                    </template>
+                </el-table-column>
+                <el-table-column  label="出入库记录">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="viewDetails(scope.row)">详情</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
             <el-row>
-              <el-col :span="2" :offset="22">
-                    <pagination-public  :class="$style.pagination"
-                                        :params="params"
-                                        @changePage="handlerChangePage">
-                    </pagination-public>
-              </el-col>
+                <el-col :span="2" :offset="22">
+                      <pagination-public
+                          :class="$style.pagination"
+                          :params="params"
+                          @changePage="handlerChangePage">
+                      </pagination-public>
+                </el-col>
             </el-row>
         </div>
         <!-- 导出商品库存弹框 -->

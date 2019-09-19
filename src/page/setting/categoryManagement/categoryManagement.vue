@@ -10,6 +10,8 @@
                       </span>
                   </div>
                   <el-table
+                      element-loading-text="loading"
+                      v-loading="isButtonLoading()"
                       :data="category_list"
                       :class="$style.table_main"
                       :fit = true

@@ -15,6 +15,8 @@
               </el-row>
             </div>
             <el-table
+                element-loading-text="loading"
+                v-loading="isButtonLoading()"
                 :data="outbound_list_data"
                 border
                 style="width:100%">

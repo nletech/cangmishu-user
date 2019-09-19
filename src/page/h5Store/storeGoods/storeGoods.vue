@@ -19,6 +19,8 @@
                 </el-row>
             </div>
             <el-table
+                element-loading-text="loading"
+                v-loading="isButtonLoading()"
                 :data="goodsList"
                 @selection-change="handleSelectionChange"
                 border>

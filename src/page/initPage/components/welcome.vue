@@ -27,19 +27,19 @@
         <el-col :span="8">
           <el-card shadow="hover" @click.native="goToTag('goodsAdd')">
             <i class="el-icon-shopping-bag-2"></i>
-            <p>新增货品库</p>
+            <p>{{$t('goodsAdd')}}</p>
           </el-card>
         </el-col>
         <el-col :span="8">
           <el-card shadow="hover" @click.native="goToTag('addInbound')">
             <i class="el-icon-sell"></i>
-            <p>新增入库单</p>
+            <p>{{$t('addInbound')}}</p>
           </el-card>
         </el-col>
         <el-col :span="8">
           <el-card shadow="hover" @click.native="goToTag('addOutbound')">
             <i class="el-icon-sold-out"></i>
-            <p>新增出库单</p>
+            <p>{{$t('addOutbound')}}</p>
           </el-card>
         </el-col>
       </el-row>
@@ -47,19 +47,19 @@
         <el-col :span="8">
           <el-card shadow="hover" @click.native="goToTag('inventoryManage')">
             <i class="el-icon-box"></i>
-            <p>库存管理</p>
+            <p>{{$t('inventoryManage')}}</p>
           </el-card>
         </el-col>
         <el-col :span="8">
           <el-card shadow="hover" @click.native="goToTag('storeManage')">
             <i class="el-icon-s-home"></i>
-            <p>仓库管理</p>
+            <p>{{$t('storeManage')}}</p>
           </el-card>
         </el-col>
         <el-col :span="8">
           <el-card shadow="hover" @click.native="goToTag('shops')">
             <i class="el-icon-shopping-cart-1"></i>
-            <p>店铺管理</p>
+            <p>{{$t('shopsManagement')}}</p>
           </el-card>
         </el-col>
       </el-row>

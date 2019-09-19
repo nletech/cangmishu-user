@@ -13,7 +13,7 @@
           {{$t(key)}}&nbsp;
           <span v-if="shopName">/</span>
           &nbsp;&nbsp;
-          <span></span>{{shopName}}
+          <span>{{shopName}}</span>
           <el-popover
               v-if="shopTips"
               placement="top-start"
@@ -40,17 +40,13 @@
             @click="$router.go(-1)"
             icon="el-icon-back"
           >
-            返回
+            {{$t('Back')}}
           </el-button>
         </el-col>
       </el-row>
     </div>
     <!-- 右侧主要内容展示区 -->
-    <router-view
-      :key="key"
-      :class="$style.content"
-    >
-    </router-view>
+    <router-view :key="key" :class="$style.content"></router-view>
     <!-- 底部产权说明 -->
     <div :class="$style.footer">
       <div :class="$style.footer_description">

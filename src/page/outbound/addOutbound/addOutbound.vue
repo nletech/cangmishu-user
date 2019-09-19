@@ -44,7 +44,7 @@
                         <el-button
                             :loading="isButtonLoading()"
                             type="primary"
-                            @click="onSubmit()">
+                            @click.once="onSubmit()">
                             提交
                         </el-button>
                     </el-col>

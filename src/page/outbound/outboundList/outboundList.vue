@@ -27,6 +27,8 @@
                 </el-col>
             </el-row>
             <el-table
+                element-loading-text="loading"
+                v-loading="isButtonLoading()"
                 stripe
                 :data="outbound_list_data"
                 border>

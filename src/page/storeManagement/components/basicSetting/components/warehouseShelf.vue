@@ -1,38 +1,41 @@
 <template>
   <div>
-    <el-table  :data="shelf_list_data"
-               border
-               style="width: 100%">
-               <el-table-column
-                 type="index"
-                 label="#">
-               </el-table-column>
-               <el-table-column  prop="code"
-                                 label="编号">
-               </el-table-column>
-               <el-table-column  prop="warehouse_area.name_cn"
-                                 label="所属货区">
-               </el-table-column>
-               <el-table-column  label="启用状态">
-                                 <template slot-scope="scope">
-                                   {{scope.row.is_enabled === 1 ? '是' : '否'}}
-                                 </template>
-               </el-table-column>
-               <el-table-column  width="260"
-                                 label="操作">
-                  <template slot-scope="scope">
-                    <el-tooltip content="编辑" placement="top">
-                      <el-button size="mini" icon="el-icon-edit" round
-                                  @click="edit(scope.row.id)"></el-button>
-                    </el-tooltip>
-                    <el-tooltip content="删除" placement="top">
-                      <el-button  size="mini" icon="el-icon-delete"
-                                       @click="del(scope.row.id)"
-                                       type="danger" round>
-                      </el-button>
-                    </el-tooltip>
-                  </template>
-               </el-table-column>
+    <el-table
+        element-loading-text="loading"
+        v-loading="isButtonLoading()"
+        :data="shelf_list_data"
+        border
+        style="width: 100%">
+        <el-table-column
+          type="index"
+          label="#">
+        </el-table-column>
+        <el-table-column  prop="code"
+                          label="编号">
+        </el-table-column>
+        <el-table-column  prop="warehouse_area.name_cn"
+                          label="所属货区">
+        </el-table-column>
+        <el-table-column  label="启用状态">
+                          <template slot-scope="scope">
+                            {{scope.row.is_enabled === 1 ? '是' : '否'}}
+                          </template>
+        </el-table-column>
+        <el-table-column  width="260"
+                          label="操作">
+          <template slot-scope="scope">
+            <el-tooltip content="编辑" placement="top">
+              <el-button size="mini" icon="el-icon-edit" round
+                          @click="edit(scope.row.id)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <el-button  size="mini" icon="el-icon-delete"
+                                @click="del(scope.row.id)"
+                                type="danger" round>
+              </el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
     </el-table>
     <!-- 分页组件 -->
     <el-pagination  :class="$style.pagination"
@@ -47,8 +50,10 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
+  mixins: [mixin],
   mounted() {
     if (this.show_data_flag === '货位') {
       this.get_data();

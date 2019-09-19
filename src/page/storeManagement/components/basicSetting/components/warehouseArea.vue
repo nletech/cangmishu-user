@@ -1,38 +1,41 @@
 <template>
     <div>
-        <el-table  :data="Area_data"
-                    border
-                    style="width: 100%">
-                    <el-table-column  type="index"
-                                    label="#">
-                    </el-table-column>
-                    <el-table-column  prop="code"
-                                    label="编号">
-                    </el-table-column>
-                    <el-table-column  prop="name_cn"
-                                    label="名称">
-                    </el-table-column>
-                    <el-table-column  prop="functions"
-                                    label="启用状态">
-                      <template slot-scope="scope">
-                        {{scope.row.is_enabled | switchTypeCn}}
-                      </template>
-                    </el-table-column>
-                    <el-table-column  label="操作"
-                                    width="320">
-                      <template slot-scope="scope">
-                        <el-tooltip content="编辑" placement="top">
-                          <el-button size="mini" icon="el-icon-edit" round
-                                      @click="edit(scope.row.id)"></el-button>
-                        </el-tooltip>
-                        <el-tooltip content="删除" placement="top">
-                          <el-button  size="mini" icon="el-icon-delete"
-                                            @click="del(scope.row.id)"
-                                            type="danger" round>
-                          </el-button>
-                        </el-tooltip>
-                      </template>
-                    </el-table-column>
+        <el-table
+            element-loading-text="loading"
+            v-loading="isButtonLoading()"
+            :data="Area_data"
+            border
+            style="width: 100%">
+            <el-table-column  type="index"
+                            label="#">
+            </el-table-column>
+            <el-table-column  prop="code"
+                            label="编号">
+            </el-table-column>
+            <el-table-column  prop="name_cn"
+                            label="名称">
+            </el-table-column>
+            <el-table-column  prop="functions"
+                            label="启用状态">
+              <template slot-scope="scope">
+                {{scope.row.is_enabled | switchTypeCn}}
+              </template>
+            </el-table-column>
+            <el-table-column  label="操作"
+                            width="320">
+              <template slot-scope="scope">
+                <el-tooltip content="编辑" placement="top">
+                  <el-button size="mini" icon="el-icon-edit" round
+                              @click="edit(scope.row.id)"></el-button>
+                </el-tooltip>
+                <el-tooltip content="删除" placement="top">
+                  <el-button  size="mini" icon="el-icon-delete"
+                                    @click="del(scope.row.id)"
+                                    type="danger" round>
+                  </el-button>
+                </el-tooltip>
+              </template>
+            </el-table-column>
         </el-table>
         <!-- 分页组件 -->
         <el-pagination  :class="$style.pagination"
@@ -47,8 +50,11 @@
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
+
 
 export default {
+  mixins: [mixin],
   props: {
     id: [String],
     show_data_flag: [String],

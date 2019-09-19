@@ -13,7 +13,11 @@
             </el-col>
         </el-row>
         <el-row>
-            <el-table  :data="shops" border>
+            <el-table
+                element-loading-text="loading"
+                v-loading="isButtonLoading()"
+                :data="shops"
+                border>
                 <el-table-column label="#" type="index" width="80" header-align="center" align="center" ></el-table-column>
                 <el-table-column  prop="name_cn" label="店铺名称" header-align="center" align="center" >
                 </el-table-column>

@@ -8,16 +8,14 @@ import './lib/elementUi/index.css';
 import store from './store/index';
 import './filter';
 import Messages from './lib/l18n/index';
-import MyTableHeader from './components/my_table_header';
-import MyTableItem from './components/my_table_header/my_table_item';
 import CancelButton from './components/cancel_button';
+// eslint-disable-next-line
+require("es6-promise").polyfill();
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
 Vue.use(VueI18n);
-Vue.component('my-table-header', MyTableHeader);
-Vue.component('my-table-item', MyTableItem);
 Vue.component('cancel-button', CancelButton);
 
 const i18n = new VueI18n({

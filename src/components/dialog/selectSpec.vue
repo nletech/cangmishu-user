@@ -25,7 +25,7 @@
                     <!-- 添加商品 -->
                     <el-col :span="4" :offset="4" >
                       <div style="float:right">
-                      <el-button :loading="isButtonLoading" @click="goToAddGoodPage" icon="el-icon-document-add"> 添加商品 </el-button>
+                      <el-button :loading="isButtonLoading()" @click="goToAddGoodPage" icon="el-icon-document-add"> 添加商品 </el-button>
                       </div>
                     </el-col>
                   </el-row>
@@ -45,6 +45,8 @@
               <el-col :span="19"  style="border-left:1px solid #ccc">
                   <!-- 数据表 -->
                   <el-table
+                      element-loading-text="loading"
+                      v-loading="isButtonLoading()"
                       :data="specList"
                       ref="table"
                       border
@@ -74,11 +76,11 @@
                   <el-button
                       type="primary"
                       @click="confirmSelected"
-                      :loading="isButtonLoading"
+                      :loading="isButtonLoading()"
                       :disabled="!this.specSelected.length">
                       提交
                   </el-button>
-                  <el-button @click="handleClose()" :loading="isButtonLoading">取消</el-button>
+                  <el-button @click="handleClose()" :loading="isButtonLoading()">取消</el-button>
                 </div>
               </el-col>
             </el-row>
@@ -89,10 +91,12 @@
 import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
+import mixin from '@/mixin/form_config';
 
 
 export default {
   name: 'selectSpec',
+  mixins: [mixin],
   props: {
     visible: {
       type: Boolean,
@@ -140,11 +144,6 @@ export default {
         this.loadSpecDataList();
         clearTimeout(timer);
       }, 300);
-    },
-  },
-  computed: {
-    isButtonLoading() {
-      return this.$store.state.config.button_loading;
     },
   },
   methods: {

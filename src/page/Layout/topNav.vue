@@ -4,7 +4,7 @@
     :class="$style.top_nav"
     class="top_nav">
     <div :class="$style.nav">
-       <div  :class="$style.top_nav_logo"
+      <div  :class="$style.top_nav_logo"
              :style="{ width: sideNavStatus ? '80px' : '200px' }">
              <span v-if="!sideNavStatus">仓秘书</span>
              <img v-else src="../../assets/img/cang.png" alt="仓秘书">
@@ -45,6 +45,11 @@
     </div>
     <!-- 用户信息 -->
     <div :class="$style.user_info">
+         <div :class="$style.selectLang">
+            <span @click="handlerClick">
+            当前语言: &nbsp; {{this.$i18n.locale | langFilter}}
+            </span>
+         </div>
          <div  v-if="isShowSelectWarehouseIcon"
                @click="toggleWarehouseIcon"
                :class="$style.warehouse">
@@ -106,7 +111,6 @@ import UserInfo from './components/userInfo'; // 修改个人资料
 
 export default {
   name: 'topNav',
-
   components: {
     ChangePassWord,
     UserInfo,
@@ -133,7 +137,6 @@ export default {
   },
 
   watch: {
-
     currentWarehouseId(val) {
       const arr = this.warehouseList;
       // 监听当前选择的仓库名称，如果选中的名称改变，则缓存改仓库的 id
@@ -167,7 +170,21 @@ export default {
     }, // 用户类型: 商家或员工
 
   },
+
+  filters: {
+    langFilter(val) {
+      if (val === 'cn') {
+        return 'CN';
+      }
+      return 'EN';
+    },
+  },
+
   methods: {
+    handlerClick() {
+      // eslint-disable-next-line
+      this.$i18n.locale === 'cn' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'cn';
+    },
     handlerAvatarMouseOver() {
       this.visible_avatar_text = true;
     },
@@ -264,6 +281,7 @@ export default {
     overflow: auto;
   }
 }
+
 .selectline {
   display: block!important;
   margin-top: 20px;
@@ -274,6 +292,7 @@ export default {
     border-radius: 4px;
   }
 }
+
 .top_nav {
   height: 80px;
   background-color: @white;
@@ -313,8 +332,8 @@ export default {
         }
       }
     }
-
   }
+
   .switch(@width) {
     border-right: 1px solid;
     border-color: @separateLine;
@@ -322,6 +341,7 @@ export default {
     text-align: center;
     line-height: 80px;
   }
+
   .top_nav_logo {
     width: 200px;
     height: 80px;
@@ -336,6 +356,7 @@ export default {
       width: 50px;
     }
   }
+
   .side_nav_switch {
     height: 80px;
     .switch(103px);
@@ -345,14 +366,23 @@ export default {
       cursor: pointer;
     }
   }
+
   .lang_switch {
     .switch(113px)
   }
+
   .user_info {
-    width: 40%;
+    width: 50%;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     justify-content: flex-end;
+    .selectLang {
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
     .warehouse {
       cursor: pointer;
       line-height: 80px;
@@ -367,6 +397,7 @@ export default {
         line-height: 26px;
       }
     }
+
     .user {
       border-left: 1px solid;
       margin-left: 20px;
@@ -413,6 +444,7 @@ export default {
           }
         }
       }
+
       .UnickName {
         width: 100px;
         height: 100%;
@@ -427,6 +459,7 @@ export default {
           font-size: 1.1rem;
         }
       }
+
       .logout {
         width: 80px;
         height: 100%;
@@ -435,6 +468,7 @@ export default {
         align-items: center;
         cursor: pointer;
       }
+
     }
     .model_color(@color) {
       width: 21px;

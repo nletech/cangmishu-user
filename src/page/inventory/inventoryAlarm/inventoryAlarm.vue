@@ -23,6 +23,8 @@
           </el-form-item>
           <el-form-item label="货品分类:">
               <el-table
+                  element-loading-text="loading"
+                  v-loading="isButtonLoading()"
                   :data="stockList"
                   border style="width: 100%">
                   <el-table-column

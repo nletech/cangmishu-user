@@ -1,5 +1,5 @@
 <template>
-    <page-model title="注册" :type="tips">
+    <page-model :title="$t('FistRegister')" :type="tips">
         <el-tabs
             stretch
             v-model="activeName"
@@ -12,7 +12,7 @@
                       :class="$style.input_item">
                       <el-form-item
                           :class="$style.item_email">
-                            <el-input  placeholder="请输入邮箱"
+                            <el-input  :placeholder="$t('PleaseFillInYourEmailAddress')"
                                         v-model="form.email"
                                         size="small">
                                         <template slot="append">
@@ -61,7 +61,7 @@
                           <el-input
                               v-model="form.code"
                               type="text"
-                              placeholder="请输入验证码"
+                              :placeholder="$t('inputVcode')"
                               size="small">
                           </el-input>
                       </el-form-item>
@@ -71,7 +71,7 @@
                           <el-input
                               v-model="form.password"
                               :type="input_type ? 'password' : 'text'"
-                              placeholder="请输入登录密码"
+                              :placeholder="$t('PleaseFillInYourEmailAddress')"
                               size="small">
                           </el-input>
                       </el-form-item>
@@ -89,7 +89,7 @@
                               v-model="form.warehouse_area"
                               placeholder="请输入仓库面积"
                               size="small">
-                              <template slot="append">平方米</template>
+                              <template slot="append">m²</template>
                           </el-input>
                       </el-form-item>
                       <el-form-item
@@ -107,7 +107,7 @@
                           <el-button
                               @click="goRegister('email')"
                               type="primary">
-                              注册
+                              {{$t('FistRegister')}}
                           </el-button>
                       </el-form-item>
                       <el-button
@@ -180,7 +180,7 @@
                         <el-input
                             v-model="formPhone.code"
                             type="text"
-                            placeholder="请输入验证码"
+                            :placeholder="$t('inputVcode')"
                             size="small">
                         </el-input>
                     </el-form-item>
@@ -190,7 +190,7 @@
                         <el-input
                             v-model="formPhone.password"
                             :type="input_type ? 'password' : 'text'"
-                            placeholder="请输入登录密码"
+                            :placeholder="$t('PleaseFillInYourPassword')"
                             size="small">
                         </el-input>
                     </el-form-item>
@@ -208,7 +208,7 @@
                             v-model="formPhone.warehouse_area"
                             placeholder="请输入仓库面积"
                             size="small">
-                            <template slot="append">平方米</template>
+                            <template slot="append">m²</template>
                         </el-input>
                     </el-form-item>
                     <el-form-item
@@ -230,7 +230,7 @@
                         <el-button
                             @click="goRegister('phone')"
                             type="primary">
-                            注册
+                            {{$t('FistRegister')}}
                         </el-button>
                     </el-form-item>
                     <el-button
@@ -337,17 +337,6 @@ export default {
       }
       return callback();
     };
-    const vEmail = (rule, value, callback) => {
-      // eslint-disable-next-line
-      const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-      if (!reg.test(value)) {
-        return callback(Error('请输入正确的邮箱'));
-      }
-      if (value === '') {
-        return callback(Error('邮箱不能为空'));
-      }
-      return callback();
-    };
     const vPassword = (rule, value, callback) => {
       const val = String(value).replace(/\s+/g, '').split(''); // 先去掉所有空格 然后将字符串转换成数组
       if (val.length === 0) {
@@ -373,9 +362,6 @@ export default {
     };
     return {
       rules: {
-        email: [
-          { validator: vEmail, required: true, tigger: 'bulr' },
-        ],
         code: [
           { validator: vCode, required: true, tigger: 'bulr' },
         ],

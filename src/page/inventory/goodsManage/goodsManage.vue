@@ -107,6 +107,8 @@
         </div>
         <!-- 货品数据展示列表 -->
         <el-table
+            element-loading-text="loading"
+            v-loading="isButtonLoading()"
             :data="goods_list_data"
             @selection-change="handleSelectionChange"
             border>
@@ -291,9 +293,6 @@
 </template>
 
 <script>
-import MyInput from '@/components/my_input';
-import MySelect from '@/components/my_select';
-import MyGroup from '@/components/my_group';
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import inputPublic from '@/components/input-public';
@@ -331,9 +330,6 @@ export default {
     };
   },
   components: {
-    MyInput,
-    MyGroup,
-    MySelect,
     inputPublic,
     paginationPublic,
   },

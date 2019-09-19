@@ -12,44 +12,47 @@
                     </span>
                 </div>
               <!-- 对应的标签页内容 -->
-                <el-table   :class="$style.table_main"
-                            :data="info_data"
-                            border>
-                            <el-table-column  label="#"
-                                              header-align="center"
-                                              align="center"
-                                              type="index"
-                                              width="80">
-                            </el-table-column>
-                            <el-table-column  label="供应商中文名"
-                                              header-align="center"
-                                              align="center"
-                                              prop="name_cn">
-                            </el-table-column>
-                            <!-- <el-table-column  label="供应商英文名"
-                                              header-align="center"
-                                              align="center"
-                                              prop="name_en" v-if="isEnabledLangInput()">
-                            </el-table-column> -->
-                            <el-table-column
-                                label="操作"
-                                header-align="center"
-                                width="240">
-                                <template
-                                    slot-scope="scope">
-                                    <el-button
-                                        size="mini"
-                                        @click="edit(scope.row)">
-                                        编辑
-                                    </el-button>
-                                    <el-button
-                                        size="mini"
-                                        type="danger"
-                                        @click="delete_data(scope.row)">
-                                        删除
-                                    </el-button>
-                                </template>
-                            </el-table-column>
+                <el-table
+                    element-loading-text="loading"
+                    v-loading="isButtonLoading()"
+                    :class="$style.table_main"
+                    :data="info_data"
+                    border>
+                    <el-table-column  label="#"
+                                      header-align="center"
+                                      align="center"
+                                      type="index"
+                                      width="80">
+                    </el-table-column>
+                    <el-table-column  label="供应商中文名"
+                                      header-align="center"
+                                      align="center"
+                                      prop="name_cn">
+                    </el-table-column>
+                    <!-- <el-table-column  label="供应商英文名"
+                                      header-align="center"
+                                      align="center"
+                                      prop="name_en" v-if="isEnabledLangInput()">
+                    </el-table-column> -->
+                    <el-table-column
+                        label="操作"
+                        header-align="center"
+                        width="240">
+                        <template
+                            slot-scope="scope">
+                            <el-button
+                                size="mini"
+                                @click="edit(scope.row)">
+                                编辑
+                            </el-button>
+                            <el-button
+                                size="mini"
+                                type="danger"
+                                @click="delete_data(scope.row)">
+                                删除
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
                 <el-pagination  :class="$style.pagination"
                                 v-show="+total"

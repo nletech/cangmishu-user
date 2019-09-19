@@ -23,6 +23,8 @@
                             :name="item.name">
                             <!-- 对应的标签页内容 -->
                             <el-table
+                                element-loading-text="loading"
+                                v-loading="isButtonLoading()"
                                 :data="info_data"
                                 :class="$style.table_main"
                                 border>

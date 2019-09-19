@@ -17,21 +17,25 @@
                       </el-col>
                   </el-row>
             </div>
-            <el-table  :data="inbound_list_data" border>
+            <el-table
+                element-loading-text="loading"
+                v-loading="isButtonLoading()"
+                :data="inbound_list_data"
+                border>
                 <el-table-column label="#" type="index" width="40" header-align="center" align="center" ></el-table-column>
                 <el-table-column  prop="confirmation_number" label="单据编号" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="status_name" label="状态" header-align="center" align="center" >
+                <el-table-column  prop="status_name" :label="$t('Status')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="batch_type.name" label="类型" header-align="center" align="center" >
+                <el-table-column  prop="batch_type.name" :label="$t('Type')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="distributor.name_cn" label="供应商" header-align="center" align="center" >
+                <el-table-column  prop="distributor.name_cn" :label="$t('supplier')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="total_num.total_need_num" label="预计数量" header-align="center" align="center" >
+                <el-table-column  prop="total_num.total_need_num" :label="$t('planNumber')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="total_num.total_stockin_num" label="实际数量" header-align="center" align="center" >
+                <el-table-column  prop="total_num.total_stockin_num" :label="$t('realityNumber')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="created_at" label="创建时间" width="155" header-align="center" align="center" >
+                <el-table-column  prop="created_at" :label="$t('createdTime')" width="155" header-align="center" align="center" >
                 </el-table-column>
                 <el-table-column  label="操作" width="200" header-align="center">
                       <template slot-scope="scope">
@@ -92,6 +96,7 @@ import detailDialog from './components/inbound_detail';
 import inboundListSearch from './components/inboundListSearch';
 
 export default {
+  name: 'inboundList',
   mixins: [mixin],
   components: {
     detailDialog,
@@ -161,16 +166,19 @@ export default {
       this.params.currentPage = res.data.current_page;
       this.$set(this.params);
     },
+
     handlerQuery(res) {
       this.inbound_list_data = res.data.data;
       this.params.total = res.data.total;
       this.params.currentPage = res.data.current_page;
     }, // 选择框回调
+
     handlerInputQuery(res) {
       this.inbound_list_data = res.data.data;
       this.params.total = res.data.total;
       this.params.currentPage = res.data.current_page;
     }, // 输入框回调
+
     getBatchType() {
       $http.getBatchType({ warehouse_id: this.warehouseId })
         .then((res) => {
@@ -178,9 +186,11 @@ export default {
           this.select_data_type.options = res.data.data;
         });
     }, // 入库单分类列表
+
     getBatchStatus() {
       this.select_data_status.options = this.statusList;
     }, // 入库单状态列表
+
     getDistributors() {
       $http.getDistributor()
         .then((res) => {
@@ -188,6 +198,7 @@ export default {
           this.select_data_distributor.options = res.data.data;
         });
     }, // 供应商列表
+
     handlerChangePage(val) {
       $http.getInboundPage({
         warehouse_id: this.warehouseId,
@@ -199,6 +210,7 @@ export default {
           this.params.currentPage = res.data.current_page;
         });
     },
+
     handlerSelect_data(val) {
       if (val && val.length === 2) {
         this.getData(val);
@@ -207,6 +219,7 @@ export default {
         this.getData();
       }
     },
+
     getData(query) {
       if (!this.warehouseId) return;
       const obj = {};
@@ -224,7 +237,7 @@ export default {
           this.params.currentPage = res.data.current_page;
         });
     }, // 获取列表
-    // 以上重写
+
     toInbound(info) {
       // eslint-disable-next-line
       const batch_id = info.id;
@@ -236,7 +249,7 @@ export default {
         },
       });
     }, // 入库上架
-    // 添加入库单
+
     addInbound() {
       this.$router.push({
         name: 'addInbound',
@@ -244,13 +257,13 @@ export default {
           warehouse_id: this.warehouse_id, // 仓库 id
         },
       });
-    },
-    // 入库单详情弹框
+    }, // 添加入库单
+
     viewDetails(row) {
       this.inboundDialogVisible = true;
       this.id = row.id;
-    },
-    // 删除入库单
+    }, // 入库单详情弹框
+
     inboundDelete(id) {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -267,7 +280,7 @@ export default {
             this.getData();
           });
       });
-    },
+    }, // 删除入库单
   },
 };
 </script>
