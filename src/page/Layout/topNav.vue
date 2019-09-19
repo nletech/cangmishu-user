@@ -45,11 +45,11 @@
     </div>
     <!-- 用户信息 -->
     <div :class="$style.user_info">
-         <div :class="$style.selectLang">
+         <!-- <div :class="$style.selectLang">
             <span @click="handlerClick">
             当前语言: &nbsp; {{this.$i18n.locale | langFilter}}
             </span>
-         </div>
+         </div> -->
          <div  v-if="isShowSelectWarehouseIcon"
                @click="toggleWarehouseIcon"
                :class="$style.warehouse">
