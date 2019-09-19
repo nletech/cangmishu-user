@@ -91,12 +91,12 @@
 import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
-import mixin from '@/mixin/form_config';
+import buttonLoading from '@/mixin/buttonLoading';
 
 
 export default {
   name: 'selectSpec',
-  mixins: [mixin],
+  mixins: [buttonLoading],
   props: {
     visible: {
       type: Boolean,

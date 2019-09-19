@@ -230,7 +230,6 @@ export const routerMap = [
         path: 'shops',
         component: LayoutSide,
         icon: '&#xeb3e;',
-        redirect: '/shops/shopsManagement',
         nav: 1,
         id: 'shops',
         index: 6, // 后端路由鉴权
@@ -239,7 +238,7 @@ export const routerMap = [
             name: 'shopsManagement', // 子菜单-员工列表
             path: 'shopsManagement',
             component: Shops,
-            nav: 3,
+            nav: 2,
           }],
       },
       // {

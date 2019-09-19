@@ -56,25 +56,18 @@
 
 <script>
 import selectSpec from '@/components/dialog/selectSpec';
+import mixin from '@/mixin/form_config';
 
 export default {
   name: 'specList',
-  props: {
-    warehouseId: {
-      type: Number,
-      default: 0,
-      required: true,
-    },
-    specList: {
-      type: Array,
-    },
-  },
+  mixins: [mixin],
   components: {
     selectSpec,
   },
   data() {
     return {
       dialogShow: false,
+      specList: [],
     };
   },
   methods: {
@@ -91,9 +84,11 @@ export default {
           this.specList.push(data[i]);
         }
       }
+      this.$emit('get_data', this.specList);
     },
     removeSpec(index) {
       this.specList.splice(index, 1);
+      this.$emit('get_data', this.specList);
     },
     handleShowDialog() {
       this.dialogShow = true;

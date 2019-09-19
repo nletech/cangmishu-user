@@ -44,7 +44,7 @@
                         <el-button
                             :loading="isButtonLoading()"
                             type="primary"
-                            @click.once="onSubmit()">
+                            @click="onSubmit()">
                             提交
                         </el-button>
                     </el-col>
@@ -142,7 +142,7 @@ export default {
       }
       // 以下是验证表单
       // eslint-disable-next-line
-      if (arr.length === 0) {
+      if (+arr.length === 0) {
         this.$message({
           message: '出库清单不能为空',
           type: 'warning',
@@ -173,7 +173,6 @@ export default {
       // eslint-disable-next-line
       this.form.goods_data = arr;
       this.form.warehouse_id = this.warehouseId;
-      // console.log(this.form, 'this.formthis.form');
       $http.addOutbound(this.form)
         .then((res) => {
           if (res.status) return;

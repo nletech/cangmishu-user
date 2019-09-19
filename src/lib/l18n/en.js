@@ -48,6 +48,7 @@ const en = {
   planNumber: '预计数量',
   realityNumber: '实际数量',
   createdTime: 'Created time',
+  editRecevier: "Edit Recevier's Information",
   // 以上新增
   areaAndShelf: '货区和货位',
   helpCenter: '帮助中心',

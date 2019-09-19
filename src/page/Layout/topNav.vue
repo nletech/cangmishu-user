@@ -351,6 +351,7 @@ export default {
     line-height: 80px;
     font-weight: 600;
     text-align: center;
+    transition: width .3s ease-in-out; // 修改 bug
     img {
       margin-top: 15px;
       width: 50px;

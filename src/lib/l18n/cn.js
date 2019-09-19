@@ -64,6 +64,7 @@ const cn = {
   setOutbound: '核对出库单',
   help: '帮助',
   helpCenter: '帮助中心',
+  editRecevier: '编辑收件人',
   // 以上仓秘书
   to: '至',
   startDate: '开始日期',
