@@ -96,6 +96,7 @@ export default {
   },
   created() {
     this.getShops(); // 获取店铺列表
+    console.log('1');
   },
   watch: {
     warehouseId() {
