@@ -3,9 +3,9 @@
     <!-- 侧边栏导航 -->
     <side-nav
       :nav="nav"
-      :sideNavList="sideNavList"
-    >
+      :sideNavList="sideNavList">
     </side-nav>
+
     <!-- 返回 -->
     <div :class="$style.title">
       <el-row :class="[$style.title_text, $style.title_texts][sideNavStatus]">
@@ -45,9 +45,12 @@
         </el-col>
       </el-row>
     </div>
+
     <!-- 右侧主要内容展示区 -->
-    <router-view :key="key" :class="$style.content"></router-view>
-    <!-- 底部产权说明 -->
+    <router-view :key="key + change" :class="$style.content">
+    </router-view>
+
+    <!-- 底部说明 -->
     <div :class="$style.footer">
       <div :class="$style.footer_description">
           <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
@@ -77,6 +80,9 @@ export default {
     key() {
       return this.$route.name;
     },
+    change() {
+      return this.$store.state.config.currentLanguage;
+    },
     shopName() {
       return this.$route.query.shopName_cn;
     },
@@ -85,6 +91,12 @@ export default {
     },
     sideNavStatus() {
       return +this.$store.state.config.shutdown_status;
+    },
+  },
+  watch: {
+    change() {
+      console.log(this.$i18n.locale, 'this.$i18n.locale');
+      this.$i18n.locale = `${this.change}`;
     },
   },
 };

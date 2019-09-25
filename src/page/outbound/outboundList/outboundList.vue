@@ -39,7 +39,7 @@
                     type="index">
                 </el-table-column>
                 <el-table-column
-                    label="出库单号"
+                    :label="$t('outboundNumber')"
                     header-align="center"
                     align="center"
                     width="200"
@@ -52,25 +52,27 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="状态"
+                    :label="$t('Status')"
                     header-align="center"
                     align="center"
                     prop="status_name">
                 </el-table-column>
                 <el-table-column
-                    label="运单号"
+                    :label="$t('expressOrder')"
                     header-align="center"
                     align="center"
+                    width="120"
                     prop="express_num">
                 </el-table-column>
                 <el-table-column
                     prop="source"
-                    label="订单来源"
+                    :label="$t('orderSources')"
+                    width="120"
                     header-align="center"
                     align="center" >
                 </el-table-column>
                 <el-table-column
-                    label="出库单类型"
+                    :label="$t('outboundType')"
                     header-align="center"
                     align="center"
                     prop="order_type.name"
@@ -95,29 +97,28 @@
                     prop="delivery_date" width="100">
                 </el-table-column>
                 <el-table-column
-                    label="创建时间"
+                    :label="$t('CreateTime')"
                     header-align="center"
                     align="center"
                     prop="created_at" width="155">
                 </el-table-column>
                 <el-table-column
-                    label="操作"
+                    :label="$t('operation')"
                     header-align="center"
                     width="200">
                     <template slot="header">
-                        <span>操作</span>
+                        <span>{{$t('operation')}}</span>
                         <el-popover
                             placement="top-start"
                             title="Tips:"
                             width="360"
-                            trigger="hover"
-                            >
+                            trigger="hover">
                             <span>使用<span style="color: red; font-size: 1.1rem; font-weight: 400;">编辑物流</span>功能, 将改变订单状态(待发货 --> 配送中)</span>
                             <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
                         </el-popover>
                     </template>
                     <template slot-scope="scope">
-                      <el-tooltip content="查看详情" placement="top">
+                      <el-tooltip :content="$t('detail')" placement="top">
                           <el-button
                               style="margin: 8px 0 0 0;"
                               size="mini" icon="el-icon-view" round
@@ -140,16 +141,18 @@
                             <el-button
                                 v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
                                 style="margin: 8px 0 0 0;"
-                                size="mini" icon="el-icon-printer"
+                                size="mini"
+                                icon="el-icon-printer"
                                 :loading="isButtonLoading()"
                                 @click="onPrint(scope.row)" round>
                             </el-button>
                       </el-tooltip>
-                      <el-tooltip content="取消订单" placement="top">
+                      <el-tooltip :content="$t('cancelOrder')" placement="top">
                           <el-button
                               v-if="scope.row.status === 1"
                               style="margin: 8px 0 0 0;"
-                              size="mini" icon="el-icon-circle-close"
+                              size="mini"
+                              icon="el-icon-circle-close"
                               :loading="isButtonLoading()"
                               @click="cancelOrder(scope.row)"
                               type="danger" round>
@@ -159,7 +162,8 @@
                           <el-button
                               v-if="scope.row.status === 4 || scope.row.status === 5"
                               style="margin: 8px 0 0 0;"
-                              size="mini" icon="el-icon-truck"
+                              size="mini"
+                              icon="el-icon-truck"
                               :loading="isButtonLoading()"
                               @click="showExpressDialog(scope.row)" round>
                           </el-button>
@@ -168,7 +172,8 @@
                             <el-button
                                 v-if="scope.row.status === 5"
                                 style="margin: 8px 0 0 0;"
-                                size="mini" icon="el-icon-finished"
+                                size="mini"
+                                icon="el-icon-finished"
                                 :loading="isButtonLoading()"
                                 @click="showReceviceDialog(scope.row)" round>
                             </el-button>
@@ -177,7 +182,8 @@
                             <el-button
                                 v-if="scope.row.status === 5"
                                 style="margin: 8px 0 0 0;"
-                                size="mini" icon="el-icon-position"
+                                size="mini"
+                                icon="el-icon-position"
                                 :loading="isButtonLoading()"
                                 @click="handlerTrack(scope.row)" round>
                             </el-button>
@@ -186,7 +192,8 @@
                             <el-button
                                 v-if="scope.row.status === 1 ||scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
                                 style="margin: 8px 0 0 0;"
-                                size="mini" icon="el-icon-money"
+                                size="mini"
+                                icon="el-icon-money"
                                 :loading="isButtonLoading()"
                                 @click="onPayment(scope.row)" round>
                             </el-button>
@@ -204,14 +211,14 @@
                               @click="receviceDialog = false"
                               :loading="isButtonLoading()"
                               size="small">
-                              取 消
+                              {{$t('cancel')}}
                           </el-button>
                           <el-button
                               type="primary"
                               :loading="isButtonLoading()"
                               @click="confirmRecevice()"
                               size="small">
-                              确 定
+                              {{$t('confirm')}}
                           </el-button>
                         </span>
                       </el-dialog>
@@ -239,15 +246,26 @@
                                 <el-form-item label="物流单号">
                                     <el-input value="number" v-model="expressForm.express_num" maxlength="20" show-word-limit></el-input>
                                 </el-form-item>
-                                <el-form-item label="备注">
+                                <el-form-item :label="$t('remark')">
                                     <el-input type="textarea" v-model="expressForm.shop_remark" maxlength="100" show-word-limit></el-input>
                                 </el-form-item>
                             </el-form>
                           </el-col>
                         </el-row>
                         <span slot="footer" class="dialog-footer">
-                          <el-button :loading="isButtonLoading()" @click="expressDialog = false" size="mini">取 消</el-button>
-                          <el-button :loading="isButtonLoading()" type="primary" @click="editExpress()" size="mini">确 定</el-button>
+                          <el-button
+                              :loading="isButtonLoading()"
+                              @click="expressDialog = false"
+                              size="mini">
+                              {{$t('cancel')}}
+                          </el-button>
+                          <el-button
+                              :loading="isButtonLoading()"
+                              type="primary"
+                              @click="editExpress()"
+                              size="mini">
+                              {{$t('confirm')}}
+                          </el-button>
                         </span>
                       </el-dialog>
                       <el-dialog
@@ -293,14 +311,14 @@
                                   :loading="isButtonLoading()"
                                   @click="paymentDialog = false"
                                   size="mini">
-                                  取 消
+                                  {{$t('cancel')}}
                               </el-button>
                               <el-button
                                   :loading="isButtonLoading()"
                                   type="primary"
                                   @click="ChangPayment(scope.row)"
                                   size="mini">
-                                  确 定
+                                  {{$t('confirm')}}
                               </el-button>
                           </span>
                       </el-dialog>

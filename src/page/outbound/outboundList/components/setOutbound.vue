@@ -91,24 +91,25 @@
                           <el-col>
                               <div  :class="$style.desc_main">
                                     <div  :class="$style.desc_item">
-                                          <span>备注:</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.remark}}</span>
+                                          <span>{{$t('remark')}}:</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.remark}}</span>
                                     </div>
                                     <div  :class="$style.desc_item">
                                           <span>仓库:</span><span v-if="row_data.warehouse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
                                     </div>
                                     <div  :class="$style.desc_item">
-                                          <span>创建日期:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
+                                          <span>{{$t('createdTime')}}:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
                                     </div>
                                     <div  :class="$style.desc_item">
                                           <span>出库日期:</span>
                                           <span>&nbsp;&nbsp;
-                                                <el-date-picker  v-model="delivery_date"
-                                                                  style="margin: 20px 0 20px 0;"
-                                                                  type="date"
-                                                                  size="small"
-                                                                  format="yyyy 年 MM 月 dd 日"
-                                                                  value-format="yyyy-MM-dd"
-                                                                  placeholder="预计出库时间">
+                                                <el-date-picker
+                                                    v-model="delivery_date"
+                                                    style="margin: 20px 0 20px 0;"
+                                                    type="date"
+                                                    size="small"
+                                                    format="yyyy 年 MM 月 dd 日"
+                                                    value-format="yyyy-MM-dd"
+                                                    placeholder="预计出库时间">
                                                 </el-date-picker>
                                           </span>
                                     </div>
@@ -143,7 +144,7 @@
                           <el-col :span="4" :offset="10">
                                   <el-button :class="$style.btn"
                                               @click="handlerSubmit">
-                                              提交
+                                              {{$t('submit')}}
                                   </el-button>
                           </el-col>
                       </el-row>

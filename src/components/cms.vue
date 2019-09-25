@@ -5,31 +5,35 @@
         <el-row>
           <el-col :span="20">
             <!-- 标签页  -->
-            <el-tabs :value="value"
-                     @tab-click="handleClick">
-                     <el-tab-pane  v-for="item in tagList"
-                                   :label="item.label"
-                                   :name="item.name"
-                                   :key="item.name">
-                     </el-tab-pane>
+            <el-tabs
+                :value="value"
+                @tab-click="handleClick">
+                <el-tab-pane
+                  v-for="item in tagList"
+                  :label="item.label"
+                  :name="item.name"
+                  :key="item.name">
+                </el-tab-pane>
             </el-tabs>
           </el-col>
           <!-- 添加按钮 -->
-          <el-col v-if="addText"
-                  :span="4"
-                  :class="$style.text_right">
-                  <el-button  type="text"
-                              @click="$router.push({
-                                name: addText,
-                                query: {id: query && query}
-                              })"
-                              icon="el-icon-plus">
-                              {{$t(addText)}}
-                  </el-button>
+          <el-col
+              v-if="addText"
+              :span="4"
+              :class="$style.text_right">
+              <el-button
+                  type="text"
+                  @click="$router.push({
+                    name: addText,
+                    query: {id: query && query}
+                  })"
+                  icon="el-icon-plus">
+                  {{$t(addText)}}
+              </el-button>
           </el-col>
         </el-row>
       </div>
-      <!-- 自定义插槽 -->
+      <!-- 默认插槽 -->
       <slot></slot>
     </div>
   </div>

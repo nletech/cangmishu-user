@@ -6,8 +6,8 @@
                 @change="handlerChange"
                 clearable
                 type="daterange"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                :start-placeholder="$t('startDate')"
+                :end-placeholder="$t('endDate')"
                 size="small"
                 value-format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
@@ -54,7 +54,7 @@
                         <el-button
                             size="small"
                               @click="handlerChange">
-                              搜索
+                              {{$t('Search')}}
                         </el-button>
                 </el-col>
             </el-row>

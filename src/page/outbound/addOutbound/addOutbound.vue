@@ -1,12 +1,19 @@
 <template>
 <div class="storeManage">
     <mdoel-form :colValue="24">
-        <el-form  slot="left" label-width="120px" ref="form" label-position="left">
+        <el-form
+            slot="left"
+            label-width="120px"
+            ref="form"
+            label-position="left">
             <el-row type="flex" justify="space-between">
               <el-col :span="8">
                   <!-- 供应商 -->
-                  分类
-                  <el-select  v-model="form.order_type" size="mini" placeholder="请选择分类">
+                  {{$t('category')}}
+                  <el-select
+                      v-model="form.order_type"
+                      size="mini"
+                      placeholder="请选择分类">
                       <el-option  v-for="item in outboundTypes"
                                 :key="item.id"
                                 :disabled="!item.is_enabled"
@@ -15,7 +22,13 @@
                     </el-option>
                   </el-select>
               </el-col>
-              <el-col :span="8" :pull="8"><h2 align="center" style="margin:0px;">商品销售清单</h2></el-col>
+              <el-col
+                  :span="8"
+                  :pull="8">
+                  <h2 align="center" style="margin:0px;">
+                    商品销售清单
+                  </h2>
+              </el-col>
             </el-row>
             <hr/>
             <label class="label"> 收发件人信息 </label>
@@ -27,7 +40,7 @@
             <goods-list @get_data="handleGoodsData" :warehouseId="warehouseId" :specList.sync="selectedSpec"></goods-list>
             <!-- 备注 -->
             <el-form-item
-                label="备注"
+                :label="$t('remark')"
                 style="margin: 20px auto;"
                 prop="remark">
                 <el-input
@@ -45,7 +58,7 @@
                             :loading="isButtonLoading()"
                             type="primary"
                             @click="onSubmit()">
-                            提交
+                            {{$t('submit')}}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -97,6 +110,7 @@ export default {
     handleGoodsData(goodsList) {
       this.selectedSpec = goodsList;
     },
+
     getSenderAndReceiverData(person) {
       if (person.senderId) {
         this.form.sender_id = person.senderId;
@@ -104,6 +118,7 @@ export default {
         this.form.receiver_id = person.receiverId;
       }
     },
+
     getOrderTypes() {
       $http.getOrderType({ warehouse_id: this.warehouseId })
         .then((res) => {
@@ -112,6 +127,7 @@ export default {
         })
         .catch();
     }, // 获取出库单分类
+
     onSubmit() {
       const arr = [];
       for (let i = 0; i < this.selectedSpec.length; i += 1) {

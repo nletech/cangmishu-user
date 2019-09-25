@@ -19,13 +19,18 @@
                             @clear="hanlderClearKeywords"
                             placeholder="请输入关键词">
                             <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                            <i slot="append" @click="handlerSearchKeyWords">搜索</i>
+                            <i slot="append" @click="handlerSearchKeyWords">{{$t('Search')}}</i>
                         </el-input>
                     </el-col>
                     <!-- 添加商品 -->
                     <el-col :span="4" :offset="4" >
-                      <div style="float:right">
-                      <el-button :loading="isButtonLoading()" @click="goToAddGoodPage" icon="el-icon-document-add"> 添加商品 </el-button>
+                        <div style="float:right">
+                        <el-button
+                          :loading="isButtonLoading()"
+                          @click="goToAddGoodPage"
+                          icon="el-icon-document-add">
+                          添加商品
+                        </el-button>
                       </div>
                     </el-col>
                   </el-row>
@@ -53,7 +58,7 @@
                       @selection-change="specRowChange" style="width: 100%; margin-top:10px;">
                       <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
                       <el-table-column type="index" label="序号" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column type="index" label="数量" width="160" header-align="center" align="center">
+                      <el-table-column type="index" :label="$t('Number')" width="160" header-align="center" align="center">
                         <template slot-scope="scope">
                             <el-input-number size="mini" :min="1" :step="1" v-model="scope.row.need_num"></el-input-number>
                         </template>
@@ -78,9 +83,13 @@
                       @click="confirmSelected"
                       :loading="isButtonLoading()"
                       :disabled="!this.specSelected.length">
-                      提交
+                      {{$t('submit')}}
                   </el-button>
-                  <el-button @click="handleClose()" :loading="isButtonLoading()">取消</el-button>
+                  <el-button
+                      @click="handleClose()"
+                      :loading="isButtonLoading()">
+                      {{$t('cancel')}}
+                  </el-button>
                 </div>
               </el-col>
             </el-row>

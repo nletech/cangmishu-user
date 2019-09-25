@@ -15,19 +15,19 @@
             :rules="info_Verify_rules">
             <el-form-item
                 prop="full_name"
-                label="姓名"
+                :label="$t('name')"
                 size="middle">
                 <el-input  v-model="form.full_name"></el-input>
             </el-form-item>
             <el-form-item
                 prop="phone"
-                label="电话"
+                :label="$t('phone')"
                 size="middle">
                 <el-input  v-model="form.phone"></el-input>
             </el-form-item>
             <el-form-item
                 prop="address"
-                label="省市区"
+                :label="$t('SSQ')"
                 size="middle">
                 <el-cascader  style="width:100%;"
                               :props="addressTagProps"
@@ -37,7 +37,7 @@
             </el-form-item>
             <el-form-item
                 prop="addressDetail"
-                label="详细地址"
+                :label="$t('addressDetial')"
                 size="middle">
                 <el-input  type="textarea"
                             v-model="form.addressDetail">
@@ -45,7 +45,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button  type="primary" @click="infoSubmit">
-                            提交
+                            {{$t('submit')}}
                 </el-button>
             </el-form-item>
         </el-form>

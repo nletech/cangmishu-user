@@ -9,10 +9,10 @@
                 <el-row type="flex" justify="space-between">
                     <el-col :span="8">
                     </el-col>
-                    <el-col :span="7"><h2 align="center" style="margin:0px;">商品采购清单</h2></el-col>
+                    <el-col :span="7"><h2 align="center" style="margin:0px;">{{$t('goodsorder')}}</h2></el-col>
                     <el-col :span="8">
                     <el-form-item
-                        label="单据编号"
+                        :label="$t('Numbers')"
                         label-position="right"
                         prop="confirmation_number"
                         class="noborder">
@@ -23,12 +23,12 @@
                 </el-col>
               </el-row>
               <hr/>
-              <label class="label"> 基本信息 </label>
+              <label class="label">{{$t('Essentialformrmation')}}</label>
               <!-- 入库单分类 -->
               <el-row type="flex" justify="space-between">
                 <el-col :span="8">
                   <el-form-item
-                      label="分类"
+                      :label="$t('category')"
                       label-position="right"
                       prop="type_id">
                     <el-select v-model="form.type_id">
@@ -46,11 +46,11 @@
                 <el-col :span="10">
                     <!-- 供应商 -->
                     <el-form-item
-                        label="供应商"
+                        :label="$t('supplier')"
                         label-position="right"
                         prop="distributor_id"
                         style="float:right">
-                        <el-select  v-model="form.distributor_id" placeholder="请选择供应商">
+                        <el-select  v-model="form.distributor_id" :placeholder="$t('Pleseselectsupplier')">
                             <el-option
                                 v-for="item in distributorSelectList"
                                 :label="item.name_cn"
@@ -63,22 +63,22 @@
               </el-row>
               <el-row>
                 <el-col>
-                  <label class="label" style="float:left; width:80px;">商品清单 </label>
+                  <label class="label" style="float:left; width:80px;">{{$t('goodsList')}} </label>
                   <div style="float:left; width:300px; padding-top:20px">
-                      <el-button size="mini" @click="showDialog" type="primary" plain>选择商品规格 <i class="el-icon-more el-icon--right"></i> </el-button>
-                      <span class="sub-title">带*为必填项</span>
+                      <el-button size="mini" @click="showDialog" type="primary" plain>{{$t('pleaseSelect')}}<i class="el-icon-more el-icon--right"></i> </el-button>
+                      <span class="sub-title">{{$t('mustEnter')}}</span>
                   </div>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col>
                     <el-table
-                        :data="specList" empty-text="请选择商品规格">
+                        :data="specList" :empty-text="$t('pleaseSelect')">
                         <el-table-column
                             type="index"
                             label="#" fixed>
                         </el-table-column>
-                        <el-table-column label="商品规格名称" prop="product_name" width="200px" fixed></el-table-column>
+                        <el-table-column :label="$t('specName')" prop="product_name" width="200px" fixed></el-table-column>
                         <el-table-column label="SKU" prop="relevance_code" width="150px"></el-table-column>
                         <el-table-column
                             :label="$t('inboundNumbers')"
@@ -93,7 +93,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="进货单价（元）"
+                            :label="$t('PurcharsePrice')"
                             min-width="80px">
                               <template slot-scope="scope">
                                   <el-input size="mini"
@@ -102,14 +102,14 @@
                               </template>
                         </el-table-column>
                         <el-table-column
-                            :label="$t('remarks')">
+                            :label="$t('remark')">
                             <template slot-scope="scope">
                                 <el-input size="mini" v-model="scope.row.remark"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column min-width="60px">
                           <template slot-scope="scope">
-                              <el-tooltip content="删除" placement="top">
+                              <el-tooltip :content="$t('delete')" placement="top">
                                 <el-button
                                     size="mini" icon="el-icon-delete"
                                     @click="removeGoods(scope.$index)"
@@ -180,7 +180,7 @@
                 </el-row>
                 <el-row :gutter="20">
                   <el-col>
-                    <el-form-item :label="$t('remarks')" >
+                    <el-form-item :label="$t('remark')" >
                             <el-input
                                 v-model="form.remark"
                                 type="textarea"
@@ -211,7 +211,7 @@
         </select-spec-dialog>
         <!-- 供应商管理弹窗 -->
         <el-dialog
-            title="供应商管理"
+            :title="$t('distributorManagement')"
             :visible.sync="distributorListShow"
             @close="handlerDistributorListClose"
             width="80%">
@@ -247,7 +247,7 @@
                         align="center">
                     </el-table-column> -->
                     <el-table-column
-                        label="操作"
+                        :label="$t('operation')"
                         width="200"
                         header-align="center">
                         <template slot-scope="scope">
@@ -286,17 +286,11 @@
             width="40%">
             <el-row :gutter="20"
                     :class="$style.distributorEdit">
-                    <el-col :span="5">{{'供应商中文名'}}</el-col>
+                    <el-col :span="5">{{$t('supplier')}}</el-col>
                     <el-col :span="10">
                             <el-input v-model="distributorInfo.name_cn"></el-input>
                     </el-col>
             </el-row>
-            <!-- <el-row :gutter="20">
-                    <el-col :span="5">{{'供应商英文名'}}</el-col>
-                    <el-col :span="10">
-                            <el-input v-model="distributorInfo.name_en"></el-input>
-                    </el-col>
-            </el-row> -->
             <span  slot="footer"
                   class="dialog-footer">
                   <el-button
@@ -523,7 +517,7 @@ export default {
     },
     // 删除供应商
     distributorDelete(id) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+      this.$confirm(this.$t('AcrionTips'), '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',

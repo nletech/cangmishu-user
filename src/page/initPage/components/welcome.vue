@@ -3,21 +3,21 @@
       <el-row :gutter="20">
               <el-col :span="8">
                 <el-card shadow="always" @click.native="goToTag('outboundList')">
-                  <p>今日出库次数</p>
+                  <p>{{$t('OutBoundToday')}}</p>
                   <p class="card_number">{{homedata.order_count}}</p>
-                  <p class="colorchange">本月出库次数：{{homedata.month_order_count}}</p>
+                  <p class="colorchange">{{$t('OutBoundThisMonth')}} : {{homedata.month_order_count}}</p>
                 </el-card>
               </el-col>
               <el-col :span="8">
                 <el-card shadow="always" @click.native="goToTag('inboundList')">
-                  <p>今日入库次数</p>
+                  <p>{{$t('InBoundToday')}}</p>
                   <p class="card_number">{{homedata.batch_count}}</p>
-                  <p class="colorchange">本月入库次数：{{homedata.month_batch_count}}</p>
+                  <p class="colorchange">{{$t('InBoundThisMonth')}}{{homedata.month_batch_count}}</p>
                 </el-card>
               </el-col>
               <el-col :span="8">
                 <el-card shadow="always" @click.native="goToTag('inventoryManage')">
-                  <p>可用库存数</p>
+                  <p>{{$t('StockQty')}}</p>
                   <p class="card_number">{{homedata.product_total | num_is_no}}</p>
                 </el-card>
               </el-col>

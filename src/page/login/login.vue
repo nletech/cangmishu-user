@@ -4,7 +4,7 @@
             stretch
             v-model="activeName"
             style="position: relative; top: -40px;">
-            <el-tab-pane label="账号密码" name="account">
+            <el-tab-pane :label="$t('accountWords')" name="account">
                 <el-form
                     ref="refelogin"
                     :model="form"
@@ -68,10 +68,22 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane label="微信公众号(快捷)" name="wechat">
+            <el-tab-pane :label="$t('wechat')" name="wechat">
                 <div style="text-align: center;">
-                  <img style="display: inline-block; padding: 2px; margin: 10px; border: 1px solid #ccc;" width="200px" height="200px" :src="qr" alt="">
-                  <span style="display: inline-block; font-size: 1.2rem;">无需注册，微信扫码关注公众号即可登录</span>
+                  <img
+                      style="display: inline-block;
+                      padding: 2px;
+                      margin: 10px;
+                      border: 1px solid #ccc;"
+                      width="200px"
+                      height="200px"
+                      :src="qr"
+                      alt="">
+                      <span
+                          style="display: inline-block;
+                          font-size: 1.2rem;">
+                          {{$t('scanWechatQR')}}
+                      </span>
                 </div>
                 <div class="user_register_button" style="margin: 20px 0 0 0;">
                     <slot name="bottom_text">

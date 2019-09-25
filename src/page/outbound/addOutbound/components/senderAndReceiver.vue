@@ -9,15 +9,15 @@
                       发件信息
                   </label>
                   <el-form  label-width="80px" v-if="senderInfo.fullname">
-                      <el-form-item label="姓名"
+                      <el-form-item :label="$t('name')"
                                     prop="fullname">
                                       {{senderInfo.fullname}}
                       </el-form-item>
-                      <el-form-item label="电话"
+                      <el-form-item :label="$t('phone')"
                                     prop="phone">
                                     {{senderInfo.phone}}
                       </el-form-item>
-                      <el-form-item label="地址"
+                      <el-form-item :label="$t('address')"
                                     prop="address">
                                     {{senderInfo.address}}
                       </el-form-item>
@@ -41,17 +41,17 @@
                   </label>
                   <el-form  label-width="80px" v-if="receiverInfo.fullname">
                       <el-form-item
-                          label="姓名"
+                          :label="$t('name')"
                           prop="fullname">
                           {{receiverInfo.fullname}}
                       </el-form-item>
                       <el-form-item
-                          label="电话"
+                          :label="$t('phone')"
                           prop="phone">
                           {{receiverInfo.phone}}
                       </el-form-item>
                       <el-form-item
-                          label="地址"
+                          :label="$t('address')"
                           prop="address">
                           {{receiverInfo.address}}
                       </el-form-item>
@@ -93,20 +93,20 @@
                                         label="#">
                       </el-table-column>
                       <el-table-column  prop="fullname"
-                                        :label="`${addressText}姓名`">
+                                        :label="this.addressText === '发件人' ? $t('sender') : $t('receiver')">
                       </el-table-column>
                       <el-table-column  prop="phone"
-                                        label="电话">
+                                        :label="$t('phone')">
                       </el-table-column>
                       <el-table-column  prop="full_address"
-                                        label="地址">
+                                        :label="$t('address')">
                       </el-table-column>
                       <el-table-column
-                          label="操作"
+                          :label="$t('operation')"
                           width="240">
                           <template slot-scope="scope">
-                                    <el-button icon="el-icon-check" :loading="isButtonLoading()" type="primary" plain @click="handle_confirm_btn(scope.row)">确定</el-button>
-                                    <el-button icon="el-icon-edit" :loading="isButtonLoading()" @click="handle_edit_btn(scope.row)">编辑</el-button>
+                                    <el-button icon="el-icon-check" :loading="isButtonLoading()" type="primary" plain @click="handle_confirm_btn(scope.row)">{{$t('confirm')}}</el-button>
+                                    <el-button icon="el-icon-edit" :loading="isButtonLoading()" @click="handle_edit_btn(scope.row)">{{$t('edit')}}</el-button>
                           </template>
                       </el-table-column>
                   </el-table>

@@ -3,8 +3,8 @@
     <div :class="$style.model" v-if="!type">
       <div :class="$style.model_left">
         <div :class="$style.left_text">
-          <p>{{'欢迎使用仓秘书'}}</p>
-          <p>{{'仓秘书满足企业精细化库存管理需求同时结合移动订货系统，为您提供免费、专业的互联网'}}<span style="color: #CC9900;">仓库+订货</span>{{'管理解决方案'}}</p>
+          <p>{{$t('Welcome')}}</p>
+          <p>{{$t('WelcomeText')}}</p>
         </div>
       </div>
       <div :class="$style.model_right">

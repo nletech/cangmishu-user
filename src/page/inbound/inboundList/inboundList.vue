@@ -23,7 +23,7 @@
                 :data="inbound_list_data"
                 border>
                 <el-table-column label="#" type="index" width="40" header-align="center" align="center" ></el-table-column>
-                <el-table-column  prop="confirmation_number" label="单据编号" header-align="center" align="center" >
+                <el-table-column  prop="confirmation_number" :label="$t('Numbers')" header-align="center" align="center" >
                 </el-table-column>
                 <el-table-column  prop="status_name" :label="$t('Status')" header-align="center" align="center" >
                 </el-table-column>
@@ -37,16 +37,16 @@
                 </el-table-column>
                 <el-table-column  prop="created_at" :label="$t('createdTime')" width="155" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  label="操作" width="200" header-align="center">
+                <el-table-column  :label="$t('operation')" width="200" header-align="center">
                       <template slot-scope="scope">
-                        <el-tooltip content="查看详情" placement="top">
+                        <el-tooltip :content="$t('detail')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-view" round
                               @click="viewDetails(scope.row)"
                               :loading="isButtonLoading()">
                           </el-button>
                         </el-tooltip>
-                        <el-tooltip content="入库&上架" placement="top">
+                        <el-tooltip :content="$t('inboundAndShelf')" placement="top">
                           <el-button
                               size="mini"
                               type="primary"
@@ -56,7 +56,7 @@
                               :loading="isButtonLoading()">
                           </el-button>
                         </el-tooltip>
-                        <el-tooltip content="删除" placement="top">
+                        <el-tooltip :content="$t('delete')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-delete"
                               v-if="scope.row.status !== 3"

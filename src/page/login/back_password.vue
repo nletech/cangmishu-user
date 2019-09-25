@@ -1,18 +1,18 @@
 <template>
-  <page-model title="找回密码" :lableIshow="false">
+  <page-model :title="$t('SetupNewPassword')" :lableIshow="false">
     <el-form :rules="registerRules" ref="refelogin" :model="form" :class="$style.input_item">
       <template v-if="this.$route.query.token">
         <el-form-item  class="login_model_form">
           <el-input
-          placeholder="请输入密码"
-          type="password"
-          v-model="form.password"
-          size="small">
+            :placeholder="$t('inputPsw')"
+            type="password"
+            v-model="form.password"
+            size="small">
           </el-input>
         </el-form-item>
         <el-form-item  class="login_model_form">
           <el-input
-          placeholder="请再次输入密码"
+          :placeholder="$t('PswAgain')"
           type="password"
           v-model="form.password_confirmation"
           size="small">
@@ -22,7 +22,7 @@
 
       <el-form-item v-else  class="login_model_form" prop="email">
         <el-input
-        placeholder="请输入邮箱"
+        :placeholder="$t('EmailInput')"
         v-model="form.email"
         style="margin: 0 0 40px 0;"
         size="small">
@@ -32,7 +32,7 @@
         <el-button type="primary" @click="SendMail">{{buttonText}}</el-button>
       </el-form-item>
     </el-form>
-    <span slot="bottom_text" style="position: relative; top: -300px;" @click="$router.push({ name: 'login' })">返回登录</span>
+    <span slot="bottom_text" style="position: relative; top: -300px;" @click="$router.push({ name: 'login' })">{{$t('BackToLoginPage')}}</span>
   </page-model>
 </template>
 <script>
@@ -66,9 +66,9 @@ export default {
   computed: {
     buttonText() {
       if (this.$route.query.token) {
-        return '确认';
+        return this.$t('confirm');
       }
-      return '发送邮件';
+      return this.$t('SendEmail');
     },
   },
   methods: {

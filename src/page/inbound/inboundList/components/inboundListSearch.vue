@@ -6,8 +6,8 @@
                 @change="handlerChange"
                 clearable
                 type="daterange"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                :start-placeholder="$t('startDate')"
+                :end-placeholder="$t('endDate')"
                 size="small"
                 value-format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
@@ -19,7 +19,7 @@
                 clearable
                 @change="handlerChange"
                 size="small"
-                placeholder="入库单分类">
+                :placeholder="$t('InboundListType')">
                 <el-option  v-for="item in this.inboundTypeList"
                             :key="item.value"
                             :label="item.name"
@@ -33,7 +33,7 @@
                 clearable
                 size="small"
                 @change="handlerChange"
-                placeholder="入库单状态">
+                :placeholder="$t('inboundstatus')">
                 <el-option
                     v-for="item in this.inboundStatusList"
                     :key="item.value"
@@ -48,7 +48,7 @@
                 clearable
                 size="small"
                 @change="handlerChange"
-                placeholder="供应商">
+                :placeholder="$t('supplier')">
                 <el-option
                     v-for="item in this.distributorList"
                     :key="item.value"
@@ -60,7 +60,7 @@
         <el-col :span="4" :offset="1">
             <el-input
                 size="small"
-                placeholder="请输入单据编号"
+                :placeholder="$t('PleaseEnterNumber')"
                 v-model="codeValue"
                 @change="handlerChange"
                 @clear="handlerChange">
@@ -87,10 +87,6 @@ export default {
       inboundTypeValue: '',
       inboundTypeList: [],
       inboundStatus: '',
-      inboundStatusList: [
-        { id: 1, name: '待入库' },
-        { id: 3, name: '入库完成' },
-      ],
       distributorValue: '',
       distributorList: [],
       codeValue: '',
@@ -101,6 +97,13 @@ export default {
     this.getDistributors();
   },
   computed: {
+    inboundStatusList() {
+      return [
+        { id: 1, name: this.$t('DRK') },
+        { id: 3, name: this.$t('RKWC') },
+      ];
+    },
+
     warehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },

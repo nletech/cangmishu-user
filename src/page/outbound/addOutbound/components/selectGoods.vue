@@ -20,33 +20,39 @@
                             :data="scope.row.specs"
                             @row-click="rowClickGoods"
                             border>
-                            <el-table-column  width="55">
-                                              <template slot-scope="scope">
-                                                        <label  class="el-checkbox">
-                                                                <span  class="el-checkbox__input"
-                                                                        :class="scope.row.checked && 'is-checked'">
-                                                                        <span class="el-checkbox__inner"></span>
-                                                                </span>
-                                                        </label>
-                                              </template>
+                            <el-table-column
+                                width="55">
+                                <template slot-scope="scope">
+                                          <label  class="el-checkbox">
+                                                  <span  class="el-checkbox__input"
+                                                          :class="scope.row.checked && 'is-checked'">
+                                                          <span class="el-checkbox__inner"></span>
+                                                  </span>
+                                          </label>
+                                </template>
                             </el-table-column>
-                            <el-table-column  label="SKU"
-                                              prop="relevance_code">
+                            <el-table-column
+                                label="SKU"
+                                prop="relevance_code">
                             </el-table-column>
-                            <el-table-column  label="规格中文名"
-                                              prop="name_cn">
+                            <el-table-column
+                                label="规格中文名"
+                                prop="name_cn">
                             </el-table-column>
-                            <el-table-column  label="规格外文名"
-                                              prop="name_en">
+                            <el-table-column
+                                label="规格外文名"
+                                prop="name_en">
                             </el-table-column>
                         </el-table>
                     </template>
                 </el-table-column>
-                <el-table-column  label="商品中文名称"
-                                  prop="name_cn">
+                <el-table-column
+                    label="商品中文名称"
+                    prop="name_cn">
                 </el-table-column>
-                <el-table-column  prop="name_en"
-                                  label="商品英文名称">
+                <el-table-column
+                    prop="name_en"
+                    label="商品英文名称">
                 </el-table-column>
             </el-table>
             <!-- 分页 -->

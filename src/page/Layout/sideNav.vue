@@ -1,7 +1,6 @@
 <template>
   <div :class="$style.side_nav" class="side_nav">
       <el-menu
-          default-active="1-4-1"
           class="el-menu-vertical-demo"
           background-color="#444154"
           text-color="#fff"
@@ -14,17 +13,18 @@
               :index="`${index + 1}`">
               <template slot="title">
                   <i style="color: #fff;" class="iconfont" v-html="item.icon"></i>
-                  <span slot="title" style="font-size: 1.3rem;">{{$t(`${item.name}`)}}</span>
+                  <span slot="title" style="font-size: 16px;">{{$t(`${item.name}`)}}</span>
               </template>
               <el-menu-item-group>
                   <el-menu-item
-                    style="text-align: center;"
+                    style="text-align: left; padding-left: 96px;"
+                    :class="$style.menuItem"
                     v-for="(item, i) in sideList[index].children"
                     :key="i"
                     v-if="item.nav === 2"
                     @click="$router.push({ name: item.name, path: item.path});"
-                    :index="new Date()">
-                    <span style="font-size: 1.1rem;">{{$t(`${item.name}`)}}</span>
+                    :index="item.name">
+                    <span style="font-size: 14px;">{{$t(`${item.name}`)}}</span>
                   </el-menu-item>
               </el-menu-item-group>
           </el-submenu>
@@ -186,7 +186,8 @@ export default {
     border-radius: 5px;
   }
   .el-menu-vertical-demo {
-    margin-top: 60px;
+    margin-top: 20px;
+    width: 200px;
   }
   .el-menu {
     border: none;
@@ -200,8 +201,17 @@ export default {
 }
 </style>
 <style>
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
+  .el-menu-item-group > .el-menu-item {
+    padding-left: 60px;
+  }
+  .el-menu-item-group__title {
+    display: none;
+  }
+  .el-menu-item-group ul > li:hover {
+    color: #ffd04b !important;
+  }
+  .el-menu--vertical .el-menu .el-menu-item{
+    padding: 0 !important;
+    text-align: center !important;
   }
 </style>

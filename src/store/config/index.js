@@ -9,46 +9,49 @@ export default {
     warehouseList: '',
     avatar: '', // 用户头像URL
     nickName: '', // 用户名
+    currentLanguage: '', // 当前语言
   },
   mutations: {
-    // 设置用户头像和用户名
+    setCurrentLanguage(state, data) {
+      state.currentLanguage = data;
+    },
+
     setUserInfo(state, data) {
       state.avatar = data.avatar; // 用户头像URL
       state.nickName = data.nickName; // 用户名
       localStorage.setItem('setUAvatar', data.avatar);
       localStorage.setItem('setUnickName', data.nickName);
-    },
-    // 设置仓库
+    }, // 设置用户头像和用户名
+
     setWarehouseName(state, data) {
       state.setWarehouseName = data;
       localStorage.setItem('warehouseName', data);
-    },
-    // 设置选择的warehouseid
+    }, // 设置仓库
+
     setWarehouseId(state, data) {
       state.setWarehouseId = data;
       localStorage.setItem('warehouseId', data);
-    },
-    // 仓秘书
-    // 设置是否含有warehouseid
+    }, // 设置选择的warehouseid
+
     ifHaveWarehouse(state, data) {
       state.noneWarehouseId = data;
-    },
-    // 储存仓库列表
+    }, // 设置是否含有warehouseid
+
     warehouseLists(state, data) {
       state.warehouseList = data;
-    },
-    // 按钮动画配置
+    }, // 储存仓库列表
+
     loading(state, data) {
       state.button_loading = data;
-    },
-    // 关闭侧边栏
+    }, // 按钮动画配置
+
     closeSideNav(state, data) {
       state.shutdown_status = data;
       localStorage.setItem('sideNavStatus', +data);
-    },
-    // 读取侧边栏状态
+    }, // 关闭侧边栏
+
     getSideNavStatus(state) {
       state.shutdown_status = localStorage.getItem('sideNavStatus') || false;
-    },
+    }, // 读取侧边栏状态
   },
 };

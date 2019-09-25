@@ -3,8 +3,8 @@ const loadOnDemand = function loadOnDemand(file) {
   return () => import(/* webpackChunkName: "chunk" */ `@/page/${file}`);
 };
 // 布局
-const LayoutTop = loadOnDemand('layout/top');
-const LayoutSide = loadOnDemand('layout/side');
+const LayoutTop = loadOnDemand('Layout/top');
+const LayoutSide = loadOnDemand('Layout/side');
 
 // 登陆
 const Login = loadOnDemand('login/login');

@@ -4,7 +4,7 @@
             stretch
             v-model="activeName"
             style="position: relative; top: -40px;">
-            <el-tab-pane label="邮箱注册" name="email">
+            <el-tab-pane :label="$t('EmailRegister')" name="email">
                 <el-form
                       ref="registerEmail"
                       :model="form"
@@ -12,16 +12,17 @@
                       :class="$style.input_item">
                       <el-form-item
                           :class="$style.item_email">
-                            <el-input  :placeholder="$t('PleaseFillInYourEmailAddress')"
-                                        v-model="form.email"
-                                        size="small">
-                                        <template slot="append">
-                                            <span
-                                                style="cursor: pointer;"
-                                                @click="flag && sendVerificationCodeForEmail(form.email, true)">
-                                                {{sendVerCode}}
-                                            </span>
-                                        </template>
+                            <el-input
+                                :placeholder="$t('PleaseFillInYourEmailAddress')"
+                                v-model="form.email"
+                                size="small">
+                                <template slot="append">
+                                    <span
+                                        style="cursor: pointer;"
+                                        @click="flag && sendVerificationCodeForEmail(form.email, true)">
+                                        {{$t('Sendtheverificationcode')}}
+                                    </span>
+                                </template>
                             </el-input>
                       </el-form-item>
                       <div :class="$style.item_picture" :style="style.OperateStyleEmailPicture">
@@ -97,8 +98,8 @@
                           <div  :class="$style.item_user_info">
                               <el-checkbox  v-model="keep">
                                   <p>
-                                      <span>我同意</span>
-                                      <span  @click="user_agreement_dialog" :class="$style.user_agreement">用户协议</span>
+                                      <span>{{$t('IAgree')}}</span>
+                                      <span  @click="user_agreement_dialog" :class="$style.user_agreement">{{$t('theUserAgreement')}}</span>
                                   </p>
                               </el-checkbox>
                           </div>
@@ -114,12 +115,12 @@
                             type="text"
                             class="user_account_exist"
                             @click="$router.push({name: 'login'})">
-                            我有账号
+                            {{$t('IHaveAnAccount')}}
                       </el-button>
                 </el-form>
             </el-tab-pane>
             <!-- 手机 -->
-            <el-tab-pane label="手机号码注册" name="phone">
+            <el-tab-pane :label="$t('MobileReister')" name="phone">
                 <el-form
                     ref="register"
                     :model="formPhone"
@@ -128,7 +129,7 @@
                     <el-form-item
                         :class="$style.item_phone">
                         <el-input
-                            placeholder="请输入手机号码"
+                            :placeholder="$t('PleaseEnterMoblieNumber')"
                             v-model="formPhone.mobile"
                             maxlength="11"
                             size="small">
@@ -138,7 +139,7 @@
                                     type="text"
                                     style="cursor: pointer; padding: 12px"
                                     @click="flag && sendVerificationCodeForPhone(formPhone.mobile, true)">
-                                    {{sendVerCodePhone}}
+                                    {{$t('Sendtheverificationcode')}}
                                 </el-button>
                             </template>
                         </el-input>
@@ -147,7 +148,7 @@
                         <div :class="$style.item_picture_main">
                             <div :class="$style.item_picture_title">
                                 <span style="font-size: 1.3rem;">
-                                  请输入图片验证码
+                                  {{$t('PleaseEnterCaptchaCode')}}
                                 </span>
                             </div>
                             <div :class="$style.item_picture_input">
@@ -216,11 +217,11 @@
                         <div  :class="$style.item_user_info">
                             <el-checkbox  v-model="keep">
                                 <p>
-                                    <span>我同意</span>
+                                    <span>{{$t('IAgree')}}</span>
                                     <span
                                         @click="user_agreement_dialog"
                                         :class="$style.user_agreement">
-                                        用户协议
+                                        {{$t('theUserAgreement')}}
                                     </span>
                                 </p>
                             </el-checkbox>
@@ -237,7 +238,7 @@
                         class="user_account_exist"
                         type="text"
                         @click="$router.push({name: 'login'})">
-                        我有账号
+                        {{$t('IHaveAnAccount')}}
                     </el-button>
                 </el-form>
             </el-tab-pane>
@@ -398,8 +399,8 @@ export default {
         type: 'mobile',
         code: '', // 验证码
         password: '', // 密码
-        warehouse_name: '', // 仓库名称
-        warehouse_area: '', // 仓库面积
+        warehouse_name: '我的仓库', // 仓库名称
+        warehouse_area: '500', // 仓库面积
         mobile: '', // 用户手机号
       },
       vPicture: '',
