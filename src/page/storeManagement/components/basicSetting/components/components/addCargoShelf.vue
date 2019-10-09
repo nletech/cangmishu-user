@@ -5,8 +5,8 @@
               ref="ShelfReference"
               label-width="120px"
               :rules="formValidator">
-              <label class="label"> {{'基本信息'}}</label>
-              <el-form-item label="货位编号"
+              <label class="label"> {{$t('EssentialInformation')}}</label>
+              <el-form-item :label="$t('ShippingAreaNumber')"
                             :class="$style.avatar_uploader"
                             prop="code">
                             <el-input v-model="form.code"
@@ -14,7 +14,7 @@
                                       placeholder="示例：A1-1-01、00-01、1">
                             </el-input>
               </el-form-item>
-              <el-form-item label="所属货区"
+              <el-form-item :label="$t('BelongingArea')"
                             prop="warehouse_area_id">
                             <el-select v-model="form.warehouse_area_id"
                                        size="small">
@@ -26,14 +26,14 @@
                                         </el-option>
                             </el-select>
               </el-form-item>
-              <el-form-item label="容积"
+              <el-form-item :label="$t('Capacity')"
                             prop="capacity">
                             <el-input v-model="form.capacity"
                                       size="small">
                                       <span slot="suffix">m³</span>
                             </el-input>
               </el-form-item>
-              <el-form-item label="是否启用">
+              <el-form-item  :label="$t('WhetherToEnable')">
                              <el-switch  v-model="is_enabled"
                                          active-value="1"
                                          inactive-value="0"
@@ -42,30 +42,30 @@
                              </el-switch>
               </el-form-item>
               <label class="label">
-                      {{'可选信息'}}
+                      {{$t('OptionalInformation')}}
               </label>
-              <el-form-item label="通道"
+              <el-form-item :label="$t('aisle')"
                             :class="$style.avatar_uploader">
                             <el-input v-model="form.passage"
                                       size="small">
                             </el-input>
               </el-form-item>
-              <el-form-item label="行">
+              <el-form-item :label="$t('row')">
                             <el-input v-model="form.row"
                                       size="small">
                             </el-input>
               </el-form-item>
-              <el-form-item label="列">
+              <el-form-item :label="$t('Columns')">
                             <el-input v-model="form.col"
                                       size="small">
                             </el-input>
               </el-form-item>
-              <el-form-item label="层">
+              <el-form-item :label="$t('Floor')">
                             <el-input v-model="form.floor"
                                       size="small">
                             </el-input>
               </el-form-item>
-              <el-form-item label="备注">
+              <el-form-item :label="$t('remark')">
                             <el-input v-model="form.remark"
                                       type="textarea"
                                       size="small"
@@ -76,7 +76,7 @@
                             <el-button  @click="onSubmit"
                                         type="primary"
                                         :loading="isButtonLoading()">
-                                        {{'提交'}}
+                                        {{$t('submit')}}
                             </el-button>
               </el-form-item>
     </el-form>
@@ -118,13 +118,13 @@ export default {
     formValidator() {
       return {
         code: [
-          { required: true, message: '请输入货位编号', trigger: 'blur' },
+          { required: true, message: this.$t('pleaseEnterShippingAreaName'), trigger: 'blur' },
         ], // 货架编号
         warehouse_area_id: [
-          { required: true, message: '请选择货区', trigger: 'change' },
+          { required: true, message: this.$t('PleaseSelectTheTargoarea'), trigger: 'change' },
         ], // 货区id
         capacity: [
-          { required: true, message: '请填写容积', trigger: 'blur' },
+          { required: true, message: this.$t('pleaseEnterCapacity'), trigger: 'blur' },
         ], // 容积
       };
     },
@@ -149,7 +149,7 @@ export default {
           .then((res) => {
             if (res.status) return;
             this.$message({
-              message: '操作成功',
+              message: this.$t('success'),
               type: 'success',
               showClose: true,
             });

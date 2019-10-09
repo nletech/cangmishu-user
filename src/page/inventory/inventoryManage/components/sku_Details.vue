@@ -5,7 +5,7 @@
         :visible="visible">
         <div  :class="$style.main">
             <h1  :class="$style.details_h1">
-                {{rowInfo.sku}}出入库记录
+                {{rowInfo.sku}}{{$t('StockHistory')}}
             </h1>
             <el-row  :class="$style.header">
                     <el-col :span="6">
@@ -24,17 +24,17 @@
                 style="width: 100%">
                         <el-table-column type="index" width="60">
                         </el-table-column>
-                        <el-table-column label="类型" prop="type">
+                        <el-table-column :label="$t('Type')" prop="type">
                         </el-table-column>
-                        <el-table-column label="操作数量" prop="operation_num">
+                        <el-table-column :label="$t('OperationNumber')" prop="operation_num">
                         </el-table-column>
-                        <el-table-column prop="sku_total_stock_num" label="仓库库存">
+                        <el-table-column prop="sku_total_stock_num" :label="$t('warehouseStock')">
                         </el-table-column>
-                        <el-table-column prop="created_at" label="操作时间">
+                        <el-table-column prop="created_at" :label="$t('Operationdate')">
                         </el-table-column>
-                        <el-table-column prop="order_sn" label="相关单号">
+                        <el-table-column prop="order_sn" :label="$t('OrderNumber')">
                         </el-table-column>
-                        <el-table-column prop="remark" label="备注">
+                        <el-table-column prop="remark" :label="$t('remark')">
                         </el-table-column>
             </el-table>
             <pagination-public

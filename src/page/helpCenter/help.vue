@@ -1,21 +1,21 @@
 <template>
     <div :class="$style.main">
         <el-tabs tab-position="left" v-model="activeName">
-            <el-tab-pane label="联系我们" name="help_tag">
+            <el-tab-pane :label="$t('contactus')" name="help_tag">
                 <div>
                       <el-row>
                           <el-col>
                               <div :class="$style.api_text">
-                                  <span>如果您在使用仓秘书的时候有任何疑惑，请用微信扫描下方二维码</span>
+                                  <span>{{$t('tips2')}}</span>
                               </div>
                               <div :class="$style.api_text" style="margin: 0 0 0 243px;">
-                                <img src="../../../src/assets/img/help.png" alt="微信二维码">
+                                <img src="../../../src/assets/img/help.png">
                               </div>
                           </el-col>
                       </el-row>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="第三方接口文档" name="api_tag">
+            <el-tab-pane :label="$t('ApiDoucment')" name="api_tag">
                 <div :class="$style.article_text">
                     <span style="font-size: 1.2rem; color: #303133;">仓秘书开发文档接口地址:&nbsp;&nbsp;&nbsp;&nbsp;</span><a rel="noopener" target="_blank" href="https://www.eolinker.com/#/share/index?shareCode=eDeUap&tdsourcetag=s_pctim_aiomsg">https://www.eolinker.com/#/share/index?shareCode=eDeUap&tdsourcetag=s_pctim_aiomsg</a>
                     <el-collapse v-model="activeArticleNames">

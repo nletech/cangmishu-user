@@ -6,7 +6,7 @@
             <div  class="address">
                   <label  class="label">
                       <el-button v-show="isSelectSender()" size="mini" @click="handle_select(0)" icon="el-icon-more" style="float:right"></el-button>
-                      发件信息
+                      {{$t('From')}}
                   </label>
                   <el-form  label-width="80px" v-if="senderInfo.fullname">
                       <el-form-item :label="$t('name')"
@@ -17,13 +17,21 @@
                                     prop="phone">
                                     {{senderInfo.phone}}
                       </el-form-item>
-                      <el-form-item :label="$t('address')"
-                                    prop="address">
-                                    {{senderInfo.address}}
+                      <el-form-item
+                          :label="$t('address')"
+                          prop="address">
+                          {{senderInfo.address}}
                       </el-form-item>
                   </el-form>
                   <div v-if="!senderInfo.fullname">
-                    <el-button size="large"  @click="handle_select(0)" type="primary" plain icon="el-icon-s-custom">选择发件人地址</el-button>
+                      <el-button
+                          size="large"
+                          @click="handle_select(0)"
+                          type="primary"
+                          plain
+                          icon="el-icon-s-custom">
+                          {{$t('selectSender')}}
+                      </el-button>
                   </div>
             </div>
           </el-col>
@@ -36,8 +44,8 @@
                           size="mini"
                           @click="handle_select(1)"
                           icon="el-icon-more" style="float:right">
-                          </el-button>
-                      收件信息
+                      </el-button>
+                      {{$t('To')}}
                   </label>
                   <el-form  label-width="80px" v-if="receiverInfo.fullname">
                       <el-form-item
@@ -63,14 +71,14 @@
                           @click="handle_select(1)"
                           type="primary" plain
                           icon="el-icon-s-custom">
-                          选择收件人地址
+                          {{$t('selectReceiver')}}
                       </el-button>
                   </div>
             </div>
           </el-col>
       </el-row>
       <!-- 详细信息弹窗 -->
-      <el-dialog  :title="`选择${addressText}`"
+      <el-dialog  :title="this.addressText === '发件人' ? $t('sender') : $t('receiver')"
                   width="80%"
                   :visible.sync="addressDialog">
                   <!-- 选择收发件人按钮 -->
@@ -80,7 +88,7 @@
                                     :loading="isButtonLoading()"
                                     @click="addSenderAndReceiver()"
                                     size="large">
-                                    添加{{addressText}}
+                                    {{$t('add')}}{{this.addressText === '发件人' ? $t('sender') : $t('receiver')}}
                         </el-button>
                   </div>
                   <el-table

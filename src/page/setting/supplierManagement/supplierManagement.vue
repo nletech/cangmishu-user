@@ -2,16 +2,13 @@
     <div class="addressManagement">
         <div :class="$style.addressManagement">
             <div :class="$style.am_main">
-              <!-- 标签页 -->
               <el-row>
-                <!-- 点击按键 -->
                 <div :class="$style.am_operation_btn">
                     <span @click="info_add_btn">
                       <i class="iconfont">&#xe618;</i>
-                      {{'添加供应商'}}
+                      {{$t('addsupplier')}}
                     </span>
                 </div>
-              <!-- 对应的标签页内容 -->
                 <el-table
                     element-loading-text="loading"
                     v-loading="isButtonLoading()"
@@ -24,7 +21,7 @@
                                       type="index"
                                       width="80">
                     </el-table-column>
-                    <el-table-column  label="供应商中文名"
+                    <el-table-column  :label="$t('supplierNameCN')"
                                       header-align="center"
                                       align="center"
                                       prop="name_cn">
@@ -35,7 +32,7 @@
                                       prop="name_en" v-if="isEnabledLangInput()">
                     </el-table-column> -->
                     <el-table-column
-                        label="操作"
+                        :label="$t('operation')"
                         header-align="center"
                         width="240">
                         <template
@@ -43,13 +40,13 @@
                             <el-button
                                 size="mini"
                                 @click="edit(scope.row)">
-                                编辑
+                                {{$t('edit')}}
                             </el-button>
                             <el-button
                                 size="mini"
                                 type="danger"
                                 @click="delete_data(scope.row)">
-                                删除
+                                {{$t('delete')}}
                             </el-button>
                         </template>
                     </el-table-column>
@@ -66,7 +63,7 @@
         </div>
         <!-- 添加供应商 -->
         <el-dialog
-            :title="this.id ? '编辑供应商' : '添加供应商 '"
+            :title="this.id ? $t('edit') : $t('add')"
             :visible.sync="dialogVisible"
             width="30%">
             <el-form
@@ -76,7 +73,7 @@
                 label-width="140px">
                 <el-form-item
                     prop="name_cn"
-                    label="供应商中文名:">
+                    :label="$t('supplierNameCN')">
                     <el-input v-model="distributor.name_cn"></el-input>
                 </el-form-item>
                 <!-- <el-form-item
@@ -85,8 +82,8 @@
                 </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="submit_form">确 定</el-button>
+                    <el-button @click="dialogVisible = false">{{$t('cancel')}}</el-button>
+                    <el-button type="primary" @click="submit_form">{{$t('confirm')}}</el-button>
             </span>
         </el-dialog>
     </div>
@@ -187,23 +184,22 @@ export default {
       // this.distributor.name_en = info.name_en;
     },
     delete_data(info) {
-      this.$confirm('此操作将永久删除，是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
-      })
-        .then(() => {
-          $http.deleteDistributor(info.id)
-            .then(() => {
-              if (!status) {
-                this.$message({
-                  type: 'success',
-                  message: '操作成功!',
-                });
-                this.handleCurrentChange(this.current_page); // 更新数据
-              }
-            });
-        });
+      }).then(() => {
+        $http.deleteDistributor(info.id)
+          .then(() => {
+            if (!status) {
+              this.$message({
+                type: 'success',
+                message: this.$t('success'),
+              });
+              this.handleCurrentChange(this.current_page); // 更新数据
+            }
+          });
+      });
     },
   },
 };

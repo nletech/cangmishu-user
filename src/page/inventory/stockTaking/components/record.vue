@@ -43,7 +43,7 @@
                                                   align="center"
                                                   header-align="center">
                                 </el-table-column>
-                                <el-table-column  label="备注"
+                                <el-table-column  :label="$t('remark')"
                                                   prop="remark"
                                                   align="center"
                                                   header-align="center">

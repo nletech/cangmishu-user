@@ -83,7 +83,7 @@
             </el-date-picker>
         </el-form-item>
         <el-form-item
-            label="备注"
+            :label="$t('remark')"
             prop="remark">
             <el-input  v-model="form.remark"
                       type="textarea"

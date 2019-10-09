@@ -1,5 +1,5 @@
 <template>
-  <el-dialog  title="出库单详细"
+  <el-dialog  :title="$t('outboundDetial')"
               width="90%"
               @update:visible="$emit('update:visible', $event)"
               :visible="visible">
@@ -19,7 +19,7 @@
                                 @click="handleDownload('out')"
                                 style="background-color: #5745c5;
                                 color: #fff;">
-                                下载出库单
+                                {{$t('downloadOutbound')}}
                             </el-button>
                         </el-col>
                     </el-row>

@@ -2,17 +2,17 @@
     <div :class="$style.inboundShelf">
           <el-row :gutter="10">
               <el-col :span="13">
-                <span :class="$style.system_title">{{'仓秘书仓储系统'}}</span>
+                <span :class="$style.system_title">{{$t('')}}</span>
               </el-col>
               <!-- 入库单分类 -->
               <el-col :span="13">
-                <span :class="$style.classify_title">入库单分类:</span>
+                <span :class="$style.classify_title">{{$t('InboundListType')}}:</span>
                 <span>{{inboundInfo.batch_type.name}}</span>
               </el-col>
               <!-- 二维码 -->
               <el-col :span="4"
                       :offset="3">
-                      <img  alt="二维码"
+                      <img
                             v-if="inboundInfo.batch_code_barcode"
                             :src=inboundInfo.batch_code_barcode
                             :class="$style.inboundimg">
@@ -21,19 +21,24 @@
           </el-row>
           <el-row :gutter="10">
               <el-col :span="13">
-                  <span :class="$style.classify_title">供应商:</span>
+                  <span :class="$style.classify_title">{{$t('supplier')}}:</span>
                   <span class="inbound_info" v-if="inboundInfo.distributor.name_cn">{{inboundInfo.distributor.name_cn}}</span>
               </el-col>
           </el-row>
           <el-row :gutter="10">
               <el-col :span="8">
-                  <span :class="$style.classify_title">创建日期:</span>
+                  <span :class="$style.classify_title">{{$t('CreateTime')}}:</span>
                   <span class="inbound_info">{{inboundInfo.created_at}}</span>
               </el-col>
               <el-col
                   :span="6"
                   :offset="8">
-                  <span :class="$style.classify_title" v-if="inboundInfo.warehouse.name_cn">{{'仓库:'}}&nbsp;&nbsp;&nbsp;{{inboundInfo.warehouse.name_cn}}</span>
+                  <span
+                      :class="$style.classify_title"
+                      v-if="inboundInfo.warehouse.name_cn">
+                      {{$t('warehouse')}}:&nbsp;&nbsp;&nbsp;
+                      {{inboundInfo.warehouse.name_cn}}
+                  </span>
               </el-col>
           </el-row>
           <el-row
@@ -54,10 +59,10 @@
                   </el-input>
               </el-col>
               <el-col :span="2">
-                  <el-button  size="mini" @click="check_sku()">确定</el-button>
+                  <el-button  size="mini" @click="check_sku()">{{$t('confirm')}}</el-button>
               </el-col>
           </el-row>
-          <h3>货品列表</h3>
+          <h3>{{$t('goodsList')}}</h3>
           <el-table
               :data="inboundList"
               border
@@ -70,7 +75,7 @@
                   width="60">
               </el-table-column>
               <el-table-column
-                  label="中文名称"
+                  :label="$t('cnName')"
                   prop="spec.product_name"
                   align="center"
                   header-align="center">
@@ -104,29 +109,29 @@
                   prop="stockin_num">
               </el-table-column>
               <el-table-column
-                  label="货位"
+                  :label="$t('cnName')"
                   align="center"
                   header-align="center"
                   prop="code">
               </el-table-column>
               <el-table-column
-                  label="操作"
+                  :label="$t('operation')"
                   align="center"
                   header-align="center">
                   <template slot-scope="scope">
-                    <el-button @click="handleEdit(scope.row)">编辑</el-button>
+                    <el-button @click="handleEdit(scope.row)">{{$t('edit')}}</el-button>
                   </template>
               </el-table-column>
           </el-table>
           <button-pagination :pageParams="params"></button-pagination>
           <el-row :gutter="10">
             <el-col :span="10">
-              <span :class="$style.classify_title">备注:</span>
+              <span :class="$style.classify_title">{{$t('remark')}}:</span>
               <span>{{inboundInfo.remark}}</span>
             </el-col>
           </el-row>
           <el-dialog
-              title="商品详细"
+              :title="$t('goodsDetial')"
               :visible.sync="dialogVisible"
               width="60%">
               <el-row>
@@ -138,7 +143,7 @@
                           :model="form"
                           size="small"
                           label-width="120px">
-                          <el-form-item  label="商品名称">
+                          <el-form-item :label="$t('goodsName')">
                               {{form.product_name}}
                           </el-form-item>
                           <el-form-item  label="SKU">
@@ -150,7 +155,7 @@
                           <el-form-item  label="预入库数量(个)">
                               {{form.need_num}}
                           </el-form-item>
-                          <el-form-item  label="备注">
+                          <el-form-item  :label="$t('remark')">
                               {{form.remark}}
                           </el-form-item>
                           <el-form-item
@@ -199,7 +204,7 @@
                               <el-input v-model="form.stockin_num" style="width: 310px;"></el-input>
                           </el-form-item>
                           <el-form-item
-                              label="货位"
+                              :label="$t('Rack')"
                               prop="code">
                               <el-select
                                   v-model="form.code"
@@ -228,13 +233,13 @@
               <span
                 slot="footer"
                 class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="handleEditConfirm">提 交</el-button>
+                <el-button @click="dialogVisible = false">{{$t('cancel')}}</el-button>
+                <el-button type="primary" @click="handleEditConfirm">{{$t('submit')}}</el-button>
               </span>
           </el-dialog>
           <el-row>
             <el-col :span="10" :offset="10">
-              <el-button round plain @click="toInbound" :class="$style.toInbound">提交</el-button>
+              <el-button round plain @click="toInbound" :class="$style.toInbound">{{$t('submit')}}</el-button>
             </el-col>
           </el-row>
     </div>
@@ -502,7 +507,7 @@ export default {
     color: #fff;
   }
   .sku_input {
-    margin: 15px 0 0 0;
+    margin: 15px 0 10px 0;
   }
   .spec {
     padding: 4px 4px 4px 4px;

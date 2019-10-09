@@ -8,7 +8,7 @@
                     :class="$style.btn"
                     @click="addShop"
                     icon="el-icon-plus">
-                    新增店铺
+                    {{$t('shopAdd')}}
                 </el-button>
             </el-col>
         </el-row>
@@ -19,28 +19,28 @@
                 :data="shops"
                 border>
                 <el-table-column label="#" type="index" width="80" header-align="center" align="center" ></el-table-column>
-                <el-table-column  prop="name_cn" label="店铺名称" header-align="center" align="center" >
+                <el-table-column  prop="name_cn" :label="$t('shopName')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column label="店铺二维码" header-align="center" align="center" >
+                <el-table-column :label="$t('shopQR')" header-align="center" align="center" >
                   <template slot-scope="scope">
                     <img width="100px" height="100px" v-if="scope.row.weapp_qrcode" :src="scope.row.weapp_qrcode" alt="二维码">
                   </template>
                 </el-table-column>
-                <el-table-column label="店铺Logo" header-align="center" align="center" >
+                <el-table-column :label="$t('shopLogo')" header-align="center" align="center" >
                   <template slot-scope="scope">
                     <img width="100px" height="100px" v-if="scope.row.logo" :src="scope.row.logo" alt="二维码">
                   </template>
                 </el-table-column>
-                <el-table-column  label="操作" width="200" header-align="center">
+                <el-table-column  :label="$t('operation')" width="200" header-align="center">
                     <template slot-scope="scope">
-                        <el-tooltip content="编辑店铺信息" placement="top">
+                        <el-tooltip :content="$t('edit')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-edit" round
                               @click="editShop(scope.row)"
                               :loading="isButtonLoading()">
                           </el-button>
                         </el-tooltip>
-                        <el-tooltip content="管理商品" placement="top">
+                        <el-tooltip :content="$t('storeGoods')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-goods"
                               :loading="isButtonLoading()"
@@ -96,7 +96,6 @@ export default {
   },
   created() {
     this.getShops(); // 获取店铺列表
-    console.log('1');
   },
   watch: {
     warehouseId() {

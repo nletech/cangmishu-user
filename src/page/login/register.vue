@@ -25,7 +25,7 @@
                                 </template>
                             </el-input>
                       </el-form-item>
-                      <div :class="$style.item_picture" :style="style.OperateStyleEmailPicture">
+                      <!-- <div :class="$style.item_picture" :style="style.OperateStyleEmailPicture">
                           <div :class="$style.item_picture_main">
                               <div :class="$style.item_picture_title">
                                   <span style="font-size: 1.3rem;">
@@ -55,7 +55,7 @@
                                   </el-col>
                               </el-row>
                           </div>
-                      </div>
+                      </div> -->
                       <el-form-item
                           prop="code"
                           :class="$style.item_verificationCode">
@@ -72,7 +72,7 @@
                           <el-input
                               v-model="form.password"
                               :type="input_type ? 'password' : 'text'"
-                              :placeholder="$t('PleaseFillInYourEmailAddress')"
+                              :placeholder="$t('PleaseFillInYourPassword')"
                               size="small">
                           </el-input>
                       </el-form-item>
@@ -449,7 +449,7 @@ export default {
         };
         $http.getVerificationPhoneCode(info)
           .then((res) => {
-            if (!res.status) return;
+            if (res.status) return;
             this.$message({
               type: 'success',
               message: '发送成功，请查收!',
@@ -458,6 +458,7 @@ export default {
           });
       }
     },
+
     handlerGetEmailCode() {
       if (this.checkInputEmail(this.form.email)) {
         const info = {
@@ -467,7 +468,7 @@ export default {
         };
         $http.getVerificationEmailCode(info)
           .then((res) => {
-            if (!res.status) return;
+            if (res.status) return;
             this.$message({
               type: 'success',
               message: '发送成功，请查收!',
@@ -476,11 +477,13 @@ export default {
           });
       }
     },
+
     handlerCloseVerifyBox() {
       this.style.OperateStylePhonePicture.display = 'none';
       this.style.OperateStyleEmailPicture.display = 'none';
       this.verifyPhone.captcha = '';
     },
+
     handlerOpenCaptcha(flag) {
       $http.openCaptcha().then((res) => {
         this.vPicture = '';
@@ -496,13 +499,16 @@ export default {
         this.verifyPhone.captcha_key = res.data.captcha_key; // 缓存 key
       });
     }, // 验证码
+
     handlerClose() {
       this.keep = true;
     },
+
     user_agreement_dialog() {
       this.showInfo = true;
       this.keep = true;
     }, // 处理用户协议弹窗
+
     goRegister(flag) {
       if (flag === 'phone') {
         this.$refs.register.validate((valid) => {
@@ -553,22 +559,30 @@ export default {
         });
       }
     }, // 登录
-    /**
-     * 发送验证码
-     * 大致思路：
-     * post表单请求,获取响应之后判断 status值，然后进行定时操作
-     */
-    sendVerificationCodeForEmail(val, flag) {
-      if (flag) {
-        if (this.style.OperateStyleEmailPicture.display === 'block') {
+
+    sendVerificationCodeForEmail(val) {
+      if (this.checkInputEmail(val)) {
+        const info = {
+          email: this.form.email,
+        };
+        if (!this.keep) {
+          this.$message({
+            type: 'error',
+            message: '用户协议必选!',
+          });
           return;
         }
-      }
-      if (this.checkInputEmail(val)) {
-        this.style.OperateStyleEmailPicture.display = 'block';
-        this.handlerOpenCaptcha('email');
+        $http.getVerificationEmailCode(info)
+          .then((res) => {
+            if (res.status) return;
+            this.$message({
+              type: 'success',
+              message: '发送成功，请查收!',
+            });
+          });
       }
     },
+
     sendVerificationCodeForPhone(val, flag) {
       if (flag) {
         if (this.style.OperateStylePhonePicture.display === 'block') {
@@ -611,6 +625,7 @@ export default {
         //   });
       }
     },
+
     checkInputPhone(val) {
       if (!val) {
         this.$message({
@@ -628,6 +643,7 @@ export default {
       }
       return true;
     },
+
     checkInputEmail(val) {
       if (!this.form.email) {
         this.$message({

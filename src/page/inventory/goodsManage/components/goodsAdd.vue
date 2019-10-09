@@ -3,14 +3,14 @@
     <mdoel-form :colValue="24">
         <el-form  :model="form"
           slot="left"
-          label-width="120px"
+          label-width="180px"
           :rules="formValidator"
           ref="form">
-          <label class="label"> {{'基本信息'}} </label>
+          <label class="label"> {{$t('Essentialformrmation')}} </label>
           <el-row>
             <el-col :span="10">
                 <el-form-item
-                    label="货品分类"
+                    :label="$t('categoryManagement')"
                     label-position="right"
                     prop="category_id">
                     <el-select  v-model="form.category_id">
@@ -27,41 +27,47 @@
             </el-col>
           </el-row>
           <el-form-item
-              label="中文名称"
+              :label="$t('cnName')"
               prop="name_cn"
               style="width:70%">
               <el-input v-model="form.name_cn"></el-input>
           </el-form-item>
           <el-form-item
               v-if="isEnabledLangInput()"
-              label="外文名称"
+              :label="$t('enName')"
               prop="name_en"
               style="width:70%">
               <el-input  v-model="form.name_en"></el-input>
           </el-form-item>
           <el-row style="margin-top:20px;">
             <el-col>
-              <label class="label" style="float:left; width:80px;">货品规格 </label>
+              <label class="label" style="float:left; margin-right: 20px;">{{$t('goodsSpecification')}}</label>
               <div style="float:left; width:300px; padding-top:20px;">
-                  <el-button size="mini" @click="addNewLine" type="primary" plain>添加行 <i class="el-icon-more el-icon--right"></i> </el-button>
-                  <span class="sub-title">带*为必填项</span>
+                  <el-button size="mini" @click="addNewLine" type="primary" plain>{{$t('addLine')}}<i class="el-icon-more el-icon--right"></i> </el-button>
+                  <span class="sub-title">{{$t('mustEnter')}}</span>
               </div>
             </el-col>
           </el-row>
               <el-row>
                 <el-col>
-                    <el-table  :data="specList" empty-text="请添加商品规格">
+                    <el-table  :data="specList" :empty-text="$t('addASpecification')">
                         <el-table-column  type="index"
                                           label="#" fixed>
                         </el-table-column>
-                        <el-table-column label="规格名称*" prop="name_cn" width="200px">
+                        <el-table-column :label="$t('SizeName')" prop="name_cn" width="200px">
                           <template slot-scope="scope">
-                            <el-input type="text" placeholder="请输入规格名称" maxlength="20" show-word-limit v-model="scope.row.name_cn"></el-input>
+                            <el-input
+                                type="text"
+                                :placeholder="$t('pleaseEnterSpecificationName')"
+                                maxlength="20"
+                                show-word-limit
+                                v-model="scope.row.name_cn">
+                            </el-input>
                           </template>
                         </el-table-column>
-                        <el-table-column v-if="isEnabledLangInput()" label="规格外文名*" prop="name_en" width="200px">
+                        <el-table-column v-if="isEnabledLangInput()" :label="$t('specificationEnglishName')" prop="name_en" width="200px">
                           <template slot-scope="scope">
-                            <el-input type="text" placeholder="请输入规格外文称" maxlength="20" show-word-limit v-model="scope.row.name_cn"></el-input>
+                            <el-input type="text" :placeholder="$t('enterspecificationEnglishName')" maxlength="20" show-word-limit v-model="scope.row.name_cn"></el-input>
                           </template>
                         </el-table-column>
                         <el-table-column label="SKU*" prop="relevance_code" width="200px">
@@ -73,14 +79,14 @@
                             </el-popover>
                           </template>
                           <template slot-scope="scope">
-                            <el-input type="text" :isDisabled="!!$route.query.id" placeholder="请输入SKU" maxlength="20" show-word-limit v-model="scope.row.relevance_code"></el-input>
+                            <el-input type="text" :isDisabled="!!$route.query.id" :placeholder="$t('pleaseEnterSKU')" maxlength="20" show-word-limit v-model="scope.row.relevance_code"></el-input>
                           </template>
                         </el-table-column>
                         <!-- 零售价 -->
                         <el-table-column  prop="purchase_price"
                                           align="center"
                                           header-align="center"
-                                          label="参考进货单价（元）"
+                                          :label="$t('PurchasePrice')"
                                           width="150">
                           <template slot-scope="scope">
                             <el-input type="number" maxlength="10" show-word-limit v-model="scope.row.purchase_price" :min="0"></el-input>
@@ -89,7 +95,7 @@
                         <el-table-column  prop="sale_price"
                                           align="center"
                                           header-align="center"
-                                          label="参考销售单价（元）"
+                                          :label="$t('SalePrice')"
                                           width="150">
                           <template slot-scope="scope">
                             <el-input type="number" maxlength="10" show-word-limit v-model="scope.row.sale_price" :min="0"></el-input>
@@ -98,15 +104,22 @@
                         <el-table-column  prop="sale_price"
                                           align="center"
                                           header-align="center"
-                                          label="毛重(g)"
-                                          width="120">
+                                          :label="$t('grossWeight')"
+                                          width="150">
                           <template slot-scope="scope">
-                            <el-input type="number" placeholder="请输入克" maxlength="10" show-word-limit v-model="scope.row.gross_weight" :min="0"></el-input>
+                             <el-input
+                                type="number"
+                                :placeholder="$t('PleaseEnterGram')"
+                                maxlength="10"
+                                show-word-limit
+                                v-model="scope.row.gross_weight"
+                                :min="0">
+                              </el-input>
                             </template>
                         </el-table-column>
                         <el-table-column min-width="60px">
                           <template slot-scope="scope">
-                            <el-tooltip content="删除" placement="top">
+                            <el-tooltip :content="$t('remove')" placement="top">
                               <el-button
                                   size="mini" icon="el-icon-delete"
                                   @click="delSpec(scope.row, scope.$index)"
@@ -118,7 +131,7 @@
                     </el-table>
                   </el-col>
               </el-row>
-              <label class="label" style="padding-top:20px;"> {{'选填信息'}} </label>
+              <label class="label" style="padding-top:20px;"> {{$t('notNecessaryInfo')}} </label>
               <el-form-item
                   :label="$t('goodsRemark')"
                   style="width:70%">
@@ -132,7 +145,9 @@
                   :label="$t('goodsPhoto')">
                   <picture-upload :photo.sync="form.photos" :limit="1">
                   </picture-upload>
-                  <span :class="$style.uploader_tips">*图片不可超过2M大小，图片格式为jpg、png、jpeg</span>
+                  <span :class="$style.uploader_tips">
+                    {{$t('pictureNoLargerThan2M')}}
+                  </span>
               </el-form-item>
               <el-form-item>
                   <el-button
@@ -140,7 +155,7 @@
                       type="primary"
                       :loading="isButtonLoading()"
                       v-if="!$route.query.isCheck">
-                      提交
+                      {{$t('submit')}}
                   </el-button>
               </el-form-item>
         </el-form>

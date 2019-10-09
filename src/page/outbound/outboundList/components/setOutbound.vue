@@ -1,15 +1,15 @@
 <template>
         <div :class="$style.setOutbound">
               <div :class="$style.background">
-                  <el-form label-width="150px" label-position="left">
+                  <el-form label-width="170px" label-position="left">
                       <el-row>
                               <el-col :span="6" :class="$style.systemInfo">
-                                      <h1>仓秘书仓储系统</h1>
+                                      <h1>{{$t('CangmishuWMS')}}</h1>
                               </el-col>
                       </el-row>
                       <el-row>
                               <el-col :span="4">
-                                      <h2>普通出库单</h2>
+                                      <h2>{{$t('OrdinaryOutboundOrder')}}</h2>
                               </el-col>
                               <el-col :span="3" :offset="12">
                                       <div :class="$style.img">
@@ -54,7 +54,7 @@
                                       <el-table  v-if="row_data" :data="row_data.order_items" border>
                                           <el-table-column type="index" width="60">
                                           </el-table-column>
-                                          <el-table-column prop="name_cn" label="中文名称">
+                                          <el-table-column prop="name_cn" :label="$t('cnName')">
                                               <template slot-scope="scope">
                                                 {{scope.row.name_cn}}({{scope.row.spec_name_cn}})
                                               </template>
@@ -65,16 +65,16 @@
                                                                     <div>{{scope.row.relevance_code}}</div>
                                                             </template>
                                           </el-table-column>
-                                          <el-table-column prop="sale_price" label="销售单价（元）" width="120" align="center">
+                                          <el-table-column prop="sale_price" :label="$t('SalePrice')" width="120" align="center">
                                           </el-table-column>
-                                          <el-table-column prop="amount" label="下单数量*" width="100" align="center">
+                                          <el-table-column prop="amount" :label="$t('OrderQty')" width="100" align="center">
                                           </el-table-column>
-                                          <el-table-column label="仓库库存" width="100" align="center">
+                                          <el-table-column :label="$t('Stock')" width="100" align="center">
                                             <template slot-scope="scope">
                                               {{scope.row.spec.total_shelf_num}}
                                             </template>
                                           </el-table-column>
-                                          <el-table-column label="实际出库数量*" prop="pick_num, amount">
+                                          <el-table-column :label="$t('ConfirmQty')" prop="pick_num, amount">
                                               <template slot-scope="scope">
                                                         <el-input-number
                                                             size="mini" type="number"
@@ -94,13 +94,13 @@
                                           <span>{{$t('remark')}}:</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.remark}}</span>
                                     </div>
                                     <div  :class="$style.desc_item">
-                                          <span>仓库:</span><span v-if="row_data.warehouse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
+                                          <span>{{$t('warehouse')}}:</span><span v-if="row_data.warehouse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{row_data.warehouse.name_cn}}</span>
                                     </div>
                                     <div  :class="$style.desc_item">
                                           <span>{{$t('createdTime')}}:</span><span>&nbsp;&nbsp;{{row_data.created_at}}</span>
                                     </div>
                                     <div  :class="$style.desc_item">
-                                          <span>出库日期:</span>
+                                          <span>{{$t('Date')}}:</span>
                                           <span>&nbsp;&nbsp;
                                                 <el-date-picker
                                                     v-model="delivery_date"
@@ -109,7 +109,7 @@
                                                     size="small"
                                                     format="yyyy 年 MM 月 dd 日"
                                                     value-format="yyyy-MM-dd"
-                                                    placeholder="预计出库时间">
+                                                    :placeholder="$t('EstimatedOutboundDate')">
                                                 </el-date-picker>
                                           </span>
                                     </div>
@@ -119,7 +119,7 @@
                               </el-row>
                               <el-row>
                                 <el-col :span="10">
-                                    <el-form-item label="运输方式(选填):">
+                                    <el-form-item :label="$t('Shipping')">
                                         <el-select
                                             v-model="express_code"
                                             size="mini">
@@ -132,8 +132,8 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :span="9" :offset="1">
-                                    <el-form-item label="运单号(选填):">
+                                <el-col :span="10">
+                                    <el-form-item :label="$t('Tracking')">
                                         <el-input size="mini" v-model="express_num" maxlength="40"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -207,7 +207,7 @@ export default {
     handlerSubmit() {
       if (!this.delivery_date) {
         this.$message({
-          message: '出库时间必填',
+          message: this.$t('DateMust'),
           type: 'error',
         });
         return false;
@@ -236,7 +236,7 @@ export default {
             name: 'outboundList',
           });
           this.$message({
-            message: '出库成功!',
+            message: this.$t('success'),
             type: 'success',
           });
         });

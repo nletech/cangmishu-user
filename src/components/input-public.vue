@@ -7,13 +7,13 @@
                               @change="handlerChange"
                               @clear="handlerClear"
                               size="small"
-                              :placeholder="select.placeholder">
+                              :placeholder="$t(`${select.placeholder}`)">
                     </el-input>
             </el-col>
             <el-col :span="2">
                 <el-button size="small"
                             @click="handlerSearch">
-                            搜索
+                            {{$t('Search')}}
                 </el-button>
             </el-col>
         </el-row>

@@ -1,6 +1,7 @@
 <template>
   <div :class="$style.side_nav" class="side_nav">
       <el-menu
+          :default-active="this.$route.name"
           class="el-menu-vertical-demo"
           background-color="#444154"
           text-color="#fff"
@@ -10,7 +11,7 @@
               style="text-align: center;"
               v-for="(item, index) in sideList"
               :key="item.name"
-              :index="`${index + 1}`">
+              :index="item.name">
               <template slot="title">
                   <i style="color: #fff;" class="iconfont" v-html="item.icon"></i>
                   <span slot="title" style="font-size: 16px;">{{$t(`${item.name}`)}}</span>
@@ -19,8 +20,8 @@
                   <el-menu-item
                     style="text-align: left; padding-left: 96px;"
                     :class="$style.menuItem"
-                    v-for="(item, i) in sideList[index].children"
-                    :key="i"
+                    v-for="item in sideList[index].children"
+                    :key="item.name"
                     v-if="item.nav === 2"
                     @click="$router.push({ name: item.name, path: item.path});"
                     :index="item.name">
@@ -120,58 +121,6 @@ export default {
         top: -4px;
       }
       &:hover {
-        background: #463F74;
-      }
-    }
-  }
-  .NavChild {
-    margin: 0;
-    padding: 0; // 解决浏览器中 ul 自动右移 40px
-    width: 200px;
-    list-style: none;
-    text-align: center;
-    position: absolute;
-    top: 0;
-    left: 200px;
-    .NavChild_li {
-      color: #fff;
-      background-color: #444154;
-      padding: 20px 0 0 0;
-      width: 100%;
-      height: 40px;
-      font-size: 1.1rem;
-      &:hover {
-        cursor: pointer;
-        background: #463F74;
-      }
-    }
-  }
-  .nav_hidden {
-    background-color: red;
-    position: relative;
-    .nav_li_hidden {
-      padding: 4px;
-    }
-  }
-  .NavChild1 {
-    margin: 0;
-    padding: 0; // 解决浏览器中 ul 自动右移 40px
-    background-color: red;
-    width: 160px;
-    list-style: none;
-    text-align: center;
-    position: absolute;
-    top: 0;
-    left: 80px;
-    .NavChild_li1 {
-      color: #fff;
-      background-color: #444154;
-      padding: 20px 0 0 0;
-      width: 100%;
-      height: 40px;
-      font-size: 1.1rem;
-      &:hover {
-        cursor: pointer;
         background: #463F74;
       }
     }

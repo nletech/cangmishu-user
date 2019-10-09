@@ -8,17 +8,17 @@
             label-position="left">
             <el-row type="flex" justify="space-between">
               <el-col :span="8">
-                  <!-- 供应商 -->
-                  {{$t('category')}}
+                  {{$t('category')}}:
                   <el-select
                       v-model="form.order_type"
                       size="mini"
-                      placeholder="请选择分类">
-                      <el-option  v-for="item in outboundTypes"
-                                :key="item.id"
-                                :disabled="!item.is_enabled"
-                                :label="item.name"
-                                :value="item.id">
+                      :placeholder="$t('ProductTAG')">
+                      <el-option
+                          v-for="item in outboundTypes"
+                          :key="item.id"
+                          :disabled="!item.is_enabled"
+                          :label="item.name"
+                          :value="item.id">
                     </el-option>
                   </el-select>
               </el-col>
@@ -26,15 +26,15 @@
                   :span="8"
                   :pull="8">
                   <h2 align="center" style="margin:0px;">
-                    商品销售清单
+                    {{$t('OrderItems')}}
                   </h2>
               </el-col>
             </el-row>
             <hr/>
-            <label class="label"> 收发件人信息 </label>
+            <label class="label"> {{$t('info')}} </label>
             <!-- 收发件人信息 -->
             <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
-            <label class="label" style="float:left; width:80px;">出库清单 </label>
+            <label class="label" style="float:left; width:80px;">{{$t('outboundLists')}}</label>
             <!-- 出库清单表 -->
             <!-- 选择商品的列表 -->
             <goods-list @get_data="handleGoodsData" :warehouseId="warehouseId" :specList.sync="selectedSpec"></goods-list>

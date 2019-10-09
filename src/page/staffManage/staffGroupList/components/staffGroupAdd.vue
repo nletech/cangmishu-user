@@ -11,7 +11,7 @@
                                                         <el-input  v-model="staffGroupAdd_form.name">
                                                         </el-input>
                                           </el-form-item>
-                                          <el-form-item  label="备注">
+                                          <el-form-item  :label="$t('remark')">
                                                         <el-input  type="textarea"
                                                                     v-model="staffGroupAdd_form.remark">
                                                         </el-input>

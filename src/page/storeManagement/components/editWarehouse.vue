@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="编辑仓库信息"
+        :title="$t('edit')"
         :center="true"
         :visible.sync="visible"
         :before-close="handleClose"
@@ -11,10 +11,10 @@
             ref="rule_form"
             label-position="left"
             :model="warehouseInfo">
-            <label class="label">基础信息</label>
+            <label class="label">{{$t('Essentialformrmation')}}</label>
             <el-form-item
                 prop="name_cn"
-                label="仓库名称"
+                :label="$t('storeName')"
                 size="medium">
                 <el-input  v-model="warehouseInfo.name_cn"  maxlength="30" show-word-limit></el-input>
             </el-form-item>
@@ -49,10 +49,10 @@
             <label class="label">扩展信息</label>
             <el-form-item
                 prop="area"
-                label="仓库面积"
+                :label="$t('WarehouseArea')"
                 size="medium">
                 <el-col :span="5">
-                    <el-input placeholder="平方米" v-model="warehouseInfo.area">
+                    <el-input v-model="warehouseInfo.area">
                       <template slot="append">m²</template>
                     </el-input>
                 </el-col>
@@ -67,8 +67,15 @@
                 <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
             </el-form-item> -->
             <el-form-item>
-              <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
-              <el-button @click="handleClose">取消</el-button>
+                <el-button
+                    type="primary"
+                    :class="$style.submit_btn"
+                    @click="warehouseInfoSubmit">
+                    {{$t('submit')}}
+                </el-button>
+                <el-button @click="handleClose">
+                  {{$t('cancel')}}
+                </el-button>
             </el-form-item>
         </el-form>
     </el-dialog>

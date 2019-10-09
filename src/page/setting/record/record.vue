@@ -8,7 +8,7 @@
                     <div :class="$style.am_operation_btn">
                         <span  @click="info_add_btn">
                                <i class="iconfont">&#xe618;</i>
-                               {{`${active_add_text}`}}
+                               {{$t(`${active_add_text}`)}}
                         </span>
                     </div>
                     <!-- 标签页 -->
@@ -19,7 +19,7 @@
                             :class="$style.am_tabs_item"
                             v-for="item in tabs"
                             :key="item.id"
-                            :label="item.name"
+                            :label="$t(`${item.title}`)"
                             :name="item.name">
                             <!-- 对应的标签页内容 -->
                             <el-table
@@ -36,13 +36,13 @@
                                     width="80">
                                 </el-table-column>
                                 <el-table-column
-                                    label="类型名称"
+                                    :label="$t('Type')"
                                     header-align="center"
                                     align="center"
                                     prop="name">
                                 </el-table-column>
                                 <el-table-column
-                                    label="启用状态"
+                                    :label="$t('AreaStatus')"
                                     header-align="center"
                                     align="center">
                                     <template slot-scope="scope">
@@ -51,15 +51,15 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column
-                                    label="操作"
+                                    :label="$t('operation')"
                                     header-align="center"
                                     width="240">
                                     <template slot-scope="scope">
-                                      <el-tooltip content="编辑" placement="top">
+                                      <el-tooltip :content="$t('edit')" placement="top">
                                         <el-button size="mini" icon="el-icon-edit" round
                                                     @click="edit(scope.row)"></el-button>
                                       </el-tooltip>
-                                      <el-tooltip content="删除" placement="top">
+                                      <el-tooltip :content="$t('delete')" placement="top">
                                         <el-button  size="mini" icon="el-icon-delete"
                                                     @click="delete_data(scope.row)"
                                                     type="danger" round>
@@ -110,12 +110,14 @@ export default {
       tabs: [
         {
           id: 1,
+          title: 'ReceiptCategoryName',
           name: '入库单分类',
-          btn_text: '添加入库单分类',
+          btn_text: 'addBatchType',
         }, {
           id: 2,
+          title: 'DeliveryListcategoryname',
           name: '出库单分类',
-          btn_text: '添加出库单分类',
+          btn_text: 'addOrderType',
         },
       ],
       clear_is_enabled: 0,

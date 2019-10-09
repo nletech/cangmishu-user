@@ -6,7 +6,7 @@
           <div :class="$style.am_operation_btn">
                <span  @click="add_btn">
                       <i class="iconfont">&#xe618;</i>
-                      {{`添加${active_tab_name_cms}`}}
+                      {{$t('add')}} {{active_tab_name_cms === '货区' ? $t('Section') : $t('Rack')}}
                </span>
           </div>
           <!-- 标签页 -->
@@ -14,8 +14,8 @@
                     :class="$style.am_tabs">
                     <el-tab-pane  :class="$style.am_tabs_item"
                                   v-for="item in tabs_cms"
-                                  :key="item.id"
-                                  :label="item.name"
+                                  :key="item.tag"
+                                  :label="$t(`${item.title}`)"
                                   :name="item.name">
                     </el-tab-pane>
           </el-tabs>

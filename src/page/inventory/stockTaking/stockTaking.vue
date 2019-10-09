@@ -3,13 +3,13 @@
         <div :class="$style.stockTaking_main">
             <div :class="$style.stockTaking_table">
               <el-row>
-                    <el-col  :span="2" :offset="22">
+                    <el-col  :span="2" :offset="21">
                         <el-button
                             type="text"
                             :class="$style.btn"
                             @click="handlerCheckStock"
                             icon="el-icon-plus">
-                            新增盘点
+                            {{$t('addStocktaking')}}
                         </el-button>
                     </el-col>
               </el-row>
@@ -27,13 +27,13 @@
                     align="center">
                 </el-table-column>
                 <el-table-column
-                    label="单据编号"
+                    :label="$t('OrderCode')"
                     prop="recount_no"
                     header-align="center"
                     align="center">
                 </el-table-column>
                 <el-table-column
-                    label="盘点商品"
+                    :label="$t('checkStockGoods')"
                     header-align="center"
                     align="center">
                     <template slot-scope="scope">
@@ -46,7 +46,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="盘点状态"
+                    :label="$t('checkStockStatus')"
                     prop="product_name"
                     header-align="center"
                     align="center">
@@ -55,13 +55,13 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="盘点日期"
+                    :label="$t('checkStockDate')"
                     prop="updated_at"
                     header-align="center"
                     align="center">
                 </el-table-column>
                 <el-table-column
-                    label="操作"
+                    :label="$t('operation')"
                     header-align="center"
                     width="180">
                     <template slot-scope="scope">
@@ -69,7 +69,7 @@
                             size="mini"
                             @click="handleCheck(scope.row)"
                             :loading="isButtonLoading()">
-                            明细
+                            {{$t('detail')}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -99,7 +99,7 @@
               :visible.sync="visible"
               width="90%"
               style="width: 100%;"
-              title="盘点明细预览">
+              :title="$t('checkStockPre')">
               <el-row>
                 <el-col>
                   <div v-html="content" v-if="visible"></div>
@@ -113,7 +113,7 @@
                           style="margin-top: 20px;"
                           type="primary"
                           @click="onDownload">
-                          下载
+                          {{$t('download')}}
                       </el-button>
                   </el-col>
               </el-row>

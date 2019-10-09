@@ -1,29 +1,29 @@
 <template>
   <el-dialog
-      title="修改商品信息"
+      :title="$t('edit')"
       width="90%"
       :before-close="handleClose"
       :visible.sync="visible">
       <el-row>
           <el-col :span="12" :offset="6">
               <el-form label-width="100px">
-                <el-form-item :label="'商品名称'">
+                <el-form-item :label="$t('ProductName2')">
                   <span style="font-size: 1.2rem;">
                     <el-input
                         v-model="shop_form.name_cn"
                         maxlength="30"
-                        placeholder="最多不超过30个字"
+                        :placeholder="$t('TheFieldmaynotbegreaterthan30characters')"
                         show-word-limit>
                     </el-input>
                   </span>
                 </el-form-item>
-                <el-form-item :label="'商品轮播图'">
+                <el-form-item :label="$t('GoodsCarouselFigure')">
                     <my-upload
                       :width="400"
                       :height="400"
                       :disable="imgNumberMoreThanThree"
                       @uploadSuccessCallBack="handlerSuccessCarouselImgs">
-                      <template slot="btnTitle">上传图片</template>
+                      <template slot="btnTitle">{{$t('uploadImage')}}</template>
                     </my-upload>
                     <div>
                       最多<span style="color: red; font-size: 1.1rem;">&nbsp;3&nbsp;</span>张,
@@ -31,22 +31,22 @@
                     </div>
                     <image-list :line="false" :list="CarouselImgs"></image-list>
                 </el-form-item>
-                <el-form-item :label="'商品简介'">
+                <el-form-item :label="$t('goodsIntroduction')">
                     <el-input
                         v-model="shop_form.remark"
                         type="textarea"
                         maxlength="50"
-                        placeholder="最多不超过50个字"
+                        :placeholder="$t('TheFieldmaynotbegreaterthan50characters')"
                         show-word-limit>
                     </el-input>
                 </el-form-item>
-                <el-form-item :label="'商品详情页图'">
+                <el-form-item :label="$t('goodsImageDetial')">
                     <my-upload
                       :width="400"
                       :height="400"
                       :disable="imgNumberMoreThanTen"
                       @uploadSuccessCallBack="handlerSuccessDescriptionImgs">
-                      <template slot="btnTitle">上传图片</template>
+                      <template slot="btnTitle">{{$t('uploadImage')}}</template>
                     </my-upload>
                     <div>
                       最多<span style="color: red; font-size: 1.1rem;">&nbsp;10&nbsp;</span>张,
@@ -54,11 +54,11 @@
                     </div>
                     <image-list :line="false" :list="descriptionImgs"></image-list>
                 </el-form-item>
-                <el-form-item :label="'商品规格'">
+                <el-form-item :label="$t('specName')">
                     <el-table :data="shop_form.specs">
-                        <el-table-column :label="'规格名称'" prop="name_cn"></el-table-column>
-                        <el-table-column :label="'参考销售单价(元)'" prop="origin_sale_price"></el-table-column>
-                        <el-table-column :label="'销售单价(元)'">
+                        <el-table-column :label="$t('SizeName')" prop="name_cn"></el-table-column>
+                        <el-table-column :label="$t('SalePrice')" prop="origin_sale_price"></el-table-column>
+                        <el-table-column :label="$t('SalePrice1')">
                           <template slot-scope="scope">
                             <el-input v-model="scope.row.sale_price"></el-input>
                           </template>
@@ -78,7 +78,11 @@
                 <el-form-item>
                   <el-row>
                       <el-col :span="2" :offset="10">
-                          <el-button type="primary" @click.native="onSubmit">提交</el-button>
+                          <el-button
+                            type="primary"
+                            @click.native="onSubmit">
+                            {{$t('submit')}}
+                          </el-button>
                       </el-col>
                   </el-row>
                 </el-form-item>

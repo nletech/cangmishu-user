@@ -9,26 +9,27 @@
             <el-table-column  type="index"
                             label="#">
             </el-table-column>
-            <el-table-column  prop="code"
-                            label="编号">
+            <el-table-column
+                prop="code"
+                :label="$t('AreaCode')">
             </el-table-column>
             <el-table-column  prop="name_cn"
-                            label="名称">
+                            :label="$t('AreaName')">
             </el-table-column>
             <el-table-column  prop="functions"
-                            label="启用状态">
+                            :label="$t('AreaStatus')">
               <template slot-scope="scope">
                 {{scope.row.is_enabled | switchTypeCn}}
               </template>
             </el-table-column>
-            <el-table-column  label="操作"
+            <el-table-column  :label="$t('operation')"
                             width="320">
               <template slot-scope="scope">
-                <el-tooltip content="编辑" placement="top">
+                <el-tooltip :content="$t('edit')" placement="top">
                   <el-button size="mini" icon="el-icon-edit" round
                               @click="edit(scope.row.id)"></el-button>
                 </el-tooltip>
-                <el-tooltip content="删除" placement="top">
+                <el-tooltip :content="$t('delete')" placement="top">
                   <el-button  size="mini" icon="el-icon-delete"
                                     @click="del(scope.row.id)"
                                     type="danger" round>

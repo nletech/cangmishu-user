@@ -2,8 +2,8 @@
           <div>
                 <el-date-picker  v-model="value"
                                  type="daterange"
-                                 start-placeholder="开始日期"
-                                 end-placeholder="结束日期"
+                                 :start-placeholder="$t('startDate')"
+                                 :end-placeholder="$t('endDate')"
                                  size="small"
                                  :format="params.format"
                                  value-format="yyyy-MM-dd"

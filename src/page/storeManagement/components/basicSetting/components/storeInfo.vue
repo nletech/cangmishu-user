@@ -40,7 +40,7 @@
                                                           </el-switch>
                                            </el-form-item>
                                            <label class="label"> 选填信息: </label>
-                                           <el-form-item  label="备注"
+                                           <el-form-item  :label="$t('remark')"
                                                           prop="remark"
                                                           size="middle">
                                                           <el-input  v-model="add_info.remark"
@@ -116,7 +116,7 @@
                                                                           size="small">
                                                                </el-input>
                                                 </el-form-item>
-                                                <el-form-item  label="备注">
+                                                <el-form-item  :label="$t('remark')">
                                                                <el-input
                                                                           type="textarea"
                                                                           size="small"

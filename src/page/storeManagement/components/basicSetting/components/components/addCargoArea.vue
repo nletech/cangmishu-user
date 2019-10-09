@@ -5,28 +5,30 @@
               ref="CargoAreaReference"
               label-width="120px"
               :rules="formValidator">
-              <label class="label">{{'基础信息'}}</label>
+              <label class="label">{{$t('EssentialInformation')}}</label>
               <el-form-item  prop="code"
-                             label="货区编号"
+                             :label="$t('ShippingAreaNumber')"
                              :class="$style.avatar_uploader">
                              <el-input  v-model="form.code"
+                                        maxlength="255"
                                         size="small">
                              </el-input>
               </el-form-item>
               <el-form-item  prop="name_cn"
-                             label="货区名称">
+                             :label="$t('ShippingAreaName')">
                             <el-input  v-model="form.name_cn"
-                                        size="small">
+                                       maxlength="255"
+                                       size="small">
                             </el-input>
               </el-form-item>
-              <el-form-item  label="是否启用">
+              <el-form-item  :label="$t('WhetherToEnable')">
                              <el-switch  v-model="is_enabled"
                                          active-color="#13ce66"
                                          inactive-color="#ff4949">
                              </el-switch>
               </el-form-item>
-              <label  class="label">{{'可选信息'}}</label>
-              <el-form-item  label="备注">
+              <label  class="label">{{$t('OptionalInformation')}}</label>
+              <el-form-item  :label="$t('remark')">
                              <el-input  v-model="form.remark"
                                         type="textarea"
                                         size="small"
@@ -37,7 +39,7 @@
                             <el-button  type="primary"
                                         @click="onSubmit"
                                         :loading="isButtonLoading()">
-                                        {{'提交'}}
+                                        {{$t('submit')}}
                             </el-button>
               </el-form-item>
     </el-form>
@@ -72,12 +74,10 @@ export default {
     formValidator() {
       return {
         name_cn: [
-          { required: true, message: '请输入货区名称', trigger: 'blur' },
-          { max: 255, message: '货区名称最长为255字符串', trigger: 'blur' },
+          { required: true, message: this.$t('pleaseEnterShippingAreaName'), trigger: 'blur' },
         ], // 货区中文
         code: [
-          { required: true, message: '请输入货区编号', trigger: 'blur' },
-          { min: 1, max: 255, message: '货区编号长度必须为1-255', trigger: 'blur' },
+          { required: true, message: this.$t('pleaseEnterShippingAreaNumber'), trigger: 'blur' },
         ], // 货区代码
       };
     },
@@ -103,7 +103,7 @@ export default {
           .then((res) => {
             if (res.status) return;
             this.$message({
-              message: '操作成功',
+              message: this.$t('success'),
               type: 'success',
               showClose: true,
             });

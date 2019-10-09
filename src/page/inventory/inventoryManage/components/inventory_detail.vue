@@ -5,7 +5,7 @@
         @update:visible="$emit('update:visible', $event)"
         :visible="visible">
         <div :class="$style.inventory_detail">
-              <h1  :class="$style.details_h1">({{rowInfo.product_name}}) 出入库记录</h1>
+              <h1  :class="$style.details_h1">({{rowInfo.product_name}}) {{$t('StockHistory')}}</h1>
               <el-row  :class="$style.header">
                         <el-col  :span="7">
                                 <date-picker-public @select_data="handlerSelect_data">
@@ -18,22 +18,22 @@
                         </el-col>
               </el-row>
               <el-table :data="inventoryList" border style="width: 100%">
-                        <el-table-column label="类型">
+                        <el-table-column :label="$t('Type')">
                                         <template slot-scope="scope">
                                                   {{scope.row.type}}
                                         </template>
                         </el-table-column>
                         <el-table-column label="入库批次" prop="sku">
                         </el-table-column>
-                        <el-table-column label="操作数量" prop="operation_num">
+                        <el-table-column :label="$t('OperationNumber')" prop="operation_num">
                         </el-table-column>
-                        <el-table-column prop="spec_total_stock_num" label="总仓库库存">
+                        <el-table-column prop="spec_total_stock_num" :label="$t('TotalInventory')">
                         </el-table-column>
-                        <el-table-column prop="created_at" label="操作时间">
+                        <el-table-column prop="created_at" :label="$t('Operationdate')">
                         </el-table-column>
-                        <el-table-column prop="order_sn" label="相关单号">
+                        <el-table-column prop="order_sn" :label="$t('OrderNumber')">
                         </el-table-column>
-                        <el-table-column prop="remark" label="备注">
+                        <el-table-column prop="remark" :label="$t('remark')">
                         </el-table-column>
               </el-table>
               <el-row  :class="$style.pagination">
@@ -74,7 +74,7 @@ export default {
         total: 0,
       },
       select_data_status: {
-        placeholder: '类型',
+        placeholder: this.$t('Type'),
         options: [],
         cb_flag: 4,
         goods_id: '', // 规格 id

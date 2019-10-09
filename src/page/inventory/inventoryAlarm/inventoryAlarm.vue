@@ -21,7 +21,7 @@
                 </el-col>
               </el-row>
           </el-form-item>
-          <el-form-item label="货品分类:">
+          <el-form-item :label="$t('categoryManagement')">
               <el-table
                   element-loading-text="loading"
                   v-loading="isButtonLoading()"
@@ -32,7 +32,7 @@
                       width="55px;">
                   </el-table-column>
                   <el-table-column
-                      label="货品分类名称:"
+                      :label="$t('categoryName')"
                       prop="name_cn">
                   </el-table-column>
                   <el-table-column
@@ -56,7 +56,7 @@
                         @click="onSubmit"
                         type="primary"
                         :loading="isButtonLoading()">
-                        保存
+                        {{$t('save')}}
                     </el-button>
                 </el-col>
             </el-row>

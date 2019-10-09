@@ -2,13 +2,13 @@
     <div :class="$style.select_goods">
         <!-- 选择商品弹窗 -->
         <el-dialog
-            title="选择商品"
+            :title="$t('selectGoods')"
             width="80%"
             min-width="1000px"
             :visible.sync="visible"
             :before-close="handleClose">
             <el-row :gutter="20" style="line-height:30px;">
-              <el-col :span="5">请选择货品分类</el-col>
+              <el-col :span="5">{{$t('PleaseSelectCategory')}}</el-col>
               <el-col :span="19">
                   <!-- 搜索框 -->
                   <el-row type="flex">
@@ -17,7 +17,7 @@
                             clearable
                             v-model="keywords"
                             @clear="hanlderClearKeywords"
-                            placeholder="请输入关键词">
+                            :placeholder="$t('PleaseEnterAKeyword')">
                             <i slot="prefix" class="el-input__icon el-icon-search"></i>
                             <i slot="append" @click="handlerSearchKeyWords">{{$t('Search')}}</i>
                         </el-input>
@@ -29,7 +29,7 @@
                           :loading="isButtonLoading()"
                           @click="goToAddGoodPage"
                           icon="el-icon-document-add">
-                          添加商品
+                          {{$t('AddProduct')}}
                         </el-button>
                       </div>
                     </el-col>
@@ -39,13 +39,18 @@
             <hr/>
             <el-row :gutter="20">
               <el-col :span="5" >
-                  <span style="cursor: pointer;" @click="handlerAllCatergroy">全部分类</span>
+                  <span
+                      style="cursor: pointer;"
+                      @click="handlerAllCatergroy">
+                      {{$t('AllCartory')}}
+                  </span>
                   <el-tree
                     :props="{label:'name_cn'}"
                     :data="categoryListData"
                     default-expand-all
                     @node-click="onCategoryChange"
-                    :expand-on-click-node="false"></el-tree>
+                    :expand-on-click-node="false">
+                  </el-tree>
               </el-col>
               <el-col :span="19"  style="border-left:1px solid #ccc">
                   <!-- 数据表 -->
@@ -55,18 +60,19 @@
                       :data="specList"
                       ref="table"
                       border
-                      @selection-change="specRowChange" style="width: 100%; margin-top:10px;">
+                      @selection-change="specRowChange"
+                      style="width: 100%; margin-top:10px;">
                       <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column type="index" label="序号" width="60" header-align="center" align="center"></el-table-column>
+                      <el-table-column type="index" :label="$t('NO')" width="60" header-align="center" align="center"></el-table-column>
                       <el-table-column type="index" :label="$t('Number')" width="160" header-align="center" align="center">
                         <template slot-scope="scope">
                             <el-input-number size="mini" :min="1" :step="1" v-model="scope.row.need_num"></el-input-number>
                         </template>
                       </el-table-column>
-                      <el-table-column  label="商品名称及规格" prop="product_name" header-align="center" align="center"></el-table-column>
-                      <el-table-column  label="参考进货价（元）" prop="purchase_price" align="center"></el-table-column>
-                      <el-table-column  label="参考销售价（元）"  prop="sale_price" align="center"></el-table-column>
-                      <el-table-column  label="当前库存" prop="total_stock_num" align="center"></el-table-column>
+                      <el-table-column  :label="$t('ProductSpec')" prop="product_name" header-align="center" align="center"></el-table-column>
+                      <el-table-column  :label="$t('PurchasePrice')" prop="purchase_price" align="center"></el-table-column>
+                      <el-table-column  :label="$t('SalePrice')"  prop="sale_price" align="center"></el-table-column>
+                      <el-table-column  :label="$t('Stock')" prop="total_stock_num" align="center"></el-table-column>
                   </el-table>
                   <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
               </el-col>

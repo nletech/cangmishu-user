@@ -21,7 +21,7 @@
                 size="small"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
-                placeholder="预计出库时间">
+                :placeholder="$t('planOutboundTime')">
             </el-date-picker>
         </el-col>
         <el-col :span="3" :offset="4">
@@ -30,7 +30,7 @@
                 clearable
                 size="small"
                 @change="handlerChange"
-                placeholder="请选择状态">
+                :placeholder="$t('selectStatus')">
                 <el-option
                     v-for="item in this.outboundStatusList"
                     :key="item.value"
@@ -47,7 +47,7 @@
                               @change="handlerChange"
                               @clear="handlerChange"
                               size="small"
-                              placeholder="请输入出库单号">
+                              :placeholder="$t('pleaseEnterOutboundNO')">
                     </el-input>
                 </el-col>
                 <el-col :span="2" :offset="1">
@@ -84,6 +84,10 @@ export default {
   },
   created() {
     this.getOutboundTypes();
+    if (this.$route.query.checked) {
+      this.outboundStatus = 1; // 待入库
+      this.handlerChange();
+    }
   },
   computed: {
     warehouseId() {

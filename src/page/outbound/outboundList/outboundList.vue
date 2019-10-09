@@ -13,7 +13,7 @@
                         size="small"
                         :disabled="isDisabled"
                         @click="handlerExportOrder">
-                        导出订单
+                        {{$t('Export')}}
                     </el-button>
                 </el-col>
                 <el-col :span="2" :offset="1">
@@ -79,19 +79,19 @@
                     width="100">
                 </el-table-column>
                 <el-table-column
-                    label="下单数量"
+                    :label="$t('OrderQty')"
                     header-align="center"
                     align="center"
                     prop="sub_order_qty">
                 </el-table-column>
                 <el-table-column
-                    label="出库数量"
+                    :label="$t('OutboundQuantity')"
                     header-align="center"
                     align="center"
                     prop="sub_pick_num">
                 </el-table-column>
                 <el-table-column
-                    label="出库日期"
+                    :label="$t('OutboundDate')"
                     header-align="center"
                     align="center"
                     prop="delivery_date" width="100">
@@ -113,7 +113,7 @@
                             title="Tips:"
                             width="360"
                             trigger="hover">
-                            <span>使用<span style="color: red; font-size: 1.1rem; font-weight: 400;">编辑物流</span>功能, 将改变订单状态(待发货 --> 配送中)</span>
+                            <span>{{$t('outboundTips')}}</span>
                             <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
                         </el-popover>
                     </template>
@@ -126,7 +126,7 @@
                               :loading="isButtonLoading()">
                           </el-button>
                       </el-tooltip>
-                      <el-tooltip content="核对出库单" placement="top">
+                      <el-tooltip :content="$t('CheckOrder')" placement="top">
                           <el-button
                             v-if="scope.row.status === 1"
                             style="margin: 8px 0 0 0;"
@@ -137,7 +137,7 @@
                             round>
                           </el-button>
                       </el-tooltip>
-                      <el-tooltip content="打印拣货单" placement="top">
+                      <el-tooltip :content="$t('PrintPicking')" placement="top">
                             <el-button
                                 v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
                                 style="margin: 8px 0 0 0;"
@@ -158,7 +158,7 @@
                               type="danger" round>
                           </el-button>
                       </el-tooltip>
-                      <el-tooltip content="编辑物流" placement="top">
+                      <el-tooltip :content="$t('Track')" placement="top">
                           <el-button
                               v-if="scope.row.status === 4 || scope.row.status === 5"
                               style="margin: 8px 0 0 0;"
@@ -168,7 +168,7 @@
                               @click="showExpressDialog(scope.row)" round>
                           </el-button>
                       </el-tooltip>
-                      <el-tooltip content="确认签收" placement="top">
+                      <el-tooltip :content="$t('Signing')" placement="top">
                             <el-button
                                 v-if="scope.row.status === 5"
                                 style="margin: 8px 0 0 0;"
@@ -178,7 +178,7 @@
                                 @click="showReceviceDialog(scope.row)" round>
                             </el-button>
                       </el-tooltip>
-                      <el-tooltip content="跟踪" placement="top">
+                      <el-tooltip :content="$t('Trace')" placement="top">
                             <el-button
                                 v-if="scope.row.status === 5"
                                 style="margin: 8px 0 0 0;"
@@ -188,7 +188,7 @@
                                 @click="handlerTrack(scope.row)" round>
                             </el-button>
                       </el-tooltip>
-                      <el-tooltip content="实收" placement="top">
+                      <el-tooltip :content="$t('Paid2')" placement="top">
                             <el-button
                                 v-if="scope.row.status === 1 ||scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
                                 style="margin: 8px 0 0 0;"
@@ -204,7 +204,7 @@
                         :visible.sync="receviceDialog"
                         width="20%">
                         <div>
-                          <span style="font-size: 1.4rem;">确认签收?</span>
+                          <span style="font-size: 1.4rem;">{{$t('Submit')}} ?</span>
                         </div>
                         <span slot="footer" class="dialog-footer">
                           <el-button
@@ -224,7 +224,7 @@
                       </el-dialog>
                       <!-- 确认签收 -->
                       <el-dialog
-                        title="编辑物流"
+                        :title="$t('EditTrack')"
                         :visible.sync="expressDialog"
                         width="60%">
                         <el-row>
@@ -233,7 +233,7 @@
                                 :model="expressForm"
                                 :rules="rules"
                                 label-width="160px">
-                                <el-form-item label="快递公司">
+                                <el-form-item :label="$t('DeliveryCompany')">
                                     <el-select v-model="expressForm.express_code" placeholder="请选择">
                                         <el-option
                                           v-for="item in expressList"
@@ -243,7 +243,7 @@
                                         </el-option>
                                       </el-select>
                                 </el-form-item>
-                                <el-form-item label="物流单号">
+                                <el-form-item :label="$t('TrackingNumber')">
                                     <el-input value="number" v-model="expressForm.express_num" maxlength="20" show-word-limit></el-input>
                                 </el-form-item>
                                 <el-form-item :label="$t('remark')">
@@ -277,7 +277,7 @@
                                       :model="payment"
                                       :rules="rules"
                                       label-width="160px">
-                                      <el-form-item label="支付方式">
+                                      <el-form-item :label="$t('Payment')">
                                           <el-select v-model="payment.pay_type" placeholder="请选择">
                                             <el-option
                                               v-for="item in paymentType"
@@ -287,7 +287,7 @@
                                             </el-option>
                                           </el-select>
                                       </el-form-item>
-                                      <el-form-item label="支付状态">
+                                      <el-form-item :label="$t('PayStatus')">
                                           <el-select v-model="payment.pay_status" placeholder="请选择">
                                             <el-option
                                               v-for="item in paymentStatus"
@@ -297,10 +297,10 @@
                                             </el-option>
                                           </el-select>
                                       </el-form-item>
-                                      <el-form-item label="实收金额（元）">
+                                      <el-form-item :label="$t('Paid')">
                                           <el-input value="number" v-model="payment.sub_pay" maxlength="15"></el-input>
                                       </el-form-item>
-                                      <el-form-item label="流水单号">
+                                      <el-form-item :label="$t('No')">
                                           <el-input v-model="payment.payment_account_number" maxlength="100"></el-input>
                                       </el-form-item>
                                   </el-form>
@@ -366,6 +366,7 @@ export default {
     outboundListSearch,
     paginationPublic,
   },
+
   data() {
     return {
       rules: {},
@@ -409,11 +410,12 @@ export default {
       payId: 0,
     };
   },
+
   created() {
     this.getOutbounds();
     this.getExpressList();
-    this.getPayStatus(); // 实收
-    this.getPayTypes(); // 实收
+    this.getPayStatus();
+    this.getPayTypes();
   },
   computed: {
     api() {
@@ -456,23 +458,28 @@ export default {
       this.payment.sub_pay = row.sub_pay || '';
       this.payment.payment_account_number = row.payment_account_number || '';
     },
+
     handlerTrack(row) {
       if (row.track_url === '') return;
       window.open(`${row.track_url}`);
     }, // 跟踪
+
     onPrint(row) {
       window.open(`${baseApi}order/${row.id}/download/pick/?api_token=${this.api}&lang`);
     }, // 打印拣货单
+
     getPayStatus() {
       $http.payStatus().then((res) => {
         this.paymentStatus = res.data;
       });
     }, // 支付状态
+
     getPayTypes() {
       $http.payTypes().then((res) => {
         this.paymentType = res.data;
       });
     }, // 支付类型
+
     ChangPayment() {
       if (!this.payId) return;
       $http.ChangPayment(this.payId, this.payment).then((res) => {
@@ -481,6 +488,7 @@ export default {
         this.getOutbounds();
       });
     },
+
     handlerQueryParams(params) {
       this.tempParmas = params;
       // eslint-disable-next-line
@@ -496,6 +504,7 @@ export default {
       }
       this.tempStr = str;
     },
+
     handlerExportOrder() {
       if (!this.warehouseId) return;
       this.isDisabled = true;
@@ -505,6 +514,7 @@ export default {
       }, 2000);
       window.open(`${baseApi}order/export?api_token=${this.api}&warehouse_id=${this.warehouseId}&${this.tempStr}`);
     },
+
     showExpressDialog(row) {
       this.outboundId = '';
       this.outboundId = row.id;
@@ -514,11 +524,13 @@ export default {
       this.expressForm.shop_remark = row.shop_remark;
       this.expressDialog = true;
     }, // 编辑物流弹窗
+
     showReceviceDialog(row) {
       this.outboundId = '';
       this.outboundId = row.id;
       this.receviceDialog = true;
     }, // 签收弹窗
+
     confirmRecevice() {
       if (!this.outboundId) return;
       $http.editReceiveStatus(this.outboundId)
@@ -528,6 +540,7 @@ export default {
         });
       this.receviceDialog = false;
     },
+
     editExpress() {
       if (!this.outboundId) return;
       $http.changeOutboundStatus(this.outboundId, this.expressForm)
@@ -537,6 +550,7 @@ export default {
         });
       this.expressDialog = false;
     },
+
     getExpressList() {
       $http.AllExpress()
         .then((res) => {
@@ -544,6 +558,7 @@ export default {
           this.expressList = res.data;
         });
     },
+
     handlerChangePage(val) {
       $http.getOutbound({
         warehouse_id: this.warehouseId,
@@ -555,17 +570,20 @@ export default {
           this.params.currentPage = res.data.current_page;
         });
     }, // 分页回调
+
     handlerCallBackData(res) {
       this.outbound_list_data = res.data.data;
       this.params.total = res.data.total;
       this.params.currentPage = res.data.current_page;
       this.$set(this.params);
     }, // 搜索回调
+
     addOutbound() {
       this.$router.push({
         name: 'addOutbound',
       });
     }, // 添加出库单
+
     getOutbounds() {
       if (!this.warehouseId) return;
       $http.getOutbound({ warehouse_id: this.warehouseId })
@@ -576,6 +594,7 @@ export default {
           this.params.currentPage = res.data.current_page;
         });
     }, // 获取出库单列表
+
     checkedOutbound(row) {
       this.$router.push({
         name: 'setOutbound',
@@ -584,17 +603,17 @@ export default {
         },
       });
     }, // 设为出库
-    // 出库单详情弹框
+
     viewDetails(row) {
       this.outboundDialogVisible = true;
       this.id = row.id;
       this.row_data = row;
-    },
-    // 取消订单
+    }, // 出库单详情弹框
+
     cancelOrder(row) {
-      this.$confirm('确认取消?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('checkTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
       })
         .then(() => {
           $http.cancelOutbound(row.id, { warehouse_id: row.warehouse_id })
@@ -607,7 +626,7 @@ export default {
               });
             });
         });
-    },
+    }, // 取消订单
   },
 };
 </script>

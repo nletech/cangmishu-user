@@ -40,7 +40,7 @@
                                                     prop="phone">
                                                     <el-input  v-model="staff_info_form_changed.phone"></el-input>
                                       </el-form-item>
-                                      <el-form-item  label="备注"
+                                      <el-form-item :label="$t('remark')"
                                                     prop="remark">
                                                     <el-input  type="textarea"
                                                                 v-model="staff_info_form_changed.remark">

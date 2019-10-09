@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-      :title="this.text_flag ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
+      :title="title"
       :center="true"
       @update:visible="$emit('update:visible', $event)"
       :visible="visible"
@@ -18,14 +18,14 @@
                   :rules="info_Verify_rules">
                   <el-form-item
                       prop="full_name"
-                      label="姓名"
+                      :label="$t('name')"
                       size="middle">
                       <el-input  v-model="add_info.full_name">
                       </el-input>
                   </el-form-item>
                   <el-form-item
                       prop="phone"
-                      label="电话"
+                      :label="$t('phone')"
                       size="middle">
                       <el-input  v-model="add_info.phone">
                       </el-input>
@@ -43,7 +43,7 @@
                   </el-form-item>
                   <el-form-item
                       prop="addressDetail"
-                      label="详细地址"
+                      :label="$t('addressDetial')"
                       size="middle">
                       <el-input
                           type="textarea"
@@ -54,7 +54,7 @@
                       <el-button
                           :class="$style.submit_btn"
                           @click="infoSubmit">
-                          提交
+                          {{$t('submit')}}
                       </el-button>
                   </el-form-item>
               </el-form>
@@ -140,6 +140,21 @@ export default {
         ],
       },
     };
+  },
+  computed: {
+    title() {
+      if (this.text_flag === 1) {
+        if (this.active_tab_item === '发件人信息') {
+          return this.$t('sender');
+        } else if (this.active_tab_item === '收件人信息') {
+          return this.$t('receiver');
+        }
+      } else if (this.active_tab_item === '发件人信息') {
+        return this.$t('sender');
+      } else if (this.active_tab_item === '收件人信息') {
+        return this.$t('receiver');
+      }
+    },
   },
   watch: {
     row_data() {

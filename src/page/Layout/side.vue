@@ -93,12 +93,6 @@ export default {
       return +this.$store.state.config.shutdown_status;
     },
   },
-  watch: {
-    change() {
-      console.log(this.$i18n.locale, 'this.$i18n.locale');
-      this.$i18n.locale = `${this.change}`;
-    },
-  },
 };
 </script>
 <style lang="less" module>

@@ -5,21 +5,23 @@
               ref="CargoAreaReference"
               label-width="120px"
               :rules="formValidator">
-              <label class="label">{{'基础信息'}}</label>
+              <label class="label">{{$t('EssentialInformation')}}</label>
               <el-form-item  prop="code"
-                             label="货区编号"
+                             :label="$t('ShippingAreaNumber')"
                              :class="$style.avatar_uploader">
                              <el-input  v-model="form.code"
+                                        maxlength="255"
                                         size="small">
                              </el-input>
               </el-form-item>
               <el-form-item  prop="name_cn"
-                             label="货区名称">
+                             :label="$t('ShippingAreaName')">
                             <el-input  v-model="form.name_cn"
+                                        maxlength="255"
                                         size="small">
                             </el-input>
               </el-form-item>
-              <el-form-item  label="是否启用">
+              <el-form-item  :label="$t('WhetherToEnable')">
                              <el-switch  v-model="is_enabled"
                                          active-value="1"
                                          inactive-value="0"
@@ -27,8 +29,8 @@
                                          inactive-color="#ff4949">
                              </el-switch>
               </el-form-item>
-              <label  class="label">{{'可选信息'}}</label>
-              <el-form-item  label="备注">
+              <label  class="label">{{$t('OptionalInformation')}}</label>
+              <el-form-item  :label="$t('remark')">
                              <el-input  v-model="form.remark"
                                         type="textarea"
                                         size="small"
@@ -39,7 +41,7 @@
                             <el-button  type="primary"
                                         @click="onSubmit"
                                         :loading="isButtonLoading()">
-                                        {{'提交'}}
+                                        {{$t('submit')}}
                             </el-button>
               </el-form-item>
     </el-form>

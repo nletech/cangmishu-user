@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-      :title="isEdit ? '编辑店铺' : '新增店铺'"
+      :title="isEdit ? $t('edit') : $t('add')"
       width="90%"
       @update:visible="$emit('update:visible', $event)"
       :visible="visible">
@@ -13,15 +13,15 @@
                   font-weight: bold;
                   display: inline-block;
                   margin: 0 0 20px 0">
-                  {{'店铺信息'}}
+                  {{$t('shopInformation')}}
                 </label>
-                <el-form-item :label="'店铺名称'">
+                <el-form-item :label="$t('shopName')">
                     <el-input
                         v-model="shop_form.name_cn"
                         :maxlength="50"
                         show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item :label="'店铺简介'">
+                <el-form-item :label="$t('shopIntroduction')">
                     <el-input
                         v-model="shop_form.remark"
                         type="textarea"
@@ -35,15 +35,15 @@
                   display: inline-block;
                   font-weight: bold;
                   margin: 0 0 20px 0">
-                  {{'联系方式'}}
+                  {{$t('Contactformrmation')}}
                 </label>
-                <el-form-item :label="'店主姓名'">
+                <el-form-item :label="$t('shopOwner')">
                     <el-input
                         v-model="shop_form.contact.fullname"
                         :maxlength="10"
                         show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item :label="'联系方式'">
+                <el-form-item :label="$t('Contactformrmation')">
                     <el-input
                         v-model="shop_form.contact.phone"
                         :maxlength="20"
@@ -62,21 +62,21 @@
                 </el-form-item>
                 <el-form-item
                     prop="addressDetail"
-                    label="详细地址"
+                    :label="$t('addressDetial')"
                     maxlength="30"
                     size="middle">
                     <el-input
                         type="textarea"
-                        placeholder="最多不超过30个字"
+                        :placeholder="$t('TheFieldmaynotbegreaterthan30characters')"
                         v-model="shop_form.contact.address">
                     </el-input>
                 </el-form-item>
                 <el-form-item
-                    label="选择货币形式">
+                    :label="$t('Currency')">
                     <el-radio-group @change="handlerRadioChnange" v-model="shop_form.default_currency">
-                        <el-radio :label="'CNY'">人民币(￥)</el-radio>
-                        <el-radio :label="'EUR'">欧元(€)</el-radio>
-                        <el-radio :label="'USD'">美元($)</el-radio>
+                        <el-radio :label="'CNY'">{{$t('CNY')}}</el-radio>
+                        <el-radio :label="'EUR'">{{$t('EUR')}}</el-radio>
+                        <el-radio :label="'USD'">{{$t('USD')}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <label
@@ -85,7 +85,7 @@
                   display: inline-block;
                   font-weight: bold;
                   margin: 0 0 20px 0">
-                  {{'选填信息'}}
+                  {{$t('notNecessaryInfo')}}
                 </label>
                 <el-form-item>
                     <my-upload
@@ -93,7 +93,7 @@
                       :height="180"
                       :img.sync="shop_form.logo"
                       @uploadSuccessCallBack="handlerUploadSuccessCallBack">
-                      <template slot="btnTitle">上传店铺Logo</template>
+                      <template slot="btnTitle">{{$t('shopLogoUpload')}}</template>
                     </my-upload>
                 </el-form-item>
                 <el-form-item>
@@ -103,7 +103,7 @@
                               :loading="isButtonLoading()"
                               type="primary"
                               @click.native="onSubmit">
-                              提交
+                              {{$t('submit')}}
                           </el-button>
                       </el-col>
                   </el-row>

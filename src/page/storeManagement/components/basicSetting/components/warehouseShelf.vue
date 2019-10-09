@@ -11,27 +11,27 @@
           label="#">
         </el-table-column>
         <el-table-column  prop="code"
-                          label="编号">
+                          :label="$t('ShelfCode')">
         </el-table-column>
         <el-table-column  prop="warehouse_area.name_cn"
-                          label="所属货区">
+                          :label="$t('ShelfArea')">
         </el-table-column>
-        <el-table-column  label="启用状态">
+        <el-table-column  :label="$t('ShelfStatus')">
                           <template slot-scope="scope">
                             {{scope.row.is_enabled === 1 ? '是' : '否'}}
                           </template>
         </el-table-column>
         <el-table-column  width="260"
-                          label="操作">
+                          :label="$t('operation')">
           <template slot-scope="scope">
-            <el-tooltip content="编辑" placement="top">
+            <el-tooltip :content="$t('edit')" placement="top">
               <el-button size="mini" icon="el-icon-edit" round
                           @click="edit(scope.row.id)"></el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="top">
+            <el-tooltip :content="$t('delete')" placement="top">
               <el-button  size="mini" icon="el-icon-delete"
-                                @click="del(scope.row.id)"
-                                type="danger" round>
+                          @click="del(scope.row.id)"
+                          type="danger" round>
               </el-button>
             </el-tooltip>
           </template>

@@ -18,6 +18,7 @@ Axios.defaults.transformRequest = [
 function requestTime(config) {
   store.commit('config/loading', true);
   config.headers.Authorization = store.state.token.token;
+  config.headers.Language = localStorage.getItem('lang');
   nprogress.start();
   return config;
 }

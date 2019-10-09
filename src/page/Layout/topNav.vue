@@ -45,7 +45,7 @@
     </div>
     <!-- 用户信息 -->
     <div :class="$style.user_info">
-         <div :class="$style.selectLang">
+         <div :class="$style.selectLang" v-if="true">
             <span @click="handlerClick">
             当前语言: &nbsp; {{this.$i18n.locale | langFilter}}
             </span>
@@ -185,6 +185,7 @@ export default {
       // eslint-disable-next-line
       this.$i18n.locale === 'cn' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'cn';
       localStorage.setItem('lang', `${this.$i18n.locale}`);
+      // this.$store.commit('config/setCurrentLanguage', this.$i18n.locale);
     },
     handlerAvatarMouseOver() {
       this.visible_avatar_text = true;

@@ -2,13 +2,13 @@
     <div :class="$style.select_goods">
         <!-- 选择商品弹窗 -->
         <el-dialog
-            title="选择商品"
+            :title="$t('selectGoods')"
             width="80%"
             min-width="1000px"
             :visible.sync="visible"
             :before-close="handleClose">
             <el-row :gutter="20" style="line-height:30px;">
-              <el-col :span="5">请选择货品分类</el-col>
+              <el-col :span="5">{{$t('PleaseSelectCategory')}}</el-col>
               <el-col :span="19">
                   <!-- 搜索框 -->
                   <el-row type="flex">
@@ -16,7 +16,7 @@
                         <el-input
                             clearable
                             @clear="hanlderClearKeywords"
-                            placeholder="请输入关键词"
+                            :placeholder="$t('PleaseEnterAKeyword')"
                             v-model="keywords">
                             <i slot="prefix" class="el-input__icon el-icon-search"></i>
                         </el-input>
@@ -24,7 +24,7 @@
                     <!-- 添加商品 -->
                     <el-col :span="4" :offset="4" >
                       <div style="float:right">
-                      <el-button :loading="isButtonLoading" @click="goToAddGoodPage" icon="el-icon-document-add"> 添加商品 </el-button>
+                      <el-button :loading="isButtonLoading" @click="goToAddGoodPage" icon="el-icon-document-add"> {{$t('AddProduct')}} </el-button>
                       </div>
                     </el-col>
                   </el-row>
@@ -33,7 +33,7 @@
             <hr/>
             <el-row :gutter="20">
               <el-col :span="5" >
-                  <span style="cursor: pointer;" @click="handlerAllCatergroy">全部分类</span>
+                  <span style="cursor: pointer;" @click="handlerAllCatergroy">{{$t('AllCartory')}}</span>
                   <el-tree
                     :props="{label:'name_cn'}"
                     :data="categoryListData"
@@ -50,8 +50,8 @@
                       border
                       @selection-change="specRowChange" style="width: 100%; margin-top:10px;">
                       <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column type="index" label="序号" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column  label="商品名称" prop="name_cn" header-align="center" align="center"></el-table-column>
+                      <el-table-column type="index" label="#" width="60" header-align="center" align="center"></el-table-column>
+                      <el-table-column  :label="$t('ProductName2')" prop="name_cn" header-align="center" align="center"></el-table-column>
                       <el-table-column  label="当前库存" prop="total_stock_num" align="center"></el-table-column>
                   </el-table>
                   <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
@@ -69,9 +69,9 @@
                       @click="confirmSelected"
                       :loading="isButtonLoading"
                       :disabled="!this.specSelected.length">
-                      提交
+                      {{$t('submit')}}
                   </el-button>
-                  <el-button :loading="isButtonLoading" @click="handleClose()" >取消</el-button>
+                  <el-button :loading="isButtonLoading" @click="handleClose()" >{{$t('cancel')}}</el-button>
                 </div>
               </el-col>
             </el-row>

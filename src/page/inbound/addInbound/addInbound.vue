@@ -184,7 +184,7 @@
                             <el-input
                                 v-model="form.remark"
                                 type="textarea"
-                                placeholder="最多不超过30个字"
+                                :placeholder="$t('TheFieldmaynotbegreaterthan30characters')"
                                 :maxlength="30">
                             </el-input>
                     </el-form-item>
@@ -517,15 +517,15 @@ export default {
     },
     // 删除供应商
     distributorDelete(id) {
-      this.$confirm(this.$t('AcrionTips'), '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
       }).then(() => {
         $http.deleteDistributor(id)
           .then(() => {
             this.$message({
-              message: '删除成功',
+              message: this.$t('success'),
               type: 'success',
             });
             this.getDistributorList();

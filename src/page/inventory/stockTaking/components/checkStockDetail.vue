@@ -94,7 +94,7 @@
                           position: relative;
                           top: 10px;
                           color: #909399;">
-                          备注:
+                          {{$t('remark')}}:
                     </span>
                     &nbsp;&nbsp;
                     <span>

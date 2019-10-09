@@ -2,43 +2,46 @@
     <div :class="$style.container">
         <div :class="$style.container_column1">
             <div :class="$style.statistics">
-                <h3 :class="$style.statistics_title">统计数据:</h3>
+                <h3 :class="$style.statistics_title">{{$t('DataAnalysis')}}:</h3>
                 <div :class="$style.statistics_container">
                     <div :class="$style.statistics_container_item">
-                        <p>仓库库存:{{stock.all_count}}</p>
-                        <p>今日:{{stock.today_count}}</p>
-                        <p>本月:{{stock.month_count}}</p>
-                        <p>今年:{{stock.year_count}}</p>
+                        <p>{{$t('warehouseStock')}}</p>
+                        <p :class="$style.item_number"><span @click="goToTag('inventoryManage')">{{stock.all_count}}</span></p>
+                        <p>{{$t('day')}}:<span>{{stock.today_count}}</span></p>
+                        <p>{{$t('month')}}:<span>{{stock.month_count}}</span></p>
+                        <p>{{$t('year')}}:<span>{{stock.year_count}}</span></p>
                     </div>
                     <div :class="$style.statistics_container_item">
-                        <p>商品数据:{{product.all_count}}</p>
-                        <p>今日:{{product.today_count}}</p>
-                        <p>本月:{{product.month_count}}</p>
-                        <p>今年:{{product.year_count}}</p>
+                        <p>{{$t('ProductData')}}:</p>
+                        <p :class="$style.item_number"><span @click="goToTag('GoodsManage')">{{product.all_count}}</span></p>
+                        <p>{{$t('day')}}:<span>{{product.today_count}}</span></p>
+                        <p>{{$t('month')}}:<span>{{product.month_count}}</span></p>
+                        <p>{{$t('year')}}:<span>{{product.year_count}}</span></p>
                     </div>
                     <div :class="$style.statistics_container_item">
-                        <p>订单数据:{{order.all_count}}</p>
-                        <p>今日:{{order.today_count}}</p>
-                        <p>本月:{{order.month_count}}</p>
-                        <p>今年:{{order.year_count}}</p>
+                        <p>{{$t('OutboundData')}}:</p>
+                        <p :class="$style.item_number"><span @click="goToTag('outboundList')">{{order.all_count}}</span></p>
+                        <p>{{$t('day')}}:<span>{{order.today_count}}</span></p>
+                        <p>{{$t('month')}}:<span>{{order.month_count}}</span></p>
+                        <p>{{$t('year')}}:<span>{{order.year_count}}</span></p>
                     </div>
                 </div>
             </div>
 
             <div :class="$style.todo">
-                <h3 :class="$style.title">待办事宜:</h3>
+                <h3 :class="$style.title">{{$t('Todo')}}:</h3>
                 <div :class="$style.todo_main">
                     <div :class="$style.todo_main_item">
-                        <p>库存预警</p>
-                        <p :class="$style.todo_main_item_number">10</p>
+                        <p>{{$t('Warning')}}</p>
+                        <p :class="$style.todo_main_item_number"><span @click="goToTag('inventoryManage', { checked: true, })">{{todo.stock_warning}}</span></p>
                     </div>
                     <div :class="$style.todo_main_item">
-                        <p>待上架</p>
-                        <p :class="$style.todo_main_item_number">10</p>
+                        <p>{{$t('UnShelf')}}</p>
+                        <p :class="$style.todo_main_item_number"><span @click="goToTag('inboundList', { checked: true, })">{{todo.unshelf}}</span></p>
                     </div>
                     <div :class="$style.todo_main_item">
-                        <p>待出库</p>
-                        <p :class="$style.todo_main_item_number">10</p>
+                        <p>{{$t('UnConfirm')}}</p>
+                        <p :class="$style.todo_main_item_number"><span @click="goToTag('outboundList', { checked: true, })">{{todo.unconfirm}}</span></p>
                     </div>
                 </div>
             </div>
@@ -67,18 +70,18 @@
 
             <div :class="$style.wechatQR">
                 <div :class="$style.wechatQR_item">
-                    <p :class="$style.wechatQR_item_title">订货小程序演示</p>
+                    <p :class="$style.wechatQR_item_title">{{$t('OrderWechatMiniProgramDemo')}}</p>
                     <div>
                         <img width="200px" height="200px" src="../../../assets/img/Wechatcard1.png" alt="">
                     </div>
-                    <el-button @click="goToTag('shops')">免费生成我的小程序</el-button>
+                    <el-button @click="goToTag('shopsManagement')">{{$t('FreetogetWechatMiniProgram')}}</el-button>
                 </div>
                 <div :class="$style.wechatQR_item">
-                    <p :class="$style.wechatQR_item_title">官方技术支持公众号</p>
+                    <p :class="$style.wechatQR_item_title">{{$t('WechatOfficialAccount')}}</p>
                     <div>
                         <img width="200px" height="200px" src="../../../assets/img/Wechatcard2.png" alt="">
                     </div>
-                    <p>有任何问题都可以留言</p>
+                    <p :class="$style.wechatQR_item_text">{{$t('AnyQuestionletmeknow')}}</p>
                 </div>
             </div>
         </div>
@@ -119,26 +122,29 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
-      this.initCharts();
-      this.getEchartsData();
-    }, 100);
+    this.initCharts();
+    this.getEchartsData();
   },
+
+  computed: {
+    desc() {
+      return [`${this.$t('Inboundtimes')}`, `${this.$t('Outboundtimes')}`, `${this.$t('InboundItemnumber')}`, `${this.$t('OutboundItemnumber')}`];
+    },
+  },
+
   watch: {
     warehouseId() {
-      this.gethomeWarehouseData();
+      this.getWarehouseDate();
+      this.initCharts();
+      this.getEchartsData();
     },
   },
   methods: {
-    gethomeWarehouseData() {
-      $http.homeWarehouseData({ warehouse_id: this.warehouseId }).then((res) => {
-        this.homedata = res.data;
-      });
-    },
-
-    goToTag(tag) {
+    goToTag(tag, query) {
+      // eslint-disable-next-line
       this.$router.push({
         name: tag,
+        query,
       });
     },
 
@@ -176,77 +182,40 @@ export default {
 
     setCharts() {
       if (this.echartsdata && this.echartsdata === 0) return;
-      if (this.$i18n.locale === 'cn') {
-        this.myCharts.setOption({
-          legend: {
-            data: ['入库次数', '出库次数', '入库货品数', '出库货品数'],
+      this.myCharts.setOption({
+        legend: {
+          data: this.desc,
+        },
+        xAxis: {
+          data: this.echartsdata.map(item => item.time),
+          splitLine: {
+            show: true,
           },
-          xAxis: {
-            data: this.echartsdata.map(item => item.time),
-            splitLine: {
-              show: true,
-            },
+        },
+        yAxis: {
+          splitLine: {
+            show: true,
           },
-          yAxis: {
-            splitLine: {
-              show: true,
-            },
-          },
-          series: [{
-            name: '入库次数',
-            type: 'bar',
-            data: this.echartsdata.map(item => item.batch_count),
-          }, {
-            name: '出库次数',
-            type: 'bar',
-            data: this.echartsdata.map(item => item.order_count),
-          }, {
-            name: '入库货品数',
-            type: 'line',
-            data: this.echartsdata.map(item => item.batch_product_num),
-          }, {
-            name: '出库货品数',
-            type: 'line',
-            data: this.echartsdata.map(item => item.order_product_num),
-          }],
-          color: ['#abc66c', '#97c1ff', '#ff9797', '#6cc67f'],
-        });
-      } else if (this.$i18n.locale === 'en') {
-        this.myCharts.setOption({
-          legend: {
-            data: ['Inbound times', 'Outbound times', 'Inbound Item number', 'Outbound Item number'],
-          },
-          xAxis: {
-            data: this.echartsdata.map(item => item.time),
-            splitLine: {
-              show: true,
-            },
-          },
-          yAxis: {
-            splitLine: {
-              show: true,
-            },
-          },
-          series: [{
-            name: 'Inbound times',
-            type: 'bar',
-            data: this.echartsdata.map(item => item.batch_count),
-          }, {
-            name: 'Outbound times',
-            type: 'bar',
-            data: this.echartsdata.map(item => item.order_count),
-          }, {
-            name: 'Inbound Item number',
-            type: 'line',
-            data: this.echartsdata.map(item => item.batch_product_num),
-          }, {
-            name: 'Outbound Item number',
-            type: 'line',
-            data: this.echartsdata.map(item => item.order_product_num),
-          }],
-          color: ['#abc66c', '#97c1ff', '#ff9797', '#6cc67f'],
-        });
-      }
+        },
+        series: [{
+          name: `${this.desc[0]}`,
+          type: 'bar',
+          data: this.echartsdata.map(item => item.batch_count),
+        }, {
+          name: `${this.desc[1]}`,
+          type: 'bar',
+          data: this.echartsdata.map(item => item.order_count),
+        }, {
+          name: `${this.desc[2]}`,
+          type: 'line',
+          data: this.echartsdata.map(item => item.batch_product_num),
+        }, {
+          name: `${this.desc[3]}`,
+          type: 'line',
+          data: this.echartsdata.map(item => item.order_product_num),
+        }],
+        color: ['#abc66c', '#97c1ff', '#ff9797', '#6cc67f'],
+      });
     },
 
     // 处理时间
@@ -264,13 +233,14 @@ export default {
 
     getWarehouseDate() {
       if (!this.warehouseId) return;
-      $http.homeWarehouseData({ warehouse_id: this.warehouse_Id }).then((res) => {
+      $http.homeWarehouseData({ warehouse_id: this.warehouseId }).then((res) => {
         if (res.status) return;
-        this.order = res.data.order;
-        this.product = res.data.product;
-        this.stock = res.data.stock;
-        this.todo = res.data.todo;
-        console.log(res, 'res');
+        this.$nextTick(() => {
+          this.order = res.data.order;
+          this.product = res.data.product;
+          this.stock = res.data.stock;
+          this.todo = res.data.todo;
+        });
       });
     },
 
@@ -294,6 +264,7 @@ export default {
     .container_column1 {
       width: 100%;
       display: flex;
+      color: #918181;
       .statistics {
         width: 50%;
         margin: 10px;
@@ -301,8 +272,9 @@ export default {
         border: 1px solid #D8D3F4;
         background-color: @bgc;
         .statistics_title {
-          margin: 0 0 0 40px;
+          margin: 10px 0 0 40px;
           font-weight: bold;
+          color: #000;
         }
         .statistics_container {
           width: 100%;
@@ -312,12 +284,23 @@ export default {
             text-align: center;
             margin: 20px;
             width: 33%;
-            height: 100px;
+            height: 130px;
+            font-size: 16px;
             &:nth-child(1) {
               border-right: 1px solid #ccc;
             }
             &:nth-child(2) {
               border-right: 1px solid #ccc;
+            }
+            .item_number {
+              margin: 10px auto;
+              color: #000;
+              font-size: 28px;
+              cursor: pointer;
+            }
+            span {
+              color: #000;
+              margin-left: 20px;
             }
           }
         }
@@ -329,8 +312,9 @@ export default {
         border: 1px solid #D8D3F4;
         background-color: @bgc;
         .title {
-          margin: 0 0 0 40px;
+          margin: 10px 0 0 40px;
           font-weight: bold;
+          color: #000;
         }
         .todo_main {
           width: 100%;
@@ -340,11 +324,13 @@ export default {
             text-align: center;
             margin: 20px;
             width: 33%;
-            height: 100px;
+            height: 130px;
             font-size: 16px;
             .todo_main_item_number {
               margin: 20px 0 0 0;
-              font-size: 20px;
+              color: #000;
+              font-size: 28px;
+              cursor: pointer;
             }
             &:nth-child(1) {
               border-right: 1px solid#D8D3F4;
@@ -365,6 +351,7 @@ export default {
         margin: 10px;
         padding: 5px;
         background-color: @bgc;
+        border: 1px solid #D8D3F4;
         .chart_date_picker {
           position: absolute;
           top: 20px;
@@ -393,6 +380,9 @@ export default {
             margin: 0 0 20px 0;
             font-size: 16px;
             font-weight: bold;
+          }
+          .wechatQR_item_text {
+            margin: 10px;
           }
         }
       }

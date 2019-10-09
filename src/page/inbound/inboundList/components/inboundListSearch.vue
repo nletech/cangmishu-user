@@ -95,7 +95,12 @@ export default {
   created() {
     this.getTypeList();
     this.getDistributors();
+    if (this.$route.query.checked) {
+      this.inboundStatus = 1; // 待入库
+      this.handlerChange();
+    }
   },
+
   computed: {
     inboundStatusList() {
       return [

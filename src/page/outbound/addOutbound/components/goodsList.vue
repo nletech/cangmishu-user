@@ -3,23 +3,24 @@
               <!-- 选择货品按钮 -->
               <el-button  :class="$style.goods_list_btn" type="primary" plain
                           @click="handleShowDialog" size="mini" icon="el-icon-more" style="float:right">
-                          选择商品
+                          {{$t('selectGoods')}}
               </el-button>
               <!-- 货品列表 -->
               <el-table :data.sync="specList"
                         border
-                        style="width: 100%;" empty-text="请选择商品规格">
+                        style="width: 100%;"
+                        :empty-text="$t('pleaseSelectProductSpec')">
                         <el-table-column  type="index"
                                           label="#">
                         </el-table-column>
-                        <el-table-column  label="商品名称及规格">
+                        <el-table-column  :label="$t('ProductSpec')">
                             <template slot-scope="scope">
                                       {{scope.row.product_name}}
                             </template>
                         </el-table-column>
                         <el-table-column label="SKU" prop="relevance_code">
                         </el-table-column>
-                        <el-table-column label="销售单价（元）" prop="sale_price">
+                        <el-table-column :label="$t('SalePrice1')" prop="sale_price">
                               <template slot-scope="scope">
                                   <el-input-number  v-model="scope.row.sale_price" :min="0" size="mini">
                                   </el-input-number>
@@ -86,13 +87,16 @@ export default {
       }
       this.$emit('get_data', this.specList);
     },
+
     removeSpec(index) {
       this.specList.splice(index, 1);
       this.$emit('get_data', this.specList);
     },
+
     handleShowDialog() {
       this.dialogShow = true;
     }, // 打开选择商品弹窗
+
   },
 };
 </script>

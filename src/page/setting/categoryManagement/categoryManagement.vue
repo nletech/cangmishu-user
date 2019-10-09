@@ -6,7 +6,7 @@
                   <div :class="$style.am_operation_btn">
                       <span @click="addCategory()">
                         <i class="iconfont">&#xe618;</i>
-                        添加货品分类
+                        {{$t('commodityClassificationManage')}}
                       </span>
                   </div>
                   <el-table
@@ -24,20 +24,20 @@
                           align="center">
                       </el-table-column>
                       <el-table-column
-                          label="中文名"
+                          :label="$t('cnName')"
                           prop="name_cn"
                           header-align="center"
                           align="center">
                       </el-table-column>
                       <el-table-column
-                          label="外文名"
+                          :label="$t('enName')"
                           v-if="isEnabledLangInput()"
                           prop="name_en"
                           header-align="center"
                           align="center">
                       </el-table-column>
                       <el-table-column
-                          label="SKU属性"
+                          :label="$t('SKUProperty')"
                           prop="need_expiration_date"
                           header-align="center"
                           align="center"
@@ -46,21 +46,21 @@
                               <el-tag type="success"
                                       size="medium"
                                       v-if="scope.row.need_expiration_date == 1">
-                                      保质期
+                                      {{$t('Expirydate')}}
                               </el-tag>
                               <el-tag type="success"
                                       size="medium"
                                       v-if="scope.row.need_production_batch_number == 1">
-                                      生产批次
+                                      {{$t('ProductionBatch')}}
                               </el-tag>
                               <el-tag type="success"
                                       size="medium"
                                       v-if="scope.row.need_best_before_date == 1">
-                                      最佳食用期
+                                      {{$t('bestUseTime')}}
                               </el-tag>
                           </template>
                       </el-table-column>
-                      <el-table-column  label="是否启用"
+                      <el-table-column  :label="$t('WhetherToEnable')"
                                         header-align="center"
                                         align="center">
                                         <template slot-scope="scope">
@@ -71,12 +71,12 @@
                       <el-table-column header-align="center"
                                     prop="address"
                                     width="180"
-                                    label="操作">
+                                    :label="$t('opreation')">
                         <template slot-scope="scope">
-                          <el-tooltip content="编辑" placement="top">
+                          <el-tooltip :content="$t('edit')" placement="top">
                             <el-button size="mini" icon="el-icon-edit" round @click="editCategory(scope.row)"></el-button>
                           </el-tooltip>
-                          <el-tooltip content="删除" placement="top">
+                          <el-tooltip :content="$t('delete')" placement="top">
                             <el-button  size="mini" icon="el-icon-delete" @click="delCategory(scope.row)" type="danger" round>
                             </el-button>
                           </el-tooltip>
@@ -104,43 +104,43 @@
               :rules="rules"
               :model="model"
               label-width="140px">
-            <h4>基本信息</h4>
-                    <el-form-item label="分类中文名:"
+            <h4>{{$t('Essentialformrmation')}}</h4>
+                    <el-form-item :label="$t('categoryNameCN')"
                                   prop="name_cn">
                         <el-input v-model="model.name_cn" maxlength="10" show-word-limit></el-input>
                     </el-form-item>
-                    <el-form-item label="分类英文名:"
+                    <el-form-item :label="$t('categoryNameEN')"
                                   prop="name_en"  v-if="isEnabledLangInput()">
                         <el-input v-model="model.name_en" maxlength="20" show-word-limit></el-input>
                     </el-form-item>
-            <h4>选填项</h4>
-                <el-form-item label="保质期"
+            <h4>{{$t('notNecessaryInfo')}}</h4>
+                <el-form-item :label="$t('Expirydate')"
                               prop="need_expiration_date">
                     <el-row>
                         <el-switch v-model="model.need_expiration_date" :active-value="1" :inactive-value="0"></el-switch>
-                        <el-popover placement="right-start" title="保质期作用" width="300" trigger="hover"
-                        content="开启此选项,该分类下面所有货品上架都需要填写保质期,出库将按商品的保质期截止日期从近到远来出库">
+                        <el-popover placement="right-start" :title="$t('Expirydate')" width="300" trigger="hover"
+                        :content="$t('dateTips')">
                         <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
                         </el-popover>
                     </el-row>
                 </el-form-item>
-                <el-form-item label="生产批次"
+                <el-form-item :label="$t('ProductionBatch')"
                               prop="need_production_batch_number">
                     <el-switch v-model="model.need_production_batch_number" :active-value="1" :inactive-value="0"></el-switch>
-                    <el-popover placement="right-start" title="生产批次作用" width="300" trigger="hover"
-                        content="开启此选项,该分类下面所有货品上架都需要填写生产批次,方便出库时候查询到每次出库的批次信息">
+                    <el-popover placement="right-start" :title="$t('ProductionBatch')" width="300" trigger="hover"
+                        :content="$t('patchTips')">
                         <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
                     </el-popover>
                 </el-form-item>
-                <el-form-item label="最佳食用期"
+                <el-form-item :label="$t('bestUseTime')"
                               prop="need_best_before_date">
                     <el-switch v-model="model.need_best_before_date" :active-value="1" :inactive-value="0"></el-switch>
-                    <el-popover placement="right-start" title="最佳食用期作用" width="300" trigger="hover"
-                        content="开启此选项,该分类下面所有货品上架都需要填写最佳食用期,主要用于食品行业">
+                    <el-popover placement="right-start" :title="$t('bestUseTime')" width="300" trigger="hover"
+                        :content="$t('goodsTips')">
                         <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
                     </el-popover>
                 </el-form-item>
-                <el-form-item label="是否启用"
+                <el-form-item :label="$t('WhetherToEnable')"
                               prop="is_enabled">
                     <el-switch v-model="model.is_enabled" :active-value="1" :inactive-value="0"></el-switch>
                 </el-form-item>
@@ -148,7 +148,7 @@
           <span slot="footer"
                 class="dialog-footer">
                 <el-button type="primary" @click="subimtData">
-                  提 交
+                  {{$t('submit')}}
                 </el-button>
           </span>
       </el-dialog>
@@ -164,7 +164,6 @@ export default {
   data() {
     return {
       dialogVisible: false, // 显示弹窗
-      dailogTitle: '新增',
       model: {
         id: 0,
         name_cn: '', // 中文名
@@ -188,6 +187,11 @@ export default {
       currentPage: 1, // 当前页
       current_page: 1, // 编辑的当前页(当选中的信息不在第一页时)
     };
+  },
+  computed: {
+    dailogTitle() {
+      return this.$t('add');
+    },
   },
   created() {
     this.loadData(); // 初始化列表数据
@@ -215,8 +219,8 @@ export default {
         is_enabled: 1,
       });
     },
-    getDailogTitle() { // 得到标题
-      return this.model.id === 0 ? '新增' : '修改';
+    getDailogTitle() { // 标题
+      return this.model.id === 0 ? this.$t('add') : this.$t('edit');
     },
     getData() { // 填充数据
       return this.model;

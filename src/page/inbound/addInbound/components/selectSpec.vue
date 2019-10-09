@@ -2,12 +2,12 @@
         <div :class="$style.select_goods">
               <!-- 选择商品弹窗 -->
                               <!-- 选择商品弹窗 -->
-                <el-dialog  title="选择商品"
+                <el-dialog  :title="$t('selectGoods')"
                             width="80%"
                             :visible.sync="goodsDialog"
                             :before-close="handleClose">
                   <el-row :gutter="20">
-                    <el-col :span="5">请选择货品分类</el-col>
+                    <el-col :span="5">{{$t('PleaseSelectCategory')}}</el-col>
                     <el-col :span="19">
                         <!-- 搜索框 -->
                         <el-row :gutter="20" type="flex">

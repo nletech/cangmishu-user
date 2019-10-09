@@ -45,11 +45,13 @@ export default {
       tempWarehouseId: '',
       tabs: [
         {
-          id: 1,
+          tag: 1,
+          title: 'Section',
           name: '货区',
           btn_text: '添加货区',
         }, {
-          id: 2,
+          tag: 2,
+          title: 'Rack',
           name: '货位',
           btn_text: '添加货位',
         },

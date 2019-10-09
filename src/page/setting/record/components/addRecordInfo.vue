@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :title="this.text_flag ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
+        :title="title"
         :center="true"
         @update:visible="$emit('update:visible', $event)"
         :visible="visible"
@@ -19,14 +19,14 @@
                   label-position="left"
                   :rules="info_Verify_rules">
                   <el-form-item
-                      :label="this.text_flag ? `${active_tab_item}名称` : `${active_tab_item}名称`"
+                      :label="label"
                       prop="name"
                       size="middle">
                       <el-input  v-model="add_info.name">
                       </el-input>
                   </el-form-item>
                   <el-form-item
-                      label="是否启用"
+                      :label="$t('WhetherToEnable')"
                       prop="is_enabled">
                       <el-switch  v-model="is_enabled"
                                   active-color="#13ce66"
@@ -42,7 +42,7 @@
                       :offset="13">
                       <el-button  @click="infoSubmit"
                                   :class="$style.submit_btn">
-                                  提交
+                                  {{$t('submit')}}
                       </el-button>
                   </el-col>
               </el-row>
@@ -65,6 +65,34 @@ export default {
     active_add_text: [String],
     row_data: [Object],
     clear_is_enabled: [Number],
+  },
+  computed: {
+    title() {
+      if (this.text_flag === 1) {
+        if (this.active_tab_item === '入库单分类') {
+          return this.$t('ReceiptCategoryName');
+        } else if (this.active_tab_item === '出库单分类') {
+          return this.$t('DeliveryListcategoryname');
+        }
+      } else if (this.active_tab_item === '入库单分类') {
+        return this.$t('ReceiptCategoryName');
+      } else if (this.active_tab_item === '出库单分类') {
+        return this.$t('DeliveryListcategoryname');
+      }
+    },
+    label() {
+      if (this.text_flag === 1) {
+        if (this.active_tab_item === '入库单分类') {
+          return this.$t('BatchName');
+        } else if (this.active_tab_item === '出库单分类') {
+          return this.$t('orderName');
+        }
+      } else if (this.active_tab_item === '入库单分类') {
+        return this.$t('BatchName');
+      } else if (this.active_tab_item === '出库单分类') {
+        return this.$t('orderName');
+      }
+    },
   },
   data() {
     // 自定义的验证规则

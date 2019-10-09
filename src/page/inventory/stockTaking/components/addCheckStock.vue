@@ -6,7 +6,9 @@
                     <el-col :span="8">
                     </el-col>
                     <el-col :span="7">
-                      <h2 align="center" style="margin:0px;">盘点清单</h2>
+                      <h2 align="center" style="margin:0px;">
+                        {{$t('stockTakingList')}}
+                      </h2>
                     </el-col>
                     <el-col :span="8">
                       <el-row>
@@ -24,7 +26,7 @@
                                 size="mini"
                                 :loading="isButtonLoading()"
                                 @click="handlerCheckStock">
-                                选择商品
+                                {{$t('selectGoods')}}
                             </el-button>
                           </el-col>
                       </el-row>
@@ -48,13 +50,13 @@
                                 align="center">
                             </el-table-column>
                             <el-table-column
-                                label="商品名(规格)"
+                                :label="$t('stocktalkingName')"
                                 prop="name_cn"
                                 header-align="center"
                                 align="center">
                             </el-table-column>
                             <el-table-column
-                                label="SKU编码"
+                                label="SKU"
                                 prop="relevance_code"
                                 header-align="center"
                                 align="center">
@@ -93,11 +95,11 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                label="操作"
+                                :label="$t('operation')"
                                 header-align="center"
                                 width="180">
                                 <template slot-scope="scope">
-                                    <el-tooltip content="删除" placement="top">
+                                    <el-tooltip :content="$t('delete')" placement="top">
                                         <el-button
                                             size="mini" icon="el-icon-delete"
                                             :loading="isButtonLoading()"
@@ -109,7 +111,7 @@
                             </el-table-column>
                         </el-table>
                     </el-form-item>
-                    <el-form-item label="备注:">
+                    <el-form-item :label="$t('remark')">
                       <el-input
                           :disabled="isButtonLoading()"
                           type="textarea"
@@ -126,7 +128,7 @@
                             style="margin-top: 20px;"
                             type="primary"
                             @click="onSubmit">
-                            提交
+                          {{$t('submit')}}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -145,9 +147,9 @@
                     @selection-change="handlerSelectedSearch"
                     border>
                     <el-table-column type="selection"></el-table-column>
-                    <el-table-column label="序号" type="index"></el-table-column>
-                    <el-table-column label="商品名(规格)" prop="name_cn"></el-table-column>
-                    <el-table-column label="SKU编码" prop="relevance_code"></el-table-column>
+                    <el-table-column label="#" type="index"></el-table-column>
+                    <el-table-column :label="$t('stocktalkingName')" prop="name_cn"></el-table-column>
+                    <el-table-column label="SKU" prop="relevance_code"></el-table-column>
                     <el-table-column label="入库批次" prop="stock_sku"></el-table-column>
                     <el-table-column label="所在货位" prop="location_code"></el-table-column>
                     <el-table-column label="原库存" prop="shelf_num_orgin"></el-table-column>
@@ -159,7 +161,7 @@
                             style="margin-top: 20px;"
                             type="primary"
                             @click="handlerDialogSubmit">
-                            提交
+                            {{$t('submit')}}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -223,7 +225,6 @@ export default {
     onSubmit() {
       if (!this.warehouseId) return;
       if (!this.stock_list.length) return;
-      console.log(this.stock_list);
       let flag = false;
       for (let i = 0; i < this.stock_list.length; i += 1) {
         if (`${this.stock_list[i].num}` === 'undefined') {
@@ -279,7 +280,6 @@ export default {
         });
     },
     handleDelete(id) {
-      // console.log(this.stock_list, 'this.stock_list');
       for (let i = 0; i < this.stock_list.length; i += 1) {
         if (id === this.stock_list[i].id) {
           for (let j = 0; j < this.stockListId.length; j += 1) {

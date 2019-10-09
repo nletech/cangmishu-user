@@ -3,7 +3,7 @@
         <div :class="$style.body_main">
               <div :class="$style.btn">
                   <i class="el-icon-plus"></i>
-                  <span @click="handleClick">添加仓库</span>
+                  <span @click="handleClick">{{$t('addWarehouse')}}</span>
               </div>
               <!-- 表格 -->
               <el-table
@@ -21,45 +21,45 @@
                       header-align="center"
                       align="center"
                       prop="code"
-                      label="编号">
+                      :label="$t('warehouseNO')">
                   </el-table-column>
                   <el-table-column
                       header-align="center"
                       align="center"
                       prop="name_cn"
-                      label="仓库名称">
+                      :label="$t('storeName')">
                   </el-table-column>
                   <el-table-column
                       header-align="center"
                       align="center"
                       prop="warehouse_address"
                       width="300"
-                      label="地址">
+                      :label="$t('address')">
                   </el-table-column>
                   <el-table-column
                       header-align="center"
                       align="center"
                       prop="area"
-                      label="面积(㎡)">
+                      :label="$t('WarehouseArea')">
                   </el-table-column>
                   <el-table-column
                       header-align="center" fixed="right"
-                      label="操作" width="240">
+                      :label="$t('operation')" width="240">
                       <template slot-scope="scope">
                           <el-tooltip
-                              content="编辑" placement="top">
+                              :content="$t('edit')" placement="top">
                               <el-button size="mini" icon="el-icon-edit" round
                                           @click="edit(scope.row)">
                               </el-button>
                           </el-tooltip>
                           <el-tooltip
-                              content="配置" placement="top">
+                              :content="$t('warehouseConfig')" placement="top">
                               <el-button type="primary" size="mini" icon="el-icon-setting" round
                                         @click="config(scope.row)">
                               </el-button>
                           </el-tooltip>
                           <el-tooltip
-                              content="设为默认" placement="top">
+                              :content="$t('setDefault')" placement="top">
                               <el-button
                                   size="mini"
                                   v-if="!scope.row.is_default_warehouse" round
@@ -68,7 +68,7 @@
                               </el-button>
                           </el-tooltip>
                           <el-tooltip
-                              content="删除" placement="top">
+                              :content="$t('delete')" placement="top">
                               <el-button
                                   size="mini"
                                   type="danger" round
@@ -175,15 +175,15 @@ export default {
       });
     },
     deleteWarehouse(info) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
       }).then(() => {
         $http.deleteWarehouse(info.id)
           .then(() => {
             this.$message({
-              message: '删除成功',
+              message: this.$t('success'),
               type: 'success',
             });
             this.getWarehouse();

@@ -8,7 +8,7 @@
                     <el-form-item  label="员工组名">
                         <el-input  v-model="staffGroupBasicInfo_form.name"></el-input>
                     </el-form-item>
-                    <el-form-item  label="备注">
+                    <el-form-item  :label="$t('remark')">
                         <el-input  type="textarea"
                                     v-model="staffGroupBasicInfo_form.remark">
                         </el-input>

@@ -13,7 +13,7 @@
                             size="small"
                             @click="addGoods"
                             icon="el-icon-plus">
-                            {{'添加商品'}}
+                            {{$t('AddProduct')}}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -30,16 +30,15 @@
                     header-align="center"
                     align="center">
                 </el-table-column>
-                <el-table-column label="商品图片" header-align="center" align="center" width="160">
+                <el-table-column :label="$t('productImage')" header-align="center" align="center" width="160">
                   <template slot-scope="scope">
                     <img style="width: 40px; height: 40px; margin: 0 2px 0 2px;"
                         v-for="(item, index) in scope.row.pics"
                         :key="index"
-                        :src="item"
-                        alt="商品图片">
+                        :src="item">
                   </template>
                 </el-table-column>
-                <el-table-column label="商品名称" header-align="center" align="center" >
+                <el-table-column :label="$t('ProductName2')" header-align="center" align="center" >
                     <template slot-scope="scope">
                         <span>{{scope.row.name}}</span>
                         <el-popover
@@ -49,17 +48,16 @@
                             <img
                               v-if="scope.row.weapp_qrcode"
                               style="width: 150px; height: 150px;"
-                              :src="scope.row.weapp_qrcode"
-                              alt="商品二维码">
+                              :src="scope.row.weapp_qrcode">
                             <i slot="reference" class="el-icon-view el-icon--right"></i>
                         </el-popover>
                     </template>
                 </el-table-column>
-                <el-table-column  prop="sale_price" label="售价(元)" header-align="center" align="center" >
+                <el-table-column  prop="sale_price" :label="$t('sale')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="updated_at" label="时间" header-align="center" align="center" width="200">
+                <el-table-column  prop="updated_at" :label="$t('time')" header-align="center" align="center" width="200">
                 </el-table-column>
-                <el-table-column label="上架" header-align="center" align="center" >
+                <el-table-column :label="$t('PutOn')" header-align="center" align="center" >
                     <template slot-scope="scope">
                         <el-switch
                           @change="handlerShelfSlef($event, scope.row)"
@@ -70,9 +68,9 @@
                         </el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column  label="操作" width="200" header-align="center">
+                <el-table-column  :label="$t('operation')" width="200" header-align="center">
                       <template slot-scope="scope">
-                        <el-tooltip content="编辑" placement="top">
+                        <el-tooltip :content="$t('edit')" placement="top">
                           <el-button
                               @click="editGoods(scope.row)"
                               :loading="isButtonLoading()"
@@ -81,7 +79,7 @@
                               round>
                           </el-button>
                         </el-tooltip>
-                        <el-tooltip content="删除" placement="top">
+                        <el-tooltip :content="$t('delete')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-delete"
                               :loading="isButtonLoading()"
@@ -95,7 +93,12 @@
             <el-row>
                 <el-col :span="8" style="position: relative; top: 8px;">
                   <div v-if="this.goodsList.length">
-                    <span style="color: rgb(121, 106, 209); font-weight: bold; font-size: 1.2rem;">批量操作:</span>
+                    <span
+                        style="color: rgb(121, 106, 209);
+                        font-weight: bold;
+                        font-size: 1.2rem;">
+                        {{$t('Batchoperation')}}
+                    </span>
                     <el-button
                       size="mini"
                       round
@@ -103,7 +106,7 @@
                       :loading="isButtonLoading()"
                       style="display: inline; position: relative; left: 20px; top: 2px;"
                       @click="handlerSeleteionAllInShelf">
-                      上架
+                      {{$t('PutOn')}}
                     </el-button>
                     <el-button
                       size="mini"
@@ -112,7 +115,7 @@
                       :disabled="isSelected"
                       style="display: inline; position: relative; left: 20px; top: 2px;"
                       @click="handlerSeleteionAllOutShelf">
-                      下架
+                      {{$t('PutOff')}}
                     </el-button>
                     <el-button
                       size="mini"
@@ -121,7 +124,7 @@
                       :loading="isButtonLoading()"
                       style="display: inline; position: relative; left: 20px; top: 2px;"
                       @click="handlerSeleteionAllDelete">
-                      删除
+                      {{$t('delete')}}
                     </el-button>
                   </div>
                 </el-col>
@@ -169,7 +172,7 @@ export default {
       selectionList: [], // 批量选择
       shopName_cn: '',
       select_batch_code: {
-        placeholder: '商品名称',
+        placeholder: 'ProductName2',
         flag: 1,
         shopId: this.isShopsOperation(),
       },
@@ -230,15 +233,15 @@ export default {
       });
     },
     delGoods(id) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
       }).then(() => {
         $http.deleteGoodsInShop(this.$route.query.shopId, id)
           .then(() => {
             this.$message({
-              message: '删除成功',
+              message: this.$t('success'),
               type: 'success',
               showClose: true,
             });
@@ -259,7 +262,6 @@ export default {
       return +this.$route.query.shopId;
     }, // 店铺 id
     onSpecSelected(data) {
-      console.log(data, 'goodsData');
       // eslint-disable-next-line
       let productsTemp = [];
       for (let i = 0; i < data.length; i += 1) {

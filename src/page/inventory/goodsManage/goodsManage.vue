@@ -11,7 +11,7 @@
                         @change="handlerSelect"
                         @clear="handlerClear"
                         size="mini"
-                        placeholder="请选择分类">
+                        :placeholder="$t('ProductTAG')">
                         <el-option
                             v-for="item in typeList"
                             :label="item.name_cn"
@@ -24,7 +24,7 @@
                 <el-col  :span="2">
                     <div style="position: relative; top: 5px; font-size: 1.2rem;">
                         <el-checkbox :true-label="1" @change="handlerInventorySwitch" v-model="inventorySwitch">
-                          低于库存
+                          {{$t('Belowstock')}}
                         </el-checkbox>
                     </div>
                 </el-col>
@@ -49,7 +49,7 @@
                     </el-button>
                     <!-- 弹窗 -->
                     <el-dialog
-                        title="添加货品"
+                        :title="$t('addGoods')"
                         :visible.sync="dialogVisible"
                         width="30%">
                         <el-row>
@@ -58,7 +58,7 @@
                                     @click="addCommodity"
                                     style="position: relative; top: 40px;"
                                     size="medium">
-                                    {{'添加单个货品'}}
+                                    {{$t('addGoods1')}}
                                 </el-button>
                             </el-col>
                             <el-col :span="1">
@@ -80,7 +80,7 @@
                                         style="width: 144px; margin: 0 0 10px 0;"
                                         :class="$style.text_modify"
                                         @click="downloadTemplate">
-                                        下载模板
+                                        {{$t('downloadtemplate')}}
                                     </el-button>
                                 </el-upload>
                                 <el-upload
@@ -96,7 +96,7 @@
                                       style="width: 144px;"
                                       :class="$style.text_modify"
                                       size="medium">
-                                      导入货品表
+                                      {{$t('importproductlist')}}
                                   </el-button>
                                 </el-upload>
                             </el-col>
@@ -150,13 +150,13 @@
                         </el-table-column>
                         <el-table-column
                             prop="purchase_price"
-                            label="参考进货单价（元）"
+                            :label="$t('PurchasePrice')"
                             header-align="center"
                             align="center">
                         </el-table-column>
                         <el-table-column
                             prop="sale_price"
-                            label="参考销售单价（元）"
+                            :label="$t('SalePrice')"
                             header-align="center"
                             align="center">
                         </el-table-column>
@@ -164,7 +164,7 @@
                             prop="total_stock_num"
                             align="center"
                             header-align="center"
-                            label="库存">
+                            :label="$t('inventory')">
                         </el-table-column>
                       </el-table>
                 </template>
@@ -195,26 +195,26 @@
                 prop="purchase_price"
                 align="center"
                 header-align="center"
-                label="参考进货单价（元）">
+                :label="$t('PurchasePrice')">
             </el-table-column>
             <el-table-column
                 prop="sale_price"
                 align="center"
                 header-align="center"
-                label="参考销售单价（元）">
+                :label="$t('SalePrice')">
             </el-table-column>
             <el-table-column
                 prop="total_stock_num"
                 align="center"
                 header-align="center"
-                label="库存">
+                :label="$t('inventory')">
             </el-table-column>
             <!-- 最后修改时间 -->
             <el-table-column
                 prop="updated_at"
                 align="center"
                 header-align="center"
-                label="最后修改时间">
+                :label="$t('LastUpdated')">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.updated_at }}</span>
                 </template>
@@ -225,7 +225,7 @@
                 :label="$t('operation')"
                 header-align="center">
                 <template slot-scope="scope">
-                    <el-tooltip content="编辑" placement="top">
+                    <el-tooltip :content="$t('edit')" placement="top">
                         <el-button
                             :loading="isButtonLoading()"
                             size="mini"
@@ -233,7 +233,7 @@
                             @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)">
                         </el-button>
                     </el-tooltip>
-                    <el-tooltip content="删除" placement="top">
+                    <el-tooltip :content="$t('remove')" placement="top">
                         <el-button
                             :loading="isButtonLoading()"
                             type="danger"
@@ -280,12 +280,12 @@
                 v-if = "this.selectGoods.length > 0"
                 :loading="isButtonLoading()"
                 @click="centerDialogVisible = false">
-                取 消
+                {{$t('cancel')}}
             </el-button>
             <el-button
                 type="primary"
                 @click="handleSubmit">
-                确 定
+                {{$t('confirm')}}
             </el-button>
         </span>
     </el-dialog>

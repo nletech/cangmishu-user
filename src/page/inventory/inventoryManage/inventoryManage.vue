@@ -8,7 +8,7 @@
                             @clear="handlerClear"
                             clearable
                             v-model="query.product_name"
-                            placeholder="货品名称">
+                            :placeholder="$t('ProductName')">
                         </el-input>
                     </el-col>
                     <el-col :span="4" :offset="1">
@@ -23,7 +23,7 @@
                     <el-col :span="1">
                         <el-button  size="small"
                                     @click="handlerSearch">
-                                    搜索
+                                    {{$t('Search')}}
                         </el-button>
                     </el-col>
                     <!-- 低于库存 -->
@@ -33,7 +33,7 @@
                                 :true-label="1"
                                 @change="handlerInventorySwitch"
                                 v-model="query.show_low_stock">
-                              低于库存
+                              {{$t('Belowstock')}}
                             </el-checkbox>
                         </div>
                     </el-col>
@@ -44,7 +44,7 @@
                             :class="$style.header_btn"
                             :loading="isButtonLoading()"
                             @click="dialogVisible = true">
-                            导出商品库存
+                            {{$t('ExportProductinventory')}}
                         </el-button>
                     </el-col>
             </el-row>
@@ -60,26 +60,26 @@
                               border>
                               <el-table-column label="入库批次" prop="sku">
                               </el-table-column>
-                              <el-table-column label="最佳食用期" prop="best_before_date">
+                              <el-table-column :label="$t('bestUseTime')" prop="best_before_date">
                               </el-table-column>
-                              <el-table-column label="保质期" prop="expiration_date">
+                              <el-table-column :label="$t('Expirydate')" prop="expiration_date">
                               </el-table-column>
-                              <el-table-column label="生产批次号" prop="production_batch_number">
+                              <el-table-column :label="$t('ProductionBatch')" prop="production_batch_number">
                               </el-table-column>
                               <el-table-column label="EAN" prop="ean">
                               </el-table-column>
-                              <el-table-column label="仓库库存" prop="stock_num">
+                              <el-table-column :label="$t('warehouseStock')" prop="stock_num">
                               </el-table-column>
-                              <el-table-column label="盘点次数" prop="recount_times">
+                              <el-table-column :label="$t('StockCheck')" prop="recount_times">
                               </el-table-column>
-                              <el-table-column label="位置" prop="warehouse_location_code">
+                              <el-table-column :label="$t('Location')" prop="warehouse_location_code">
                               </el-table-column>
                               <el-table-column
-                                  label="出入库记录">
+                                  :label="$t('StockHistory')">
                                   <template slot-scope="scope">
                                     <el-button
                                     size="small"
-                                    @click="showStockDetail(scope.row)">详情</el-button>
+                                    @click="showStockDetail(scope.row)">{{$t('detail')}}</el-button>
                                   </template>
                               </el-table-column>
                           </el-table>
@@ -88,7 +88,7 @@
                 <el-table-column  type="index"
                                   label="#">
                 </el-table-column>
-                <el-table-column  label="货品名称">
+                <el-table-column  :label="$t('ProductName')">
                                   <template slot-scope="scope">
                                             {{scope.row.product_name}}
                                   </template>
@@ -102,22 +102,22 @@
                                   label="SKU">
                 </el-table-column>
                 <el-table-column  prop="total_stock_num"
-                                  label="仓库库存">
+                                  :label="$t('warehouseStock')">
                 </el-table-column>
-                <el-table-column  label="入库次数/数量">
+                <el-table-column  :label="$t('Inboundtimesnumbers')">
                     <template slot-scope="scope">
                         {{scope.row.total_stockin_times}} / {{scope.row.total_stockin_num}}
                     </template>
                 </el-table-column>
                 <el-table-column  prop="stock_out_times"
-                                  label="出库次数/数量">
+                                  :label="$t('Outboundtimesnumbers')">
                     <template slot-scope="scope">
                         {{scope.row.total_stockout_times}} / {{scope.row.total_stockout_num}}
                     </template>
                 </el-table-column>
-                <el-table-column  label="出入库记录">
+                <el-table-column  :label="$t('StockHistory')">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="viewDetails(scope.row)">详情</el-button>
+                        <el-button size="mini" @click="viewDetails(scope.row)">{{$t('detail')}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -133,17 +133,17 @@
         </div>
         <!-- 导出商品库存弹框 -->
         <el-dialog
-            title="导出商品库存"
+            :title="$t('ExportProductinventory')"
             :visible.sync="dialogVisible"
             width="500px">
             <el-checkbox-group
                 v-model="export_data">
-                <el-checkbox value="1" label="1">导出货品列表</el-checkbox>
+                <el-checkbox value="1" label="1">{{$t('ExportProductList')}}</el-checkbox>
                 <el-checkbox value="2" label="2">导出货品规格列表</el-checkbox>
             </el-checkbox-group>
             <span  slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-                <el-button size="mini" type="primary" @click="exportStock">确 定</el-button>
+                <el-button size="mini" @click="dialogVisible = false">{{$t('cancel')}}</el-button>
+                <el-button size="mini" type="primary" @click="exportStock">{{$t('confirm')}}</el-button>
             </span>
         </el-dialog>
         <!-- 出入库详情弹框 -->
@@ -219,6 +219,9 @@ export default {
   created() {
     this.query.warehouse_id = this.warehouseId;
     this.getStocks(this.query);
+    if (this.$route.query.checked) {
+      this.handlerInventorySwitch(1);
+    }
   },
   methods: {
     getStocks(query) {
