@@ -8,6 +8,7 @@ const cn = {
   ForgetPassword: '忘记密码',
   ChangePassword: '修改密码',
   LogOut: '退出登录',
+  LogoutTips: '退出登录 ?',
   SwitchWarehouse: '切换仓库',
   checkedWh: '请选择仓库',
   selectdWh: '选择仓库',

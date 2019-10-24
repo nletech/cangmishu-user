@@ -247,7 +247,7 @@ export default {
     },
 
     logout() {
-      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+      this.$confirm(this.$t('LogoutTips'), this.$t('tips'), {
         confirmButtonText: this.$t('confirm'),
         cancelButtonText: this.$t('cancel'),
         type: 'warning',

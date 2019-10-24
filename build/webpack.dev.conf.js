@@ -6,10 +6,12 @@ const merge = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const PreloadWebpackPliugin = require('preload-webpack-plugin');
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -66,7 +68,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       }
     ]),
 
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
+    new PreloadWebpackPliugin(),
+    new CleanWebpackPlugin()
   ]
 })
 
