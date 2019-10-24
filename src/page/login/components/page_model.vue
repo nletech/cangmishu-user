@@ -21,6 +21,25 @@
           </p>
         </div>
       </div>
+      <div :class="$style.translate" @click=handlerTranslate($event)>
+        <span
+          id="cn"
+          :class="[
+            $style.translate_cn,
+            lang === 'cn' ? $style.translate_active: ''
+          ]">
+          中文
+        </span>
+        |
+        <span
+          id="en"
+          :class="[
+            $style.translate_en,
+            lang === 'en' ? $style.translate_active: ''
+          ]">
+          English
+          </span>
+      </div>
       <div :class="$style.model_footer">
         <div :class="$style.footer_main">
           <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
@@ -47,6 +66,7 @@
 <script>
 export default {
   name: 'login',
+
   props: {
     title: {
       type: String,
@@ -58,6 +78,43 @@ export default {
     lableIshow: {
       type: Boolean,
       default: false,
+    },
+  },
+
+  data() {
+    return {
+      lang: '',
+    };
+  },
+
+  computed: {
+    translate_lang() {
+      return this.lang;
+    },
+  },
+
+  created() {
+    this.lang = localStorage.getItem('lang') || 'cn';
+  },
+
+  methods: {
+    handlerTranslate(event) {
+      switch (event.target.id) {
+        case 'cn':
+          this.lang = 'cn';
+          this.$i18n.locale = 'cn';
+          localStorage.setItem('lang', 'cn');
+          break;
+
+        case 'en':
+          this.lang = 'en';
+          this.$i18n.locale = 'en';
+          localStorage.setItem('lang', 'en');
+          break;
+
+        default:
+          break;
+      }
     },
   },
 };
@@ -139,6 +196,27 @@ export default {
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
+      }
+      .translate {
+        margin: 15px auto;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        font-size: 16px;
+        color: #ccc;
+        .translate_active {
+          color: white;
+        }
+        .translate_cn {
+          width: 40px;
+          margin-right: 2px;
+          cursor: pointer;
+        }
+        .translate_en {
+          width: 40px;
+          margin-left: 2px;
+          cursor: pointer;
+        }
       }
       .model_footer {
         width: 1432px;

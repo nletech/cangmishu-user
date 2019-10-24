@@ -9,7 +9,7 @@ Vue.use(VueI18n);
 Vue.use(ElementUILocale);
 
 const i18n = new VueI18n({
-  locale: 'cn',
+  locale: localStorage.getItem('lang') || 'cn',
   messages: {
     cn,
     en,

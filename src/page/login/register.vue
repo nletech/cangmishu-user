@@ -25,37 +25,6 @@
                                 </template>
                             </el-input>
                       </el-form-item>
-                      <!-- <div :class="$style.item_picture" :style="style.OperateStyleEmailPicture">
-                          <div :class="$style.item_picture_main">
-                              <div :class="$style.item_picture_title">
-                                  <span style="font-size: 1.3rem;">
-                                    请输入图片验证码
-                                  </span>
-                              </div>
-                              <div :class="$style.item_picture_input">
-                                  <el-input v-model="verifyPhone.captcha" size="small" style="width: 230px; position: relative; left: 10px;">
-                                      <template slot="append">
-                                          <el-button :loading="isButtonLoading()">
-                                            <i
-                                                v-if="!isButtonLoading()"
-                                                @click="sendVerificationCodeForEmail(form.email, false)"
-                                                class="el-icon-refresh">
-                                            </i>
-                                          </el-button>
-                                      </template>
-                                  </el-input>
-                                  <img :src="vEmailPicture" style=" width:100px; height: 30px; position: absolute; top: 46px; left: 250px;" />
-                              </div>
-                              <el-row  :class="$style.item_picture_btn">
-                                  <el-col :span="2" :offset="14">
-                                      <el-button size="small" @click="handlerCloseVerifyBox">取消</el-button>
-                                  </el-col>
-                                  <el-col :span="2" :offset="3">
-                                      <el-button size="small" @click="handlerGetEmailCode">确定</el-button>
-                                  </el-col>
-                              </el-row>
-                          </div>
-                      </div> -->
                       <el-form-item
                           prop="code"
                           :class="$style.item_verificationCode">
@@ -79,7 +48,7 @@
                       <el-form-item
                           :class="$style.item_warehouseName">
                           <el-input
-                              placeholder="请输入仓库名称"
+                              :placeholder="$t('storeName')"
                               type="text"
                               v-model="form.warehouse_name"
                               size="small">
@@ -88,7 +57,7 @@
                       <el-form-item>
                           <el-input
                               v-model="form.warehouse_area"
-                              placeholder="请输入仓库面积"
+                              :placeholder="$t('WarehouseArea')"
                               size="small">
                               <template slot="append">m²</template>
                           </el-input>
@@ -198,7 +167,7 @@
                     <el-form-item
                         :class="$style.item_warehouseName">
                         <el-input
-                            placeholder="请输入仓库名称"
+                            :placeholder="$t('storeName')"
                             type="text"
                             v-model="formPhone.warehouse_name"
                             size="small">
@@ -207,7 +176,7 @@
                     <el-form-item>
                         <el-input
                             v-model="formPhone.warehouse_area"
-                            placeholder="请输入仓库面积"
+                            :placeholder="$t('WarehouseArea')"
                             size="small">
                             <template slot="append">m²</template>
                         </el-input>
@@ -332,32 +301,32 @@ export default {
     const vCode = (rule, value, callback) => {
       const val = String(value).replace(/\s+/g, '').split(''); // 先去掉所有空格 然后将字符串转换成数组
       if (val.length === 0) {
-        return callback(Error('验证码不能为空'));
+        return callback(Error(this.$t('TheCaptchaCannotBeEmpty')));
       } else if (val.length !== 6 && !OnlyNumber(val)) {
-        return callback(Error('验证码必须是六位数的数字'));
+        return callback(Error(this.$t('Theverificationcodemustbeasixdigitnumber')));
       }
       return callback();
     };
     const vPassword = (rule, value, callback) => {
       const val = String(value).replace(/\s+/g, '').split(''); // 先去掉所有空格 然后将字符串转换成数组
       if (val.length === 0) {
-        return callback(Error('密码不能为空'));
+        return callback(Error(this.$t('Passwordcannotbeempty')));
       } else if (val.length !== 0 && val.length < 6) {
-        return callback(Error('密码至少为6位字符'));
+        return callback(Error(this.$t('Passwordisatleast6characters')));
       }
       return callback();
     };
     const vWarehouseName = (rule, value, callback) => {
       if (value === '') {
-        return callback(Error('仓库名称不能为空'));
+        return callback(Error(this.$t('Warehousenamecannotbeempty')));
       }
       return callback();
     };
     const vWarehouseArea = (rule, value, callback) => {
       if (!value) {
-        return callback(Error('仓库面积不能为空'));
+        return callback(Error(this.$t('Warehouseareacannotbeempty')));
       } else if (!OnlyNumber(value)) {
-        return callback(Error('仓库面积只能为数字'));
+        return callback(Error(this.$t('Warehouseareacanonlybenumeric')));
       }
       return callback();
     };
@@ -369,9 +338,6 @@ export default {
         password: [
           { validator: vPassword, required: true, tigger: 'bulr' },
         ],
-        // password_confirmation: [
-        //   { validator: vPasswordConfirmation, required: true, tigger: 'bulr' },
-        // ],
         warehouse_name: [
           { validator: vWarehouseName, required: true, trigger: 'blur' },
         ],
@@ -452,7 +418,7 @@ export default {
             if (res.status) return;
             this.$message({
               type: 'success',
-              message: '发送成功，请查收!',
+              message: this.$t('Sendsuccessfullypleasecheck'),
             });
             this.style.OperateStylePhonePicture.display = 'none';
           });
@@ -471,7 +437,7 @@ export default {
             if (res.status) return;
             this.$message({
               type: 'success',
-              message: '发送成功，请查收!',
+              message: this.$t('Sendsuccessfullypleasecheck'),
             });
             this.style.OperateStyleEmailPicture.display = 'none';
           });
@@ -516,7 +482,7 @@ export default {
             if (!this.keep) {
               this.$message({
                 type: 'error',
-                message: '用户协议必选!',
+                message: this.$t('Useragreementrequired'),
               });
               return;
             }
@@ -524,7 +490,7 @@ export default {
               .then(() => {
                 this.$message({
                   type: 'success',
-                  message: '注册成功!',
+                  message: this.$t('Registrationsuccessful'),
                 });
                 // 跳转到登陆页
                 this.$router.replace({
@@ -540,7 +506,7 @@ export default {
             if (!this.keep) {
               this.$message({
                 type: 'error',
-                message: '用户协议必选!',
+                message: this.$t('Useragreementrequired'),
               });
               return;
             }
@@ -548,7 +514,7 @@ export default {
               .then(() => {
                 this.$message({
                   type: 'success',
-                  message: '注册成功!',
+                  message: this.$t('Registrationsuccessful'),
                 });
                 // 跳转到登陆页
                 this.$router.replace({
@@ -568,7 +534,7 @@ export default {
         if (!this.keep) {
           this.$message({
             type: 'error',
-            message: '用户协议必选!',
+            message: this.$t('Useragreementrequired'),
           });
           return;
         }
@@ -577,7 +543,7 @@ export default {
             if (res.status) return;
             this.$message({
               type: 'success',
-              message: '发送成功，请查收!',
+              message: this.$t('Sendsuccessfullypleasecheck'),
             });
           });
       }
@@ -630,14 +596,14 @@ export default {
       if (!val) {
         this.$message({
           type: 'error',
-          message: '请输入手机号',
+          message: this.$t('PleaseEnterMoblieNumber'),
         });
         return;
       }
       if (!OnlyNumber(val) || !(`${val}`.length === 11)) {
         this.$message({
           type: 'error',
-          message: '请输入正确的手机号',
+          message: this.$t('Pleaseenterthecorrectmobilephonenumber'),
         });
         return;
       }
@@ -648,7 +614,7 @@ export default {
       if (!this.form.email) {
         this.$message({
           type: 'error',
-          message: '请输入邮箱',
+          message: this.$t('EmailInput'),
         });
         return;
       }
@@ -657,7 +623,7 @@ export default {
       if (!reg.test(val)) {
         this.$message({
           type: 'error',
-          message: '请输入正确的邮箱',
+          message: this.$t('PleaseEnterTheContactEmails'),
         });
         return false;
       }

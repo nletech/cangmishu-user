@@ -12,7 +12,7 @@
                         <!-- 搜索框 -->
                         <el-row :gutter="20" type="flex">
                           <el-col  :span="12">
-                              <el-input placeholder="请输入内容" >
+                              <el-input placeholder="" >
                                   <el-button slot="append" type="primary" icon="el-icon-search"></el-button>
                               </el-input>
                           </el-col>
@@ -20,7 +20,7 @@
                           <el-col :span="4" :offset="8" >
                             <div style="float:right">
                             <el-button @click="handlerAddGoods">
-                              添加商品
+                              {{$t('AddProduct')}}
                             </el-button>
                             </div>
                           </el-col>

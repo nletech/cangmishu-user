@@ -1,5 +1,5 @@
 <template>
-  <el-dialog  title="查看入库单"
+  <el-dialog  :title="$t('viewInboundList')"
               width="90%"
               @update:visible="$emit('update:visible', $event)"
               :visible="visible">
@@ -8,7 +8,7 @@
                 v-model="activeName"
                 stretch
                 type="border-card">
-                <el-tab-pane label="入库单" name="entry">
+                <el-tab-pane :label="$t('Inbound')" name="entry">
                     <div v-html="content" v-if="visible">
                     </div>
                     <el-row>
@@ -19,12 +19,12 @@
                                 @click="handleDownload('entry')"
                                 style="background-color: #5745c5;
                                 color: #fff;">
-                                下载入库单
+                                {{$t('DownloadInbound')}}
                             </el-button>
                         </el-col>
                     </el-row>
                 </el-tab-pane>
-                <el-tab-pane label="采购单" name="purchase">
+                <el-tab-pane :label="$t('PurchaseOrder')" name="purchase">
                     <div v-html="content" v-if="visible">
                     </div>
                     <el-row>
@@ -35,24 +35,24 @@
                                 @click="handleDownload('purchase')"
                                 style="background-color: #5745c5;
                                 color: #fff;">
-                                下载采购单
+                                {{$t('DownloadPurchaseOrder')}}
                             </el-button>
                         </el-col>
                     </el-row>
                 </el-tab-pane>
-                <el-tab-pane label="入库批次号" name="batchno">
+                <el-tab-pane :label="$t('Inboundbatchnumber')" name="batchno">
                     <div v-html="content" v-if="visible">
                     </div>
                     <el-row>
                         <el-col :span="2" :offset="11">
-                            <el-tooltip content="推荐使用70mm*50mm标签纸打印" placement="top">
+                            <el-tooltip :content="$t('printTips')" placement="top">
                                   <el-button
                                       :disabled="disable"
                                       :loading="isButtonLoading()"
                                       @click="handleDownload('batchno')"
                                       style="background-color: #5745c5;
                                       color: #fff;">
-                                      下载入库批次号
+                                      {{$t('DondownLoadInboundbatchnumber')}}
                                   </el-button>
                             </el-tooltip>
                         </el-col>

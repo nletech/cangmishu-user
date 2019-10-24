@@ -77,7 +77,7 @@
                                     :show-file-list="false">
                                     <el-button
                                         size="medium"
-                                        style="width: 144px; margin: 0 0 10px 0;"
+                                        style="width: 180px; margin: 0 0 10px 0;"
                                         :class="$style.text_modify"
                                         @click="downloadTemplate">
                                         {{$t('downloadtemplate')}}
@@ -93,7 +93,7 @@
                                   :show-file-list="false">
                                   <el-button
                                       slot="trigger"
-                                      style="width: 144px;"
+                                      style="width: 180px;"
                                       :class="$style.text_modify"
                                       size="medium">
                                       {{$t('importproductlist')}}
@@ -144,7 +144,7 @@
                         </el-table-column>
                         <el-table-column
                             prop="gross_weight"
-                            :label="$t('grossWeight') + '(g)'"
+                            :label="$t('grossWeight')"
                             header-align="center"
                             align="center">
                         </el-table-column>
@@ -317,7 +317,7 @@ export default {
       uploadData: {},
       dialogVisible: false,
       select_batch_code: {
-        placeholder: '货品名或SKU',
+        placeholder: 'ProductnameorSKU',
         flag: 3,
       },
       query: {
@@ -339,9 +339,9 @@ export default {
       // eslint-disable-next-line
       switch (+val) {
         case 1:
-          return '是';
+          return this.$t('yes');
         case 0:
-          return '否';
+          return this.$t('no');
       }
     },
   },
@@ -386,6 +386,7 @@ export default {
           this.params.currentPage = res.data.current_page;
         });
     },
+
     handlerInventorySwitch(val) {
       if (val === 1) {
         this.query.show_low_stock = 1;
@@ -394,6 +395,7 @@ export default {
       }
       this.getList(this.query);
     }, // 查询库存
+
     handlerClear() {
       this.query.warehouse_id = this.warehouseId;
       this.query.category = '';
@@ -402,6 +404,7 @@ export default {
       this.query.show_low_stock = '';
       this.getList(this.query);
     }, // 清空选择框回调
+
     handlerSelect(categoryId) {
       if (categoryId === 0) {
         this.query.category_id = '';
@@ -410,6 +413,7 @@ export default {
       }
       this.getList(this.query);
     }, // 选择货品分类回调
+
     handlerChangePage(pageVal) {
       if (pageVal === 0) {
         this.query.page = '';
@@ -418,21 +422,24 @@ export default {
       }
       this.getList(this.query);
     },
+
     handlerInputQuery(res) {
       this.goods_list_data = res.data.data;
       this.params.total = res.data.total;
       this.params.currentPage = res.data.current_page;
     }, // 输入框回调
+
     handleSelectionChange(val) {
       this.selectGoods = [];
       val.forEach((element) => {
         this.selectGoods.push({ id: element.id });
       });
     },
+
     downloadTemplate() {
       window.open('/static/goodsList.zip');
     },
-    // 上传截图回调
+
     handleSuccess(res) {
       if (res.status === 0) {
         this.$message({
@@ -447,7 +454,8 @@ export default {
           type: 'warning',
         });
       }
-    },
+    }, // 上传截图回调
+
     handleSubmit() {
       if (!this.warehouseId || this.selectGoods.length === 0) {
         this.centerDialogVisible = false;
@@ -468,13 +476,16 @@ export default {
           this.getList(this.query);
         });
     },
+
     setGoodsType() {
       this.centerDialogVisible = true;
     },
+
     importGoods() {
       this.importVisible = true;
     },
     // 货品分类列表
+
     getTypeList() {
       if (!this.warehouseId) return;
       $http.getCategoryManagement({
@@ -485,7 +496,7 @@ export default {
           this.typeList = res.data.data;
         });
     },
-    // 添加货品
+
     addCommodity() {
       this.$router.push({
         name: 'goodsAdd',
@@ -493,8 +504,8 @@ export default {
           warehouse_id: this.warehouseId,
         },
       });
-    },
-    // 编辑货品
+    }, // 添加货品
+
     editCommodity(idVal, wID) {
       this.$router.push({
         name: 'goodsEdit',
@@ -504,26 +515,25 @@ export default {
           isCheck: true,
         },
       });
-    },
-    // 查看货品
+    }, // 编辑货品
+
     deleteCommodity(id) {
-      this.$confirm('此操作将永久删除，是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
-      })
-        .then(() => {
-          $http.deleteProducts(id)
-            .then((res) => {
-              if (res.status) return;
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-              });
-              this.getList(this.query);
+      }).then(() => {
+        $http.deleteProducts(id)
+          .then((res) => {
+            if (res.status) return;
+            this.$message({
+              message: this.$t('success'),
+              type: 'success',
             });
-        });
-    },
+            this.getList(this.query);
+          });
+      });
+    }, // 查看货品
   },
 };
 </script>

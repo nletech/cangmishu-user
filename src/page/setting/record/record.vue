@@ -215,7 +215,7 @@ export default {
                     if (status) return;
                     this.$message({
                       type: 'success',
-                      message: '操作成功',
+                      message: this.$t('success'),
                     });
                     this.active_item_check(active_item);
                   })
@@ -225,7 +225,7 @@ export default {
             if (status) return;
             this.$message({
               type: 'success',
-              message: '操作成功',
+              message: this.$t('success'),
             });
             this.active_item_check(active_item);
           });

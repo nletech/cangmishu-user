@@ -11,7 +11,7 @@
                             prop="code">
                             <el-input v-model="form.code"
                                       size="small"
-                                      placeholder="示例：A1-1-01、00-01、1">
+                                      :placeholder="$t('Examples')">
                             </el-input>
               </el-form-item>
               <el-form-item :label="$t('BelongingArea')"
@@ -118,7 +118,7 @@ export default {
     formValidator() {
       return {
         code: [
-          { required: true, message: this.$t('pleaseEnterShippingAreaName'), trigger: 'blur' },
+          { required: true, message: this.$t('Pleaseenterrackcode'), trigger: 'blur' },
         ], // 货架编号
         warehouse_area_id: [
           { required: true, message: this.$t('PleaseSelectTheTargoarea'), trigger: 'change' },

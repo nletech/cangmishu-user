@@ -20,7 +20,7 @@
             {{form.relevance_code}}
         </el-form-item>
         <el-form-item
-            label="入库批次"
+            :label="$t('Inboundbatchnumber')"
             prop="sku">
             {{form.sku}}
         </el-form-item>
@@ -32,7 +32,7 @@
             </el-input>
         </el-form-item>
         <el-form-item
-            label="货位"
+            :label="$t('Rack')"
             prop="location_code">
             <el-input  v-model="form.location_code"
                       size="small">
@@ -193,7 +193,7 @@ export default {
             this.$emit('success', true, this.row_data.sku);
             this.$message({
               type: 'success',
-              message: '操作成功',
+              message: this.$t('success'),
             });
           });
         this.$emit('close', false);

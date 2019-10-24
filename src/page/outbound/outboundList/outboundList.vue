@@ -234,7 +234,7 @@
                                 :rules="rules"
                                 label-width="160px">
                                 <el-form-item :label="$t('DeliveryCompany')">
-                                    <el-select v-model="expressForm.express_code" placeholder="请选择">
+                                    <el-select v-model="expressForm.express_code" :placeholder="$t('Pleaseselect')">
                                         <el-option
                                           v-for="item in expressList"
                                           :key="item.name"

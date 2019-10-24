@@ -189,7 +189,10 @@ export default {
     },
     loadCategoryList() {
       if (!this.warehouseId) return;
-      $http.getCategoryManagement({ warehouse_id: this.warehouseId })
+      $http.getCategoryManagement({
+        warehouse_id: this.warehouseId,
+        page_size: 200,
+      })
         .then((res) => {
           this.categoryListData = res.data.data;
         });
@@ -217,7 +220,7 @@ export default {
       this.params.currentPage = res.data.current_page;
     }, // input搜索回调
     goToAddGoodPage() {
-      this.$confirm('添加商品将会离开当前界面,确定?').then(() => {
+      this.$confirm(this.$t('addGoodsTips')).then(() => {
         this.$router.push({
           name: 'goodsAdd',
           query: { warehouse_id: this.warehouseId },

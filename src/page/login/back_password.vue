@@ -78,10 +78,10 @@ export default {
         return;
       }
       $http.forgetPwd(this.form).then(() => {
-        this.$notify({
+        this.$message({
           type: 'success',
-          title: '操作成功',
-          message: '邮件已发送，请查收',
+          title: this.$t('success'),
+          message: this.$t('Themailhasbeensent'),
         });
         this.$router.push({ name: 'login' });
       });
@@ -89,10 +89,9 @@ export default {
     confirm() {
       $http.resetPwdEnd(this.form).then(() => {
         this.$router.push({ name: 'login' });
-        this.$notify({
+        this.$message({
           type: 'success',
-          title: '操作成功',
-          message: '找回密码成功',
+          message: this.$t('success'),
         });
       });
     },

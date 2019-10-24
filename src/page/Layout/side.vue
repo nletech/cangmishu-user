@@ -21,13 +21,7 @@
               width="360"
               trigger="hover"
               >
-              <span>
-                您可以通过新增店铺生成仓库专属的订货小程序，
-                生成店铺后添加商品就能同步仓库内的货品至您的订货小程序，
-                用户通过小程序下单可直接生成货品出库单。
-                在仓库的业务往来中，无需再手动填单、下单，用订货小程序一键下单即可生成货品出库单。
-                （一个仓库可生成多个店铺小程序哦!）
-              </span>
+              <span>{{$t('shoptips')}}</span>
               <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
           </el-popover>
         </el-col>

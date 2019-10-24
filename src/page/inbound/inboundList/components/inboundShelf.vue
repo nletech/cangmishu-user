@@ -46,12 +46,11 @@
               :class="$style.sku_input">
               <el-col :span="4">
                   <el-input
-                      placeholder="请输入或扫描SKU"
+                      :placeholder="$t('PleaseenterorscanSKU')"
                       @keyup.enter.native="check_sku()"
                       v-model="sku_input"
                       size="mini">
-                      <i
-                          slot="suffix"
+                      <i  slot="suffix"
                           class="iconfont"
                           style="display: inline-block; margin: 8px 0 0 0;">
                           &#xe60b;
@@ -93,23 +92,23 @@
                   prop="ean">
               </el-table-column>
               <el-table-column
-                  label="预计入库数量"
+                  :label="$t('Estimatednumberofwarehousing')"
                   align="center"
                   header-align="center"
                   prop="need_num"
-                  width="120">
+                  width="144">
                   <template slot-scope="scope">
                             <span>{{scope.row.need_num}}</span>
                   </template>
               </el-table-column>
               <el-table-column
-                  label="实际入库数量"
+                  :label="$t('Actualwarehousingquantity')"
                   align="center"
                   header-align="center"
                   prop="stockin_num">
               </el-table-column>
               <el-table-column
-                  :label="$t('cnName')"
+                  :label="$t('Rack')"
                   align="center"
                   header-align="center"
                   prop="code">
@@ -131,6 +130,7 @@
             </el-col>
           </el-row>
           <el-dialog
+              v-if="dialogVisible"
               :title="$t('goodsDetial')"
               :visible.sync="dialogVisible"
               width="60%">
@@ -142,34 +142,36 @@
                           :rules="rules"
                           :model="form"
                           size="small"
-                          label-width="120px">
+                          label-width="144px">
                           <el-form-item :label="$t('goodsName')">
                               {{form.product_name}}
                           </el-form-item>
                           <el-form-item  label="SKU">
                               {{form.relevance_code}}
                           </el-form-item>
-                          <el-form-item  label="入库批次号">
+                          <el-form-item
+                              :label="$t('Inboundbatchnumber')">
                               {{form.sku}}
                           </el-form-item>
-                          <el-form-item  label="预入库数量(个)">
+                          <el-form-item
+                              :label="$t('Numberofpreloaded')">
                               {{form.need_num}}
                           </el-form-item>
                           <el-form-item  :label="$t('remark')">
                               {{form.remark}}
                           </el-form-item>
                           <el-form-item
-                              label="箱子条码信息"
+                              :label="$t('BoxCode')"
                               prop="box_code">
                               <el-input v-model="form.box_code" style="width: 310px;"></el-input>
                           </el-form-item>
                           <el-form-item
-                              label="EAN码信息"
+                              :label="$t('EANCode')"
                               prop="ean">
                               <el-input v-model="form.ean" style="width: 310px;"></el-input>
                           </el-form-item>
                           <el-form-item
-                              label="商品保质期至"
+                              :label="$t('ExpiryDate')"
                               v-if="form.need_expiration_date"
                               prop="expiration_date">
                               <el-date-picker
@@ -177,17 +179,17 @@
                                   style="width: 310px;"
                                   value-format="yyyy-MM-dd"
                                   format="yyyy - MM - dd"
-                                  placeholder="选择日期">
+                                  :placeholder="$t('Pleaseselectdate')">
                               </el-date-picker>
                           </el-form-item>
                           <el-form-item
-                              label="生产批次号"
+                              :label="$t('ProductionBatch')"
                               v-if="form.need_production_batch_number"
                               prop="production_batch_number">
                               <el-input v-model="form.production_batch_number" style="width: 310px;"></el-input>
                           </el-form-item>
                           <el-form-item
-                              label="最佳食用期"
+                              :label="$t('bestUseTime')"
                               v-if="form.need_best_before_date"
                               prop="best_before_date">
                               <el-date-picker
@@ -195,11 +197,11 @@
                                   style="width: 310px;"
                                   value-format="yyyy-MM-dd"
                                   format="yyyy - MM - dd"
-                                  placeholder="选择日期">
+                                  :placeholder="$t('Pleaseselectdate')">
                             </el-date-picker>
                           </el-form-item>
                           <el-form-item
-                              label="实际入库数量"
+                              :label="$t('Actualwarehousingquantity')"
                               prop="stockin_num">
                               <el-input v-model="form.stockin_num" style="width: 310px;"></el-input>
                           </el-form-item>
@@ -209,7 +211,7 @@
                               <el-select
                                   v-model="form.code"
                                   style="width: 310px;"
-                                  placeholder="请选择货位">
+                                  :placeholder="$t('Pleaseselectrack')">
                                   <el-option
                                       v-for="(item, index) in warehouse_shelfs"
                                       :key="index"
@@ -219,7 +221,7 @@
                                       {{item.code}}
                                   </el-option>
                               </el-select>
-                              <el-tooltip content="更多货位" placement="top">
+                              <el-tooltip :content="$t('moreRack')" placement="top">
                                   <i
                                       @click="handlerEmit"
                                       class="el-icon-more el-icon--right"
@@ -262,7 +264,7 @@ export default {
     const check = {
       stockin_num: (rule, value, callback) => {
         if (value < 0 || !OnlyNumber(value)) {
-          callback(new Error('请输入整数'));
+          callback(new Error(this.$t('Pleaseenterapositiveinteger')));
         } else {
           callback();
         }
@@ -271,22 +273,22 @@ export default {
     return {
       rules: {
         expiration_date: [
-          {required: true, message: '请选择商品保质期', trigger: 'blur'},
+          {required: true, message: this.$t('Pleaseselectexpirydate'), trigger: 'blur'},
         ],
         production_batch_number: [
-          {required: true, message: '请输入出产批次号', trigger: 'blur'},
+          {required: true, message: this.$t('Pleaseenterproductionbatch'), trigger: 'blur'},
         ],
         best_before_date: [
-          {required: true, message: '请选择最佳食用期', trigger: 'blur'},
+          {required: true, message: this.$t('Pleaseselectbestbeforedate'), trigger: 'blur'},
         ],
         stockin_num: [
           { required: true, validator: check.stockin_num, trigger: 'blur'},
         ],
         ean: [
-          {required: true, message: '请填写EAN', trigger: 'blur'},
+          {required: true, message: this.$t('PleaseenterEAN'), trigger: 'blur'},
         ],
         code: [
-          {required: true, message: '请选择货位', trigger: 'change'},
+          {required: true, message: this.$t('Pleaseselectrack'), trigger: 'change'},
         ],
       }, // 验证规则
       warehouse_shelfs: [], // 当前仓库的货位列表
@@ -366,9 +368,9 @@ export default {
   },
   methods: {
     handlerEmit() {
-      this.$confirm('此操作将离开当前页面, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('Thiswillleavethecurrentpagewillyoucontinue'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
         if (!this.warehouseId) return;
@@ -398,14 +400,17 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '请填写完整',
+            message: this.$t('Pleasecompletetheform'),
           });
         }
       });
     },
     get_warehouse_shelf() {
       const whId = this.warehouseId;
-      $http.getWarehouseshelf({ warehouse_id: whId })
+      $http.getWarehouseshelf({
+        warehouse_id: whId,
+        page_size: 200,
+      })
         .then((res) => {
           if (res.status) return;
           this.warehouse_shelfs = res.data.data;
@@ -473,7 +478,7 @@ export default {
       $http.toInbound(perInfo).then((res) => {
         if (res.status) return; 
         this.$message({
-          message: '操作成功!',
+          message: this.$t('success'),
           type: 'success',
           showClose: true,
         });

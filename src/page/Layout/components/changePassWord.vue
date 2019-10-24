@@ -97,7 +97,7 @@ export default {
               this.$emit('update:visible', false);
               this.$message({
                 type: 'success',
-                message: '操作成功',
+                message: this.$t('success'),
               });
             });
         }

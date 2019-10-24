@@ -6,24 +6,57 @@
                 <div :class="$style.statistics_container">
                     <div :class="$style.statistics_container_item">
                         <p>{{$t('warehouseStock')}}</p>
-                        <p :class="$style.item_number"><span @click="goToTag('inventoryManage')">{{stock.all_count}}</span></p>
-                        <p>{{$t('day')}}:<span>{{stock.today_count}}</span></p>
-                        <p>{{$t('month')}}:<span>{{stock.month_count}}</span></p>
-                        <p>{{$t('year')}}:<span>{{stock.year_count}}</span></p>
+                        <p :class="$style.item_number">
+                          <span @click="goToTag('inventoryManage')">{{stock.all_count}}</span>
+                        </p>
+                        <div :class="$style.item_date">
+                          <div :class="$style.item_date_title">
+                              <p>{{$t('day')}}:</p>
+                              <p>{{$t('month')}}:</p>
+                              <p>{{$t('year')}}:</p>
+                          </div>
+                          <div :class="$style.item_date_number">
+                            <p>{{stock.today_count}}</p>
+                            <p>{{stock.month_count}}</p>
+                            <p>{{stock.year_count}}</p>
+                          </div>
+                        </div>
                     </div>
                     <div :class="$style.statistics_container_item">
                         <p>{{$t('ProductData')}}:</p>
-                        <p :class="$style.item_number"><span @click="goToTag('GoodsManage')">{{product.all_count}}</span></p>
-                        <p>{{$t('day')}}:<span>{{product.today_count}}</span></p>
-                        <p>{{$t('month')}}:<span>{{product.month_count}}</span></p>
-                        <p>{{$t('year')}}:<span>{{product.year_count}}</span></p>
+                        <p :class="$style.item_number">
+                          <span @click="goToTag('GoodsManage')">{{product.all_count}}</span>
+                        </p>
+                        <div :class="$style.item_date">
+                          <div :class="$style.item_date_title">
+                              <p>{{$t('day')}}:</p>
+                              <p>{{$t('month')}}:</p>
+                              <p>{{$t('year')}}:</p>
+                          </div>
+                          <div :class="$style.item_date_number">
+                            <p>{{product.today_count}}</p>
+                            <p>{{product.month_count}}</p>
+                            <p>{{product.year_count}}</p>
+                          </div>
+                        </div>
                     </div>
                     <div :class="$style.statistics_container_item">
                         <p>{{$t('OutboundData')}}:</p>
-                        <p :class="$style.item_number"><span @click="goToTag('outboundList')">{{order.all_count}}</span></p>
-                        <p>{{$t('day')}}:<span>{{order.today_count}}</span></p>
-                        <p>{{$t('month')}}:<span>{{order.month_count}}</span></p>
-                        <p>{{$t('year')}}:<span>{{order.year_count}}</span></p>
+                        <p :class="$style.item_number">
+                          <span @click="goToTag('outboundList')">{{order.all_count}}</span>
+                        </p>
+                        <div :class="$style.item_date">
+                          <div :class="$style.item_date_title">
+                              <p>{{$t('day')}}:</p>
+                              <p>{{$t('month')}}:</p>
+                              <p>{{$t('year')}}:</p>
+                          </div>
+                          <div :class="$style.item_date_number">
+                            <p>{{order.today_count}}</p>
+                            <p>{{order.month_count}}</p>
+                            <p>{{order.year_count}}</p>
+                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,7 +79,6 @@
                 </div>
             </div>
         </div>
-
         <div :class="$style.container_column2">
             <div :class="$style.chart">
                 <el-date-picker
@@ -71,15 +103,15 @@
             <div :class="$style.wechatQR">
                 <div :class="$style.wechatQR_item">
                     <p :class="$style.wechatQR_item_title">{{$t('OrderWechatMiniProgramDemo')}}</p>
-                    <div>
-                        <img width="200px" height="200px" src="../../../assets/img/Wechatcard1.png" alt="">
+                    <div :class="$style.wechatQR_item_image">
+                        <img width="100%" height="100%" src="../../../assets/img/Wechatcard1.png" alt="">
                     </div>
                     <el-button @click="goToTag('shopsManagement')">{{$t('FreetogetWechatMiniProgram')}}</el-button>
                 </div>
                 <div :class="$style.wechatQR_item">
                     <p :class="$style.wechatQR_item_title">{{$t('WechatOfficialAccount')}}</p>
-                    <div>
-                        <img width="200px" height="200px" src="../../../assets/img/Wechatcard2.png" alt="">
+                    <div :class="$style.wechatQR_item_image">
+                        <img width="100%" height="100%" src="../../../assets/img/Wechatcard2.png" alt="">
                     </div>
                     <p :class="$style.wechatQR_item_text">{{$t('AnyQuestionletmeknow')}}</p>
                 </div>
@@ -101,6 +133,7 @@ export default {
   mixins: [mixin],
   data() {
     return {
+      a: true,
       echartsdata: [],
       myCharts: {},
       chart_time: [],
@@ -117,6 +150,7 @@ export default {
       todo: {}, // 待办事项
     };
   },
+
   created() {
     this.getWarehouseDate();
   },
@@ -127,17 +161,30 @@ export default {
   },
 
   computed: {
+
     desc() {
       return [`${this.$t('Inboundtimes')}`, `${this.$t('Outboundtimes')}`, `${this.$t('InboundItemnumber')}`, `${this.$t('OutboundItemnumber')}`];
     },
+
+    lang() {
+      return this.$i18n.locale;
+    },
+
   },
 
   watch: {
+
     warehouseId() {
       this.getWarehouseDate();
       this.initCharts();
       this.getEchartsData();
     },
+
+    lang() {
+      this.initCharts();
+      this.getEchartsData();
+    },
+
   },
   methods: {
     goToTag(tag, query) {
@@ -298,6 +345,20 @@ export default {
               font-size: 28px;
               cursor: pointer;
             }
+            .item_date {
+              display: flex;
+              align-items: center;
+              .item_date_title {
+                width: 50%;
+                text-align: right;
+              }
+              .item_date_number {
+                width: 50%;
+                text-align: center;
+                color: #000;
+                font-size: 18px;
+              }
+            }
             span {
               color: #000;
               margin-left: 20px;
@@ -380,6 +441,10 @@ export default {
             margin: 0 0 20px 0;
             font-size: 16px;
             font-weight: bold;
+          }
+          .wechatQR_item_image {
+            width: 200px;
+            height: 200px;
           }
           .wechatQR_item_text {
             margin: 10px;

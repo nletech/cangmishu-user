@@ -11,7 +11,7 @@
                             prop="code">
                             <el-input v-model="form.code"
                                       size="small"
-                                      placeholder="示例：A1-1-01、00-01、1">
+                                      :placeholder="$t('Examples')">
                             </el-input>
               </el-form-item>
               <el-form-item :label="$t('BelongingArea')"

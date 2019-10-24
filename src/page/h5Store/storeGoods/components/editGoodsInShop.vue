@@ -21,13 +21,14 @@
                     <my-upload
                       :width="400"
                       :height="400"
+                      :langExt="langInfo"
+                      :langType="langType"
                       :disable="imgNumberMoreThanThree"
                       @uploadSuccessCallBack="handlerSuccessCarouselImgs">
                       <template slot="btnTitle">{{$t('uploadImage')}}</template>
                     </my-upload>
                     <div>
-                      最多<span style="color: red; font-size: 1.1rem;">&nbsp;3&nbsp;</span>张,
-                      建议尺寸<span style="color: red; font-size: 1.1rem;">&nbsp;400*400&nbsp;</span>
+                        {{$t('nomorethan3')}}
                     </div>
                     <image-list :line="false" :list="CarouselImgs"></image-list>
                 </el-form-item>
@@ -44,13 +45,14 @@
                     <my-upload
                       :width="400"
                       :height="400"
+                      :langExt="langInfo"
+                      :langType="langType"
                       :disable="imgNumberMoreThanTen"
                       @uploadSuccessCallBack="handlerSuccessDescriptionImgs">
                       <template slot="btnTitle">{{$t('uploadImage')}}</template>
                     </my-upload>
                     <div>
-                      最多<span style="color: red; font-size: 1.1rem;">&nbsp;10&nbsp;</span>张,
-                      建议尺寸<span style="color: red; font-size: 1.1rem;">&nbsp;400*400&nbsp;</span>
+                        {{$t('nomorethan4')}}
                     </div>
                     <image-list :line="false" :list="descriptionImgs"></image-list>
                 </el-form-item>
@@ -63,7 +65,7 @@
                             <el-input v-model="scope.row.sale_price"></el-input>
                           </template>
                         </el-table-column>
-                        <el-table-column :label="'是否上架'">
+                        <el-table-column :label="$t('Whethertheshelf')">
                           <template slot-scope="scope">
                             <el-switch
                               v-model="scope.row.is_shelf"
@@ -147,6 +149,11 @@ export default {
     },
   },
   computed: {
+    langInfo() {
+      return {
+        preview: this.$t('imagePreview'),
+      };
+    },
     picsa() {
       return 1;
     },
@@ -162,6 +169,9 @@ export default {
     imgNumberMoreThanTen() {
       return this.descriptionImgs.length >= 10;
     },
+    langType() {
+      return this.$i18n.locale === 'en' ? 'en' : 'zh';
+    },
   },
   methods: {
     handlerSuccessCarouselImgs(response) {
@@ -174,7 +184,7 @@ export default {
     },
     getDataList(shopId, goodsId) {
       $http.goodsDetailInShop(shopId, goodsId).then((res) => {
-        this.shop_form.name_cn = res.data.name;
+        this.shop_form.name_cn = res.data.name_cn;
         this.shop_form.remark = res.data.remark;
         this.shop_form.specs = res.data.specs;
         res.data.pics.forEach((e) => {

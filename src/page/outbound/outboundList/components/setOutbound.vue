@@ -24,7 +24,7 @@
                         <el-col :span="12">
                           <el-card shadow="never">
                               <el-row >
-                                      <el-col :span="4">发件信息:</el-col>
+                                      <el-col :span="4">{{$t('sender')}}</el-col>
                               </el-row>
                               <el-row >
                                       <el-col>{{row_data.send_fullname}} {{row_data.send_phone}}</el-col>
@@ -37,7 +37,7 @@
                         <el-col :span="12">
                           <el-card shadow="never">
                               <el-row>
-                                  <el-col :span="4">收件信息:</el-col>
+                                  <el-col :span="4">{{$t('receiver')}}</el-col>
                             </el-row>
                             <el-row >
                                   <el-col>{{row_data.receiver_fullname}} {{row_data.receiver_phone}}</el-col>

@@ -99,7 +99,7 @@ export default {
     const check = {
       name: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入分类名称'));
+          callback(new Error(this.$t('Pleaseenterinboundtagname')));
         } else {
           callback();
         }

@@ -276,9 +276,13 @@ export default {
     },
     // 货品分类列表
     getTypeList() {
-      $http.getCategoryManagement({ warehouse_id: this.warehouseId }).then((res) => {
-        this.typeList = res.data.data;
-      });
+      $http.getCategoryManagement({
+        warehouse_id: this.warehouseId,
+        page_size: 200,
+      })
+        .then((res) => {
+          this.typeList = res.data.data;
+        });
     },
     // 获取单个货品的信息
     getGoodsData() {

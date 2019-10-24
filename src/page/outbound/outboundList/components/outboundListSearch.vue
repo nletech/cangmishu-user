@@ -73,11 +73,11 @@ export default {
       planDateValue: '', // 选定的预计出库时间
       outboundStatus: '', // 选定的出库单状态
       outboundStatusList: [
-        { id: 0, name: '订单已取消' },
-        { id: 1, name: '待拣货' },
-        { id: 4, name: '待发货' },
-        { id: 5, name: '配送中' },
-        { id: 7, name: '已收货' },
+        // { id: 0, name: '订单已取消' },
+        // { id: 1, name: '待拣货' },
+        // { id: 4, name: '待发货' },
+        // { id: 5, name: '配送中' },
+        // { id: 7, name: '已收货' },
       ],
       outboundCode: '', // 输入的出库单号
     };

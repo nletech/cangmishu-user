@@ -21,7 +21,7 @@
                 size="small"
                 :placeholder="$t('InboundListType')">
                 <el-option  v-for="item in this.inboundTypeList"
-                            :key="item.value"
+                            :key="item.id"
                             :label="item.name"
                             :value="item.id">
                 </el-option>

@@ -5,7 +5,13 @@
           <el-col :lg="12" justify="space-between">
             <div  class="address">
                   <label  class="label">
-                      <el-button v-show="isSelectSender()" size="mini" @click="handle_select(0)" icon="el-icon-more" style="float:right"></el-button>
+                      <el-button
+                          v-show="isSelectSender()"
+                          size="mini"
+                          @click="handle_select(0)"
+                          icon="el-icon-more"
+                          style="float:right">
+                      </el-button>
                       {{$t('From')}}
                   </label>
                   <el-form  label-width="80px" v-if="senderInfo.fullname">
@@ -88,7 +94,7 @@
                                     :loading="isButtonLoading()"
                                     @click="addSenderAndReceiver()"
                                     size="large">
-                                    {{$t('add')}}{{this.addressText === '发件人' ? $t('sender') : $t('receiver')}}
+                                    {{$t('add')}}  {{this.addressText === '发件人' ? $t('sender') : $t('receiver')}}
                         </el-button>
                   </div>
                   <el-table
@@ -129,6 +135,7 @@
       </el-dialog>
       <!-- 编辑收发件人信息 -->
       <edit
+          v-show="visibleFlag"
           :visibleFlag="visibleFlag"
           :addressText="addressText"
           :row_data="row_data"
@@ -136,6 +143,7 @@
       </edit>
       <!-- 添加收发件人信息 -->
       <add
+          v-if="visible_add"
           :visible_add="visible_add"
           :addressText="addressText"
           @update:visible_add="handleAddVisible($event)">

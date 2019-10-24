@@ -10,8 +10,8 @@ switch (baseUrl) {
     baseApi = 'https://api.cangmishu.com/';
     break;
   default:
-    baseApi = 'https://api.cangmishu.com/'; // 仓秘书正式服
-    // baseApi = 'https://dev-api.cangmishu.com/'; // 仓秘书开发服
+    // baseApi = 'https://api.cangmishu.com/'; // 仓秘书正式服
+    baseApi = 'https://dev-api.cangmishu.com/'; // 仓秘书开发服
     // baseApi = 'https://weapp.cangmishu.com/'; // 本地
     break;
 }

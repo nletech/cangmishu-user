@@ -11,45 +11,38 @@
                         :model="warehouseInfo">
                         <el-form-item
                             prop="name_cn"
-                            label="仓库名称"
+                            :label="$t('storeName')"
                             size="middle">
                             <el-input  v-model="warehouseInfo.name_cn"></el-input>
                         </el-form-item>
-                        <!-- <el-form-item
-                            prop="code"
-                            label="仓库编码"
-                            size="middle">
-                            <el-col :span="5">
-                            <el-input  v-model="warehouseInfo.code"  maxlength="10" show-word-limit></el-input>
-                            <div :class="$style.tips">仓库编码是唯一标识</div>
-                            </el-col>
-                        </el-form-item> -->
                         <el-form-item
                             prop="address"
-                            label="省市区"
+                            :label="$t('SSQ')"
                             size="middle">
                             <el-cascader
                                 :props="props"
                                 :options="addressInfo"
                                 v-model="warehouseInfo.address"
+                                placeholder=""
                                 style="width: 100%;">
                             </el-cascader>
                         </el-form-item>
                         <el-form-item
                             prop="addressDetail"
-                            label="详细地址"
+                            :label="$t('addressDetial')"
                             size="middle">
-                            <el-input  type="textarea"
-                                        v-model="warehouseInfo.addressDetail">
+                            <el-input
+                              type="textarea"
+                              v-model="warehouseInfo.addressDetail">
                             </el-input>
                         </el-form-item>
-                        <label class="label">扩展信息</label>
+                        <label class="label">{{$t('extraInfomation')}}</label>
                         <el-form-item
                             prop="area"
-                            label="仓库面积"
+                            :label="$t('WarehouseArea')"
                             size="medium">
                             <el-col :span="5">
-                                <el-input placeholder="平方米" v-model="warehouseInfo.area">
+                                <el-input v-model="warehouseInfo.area">
                                   <template slot="append">m²</template>
                                 </el-input>
                             </el-col>
@@ -64,7 +57,12 @@
                             <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
                         </el-form-item> -->
                         <el-form-item>
-                            <el-button type="primary"  :class="$style.submit_btn" @click="warehouseInfoSubmit">提交</el-button>
+                            <el-button
+                                type="primary"
+                                :class="$style.submit_btn"
+                                @click="warehouseInfoSubmit">
+                                {{$t('confirm')}}
+                            </el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -84,35 +82,35 @@ export default {
     const check = {
       name_cn: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入仓库名称'));
+          callback(new Error(this.$t('Warehousenamecannotbeempty')));
         } else {
           callback();
         }
       },
       code: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入仓库编码'));
+          callback(new Error(this.$t('Pleaseenterapositiveinteger')));
         } else {
           callback();
         }
       },
       address: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入省市区'));
+          callback(new Error(this.$t('pleaseInputCity')));
         } else {
           callback();
         }
       },
       addressDetail: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入详细地址'));
+          callback(new Error(this.$t('Pleaseenteradetailedaddress')));
         } else {
           callback();
         }
       },
       area: (rule, value, callback) => {
         if (parseInt(value, 10) <= 0 || isNaN(parseInt(value, 10))) {
-          callback(new Error('请输入仓库面积'));
+          callback(new Error(this.$t('PleaseEnterTheWarehouseArea')));
         } else {
           callback();
         }

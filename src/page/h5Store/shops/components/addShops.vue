@@ -51,7 +51,7 @@
                 </el-form-item>
                 <el-form-item
                     prop="address"
-                    label="省市区"
+                    :label="$t('SSQ')"
                     size="middle">
                     <el-cascader
                         style="width:100%;"
@@ -89,6 +89,8 @@
                 </label>
                 <el-form-item>
                     <my-upload
+                      v-if="visible"
+                      :langType="langType"
                       :width="180"
                       :height="180"
                       :img.sync="shop_form.logo"
@@ -170,6 +172,7 @@ export default {
       },
     };
   },
+
   computed: {
     isEdit() {
       return this.status === 2;
@@ -180,7 +183,18 @@ export default {
     api() {
       return `${baseApi}/upload/image`;
     },
+    langType() {
+      switch (this.$i18n.locale) {
+        default:
+          return 'zh';
+        case 'cn':
+          return 'zh';
+        case 'en':
+          return 'en';
+      }
+    },
   },
+
   watch: {
     visible() {
       if (this.isEdit) { // 编辑操作

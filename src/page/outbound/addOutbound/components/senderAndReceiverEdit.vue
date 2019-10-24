@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :title="`编辑${addressText}`"
+        :title="title"
         width="800px"
         @update:visibleFlag="$emit('update:visibleFlag', $event)"
         :before-close="handleClose"
@@ -15,19 +15,19 @@
             :rules="info_Verify_rules">
             <el-form-item
                 prop="full_name"
-                label="姓名"
+                :label="$t('name')"
                 size="middle">
                 <el-input  v-model="form.full_name"></el-input>
             </el-form-item>
             <el-form-item
                 prop="phone"
-                label="电话"
+                :label="$t('phone')"
                 size="middle">
                 <el-input  v-model="form.phone"></el-input>
             </el-form-item>
             <el-form-item
                 prop="address"
-                label="省市区"
+                :label="$t('SSQ')"
                 size="middle">
                 <el-cascader
                     :props="props"
@@ -37,14 +37,14 @@
             </el-form-item>
             <el-form-item
                 prop="addressDetail"
-                label="详细地址"
+                :label="$t('addressDetial')"
                 size="middle">
                 <el-input  type="textarea"
                             v-model="form.addressDetail">
                 </el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="infoSubmit">提交</el-button>
+                <el-button type="primary" @click="infoSubmit">{{$t('submit')}}</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
@@ -76,33 +76,34 @@ export default {
       this.form.addressDetail = this.row_data.address;
     },
   },
+
   data() {
     // 自定义的验证规则
     const check = {
       full_name: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入姓名'));
+          callback(new Error(this.$t('Pleasetypeinyourname')));
         } else {
           callback();
         }
       },
       phone: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入电话'));
+          callback(new Error(this.$t('PleaseEnterPhone')));
         } else {
           callback();
         }
       },
       address: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入省市区'));
+          callback(new Error(this.$t('pleaseInputCity')));
         } else {
           callback();
         }
       },
       addressDetail: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入详细地址'));
+          callback(new Error(this.$t('Pleaseenteradetailedaddress')));
         } else {
           callback();
         }
@@ -138,6 +139,17 @@ export default {
       },
     };
   },
+
+  computed: {
+    title() {
+      if (this.addressText === '发件人') {
+        return `${this.$t('edit')} ${this.$t('sender')}`;
+      } else if (this.addressText === '收件人') {
+        return `${this.$t('edit')} ${this.$t('receiver')}`;
+      }
+    },
+  },
+
   methods: {
     handleClose() {
       this.$emit('update:visibleFlag', false);
@@ -158,12 +170,20 @@ export default {
               .then((res) => {
                 if (res.status) return;
                 this.$emit('update:visibleFlag', false);
+                this.$message({
+                  type: 'success',
+                  message: this.$t('success'),
+                });
               });
           } else if (this.addressText === '收件人') {
               $http.editReceiverAddress(this.row_data.id, this.formInfo)
                 .then((re) => {
                   if (re.status) return;
                   this.$emit('update:visibleFlag', false);
+                  this.$message({
+                    type: 'success',
+                    message: this.$t('success'),
+                  });
                 })
           }
         }

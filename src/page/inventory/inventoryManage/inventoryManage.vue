@@ -17,7 +17,7 @@
                             clearable
                             @clear="handlerClear"
                             v-model="query.sku"
-                            placeholder="入库批次号">
+                            :placeholder="$t('Inboundbatchnumber')">
                         </el-input>
                     </el-col>
                     <el-col :span="1">
@@ -58,7 +58,7 @@
                           <el-table
                               :data="props.row.stocks"
                               border>
-                              <el-table-column label="入库批次" prop="sku">
+                              <el-table-column :label="$t('Inboundbatchnumber')" prop="sku">
                               </el-table-column>
                               <el-table-column :label="$t('bestUseTime')" prop="best_before_date">
                               </el-table-column>
@@ -93,7 +93,7 @@
                                             {{scope.row.product_name}}
                                   </template>
                 </el-table-column>
-                <el-table-column  label="中文规格">
+                <el-table-column  :label="$t('Chinesespecifications')">
                                   <template slot-scope="scope">
                                             {{scope.row.name_cn}}
                                   </template>

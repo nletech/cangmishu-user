@@ -8,7 +8,7 @@
             label-position="left">
             <el-row type="flex" justify="space-between">
               <el-col :span="8">
-                  {{$t('category')}}:
+                  {{$t('OutboundTag')}}:
                   <el-select
                       v-model="form.order_type"
                       size="mini"
@@ -34,7 +34,7 @@
             <label class="label"> {{$t('info')}} </label>
             <!-- 收发件人信息 -->
             <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
-            <label class="label" style="float:left; width:80px;">{{$t('outboundLists')}}</label>
+            <label class="label" style="float:left; width:120px;">{{$t('outboundLists')}}</label>
             <!-- 出库清单表 -->
             <!-- 选择商品的列表 -->
             <goods-list @get_data="handleGoodsData" :warehouseId="warehouseId" :specList.sync="selectedSpec"></goods-list>
@@ -46,7 +46,7 @@
                 <el-input
                     type="textarea"
                     :maxlength="30"
-                    placeholder="最多不超过30个字"
+                    :placeholder="$t('TheFieldmaynotbegreaterthan30characters')"
                     v-model="form.remark">
                 </el-input>
             </el-form-item>
@@ -193,7 +193,7 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.$message({
-            message: '添加成功',
+            message: this.$t('addSuccess'),
             type: 'success',
           });
           this.$router.push({

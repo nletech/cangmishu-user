@@ -64,7 +64,7 @@ export default {
               // 显示成功消息
               this.$message({
                 type: 'success',
-                message: '操作成功!',
+                message: this.$t('success'),
               });
               // 跳转
               this.$router.push({ name: 'staffGroupList' });

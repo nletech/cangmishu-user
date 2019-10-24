@@ -13,7 +13,7 @@
                     <el-form-item
                         prop="email"
                         class="login_model_form">
-                        <el-input  :placeholder="$t('PleaseEnterTheMailbox')"
+                        <el-input :placeholder="$t('PleaseEnterTheMailbox')"
                                   clearable
                                   v-model="form.email"
                                   @keyup.enter.native="goLogin"
@@ -117,10 +117,10 @@ export default {
       qr_key: '',
       rules: {
         email: [
-          { required: true, message: '请输入您的邮箱或电话号码', trigger: 'blur' },
+          { required: true, message: this.$t('PleaseEnterTheMailbox'), trigger: 'blur' },
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
+          { required: true, message: this.$t('inputPsw'), trigger: 'blur' },
         ],
       },
       form: {

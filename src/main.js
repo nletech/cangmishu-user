@@ -19,10 +19,6 @@ Vue.component('cancel-button', CancelButton);
 store.commit('token/getToken');
 store.commit('config/getSideNavStatus');
 
-// event bus
-
-Vue.prototype.$EventBus = new Vue();
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

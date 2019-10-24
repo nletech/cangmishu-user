@@ -21,10 +21,18 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  // entry: {
-  //   app: './src/main.js'
-  // },
-  entry: ["babel-polyfill", "./src/main.js"],
+  entry: {
+    main: ["babel-polyfill", "./src/main.js"],
+    vendor: [
+      'vue',
+      'vuex',
+      'axios',
+      'echarts',
+      'element-ui',
+      'vue-router',
+      'vue-i18n',
+    ],
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -79,7 +87,7 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
     ]
   },
   node: {

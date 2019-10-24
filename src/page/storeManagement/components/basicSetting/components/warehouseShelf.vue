@@ -18,7 +18,7 @@
         </el-table-column>
         <el-table-column  :label="$t('ShelfStatus')">
                           <template slot-scope="scope">
-                            {{scope.row.is_enabled === 1 ? '是' : '否'}}
+                            {{scope.row.is_enabled === 1 ? $t('yes') : $t('no')}}
                           </template>
         </el-table-column>
         <el-table-column  width="260"
@@ -113,15 +113,15 @@ export default {
       }
     }, // 获取数据列表
     del(id) {
-      this.$confirm('此操作将永久删除该货位, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
       }).then(() => {
         $http.delWarehouseshelf(id)
           .then(() => {
             this.$message({
-              message: '删除成功',
+              message: this.$t('success'),
               type: 'success',
               showClose: true,
             });

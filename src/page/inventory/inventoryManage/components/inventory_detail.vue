@@ -23,7 +23,7 @@
                                                   {{scope.row.type}}
                                         </template>
                         </el-table-column>
-                        <el-table-column label="入库批次" prop="sku">
+                        <el-table-column :label="$t('Inboundbatchnumber')" prop="sku">
                         </el-table-column>
                         <el-table-column :label="$t('OperationNumber')" prop="operation_num">
                         </el-table-column>

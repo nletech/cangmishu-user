@@ -209,27 +209,27 @@ export default {
       const copyInfo = {
         group_id: userInfo.id, // 分组 id
       };
-      this.$confirm('此操作将永久删除，是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-      })
-        .then(() => {
-          $http.deleteStaffGroup(copyInfo.group_id)
-            .then((res) => {
-              if (res.status === 0) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning',
+      }).then(() => {
+        $http.deleteStaffGroup(copyInfo.group_id)
+          .then((res) => {
+            if (res.status === 0) {
+              this.$message({
+                type: 'success',
+                message: this.$t('success'),
+              });
+              // 刷新数据列表
+              $http.getStaffGroups(this.params)
+                .then((re) => {
+                  this.staffGroupData = re.data.data;
+                  this.params.total = re.data.total; // 页面总数
                 });
-                // 刷新数据列表
-                $http.getStaffGroups(this.params)
-                  .then((re) => {
-                    this.staffGroupData = re.data.data;
-                    this.params.total = re.data.total; // 页面总数
-                  });
-              }
-            });
-        });
+            }
+          });
+      });
     },
   },
 };

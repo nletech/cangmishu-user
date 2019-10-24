@@ -13,7 +13,7 @@
                     :label="$t('categoryManagement')"
                     label-position="right"
                     prop="category_id">
-                    <el-select  v-model="form.category_id">
+                    <el-select  v-model="form.category_id" placeholder="">
                         <el-option
                             v-for="item in typeList"
                             :label="item.name_cn"
@@ -27,7 +27,7 @@
             </el-col>
           </el-row>
           <el-form-item
-              :label="$t('cnName')"
+              :label="$t('productName')"
               prop="name_cn"
               style="width:70%">
               <el-input v-model="form.name_cn"></el-input>
@@ -74,7 +74,7 @@
                           <template slot="header" slot-scope="scope">
                             SKU *
                             <el-popover placement="top-start" title="SKU" width="200" trigger="hover"
-                                content="SKU是商品唯一编码，保存后不能更改，且不能重复">
+                                :content="$t('SKUTips')">
                                 <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
                             </el-popover>
                           </template>
@@ -222,10 +222,10 @@ export default {
     formValidator() {
       return {
         category_id: [
-          { required: true, message: '请选择分类', trigger: 'change' },
+          { required: true, message: this.$t('PleaseSelectCategory'), trigger: 'change' },
         ],
         name_cn: [
-          { required: true, message: '请输入中文名称', trigger: 'blur' },
+          { required: true, message: this.$t('inputCnWord'), trigger: 'blur' },
         ],
       };
     },
@@ -244,7 +244,7 @@ export default {
   },
   methods: {
     addCategory() {
-      this.$confirm('添加货品分类将会离开当前界面,确定?').then(() => {
+      this.$confirm(this.$t('AddingProduct')).then(() => {
         this.$router.push({
           name: 'categoryManagement',
         });
@@ -271,7 +271,10 @@ export default {
 
     // 货品分类列表
     getTypeList() {
-      $http.getCategoryManagement({ warehouse_id: this.warehouseId }).then((res) => {
+      $http.getCategoryManagement({
+        warehouse_id: this.warehouseId,
+        page_size: 200,
+      }).then((res) => {
         this.typeList = res.data.data;
       });
     },

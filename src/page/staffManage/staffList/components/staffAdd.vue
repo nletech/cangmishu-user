@@ -143,7 +143,7 @@ export default {
               // 显示成功消息
               this.$message({
                 type: 'success',
-                message: '操作成功!',
+                message: this.$t('success'),
               });
               this.$router.replace({ name: 'staffList' });
             }

@@ -30,13 +30,13 @@
                           :class="$style.selectedTag_main_dropdown"
                           style="width: 200px; text-align: center;">
                           <el-dropdown-item @click.native="to_store_management">
-                              <span>仓库列表</span>
+                              <span>{{$t('WarehouseList')}}</span>
                           </el-dropdown-item>
                           <el-dropdown-item @click.native="shift_warehouse">
-                              <span>切换仓库</span>
+                              <span>{{$t('selectdWh')}}</span>
                           </el-dropdown-item>
                           <el-dropdown-item @click.native="to_create_store">
-                              <span>创建仓库</span>
+                              <span>{{$t('addStoreManage')}}</span>
                           </el-dropdown-item>
                       </el-dropdown-menu>
                   </el-dropdown>
@@ -47,7 +47,8 @@
     <div :class="$style.user_info">
          <div :class="$style.selectLang" v-if="true">
             <span @click="handlerClick">
-            当前语言: &nbsp; {{this.$i18n.locale | langFilter}}
+              <!-- {{$t('CurrentLanguage')}}: -->
+              {{this.$i18n.locale | langFilter}}
             </span>
          </div>
          <div  v-if="isShowSelectWarehouseIcon"
@@ -64,8 +65,11 @@
                     <span v-if="!Uavatar" style="border: 1px solid;">管</span>
                     <img  v-else :class="$style.avatar"
                           :src="Uavatar">
-                    <div  :class="$style.avatar_hover_text">
-                          <span v-show="visible_avatar_text">修改资料</span>
+                    <div
+                      :class="$style.avatar_hover_text"
+                      v-show="visible_avatar_text &&
+                              this.$i18n.locale === 'cn'">
+                          <span>修改资料</span>
                     </div>
               </div>
               <div :class="$style.UnickName">
@@ -75,8 +79,8 @@
                    <el-dropdown>
                                <span class="iconfont">&#xe60e;</span>
                                <el-dropdown-menu slot="dropdown">
-                                     <el-dropdown-item @click.native="handleChangePassWord">{{'修改密码'}}</el-dropdown-item>
-                                     <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                                     <el-dropdown-item @click.native="handleChangePassWord">{{$t('ChangePassword')}}</el-dropdown-item>
+                                     <el-dropdown-item @click.native="logout">{{$t('LogOut')}}</el-dropdown-item>
                                </el-dropdown-menu>
                    </el-dropdown>
               </div>
@@ -84,17 +88,24 @@
     </div>
   </div>
   <!-- 切换仓库 -->
-  <el-dialog title="切换仓库" :visible.sync="showWarehousesDialog">
+  <el-dialog :title="$t('SwitchWarehouse')" :visible.sync="showWarehousesDialog">
       <el-form>
-        <el-form-item label="请选择仓库">
-          <el-select  v-model="currentWarehouseId" placeholder="请选择仓库" >
-            <el-option v-for="item in warehouseList" :label="item.name_cn"  :key="item.id" :value="item.id"></el-option>
+        <el-form-item :label="$t('warehouse')">
+          <el-select
+            v-model="currentWarehouseId"
+            :placeholder="$t('checkedWh')" >
+            <el-option
+                v-for="item in warehouseList"
+                :label="item.name_cn"
+                :key="item.id"
+                :value="item.id">
+            </el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showWarehousesDialog = false">取 消</el-button>
-        <el-button type="primary" @click="handleConfirm">确 定</el-button>
+        <el-button @click="showWarehousesDialog = false">{{$t('cancel')}}</el-button>
+        <el-button type="primary" @click="handleConfirm">{{$t('confirm')}}</el-button>
       </div>
   </el-dialog>
   <!-- 修改密码 -->
@@ -174,9 +185,9 @@ export default {
   filters: {
     langFilter(val) {
       if (val === 'cn') {
-        return 'CN';
+        return 'EN';
       }
-      return 'EN';
+      return '中文';
     },
   },
 
@@ -184,6 +195,7 @@ export default {
     handlerClick() {
       // eslint-disable-next-line
       this.$i18n.locale === 'cn' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'cn';
+      this.$store.commit('config/setCurrentLanguage', this.$i18n.locale);
       localStorage.setItem('lang', `${this.$i18n.locale}`);
       // this.$store.commit('config/setCurrentLanguage', this.$i18n.locale);
     },
@@ -235,9 +247,9 @@ export default {
     },
 
     logout() {
-      this.$confirm('此操作将退出系统, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
       }).then(() => {
         $http.logout().then(() => {
@@ -380,7 +392,8 @@ export default {
     flex-flow: row nowrap;
     justify-content: flex-end;
     .selectLang {
-      font-size: 1.2rem;
+      box-sizing: border-box;
+      font-size: 16px;
       display: flex;
       justify-content: center;
       align-items: center;

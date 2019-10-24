@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="个人资料"
+        :title="$t('profile')"
         width="40%"
         @update:visible="$emit('update:visible', $event)"
         :visible="visible"
@@ -33,7 +33,7 @@
                       :width="180"
                       :height="180"
                       @uploadSuccessCallBack="handlerUploadSuccessCallBack">
-                      <template slot="btnTitle">上传头像</template>
+                      <template slot="btnTitle">{{$t('upload')}}</template>
                   </my-upload>
             </el-form-item>
         </el-form>
@@ -142,7 +142,7 @@ export default {
                   this.$emit('update:visible', false);
                   this.$message({
                     type: 'success',
-                    message: '操作成功',
+                    message: this.$t('success'),
                   });
                 });
             });

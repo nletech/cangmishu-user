@@ -64,8 +64,7 @@
                                         header-align="center"
                                         align="center">
                                         <template slot-scope="scope">
-                                                  <span v-if="scope.row.is_enabled==1">是</span>
-                                                  <span v-if="scope.row.is_enabled==0">否</span>
+                                                  {{scope.row.is_enabled === 1 ? $t('yes') : $t('no')}}
                                         </template>
                       </el-table-column>
                       <el-table-column header-align="center"
@@ -176,10 +175,10 @@ export default {
       }, // 编辑分类
       rules: {
         name_cn: [
-          { required: true, message: '请填写分类中文名', trigger: 'blur' },
+          { required: true, message: this.$t('Pleaseentercategoryname'), trigger: 'blur' },
         ],
         name_en: [
-          { required: true, message: '请填写分类英文名', trigger: 'blur' },
+          { required: true, message: this.$t('Pleaseentercategoryname'), trigger: 'blur' },
         ],
       },
       category_list: [], // 分类列表数据
@@ -236,18 +235,22 @@ export default {
     loadData() {
       this.emptyData();
       this.dialogVisible = false;
-      $http.getCategoryManagement({ warehouse_id: this.warehouseId })
-        .then((re) => {
-          if (re.status) return;
-          this.category_list = re.data.data;
-          this.total = re.data.total;
+      $http.getCategoryManagement({
+        warehouse_id: this.warehouseId,
+        page_size: 10,
+      })
+        .then((res) => {
+          if (res.status) return;
+          this.category_list = res.data.data;
+          this.total = res.data.total;
+          this.currentPage = res.data.current_page;
         });
     },
     delCategory(row) {
       $http.deleteCategoryManagement(row.id)
         .then((re) => {
           if (re.status) return;
-          this.loadData();
+          this.handleCurrentChange(this.currentPage);
         });
     }, // 删除信息按钮
     subimtData() {
@@ -261,10 +264,11 @@ export default {
               if (re.status) return;
               this.$message({
                 type: 'success',
-                message: '修改成功',
+                message: this.$t('editSuccess'),
               });
               // 更新数据
-              this.loadData();
+              this.handleCurrentChange(this.currentPage);
+              this.dialogVisible = false;
             });
         } else {
           // 添加信息
@@ -273,10 +277,11 @@ export default {
               if (re.status) return;
               this.$message({
                 type: 'success',
-                message: '添加成功',
+                message: this.$t('addSuccess'),
               });
               // 更新数据
-              this.loadData();
+              this.handleCurrentChange(this.currentPage);
+              this.dialogVisible = false;
             });
         }
       });

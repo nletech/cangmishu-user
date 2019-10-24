@@ -261,26 +261,26 @@ export default {
       const copyInfo = {
         user_id: userInfo.id,
       };
-      this.$confirm('此操作将永久删除，是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-      })
-        .then(() => {
-          $http.delStaff(copyInfo.user_id)
-            .then((res) => {
-              if (res.status) return;
-              this.$message({
-                type: 'success',
-                message: '删除成功',
-              });
-              $http.getStaffs()
-                .then((re) => { // 刷新员工列表数据
-                  // 员工信息
-                  this.staff_data = re.data.data;
-                  this.params.data_count = re.data.total; // 更新分页
-                });
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning',
+      }).then(() => {
+        $http.delStaff(copyInfo.user_id)
+          .then((res) => {
+            if (res.status) return;
+            this.$message({
+              type: 'success',
+              message: '删除成功',
             });
-        });
+            $http.getStaffs()
+              .then((re) => { // 刷新员工列表数据
+                // 员工信息
+                this.staff_data = re.data.data;
+                this.params.data_count = re.data.total; // 更新分页
+              });
+          });
+      });
     },
   },
 };

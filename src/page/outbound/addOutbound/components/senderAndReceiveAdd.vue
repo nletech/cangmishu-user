@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :title="`添加${addressText}`"
+        :title="this.addressText === '发件人' ? $t('sender') : $t('receiver')"
         width="800px"
         @update:visible_add="$emit('update:visible_add', $event)"
         :before-close="handleClose"
@@ -72,28 +72,28 @@ export default {
     const check = {
       full_name: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入姓名'));
+          callback(new Error(this.$t('Pleasetypeinyourname')));
         } else {
           callback();
         }
       },
       phone: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入电话'));
+          callback(new Error(this.$t('PleaseEnterPhone')));
         } else {
           callback();
         }
       },
       address: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入省市区'));
+          callback(new Error(this.$t('pleaseInputCity')));
         } else {
           callback();
         }
       },
       addressDetail: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入详细地址'));
+          callback(new Error(this.$t('Pleaseenteradetailedaddress')));
         } else {
           callback();
         }

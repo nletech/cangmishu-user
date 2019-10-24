@@ -18,18 +18,9 @@
                 size="medium">
                 <el-input  v-model="warehouseInfo.name_cn"  maxlength="30" show-word-limit></el-input>
             </el-form-item>
-            <!-- <el-form-item
-                prop="code"
-                label="仓库编码"
-                size="medium">
-                <el-col :span="5">
-                <el-input  v-model="warehouseInfo.code"  maxlength="10" show-word-limit></el-input>
-                <div :class="$style.tips">仓库编码是唯一标识</div>
-                </el-col>
-            </el-form-item> -->
             <el-form-item
                 prop="address"
-                label="省市区"
+                :label="$t('SSQ')"
                 size="medium">
                 <el-cascader
                     :props="props"
@@ -40,13 +31,13 @@
             </el-form-item>
             <el-form-item
                 prop="addressDetail"
-                label="详细地址"
+                :label="$t('addressDetial')"
                 size="medium">
                 <el-input
                           v-model="warehouseInfo.addressDetail">
                 </el-input>
             </el-form-item>
-            <label class="label">扩展信息</label>
+            <label class="label">{{$t('notNecessaryInfo')}}</label>
             <el-form-item
                 prop="area"
                 :label="$t('WarehouseArea')"
@@ -96,7 +87,7 @@ export default {
     const check = {
       name_cn: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入仓库名称'));
+          callback(new Error(this.$t('Pleaseenterawarehousename')));
         } else {
           callback();
         }
@@ -110,21 +101,21 @@ export default {
       },
       address: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入省市区'));
+          callback(new Error(this.$t('pleaseInputCity')));
         } else {
           callback();
         }
       },
       addressDetail: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入详细地址'));
+          callback(new Error(this.$t('Pleaseenteradetailedaddress')));
         } else {
           callback();
         }
       },
       area: (rule, value, callback) => {
         if (parseInt(value, 10) <= 0 || isNaN(parseInt(value, 10))) {
-          callback(new Error('请输入正整数'));
+          callback(new Error(this.$t('Pleaseenterapositiveinteger')));
         } else {
           callback();
         }

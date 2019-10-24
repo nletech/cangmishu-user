@@ -16,7 +16,7 @@
                             <el-input
                                 :disabled="isButtonLoading()"
                                 size="mini"
-                                placeholder="请扫描货位或SKU或者入库批次号"
+                                :placeholder="$t('PleasescanrackorSKUorinboundbatch')"
                                 @keyup.enter.native="handlerKeyEnter"
                                 v-model="searchContent">
                             </el-input>
@@ -62,25 +62,25 @@
                                 align="center">
                             </el-table-column>
                             <el-table-column
-                                label="入库批次"
+                                :label="$t('Inboundbatchnumber')"
                                 prop="stock_sku"
                                 header-align="center"
                                 align="center">
                             </el-table-column>
                             <el-table-column
-                                label="所在货位"
+                                :label="$t('Rack ')"
                                 prop="location_code"
                                 header-align="center"
                                 align="center">
                             </el-table-column>
                             <el-table-column
-                                label="原库存"
+                                :label="$t('Originalstock')"
                                 prop="shelf_num_orgin"
                                 header-align="center"
                                 align="center">
                             </el-table-column>
                             <el-table-column
-                                label="盘点数量"
+                                :label="$t('InventoryCount')"
                                 header-align="center"
                                 align="center">
                                 <template slot-scope="scope">

@@ -63,14 +63,15 @@
         </div>
         <!-- 添加供应商 -->
         <el-dialog
-            :title="this.id ? $t('edit') : $t('add')"
+            :title="title"
             :visible.sync="dialogVisible"
             width="30%">
             <el-form
                 :rules="rules"
                 ref="form"
                 :model="distributor"
-                label-width="140px">
+                label-position="left"
+                label-width="80px">
                 <el-form-item
                     prop="name_cn"
                     :label="$t('supplierNameCN')">
@@ -105,7 +106,7 @@ export default {
       id: '', // 供应商的id（编辑）
       rules: {
         name_cn: [
-          { required: true, message: '请输入供应商中文名', trigger: 'blur' },
+          { required: true, message: this.$t('Pleaseentersuppliername'), trigger: 'blur' },
         ],
       },
       //
@@ -127,6 +128,14 @@ export default {
       }
     },
   },
+
+  computed: {
+    title() {
+      const title = this.id ? this.$t('edit') : this.$t('add');
+      return `${title} ${this.$t('supplier')}`;
+    },
+  },
+
   methods: {
     get_distributor_data() {
       $http.getDistributor({ warehouse_id: this.warehouseId })

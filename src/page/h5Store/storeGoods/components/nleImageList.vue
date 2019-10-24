@@ -58,7 +58,6 @@ export default {
   methods: {
     onDelete(index) {
       this.list.splice(index, 1);
-      console.log(this.list, 'this.list');
     },
     onMove(index, step) {
       const item = this.list.splice(index, 1);

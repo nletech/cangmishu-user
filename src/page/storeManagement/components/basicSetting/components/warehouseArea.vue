@@ -19,7 +19,7 @@
             <el-table-column  prop="functions"
                             :label="$t('AreaStatus')">
               <template slot-scope="scope">
-                {{scope.row.is_enabled | switchTypeCn}}
+                            {{scope.row.is_enabled === 1 ? $t('yes') : $t('no')}}
               </template>
             </el-table-column>
             <el-table-column  :label="$t('operation')"
@@ -108,22 +108,21 @@ export default {
         });
     },
     del(areaId) {
-      this.$confirm('此操作将永久删除该货区, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
         type: 'warning',
-      })
-        .then(() => {
-          $http.delWarehouseArea(areaId)
-            .then(() => {
-              this.$message({
-                message: '删除成功',
-                type: 'success',
-                showClose: true,
-              });
-              this.get_data();
+      }).then(() => {
+        $http.delWarehouseArea(areaId)
+          .then(() => {
+            this.$message({
+              message: this.$t('success'),
+              type: 'success',
+              showClose: true,
             });
-        });
+            this.get_data();
+          });
+      });
     },
     edit(id) {
       this.$router.push({

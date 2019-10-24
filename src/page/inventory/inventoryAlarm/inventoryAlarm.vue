@@ -15,7 +15,7 @@
                     :span="8">
                     <el-input
                         v-model="form.warning_email"
-                        placeholder="请输入报警邮箱:"
+                        :placeholder="$t('PleaseenterEmail')"
                         size="small">
                     </el-input>
                 </el-col>
@@ -36,7 +36,7 @@
                       prop="name_cn">
                   </el-table-column>
                   <el-table-column
-                      label="最小库存:"
+                      :label="$t('MinimumInventory')"
                       width="180px;">
                       <template
                           slot-scope="scope">
@@ -89,8 +89,8 @@ export default {
       stockList: [], // 预警表格
       rules: {
         warning_email: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' },
+          { required: true, message: this.$t('EmailInput'), trigger: 'blur' },
+          { type: 'email', message: this.$t('PleaseEnterTheContactEmails'), trigger: 'blur' },
         ],
       },
     };
@@ -125,7 +125,7 @@ export default {
         if (valid) {
           $http.addWarning(this.form).then(() => {
             this.$message({
-              message: '修改成功',
+              message: this.$t('editSuccess'),
               type: 'success',
             });
             this.Warning();

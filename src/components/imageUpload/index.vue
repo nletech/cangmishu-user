@@ -9,7 +9,7 @@
       </el-button>
       <my-upload
           :langExt="langInfo"
-          langType="zh"
+          :langType="langType"
           field="image"
           @crop-success="cropSuccess"
           @crop-upload-success="cropUploadSuccess"
@@ -37,27 +37,34 @@ export default {
       type: String,
       default: '',
     },
+
     width: {
       type: Number,
       default: 180,
     },
+
     height: {
       type: Number,
       default: 180,
     },
+
     disable: {
       type: Boolean,
       default: false,
     },
+
+    langType: {
+      type: String,
+      default: 'zh',
+    },
   },
+
   components: {
     myUpload,
   },
+
   data() {
     return {
-      langInfo: {
-        preview: '图片预览',
-      },
       show: false,
       params: {
         name: 'shopLogo',
@@ -70,13 +77,21 @@ export default {
     };
   },
   computed: {
+    langInfo() {
+      return {
+        preview: this.$t('imagePreview'),
+      };
+    },
+
     authorization() {
       return this.$store.state.token.token;
     },
+
     api() {
       return `${baseApi}/upload/image`;
     },
   },
+
   watcch: {
     show() {
       if (!this.show) {
@@ -84,17 +99,21 @@ export default {
       }
     },
   },
+
   methods: {
     toggleShow() {
       this.show = !this.show;
     },
+
     cropSuccess(imgDataUrl) {
       this.temp_img = imgDataUrl;
     },
+
     cropUploadSuccess(res) {
       this.$emit('uploadSuccessCallBack', res);
       this.$emit('update:img', res.data.url);
     },
+
     cropUploadFail() {
       console.log('-------- upload fail --------');
     },

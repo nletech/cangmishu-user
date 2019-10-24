@@ -355,7 +355,9 @@ export default {
       distributorInfo: {},
       distributorParams: {},
       // 以下重写
-      distributor: {},
+      distributor: {
+        page: 0,
+      },
       distributorSelectList: [], // 供应商列表
       rules: {
         confirmation_number: [
@@ -390,18 +392,22 @@ export default {
         }
       }
     },
+
     getBatchCode() {
-      // 获取批次号)
-      $http.getBatchCode({ warehouse_id: this.warehouseId })
+      $http.getBatchCode({
+        warehouse_id: this.warehouseId,
+      })
         .then((res) => {
           this.form.confirmation_number = res.data.batch_code;
         });
-    },
+    }, // 获取批次号
+
     queryAllDistributor() {
       $http.queryDistributor({ all: 1 }).then((res) => {
         this.distributorSelectList = res.data;
       });
     }, // 远程搜索供应商
+
     getBatchTypeList() {
       if (!this.warehouseId) return;
       this.form.type_id = '';
@@ -415,29 +421,34 @@ export default {
         this.batchTypeList = res.data.data;
       });
     }, // 拉取入库分类列表
+
     getDistributorList() {
       $http.getDistributor().then((res) => {
         this.distributorList = res.data.data;
         this.distributor.total = res.data.total;
-        this.distributor.currentPage = res.data.current_page;
+        this.distributor.page = res.data.current_page;
         this.distributor.size = res.data.per_page;
       });
     }, // 供应商列表
+
     handleSelectionChange(val) {
       this.goodsSelected = val;
     }, // 处理选择商品弹框的选择事件
+
     distributorchange(val) {
       $http.checkDistributor({ page: val })
         .then((res) => {
           this.distributorList = res.data.data;
           this.distributor.total = res.data.total;
-          this.distributor.currentPage = res.data.current_page;
+          this.distributor.page = res.data.current_page;
           this.distributor.size = res.data.per_page;
         });
     }, // 供应商分页
+
     showDialog() {
       this.dialogSpecShow = true;
     }, // 待入库货品弹出框
+
     onSpecSelected(data) {
       for (let i = 0; i < data.length; i += 1) {
         let found = false;
@@ -452,6 +463,7 @@ export default {
         }
       }
     },
+
     removeGoods(index) {
       this.specList.splice(index, 1);
     }, // 删除已选择货品
@@ -510,12 +522,12 @@ export default {
         }
       });
     },
-    // 供应商管理弹出框
+
     onDistributor() {
       this.distributorListShow = true;
       this.getDistributorList();
-    },
-    // 删除供应商
+    }, // 供应商管理弹出框
+
     distributorDelete(id) {
       this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
         confirmButtonText: this.$t('confirm'),
@@ -528,11 +540,11 @@ export default {
               message: this.$t('success'),
               type: 'success',
             });
-            this.getDistributorList();
+            this.distributorchange(this.distributor.page);
           });
       });
-    },
-    // 保存供应商
+    }, // 删除供应商
+
     onDistributorSave() {
       this.distributorParams = {
         name_cn: this.distributorInfo.name_cn,
@@ -542,42 +554,42 @@ export default {
         $http.editDistributor(this.distributorInfo.id, this.distributorParams)
           .then(() => {
             this.$message({
-              message: '操作成功',
+              message: this.$t('success'),
               type: 'success',
             });
-            this.getDistributorList();
+            this.distributorchange(this.distributor.page); // 刷新弹窗的供应商列表
             this.distributorEditShow = false;
           });
       } else {
         $http.addDistributor(this.distributorParams)
           .then(() => {
             this.$message({
-              message: '操作成功',
+              message: this.$t('success'),
               type: 'success',
             });
-            this.getDistributorList(); // 刷新弹窗的供应商列表
+            this.distributorchange(this.distributor.page); // 刷新弹窗的供应商列表
             this.queryAllDistributor(); // 刷新搜索框的供应商列表
             this.distributorEditShow = false;
           });
       }
-    },
-    // 新增供应商弹出框
+    }, // 保存供应商
+
     addDistributor() {
       this.distributorEditShow = true;
       this.isDistributorEdit = false;
-    },
-    // 编辑供应商弹出框
+    }, // 新增供应商弹出框
+
     distributorEdit(row) {
       this.distributorEditShow = true;
       this.isDistributorEdit = true;
       this.distributorInfo = Object.assign({}, row);
-    },
-    // 取消新增供应商
+    }, // 编辑供应商弹出框
+
     cancelDistributor() {
       this.distributorEditShow = false;
       this.distributorInfo.name_en = '';
       this.distributorInfo.name_cn = '';
-    },
+    }, // 取消新增供应商
   },
 };
 </script>
