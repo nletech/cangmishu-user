@@ -24,7 +24,7 @@
                             <!-- 对应的标签页内容 -->
                             <el-table
                                 element-loading-text="loading"
-                                v-loading="isButtonLoading()"
+                                v-loading="isButtonLoading"
                                 :class="$style.table_main"
                                 :data="info_data"
                                 border>
@@ -62,14 +62,14 @@
                                       <el-tooltip :content="$t('edit')" placement="top">
                                           <el-button
                                               size="mini" icon="el-icon-edit" round
-                                              :loading="isButtonLoading()"
+                                              :loading="isButtonLoading"
                                               @click="edit(scope.row)">
                                           </el-button>
                                       </el-tooltip>
                                       <el-tooltip :content="$t('delete')" placement="top">
                                           <el-button
                                               size="mini" icon="el-icon-delete"
-                                              :loading="isButtonLoading()"
+                                              :loading="isButtonLoading"
                                               @click="delete_data(scope.row)"
                                               type="danger" round>
                                           </el-button>

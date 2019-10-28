@@ -108,7 +108,7 @@
         <!-- 货品数据展示列表 -->
         <el-table
             element-loading-text="loading"
-            v-loading="isButtonLoading()"
+            v-loading="isButtonLoading"
             :data="goods_list_data"
             @selection-change="handleSelectionChange"
             border>
@@ -227,7 +227,7 @@
                 <template slot-scope="scope">
                     <el-tooltip :content="$t('edit')" placement="top">
                         <el-button
-                            :loading="isButtonLoading()"
+                            :loading="isButtonLoading"
                             size="mini"
                             icon="el-icon-edit"
                             @click="editCommodity(scope.row.id, scope.row.warehouse_id, scope.row)">
@@ -235,7 +235,7 @@
                     </el-tooltip>
                     <el-tooltip :content="$t('remove')" placement="top">
                         <el-button
-                            :loading="isButtonLoading()"
+                            :loading="isButtonLoading"
                             type="danger"
                             size="mini"
                             icon="el-icon-delete"
@@ -278,7 +278,7 @@
             class="dialog-footer">
             <el-button
                 v-if = "this.selectGoods.length > 0"
-                :loading="isButtonLoading()"
+                :loading="isButtonLoading"
                 @click="centerDialogVisible = false">
                 {{$t('cancel')}}
             </el-button>

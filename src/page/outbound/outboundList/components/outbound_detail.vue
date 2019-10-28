@@ -15,7 +15,7 @@
                         <el-col :span="2" :offset="11">
                             <el-button
                                 :disabled="disable"
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 @click="handleDownload('out')"
                                 style="background-color: #5745c5;
                                 color: #fff;">

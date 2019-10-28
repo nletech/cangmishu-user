@@ -4,7 +4,7 @@
                                  type="date"
                                  size="small"
                                  :format="params.format"
-                                 value-format="yyyy-MM-dd"
+                                 value-format="yyyy - MM - dd"
                                  :placeholder="params.placeholder"
                                  :default-time="['00:00:00', '23:59:59']">
                 </el-date-picker>
@@ -12,13 +12,13 @@
 </template>
 <script>
 export default {
-  name: 'datePickerPublic',
+  name: 'date-picker-singe-public',
   props: {
     params: {
       type: Object,
       default() {
         return {
-          format: 'yyyy 年 MM 月 dd 日',
+          format: 'yyyy - MM - dd',
           placeholder: '预计出库时间',
         };
       },

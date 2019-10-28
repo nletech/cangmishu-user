@@ -471,5 +471,33 @@ const $http = {
   LoginQRCheck(data) {
     return Axios.get('open/wechat/scan/login_callback', { params: data });
   },
+  // 采购模块
+  purchaseList(data) {
+    return Axios.get('purchase', { params: data });
+  }, // 采购单列表(包含每条采购单详情)
+  purchaseDetial(id, data) {
+    return Axios.get(`purchase/${id}`, { params: data });
+  }, // 采购单详情
+  addPurchase(data) {
+    return Axios.post('purchase', data);
+  }, // 添加--采购单
+  editPurchase(id, data) {
+    return Axios.put(`purchase/${id}`, data);
+  }, // 修改--采购单
+  delPurchase(id) {
+    return Axios.delete(`purchase/${id}`);
+  }, // 删除采购单
+  finishePurchase(id) {
+    return Axios.post(`purchase/${id}/done`);
+  }, // 设置采购单为完成
+  PurchaseDetailData(id, data) {
+    return Axios.get(`/purchase/item/${id}/logs`, { params: data });
+  }, // 采购单单项详情
+  finishePurchaseItem(id) {
+    return Axios.post(`purchase/item/${id}/done`);
+  }, // 采购单单项详情--设为到货
+  editPurchaseItem(id, data) {
+    return Axios.put(`purchase/item/${id}`, data);
+  }, // 采购单单项详情--修改
 };
 export default $http;

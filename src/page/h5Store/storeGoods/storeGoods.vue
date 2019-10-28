@@ -20,7 +20,7 @@
             </div>
             <el-table
                 element-loading-text="loading"
-                v-loading="isButtonLoading()"
+                v-loading="isButtonLoading"
                 :data="goodsList"
                 @selection-change="handleSelectionChange"
                 border>
@@ -61,7 +61,7 @@
                     <template slot-scope="scope">
                         <el-switch
                           @change="handlerShelfSlef($event, scope.row)"
-                          :loading="isButtonLoading()"
+                          :loading="isButtonLoading"
                           v-model="scope.row.is_shelf"
                           :inactive-value="0"
                           :active-value="1">
@@ -73,7 +73,7 @@
                         <el-tooltip :content="$t('edit')" placement="top">
                           <el-button
                               @click="editGoods(scope.row)"
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               size="mini"
                               icon="el-icon-edit"
                               round>
@@ -82,7 +82,7 @@
                         <el-tooltip :content="$t('delete')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-delete"
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               @click="delGoods(scope.row.id)"
                               type="danger" round>
                           </el-button>
@@ -103,7 +103,7 @@
                       size="mini"
                       round
                       :disabled="isSelected"
-                      :loading="isButtonLoading()"
+                      :loading="isButtonLoading"
                       style="display: inline; position: relative; left: 20px; top: 2px;"
                       @click="handlerSeleteionAllInShelf">
                       {{$t('PutOn')}}
@@ -111,7 +111,7 @@
                     <el-button
                       size="mini"
                       round
-                      :loading="isButtonLoading()"
+                      :loading="isButtonLoading"
                       :disabled="isSelected"
                       style="display: inline; position: relative; left: 20px; top: 2px;"
                       @click="handlerSeleteionAllOutShelf">
@@ -121,7 +121,7 @@
                       size="mini"
                       round
                       :disabled="isSelected"
-                      :loading="isButtonLoading()"
+                      :loading="isButtonLoading"
                       style="display: inline; position: relative; left: 20px; top: 2px;"
                       @click="handlerSeleteionAllDelete">
                       {{$t('delete')}}

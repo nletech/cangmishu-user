@@ -14,6 +14,10 @@ const BackPassword = loadOnDemand('login/back_password');
 // 首页
 const Home = loadOnDemand('initPage/home');
 
+// 采购
+const PurchaseList = loadOnDemand('purchase/purchaseList/purchaseList');// 采购单列表
+const AddPurchase = loadOnDemand('purchase/addPurchase/addPurchase');// 添加采购单
+
 // 入库
 const InboundList = loadOnDemand('inbound/inboundList/inboundList');// 入库单列表
 const AddInbound = loadOnDemand('inbound/addInbound/addInbound');// 添加入库单
@@ -92,6 +96,29 @@ export const routerMap = [
             path: 'home',
             name: 'home',
             component: Home,
+            nav: 2,
+          },
+        ],
+      },
+      {
+        name: 'purchase', // 采购单
+        path: 'purchase',
+        component: LayoutSide,
+        icon: '&#xeb47;',
+        nav: 1,
+        id: 'inbound',
+        index: 10,
+        children: [
+          {
+            name: 'purchaseList', // 采购单列表
+            path: 'purchase/purchaseList',
+            component: PurchaseList,
+            nav: 2,
+          },
+          {
+            name: 'addPurchase', // 子菜单-添加入库单
+            path: 'purchaseList/addPurchase',
+            component: AddPurchase,
             nav: 2,
           },
         ],

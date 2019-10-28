@@ -89,7 +89,6 @@ export default {
         )
           .then((res) => {
             this.$emit('data_cb', res);
-            console.log(res, '5555号');
           });
       }
     },

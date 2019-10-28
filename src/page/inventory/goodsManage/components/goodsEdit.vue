@@ -176,7 +176,7 @@
                 <el-button
                     @click="onSubmitGoods('form')"
                     type="primary"
-                    :loading="isButtonLoading()">
+                    :loading="isButtonLoading">
                     {{$t('submit')}}
                 </el-button>
             </el-form-item>

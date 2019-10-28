@@ -15,7 +15,7 @@
                         <el-col :span="2" :offset="11">
                             <el-button
                                 :disabled="disable"
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 @click="handleDownload('entry')"
                                 style="background-color: #5745c5;
                                 color: #fff;">
@@ -30,7 +30,7 @@
                     <el-row>
                         <el-col :span="2" :offset="11">
                             <el-button
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 :disabled="disable"
                                 @click="handleDownload('purchase')"
                                 style="background-color: #5745c5;
@@ -48,7 +48,7 @@
                             <el-tooltip :content="$t('printTips')" placement="top">
                                   <el-button
                                       :disabled="disable"
-                                      :loading="isButtonLoading()"
+                                      :loading="isButtonLoading"
                                       @click="handleDownload('batchno')"
                                       style="background-color: #5745c5;
                                       color: #fff;">

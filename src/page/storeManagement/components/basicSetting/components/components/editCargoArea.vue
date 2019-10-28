@@ -40,7 +40,7 @@
               <el-form-item>
                             <el-button  type="primary"
                                         @click="onSubmit"
-                                        :loading="isButtonLoading()">
+                                        :loading="isButtonLoading">
                                         {{$t('submit')}}
                             </el-button>
               </el-form-item>

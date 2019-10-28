@@ -102,7 +102,7 @@
                   <el-row>
                       <el-col :span="2" :offset="10">
                           <el-button
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               type="primary"
                               @click.native="onSubmit">
                               {{$t('submit')}}

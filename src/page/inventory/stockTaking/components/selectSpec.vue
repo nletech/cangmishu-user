@@ -82,10 +82,12 @@
 import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
+import mixin from '@/mixin/form_config';
 
 
 export default {
   name: 'selectSpec',
+  mixins: [mixin],
   props: {
     visible: {
       type: Boolean,
@@ -129,11 +131,6 @@ export default {
         this.loadSpecDataList();
         clearTimeout(timer);
       }, 300);
-    },
-  },
-  computed: {
-    isButtonLoading() {
-      return this.$store.state.config.button_loading;
     },
   },
   methods: {

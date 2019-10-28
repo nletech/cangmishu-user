@@ -11,7 +11,7 @@
                 </div>
                 <el-table
                     element-loading-text="loading"
-                    v-loading="isButtonLoading()"
+                    v-loading="isButtonLoading"
                     :class="$style.table_main"
                     :data="info_data"
                     border>

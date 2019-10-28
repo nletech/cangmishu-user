@@ -9,10 +9,11 @@
     :action=api
     list-type="picture"
     name="image">
-    <img v-if="this.photo"
-    :src="this.photo"
-    class="avatar">
-    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    <img
+        v-if="this.photo"
+        :src="this.photo"
+        class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
 </template>
 

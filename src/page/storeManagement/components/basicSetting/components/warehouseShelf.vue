@@ -2,7 +2,7 @@
   <div>
     <el-table
         element-loading-text="loading"
-        v-loading="isButtonLoading()"
+        v-loading="isButtonLoading"
         :data="shelf_list_data"
         border
         style="width: 100%">

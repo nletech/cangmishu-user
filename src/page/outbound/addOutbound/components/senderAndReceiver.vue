@@ -45,7 +45,7 @@
             <div  class="address sender">
                   <label class="label">
                       <el-button
-                          :loading="isButtonLoading()"
+                          :loading="isButtonLoading"
                           v-show="isSelectReceiver()"
                           size="mini"
                           @click="handle_select(1)"
@@ -73,7 +73,7 @@
                   <div v-if="!receiverInfo.fullname">
                       <el-button
                           size="large"
-                          :loading="isButtonLoading()"
+                          :loading="isButtonLoading"
                           @click="handle_select(1)"
                           type="primary" plain
                           icon="el-icon-s-custom">
@@ -91,7 +91,7 @@
                   <div  class="add_button">
                         <el-button  class="title"
                                     icon="el-icon-plus"
-                                    :loading="isButtonLoading()"
+                                    :loading="isButtonLoading"
                                     @click="addSenderAndReceiver()"
                                     size="large">
                                     {{$t('add')}}  {{this.addressText === '发件人' ? $t('sender') : $t('receiver')}}
@@ -119,8 +119,8 @@
                           :label="$t('operation')"
                           width="240">
                           <template slot-scope="scope">
-                                    <el-button icon="el-icon-check" :loading="isButtonLoading()" type="primary" plain @click="handle_confirm_btn(scope.row)">{{$t('confirm')}}</el-button>
-                                    <el-button icon="el-icon-edit" :loading="isButtonLoading()" @click="handle_edit_btn(scope.row)">{{$t('edit')}}</el-button>
+                                    <el-button icon="el-icon-check" :loading="isButtonLoading" type="primary" plain @click="handle_confirm_btn(scope.row)">{{$t('confirm')}}</el-button>
+                                    <el-button icon="el-icon-edit" :loading="isButtonLoading" @click="handle_edit_btn(scope.row)">{{$t('edit')}}</el-button>
                           </template>
                       </el-table-column>
                   </el-table>

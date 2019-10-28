@@ -14,7 +14,7 @@
                       <el-row>
                           <el-col :span="12" :offset="4">
                             <el-input
-                                :disabled="isButtonLoading()"
+                                :disabled="isButtonLoading"
                                 size="mini"
                                 :placeholder="$t('PleasescanrackorSKUorinboundbatch')"
                                 @keyup.enter.native="handlerKeyEnter"
@@ -24,7 +24,7 @@
                           <el-col :span="1" :offset="1">
                             <el-button
                                 size="mini"
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 @click="handlerCheckStock">
                                 {{$t('selectGoods')}}
                             </el-button>
@@ -102,7 +102,7 @@
                                     <el-tooltip :content="$t('delete')" placement="top">
                                         <el-button
                                             size="mini" icon="el-icon-delete"
-                                            :loading="isButtonLoading()"
+                                            :loading="isButtonLoading"
                                             @click="handleDelete(scope.row.id)"
                                             type="danger" round>
                                         </el-button>
@@ -113,7 +113,7 @@
                     </el-form-item>
                     <el-form-item :label="$t('remark')">
                       <el-input
-                          :disabled="isButtonLoading()"
+                          :disabled="isButtonLoading"
                           type="textarea"
                           v-model="remark"
                           maxlength="500"
@@ -124,7 +124,7 @@
                 <el-row>
                     <el-col :span="2" :offset="22">
                         <el-button
-                            :loading="isButtonLoading()"
+                            :loading="isButtonLoading"
                             style="margin-top: 20px;"
                             type="primary"
                             @click="onSubmit">
@@ -157,7 +157,7 @@
                 <el-row>
                     <el-col :span="2" :offset="22">
                         <el-button
-                            :loading="isButtonLoading()"
+                            :loading="isButtonLoading"
                             style="margin-top: 20px;"
                             type="primary"
                             @click="handlerDialogSubmit">

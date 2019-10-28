@@ -153,7 +153,7 @@
                   <el-button
                       @click="onSubmitGoods('form')"
                       type="primary"
-                      :loading="isButtonLoading()"
+                      :loading="isButtonLoading"
                       v-if="!$route.query.isCheck">
                       {{$t('submit')}}
                   </el-button>

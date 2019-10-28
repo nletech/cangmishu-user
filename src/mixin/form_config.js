@@ -6,11 +6,11 @@ export default {
     warehouseName() {
       return this.$store.state.config.setWarehouseName || localStorage.getItem('warehouseName');
     }, // 初始化默认仓库
-  },
-  methods: {
     isButtonLoading() {
       return this.$store.state.config.button_loading;
     },
+  },
+  methods: {
     getWarehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },

@@ -42,7 +42,7 @@
                             icon="el-icon-plus"
                             type="text"
                             :class="$style.header_btn"
-                            :loading="isButtonLoading()"
+                            :loading="isButtonLoading"
                             @click="dialogVisible = true">
                             {{$t('ExportProductinventory')}}
                         </el-button>
@@ -50,7 +50,7 @@
             </el-row>
             <el-table
                 element-loading-text="loading"
-                v-loading="isButtonLoading()"
+                v-loading="isButtonLoading"
                 :data="stockList"
                 border>
                 <el-table-column  type="expand">
@@ -136,12 +136,11 @@
             :title="$t('ExportProductinventory')"
             :visible.sync="dialogVisible"
             width="500px">
-            <el-checkbox-group
-                v-model="export_data">
+            <el-checkbox-group v-model="export_data">
                 <el-checkbox value="1" label="1">{{$t('ExportProductList')}}</el-checkbox>
-                <el-checkbox value="2" label="2">导出货品规格列表</el-checkbox>
+                <el-checkbox value="2" label="2">{{$t('Productmeasurementlist')}}</el-checkbox>
             </el-checkbox-group>
-            <span  slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer">
                 <el-button size="mini" @click="dialogVisible = false">{{$t('cancel')}}</el-button>
                 <el-button size="mini" type="primary" @click="exportStock">{{$t('confirm')}}</el-button>
             </span>

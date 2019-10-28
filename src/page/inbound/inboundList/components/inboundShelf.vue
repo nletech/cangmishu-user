@@ -260,6 +260,7 @@ import mixin from '@/mixin/form_config';
 
 export default {
   name: 'inboundShelf',
+  mixins: [getListData, mixin],
   data() {
     const check = {
       stockin_num: (rule, value, callback) => {
@@ -351,7 +352,6 @@ export default {
     buttonPagination,
     ModelForm,
   },
-  mixins: [getListData, mixin],
   watch: {
     warehouseId() {
       this.getData();

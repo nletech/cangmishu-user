@@ -28,7 +28,7 @@
             </el-row>
             <el-table
                 element-loading-text="loading"
-                v-loading="isButtonLoading()"
+                v-loading="isButtonLoading"
                 stripe
                 :data="outbound_list_data"
                 border>
@@ -46,7 +46,11 @@
                     prop="out_sn">
                     <template slot-scope="scope">
                       <span>{{scope.row.out_sn}}</span>
-                      <el-tooltip  effect="light" content="已付款" placement="top">
+                      <el-tooltip
+                          effect="light"
+                          :content="$t('paid')"
+                          style="cursor: pointer;"
+                          placement="top">
                           <i v-if="scope.row.pay_status === 2" style="position: relative; left: 10px; color: red; font-weight: 400;" class="iconfont">&#xe668;</i>
                       </el-tooltip>
                     </template>
@@ -123,7 +127,7 @@
                               style="margin: 8px 0 0 0;"
                               size="mini" icon="el-icon-view" round
                               @click="viewDetails(scope.row)"
-                              :loading="isButtonLoading()">
+                              :loading="isButtonLoading">
                           </el-button>
                       </el-tooltip>
                       <el-tooltip :content="$t('CheckOrder')" placement="top">
@@ -132,7 +136,7 @@
                             style="margin: 8px 0 0 0;"
                             size="mini" type="primary"
                             icon="el-icon-sell"
-                            :loading="isButtonLoading()"
+                            :loading="isButtonLoading"
                             @click="checkedOutbound(scope.row)"
                             round>
                           </el-button>
@@ -143,7 +147,7 @@
                                 style="margin: 8px 0 0 0;"
                                 size="mini"
                                 icon="el-icon-printer"
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 @click="onPrint(scope.row)" round>
                             </el-button>
                       </el-tooltip>
@@ -153,7 +157,7 @@
                               style="margin: 8px 0 0 0;"
                               size="mini"
                               icon="el-icon-circle-close"
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               @click="cancelOrder(scope.row)"
                               type="danger" round>
                           </el-button>
@@ -164,7 +168,7 @@
                               style="margin: 8px 0 0 0;"
                               size="mini"
                               icon="el-icon-truck"
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               @click="showExpressDialog(scope.row)" round>
                           </el-button>
                       </el-tooltip>
@@ -174,7 +178,7 @@
                                 style="margin: 8px 0 0 0;"
                                 size="mini"
                                 icon="el-icon-finished"
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 @click="showReceviceDialog(scope.row)" round>
                             </el-button>
                       </el-tooltip>
@@ -184,7 +188,7 @@
                                 style="margin: 8px 0 0 0;"
                                 size="mini"
                                 icon="el-icon-position"
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 @click="handlerTrack(scope.row)" round>
                             </el-button>
                       </el-tooltip>
@@ -194,7 +198,7 @@
                                 style="margin: 8px 0 0 0;"
                                 size="mini"
                                 icon="el-icon-money"
-                                :loading="isButtonLoading()"
+                                :loading="isButtonLoading"
                                 @click="onPayment(scope.row)" round>
                             </el-button>
                       </el-tooltip>
@@ -209,13 +213,13 @@
                         <span slot="footer" class="dialog-footer">
                           <el-button
                               @click="receviceDialog = false"
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               size="small">
                               {{$t('cancel')}}
                           </el-button>
                           <el-button
                               type="primary"
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               @click="confirmRecevice()"
                               size="small">
                               {{$t('confirm')}}
@@ -254,13 +258,13 @@
                         </el-row>
                         <span slot="footer" class="dialog-footer">
                           <el-button
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               @click="expressDialog = false"
                               size="mini">
                               {{$t('cancel')}}
                           </el-button>
                           <el-button
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               type="primary"
                               @click="editExpress()"
                               size="mini">
@@ -308,13 +312,13 @@
                           </el-row>
                           <span slot="footer" class="dialog-footer">
                               <el-button
-                                  :loading="isButtonLoading()"
+                                  :loading="isButtonLoading"
                                   @click="paymentDialog = false"
                                   size="mini">
                                   {{$t('cancel')}}
                               </el-button>
                               <el-button
-                                  :loading="isButtonLoading()"
+                                  :loading="isButtonLoading"
                                   type="primary"
                                   @click="ChangPayment(scope.row)"
                                   size="mini">

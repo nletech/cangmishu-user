@@ -105,7 +105,7 @@
             <el-row>
                 <el-col :span="2" :offset="22">
                     <el-button
-                        :loading="isButtonLoading()"
+                        :loading="isButtonLoading"
                         style="margin-top: 20px;"
                         type="primary"
                         @click="onPreview">
@@ -126,7 +126,7 @@
                   <el-col :span="2" :offset="21">
                       <el-button
                           :disable="disable"
-                          :loading="isButtonLoading()"
+                          :loading="isButtonLoading"
                           style="margin-top: 20px;"
                           type="primary"
                           @click="onDownload">

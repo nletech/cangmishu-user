@@ -41,7 +41,7 @@
               class="dialog-footer">
               <el-button
                   type="primary"
-                  :loading="isButtonLoading()"
+                  :loading="isButtonLoading"
                   @click="submit">
                   {{$t('confirm')}}
               </el-button>

@@ -16,7 +16,7 @@
             </div>
             <el-table
                 element-loading-text="loading"
-                v-loading="isButtonLoading()"
+                v-loading="isButtonLoading"
                 :data="outbound_list_data"
                 border
                 style="width:100%">
@@ -68,7 +68,7 @@
                         <el-button
                             size="mini"
                             @click="handleCheck(scope.row)"
-                            :loading="isButtonLoading()">
+                            :loading="isButtonLoading">
                             {{$t('detail')}}
                         </el-button>
                     </template>
@@ -109,7 +109,7 @@
                   <el-col :span="2" :offset="21">
                       <el-button
                           :disable="disable"
-                          :loading="isButtonLoading()"
+                          :loading="isButtonLoading"
                           style="margin-top: 20px;"
                           type="primary"
                           @click="onDownload">

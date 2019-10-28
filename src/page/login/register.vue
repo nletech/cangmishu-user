@@ -104,7 +104,7 @@
                             size="small">
                             <template slot="append">
                                 <el-button
-                                    :loading="isButtonLoading()"
+                                    :loading="isButtonLoading"
                                     type="text"
                                     style="cursor: pointer; padding: 12px"
                                     @click="flag && sendVerificationCodeForPhone(formPhone.mobile, true)">
@@ -123,9 +123,9 @@
                             <div :class="$style.item_picture_input">
                                 <el-input v-model="verifyPhone.captcha" size="small" style="width: 230px; position: relative; left: 10px;">
                                     <template slot="append">
-                                      <el-button :loading="isButtonLoading()">
+                                      <el-button :loading="isButtonLoading">
                                         <i
-                                            v-if="!isButtonLoading()"
+                                            v-if="!isButtonLoading"
                                             @click="sendVerificationCodeForPhone(formPhone.mobile, false)"
                                             class="el-icon-refresh">
                                         </i>

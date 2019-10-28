@@ -55,7 +55,7 @@
                 <el-row>
                     <el-col :span="2" :offset="22">
                         <el-button
-                            :loading="isButtonLoading()"
+                            :loading="isButtonLoading"
                             type="primary"
                             @click="onSubmit()">
                             {{$t('submit')}}

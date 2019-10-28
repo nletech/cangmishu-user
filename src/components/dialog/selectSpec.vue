@@ -108,7 +108,6 @@ import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
 import buttonLoading from '@/mixin/buttonLoading';
 
-
 export default {
   name: 'selectSpec',
   mixins: [buttonLoading],

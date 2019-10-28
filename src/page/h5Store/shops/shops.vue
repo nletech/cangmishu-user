@@ -15,7 +15,7 @@
         <el-row>
             <el-table
                 element-loading-text="loading"
-                v-loading="isButtonLoading()"
+                v-loading="isButtonLoading"
                 :data="shops"
                 border>
                 <el-table-column label="#" type="index" width="80" header-align="center" align="center" ></el-table-column>
@@ -37,13 +37,13 @@
                           <el-button
                               size="mini" icon="el-icon-edit" round
                               @click="editShop(scope.row)"
-                              :loading="isButtonLoading()">
+                              :loading="isButtonLoading">
                           </el-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('storeGoods')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-goods"
-                              :loading="isButtonLoading()"
+                              :loading="isButtonLoading"
                               @click="editStore(scope.row)"
                               type="primary" round>
                           </el-button>

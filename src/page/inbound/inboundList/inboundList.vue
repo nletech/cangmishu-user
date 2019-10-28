@@ -1,25 +1,21 @@
 <template>
-    <div :class="$style.page">
-        <div :class="$style.main">
-            <div  :class="$style.header">
-                  <el-row>
-                      <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
-                      <el-col :span="1" :offset="1">
-                          <el-button
-                              type="text"
-                              :class="$style.header_btn"
-                              size="small"
-                              @click="addInbound"
-                              icon="el-icon-plus"
-                              :loading="isButtonLoading()">
-                              {{$t('addInbound')}}
-                          </el-button>
-                      </el-col>
-                  </el-row>
-            </div>
+    <listUI>
+        <template v-slot:search>
+            <el-row>
+                <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
+                <el-col :span="1" :offset="1">
+                    <button-public
+                        :loading="isButtonLoading"
+                        :text="'addInbound'"
+                        @handleClickCallBack="addInbound">
+                    </button-public>
+                </el-col>
+            </el-row>
+        </template>
+        <slot>
             <el-table
                 element-loading-text="loading"
-                v-loading="isButtonLoading()"
+                v-loading="isButtonLoading"
                 :data="inbound_list_data"
                 border>
                 <el-table-column label="#" type="index" width="40" header-align="center" align="center" ></el-table-column>
@@ -43,7 +39,7 @@
                           <el-button
                               size="mini" icon="el-icon-view" round
                               @click="viewDetails(scope.row)"
-                              :loading="isButtonLoading()">
+                              :loading="isButtonLoading">
                           </el-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('inboundAndShelf')" placement="top">
@@ -53,7 +49,7 @@
                               icon="el-icon-sell"
                               v-if="scope.row.status !== 3"
                               @click="toInbound(scope.row)" round
-                              :loading="isButtonLoading()">
+                              :loading="isButtonLoading">
                           </el-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('delete')" placement="top">
@@ -62,7 +58,7 @@
                               v-if="scope.row.status !== 3"
                               @click="inboundDelete(scope.row.id)"
                               type="danger" round
-                              :loading="isButtonLoading()">
+                              :loading="isButtonLoading">
                           </el-button>
                         </el-tooltip>
                     </template>
@@ -77,13 +73,13 @@
                     </pagination-public>
                 </el-col>
             </el-row>
-        </div>
+        </slot>
         <!-- 入库单详情弹框 -->
         <detail-dialog
             :visible.sync="inboundDialogVisible"
             :id="id">
         </detail-dialog>
-    </div>
+    </listUI>
 </template>
 
 <script>
@@ -92,13 +88,18 @@ import paginationPublic from '@/components/pagination-public';
 import selectPublic from '@/components/select-public';
 import mixin from '@/mixin/form_config';
 import $http from '@/api';
+import listUI from '@/components/listUI';
+import buttonPublic from '@/components/buttonPublic';
 import detailDialog from './components/inbound_detail';
 import inboundListSearch from './components/inboundListSearch';
+
 
 export default {
   name: 'inboundList',
   mixins: [mixin],
   components: {
+    listUI,
+    buttonPublic,
     detailDialog,
     datePickerPublic,
     selectPublic,
@@ -250,7 +251,8 @@ export default {
       });
     }, // 入库上架
 
-    addInbound() {
+    addInbound(flag) {
+      if (!flag) return;
       this.$router.push({
         name: 'addInbound',
         query: {
@@ -288,19 +290,6 @@ export default {
 <style lang="less" module>
 @import '../../../less/public_variable.less';
 
-.page {
-  margin: @margin;
-  .main {
-    width: @width;
-    margin: 0 auto;
-    .header {
-      margin: 0 0 10px 0;
-      .header_btn {
-        font-size: @fontSize;
-      }
-    }
-  }
-}
 .pagination {
   margin: 10px 0 0 0;
   float: right;

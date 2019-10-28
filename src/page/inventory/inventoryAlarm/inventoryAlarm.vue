@@ -24,7 +24,7 @@
           <el-form-item :label="$t('categoryManagement')">
               <el-table
                   element-loading-text="loading"
-                  v-loading="isButtonLoading()"
+                  v-loading="isButtonLoading"
                   :data="stockList"
                   border style="width: 100%">
                   <el-table-column
@@ -55,7 +55,7 @@
                     <el-button
                         @click="onSubmit"
                         type="primary"
-                        :loading="isButtonLoading()">
+                        :loading="isButtonLoading">
                         {{$t('save')}}
                     </el-button>
                 </el-col>
