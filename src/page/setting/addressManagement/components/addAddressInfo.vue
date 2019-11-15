@@ -24,6 +24,32 @@
                       </el-input>
                   </el-form-item>
                   <el-form-item
+                      prop="address"
+                      :label="$t('国家')"
+                      size="middle">
+                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
+                        <el-option
+                          v-for="item in ocountryOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                  </el-form-item>
+                  <el-form-item
+                      prop="address"
+                      :label="$t('Areacode')"
+                      size="middle">
+                      <el-select v-model="Areacode" placeholder="请选择" style="width:100%;">
+                        <el-option
+                          v-for="item in AreaCodeList"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                  </el-form-item>
+                  <el-form-item
                       prop="phone"
                       :label="$t('phone')"
                       size="middle">
@@ -32,16 +58,18 @@
                   </el-form-item>
                   <!-- 地址 -->
                   <el-form-item
+                      v-show="!visibleOtherCountry"
                       prop="address"
                       :label="$t('SSQ')"
                       size="middle">
-                      <el-cascader style="width:100%;"
+                      <el-cascader  style="width:100%;"
                                     :props="props"
                                     :options="addressInfo"
                                     v-model="add_info.address">
                       </el-cascader>
                   </el-form-item>
                   <el-form-item
+                      v-show="!visibleOtherCountry"
                       prop="addressDetail"
                       :label="$t('addressDetial')"
                       size="middle">
@@ -50,12 +78,58 @@
                           v-model="add_info.addressDetail">
                       </el-input>
                   </el-form-item>
+                  <el-form-item
+                      v-show="visibleOtherCountry"
+                      prop="address"
+                      :label="$t('城市')"
+                      size="middle">
+                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
+                        <el-option
+                          v-for="item in ocountryOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                  </el-form-item>
+                  <el-form-item
+                      v-show="visibleOtherCountry"
+                      prop="address"
+                      :label="$t('街道')"
+                      size="middle">
+                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
+                        <el-option
+                          v-for="item in ocountryOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                  </el-form-item>
+                  <el-form-item
+                      v-show="visibleOtherCountry"
+                      prop="address"
+                      :label="$t('门牌号')"
+                      size="middle">
+                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
+                        <el-option
+                          v-for="item in ocountryOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                  </el-form-item>
                   <el-form-item>
-                      <el-button
-                          :class="$style.submit_btn"
-                          @click="infoSubmit">
-                          {{$t('submit')}}
-                      </el-button>
+                    <el-row>
+                        <el-col>
+                            <el-button
+                                :class="$style.submit_btn"
+                                @click="infoSubmit">
+                                {{$t('submit')}}
+                            </el-button>
+                        </el-col>
+                    </el-row>
                   </el-form-item>
               </el-form>
           </el-col>
@@ -111,6 +185,98 @@ export default {
       },
     };
     return {
+      visibleOtherCountry: true,
+      country: '',
+      Areacode: '',
+      AreaCodeList: [
+        {
+          id: 0,
+          label: '中国',
+          value: 'CN',
+        },
+      ],
+      ocountryOptions: [
+        {
+          id: 0,
+          label: '中国',
+          value: 'CN',
+        },
+        {
+          id: 1,
+          label: '中国台湾',
+          value: 'TW',
+        },
+        {
+          id: 2,
+          label: '中国香港',
+          value: 'HK',
+        },
+        {
+          id: 3,
+          label: '中国澳门',
+          value: 'MO',
+        },
+        {
+          id: 4,
+          label: '荷兰',
+          value: 'NL',
+        },
+        {
+          id: 5,
+          label: '德国',
+          value: 'DE',
+        },
+        {
+          id: 6,
+          label: '比利时',
+          value: 'BE',
+        },
+        {
+          id: 7,
+          label: '波兰',
+          value: 'POL',
+        },
+        {
+          id: 8,
+          label: '法国',
+          value: 'FR',
+        },
+        {
+          id: 9,
+          label: '英国',
+          value: 'GB',
+        },
+        {
+          id: 10,
+          label: '韩国',
+          value: 'KOR',
+        },
+        {
+          id: 11,
+          label: '美国',
+          value: 'US',
+        },
+        {
+          id: 12,
+          label: '新加坡',
+          value: 'SGP',
+        },
+        {
+          id: 13,
+          label: '马来西亚',
+          value: 'MYS',
+        },
+        {
+          id: 14,
+          label: '加拿大',
+          value: 'CA',
+        },
+        {
+          id: 15,
+          label: '泰国',
+          value: 'NL',
+        },
+      ],
       add_info: {
         full_name: '', // 姓名
         phone: '', // 电话
@@ -157,6 +323,16 @@ export default {
     },
   },
   watch: {
+    country: {
+      handler(countryName) {
+        if (countryName !== 'CN') {
+          this.visibleOtherCountry = false;
+        } else {
+          this.visibleOtherCountry = true;
+        }
+      },
+      immediate: true,
+    },
     row_data() {
       // 监听传入的 row_data 如果是空对象则弹框文字显示为 "添加",然后清除下表单的缓存
       // 如果是通过编辑按钮传入 row_data 则将信息填充进表单，填充的 id 用于请求编辑信息接口
@@ -232,7 +408,7 @@ export default {
 
 .add_warehouse_main {
   width: 96%;
-  height: 50%;
+  height: 62vh;
   margin: 0 auto;
   padding: 30px 0 0 0;
   background-color: white;

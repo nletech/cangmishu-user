@@ -160,7 +160,7 @@ export default {
       // eslint-disable-next-line
       if (+arr.length === 0) {
         this.$message({
-          message: '出库清单不能为空',
+          message: this.$t('PleaseAddOutboundOrder'),
           type: 'warning',
         });
         return;

@@ -9,7 +9,7 @@
                 <el-row type="flex" justify="space-between">
                     <el-col :span="8">
                     </el-col>
-                    <el-col :span="7"><h2 align="center" style="margin:0px;">{{$t('goodsorder')}}</h2></el-col>
+                    <el-col :span="7"><h2 align="center" style="margin:0px;">{{$t('addInbound')}}</h2></el-col>
                     <el-col :span="8">
                     <el-form-item
                         :label="$t('Numbers')"
@@ -20,8 +20,8 @@
                           <el-button slot="append" @click="getBatchCode" icon="el-icon-refresh"></el-button>
                         </el-input>
                     </el-form-item>
-                </el-col>
-              </el-row>
+                  </el-col>
+                </el-row>
               <hr/>
               <label class="label">{{$t('Essentialformrmation')}}</label>
               <!-- 入库单分类 -->
@@ -361,13 +361,13 @@ export default {
       distributorSelectList: [], // 供应商列表
       rules: {
         confirmation_number: [
-          { required: true, message: '请输入单据编号', trigger: 'blur' },
+          { required: true, message: this.$t('PleaseEnterNumber'), trigger: 'blur' },
         ],
         type_id: [
-          { required: true, message: '请选择入库单分类', trigger: 'change' },
+          { required: true, message: this.$t('selectCart'), trigger: 'change' },
         ],
         distributor_id: [
-          { required: true, message: '请选择供应商', trigger: 'change' },
+          { required: true, message: this.$t('Pleseselectsupplier'), trigger: 'change' },
         ],
       },
     };
@@ -488,7 +488,7 @@ export default {
         const timeDiff = Date.parse(this.form.over_time) - Date.parse(this.form.plan_time);
         if (timeDiff < 0) {
           this.$notify({
-            message: '结束时间必须晚于开始时间!',
+            message: this.$t('StartAndEndTime'),
             type: 'warning',
           });
           return;
@@ -500,7 +500,7 @@ export default {
           if (this.specList.length === 0) {
             this.$message({
               type: 'error',
-              message: '商品清单必填!',
+              message: this.$t('productionListRequire'),
             });
             return;
           }
@@ -509,13 +509,13 @@ export default {
               name: 'inboundList',
             });
             this.$message({
-              message: '添加成功!',
+              message: this.$t('success'),
               type: 'success',
             });
           });
         } else {
           this.$message({
-            message: '请检查您的输入!',
+            message: this.$t('requireTips'),
             type: 'warning',
           });
           return false;

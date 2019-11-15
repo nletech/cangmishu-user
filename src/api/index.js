@@ -481,12 +481,21 @@ const $http = {
   addPurchase(data) {
     return Axios.post('purchase', data);
   }, // 添加--采购单
+  getPurchaseCode(data) {
+    return Axios.get('purchaseCode', { params: data });
+  }, // 获取--采购单编号
   editPurchase(id, data) {
     return Axios.put(`purchase/${id}`, data);
   }, // 修改--采购单
   delPurchase(id) {
     return Axios.delete(`purchase/${id}`);
   }, // 删除采购单
+  downloadPurchase(id) {
+    return Axios.get(`purchase/${id}/download`);
+  }, // 下载采购单
+  previewPurchase(id) {
+    return Axios.get(`purchase/${id}/pdf`);
+  }, // 预览采购单
   finishePurchase(id) {
     return Axios.post(`purchase/${id}/done`);
   }, // 设置采购单为完成

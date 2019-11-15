@@ -51,7 +51,7 @@
                     header-align="center"
                     align="center">
                     <template slot-scope="scope">
-                      {{scope.row.status | statusFilter}}
+                      {{scope.row.status === 1 ? $t('haveProfit'): $t('noProfit')}}
                     </template>
                 </el-table-column>
                 <el-table-column

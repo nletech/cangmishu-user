@@ -204,6 +204,25 @@ export default {
           this.expressList = res.data;
         });
     },
+    notHaveOutputNumber(OutputList) {
+      let  noOutputNumber = false;
+
+      if (!Array.isArray(OutputList)) {
+        throw TypeError('OutputList is no an Array');
+      }
+
+      OutputList.map( item => {
+        if (item.pick_num === 0) {
+          noOutputNumber =  true;
+        }
+      });
+
+      if (noOutputNumber === true) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     handlerSubmit() {
       if (!this.delivery_date) {
         this.$message({
@@ -213,15 +232,19 @@ export default {
         return false;
       }
       let arr = [];
-      for (let i = 0, len = this.row_data.order_items; i < len.length; i += 1) {
-        let obj = {
-          order_item_id: '',
-          pick_num: '',
-        };
-        obj.order_item_id = len[i].id;
-        obj.pick_num = len[i].pick_num;
-        arr.push(obj);
-      };
+      this.row_data.order_items.map(item => {
+        arr.push({
+          order_item_id: item.id,
+          pick_num: item.pick_num,
+        })
+      });
+      if (this.notHaveOutputNumber(arr)) {
+        this.$message({
+          type: 'error',
+          message: this.$t('PickingQuantityCannotEqualTo'),
+        });
+        return;
+      }
       $http.checkedOutbound({
         warehouse_id: this.warehouseId,
         order_id: this.$route.query.order_id,

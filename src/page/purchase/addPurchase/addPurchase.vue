@@ -4,40 +4,40 @@
             <el-form
                 slot="left"
                 :rules="rules"
-                :model="form" label-width="100px"
+                :model="form" label-width="140px"
                 ref="form">
                 <el-row type="flex" justify="space-between">
-                    <el-col :span="7" :offset="8">
-                        <h2 align="center" style="margin:0px;">
-                          {{$t('新增采购单')}}
-                        </h2>
+                    <el-col :span="8">
                     </el-col>
+                    <el-col :span="7"><h2 align="center" style="margin:0px;">{{$t('AddPO')}}</h2></el-col>
+                    <el-col :span="8">
+                    <el-form-item
+                        :label="$t('PONumber')"
+                        label-position="right"
+                        class="noborder">
+                        <el-input
+                          v-model="form.purchase_code"
+                          :disabled="true"
+                          prefix-icon="el-icon-tickets">
+                          <el-button
+                              slot="append"
+                              @click="getPurchaseCode"
+                              icon="el-icon-refresh">
+                          </el-button>
+                        </el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
               <hr/>
               <label class="label">{{$t('Essentialformrmation')}}</label>
                 <el-row>
                   <el-col :span="8">
                     <el-form-item
-                        :label="$t('采购单编号')"
+                        :label="$t('Orderinvoicenumber')"
                         label-position="right"
                         class="noborder">
                         <el-input
-                          v-model="form.purchase_code"
-                          disable="false"
-                          prefix-icon="el-icon-tickets">
-                          <el-button slot="append" @click="getPurchaseCode" icon="el-icon-refresh"></el-button>
-                        </el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8">
-                    <el-form-item
-                        :label="$t('订单发票号')"
-                        label-position="right"
-                        class="noborder">
-                        <el-input
-                          placeholder="选填"
+                          :placeholder="$t('notNecessaryInfo')"
                           v-model="form.order_invoice_number">
                         </el-input>
                     </el-form-item>
@@ -66,22 +66,22 @@
                <el-row>
                   <el-col :span="8">
                     <el-form-item
-                        :label="$t('订单日期')"
+                        :label="$t('orderDate')"
                         label-position="right"
                         prop="created_date"
                         class="noborder">
                         <el-date-picker
                           v-model="form.created_date"
                           value-format="yyyy-MM-dd"
-                          format="yyyy 年 MM 月 dd 日"
-                          placeholder="选择日期"
+                          format="yyyy - MM - dd"
+                          :placeholder="$t('Pleaseselectdate')"
                           type="date">
                         </el-date-picker>
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-form-item
-                    :label="$t('采购清单')"
+                    :label="$t('goodsorder')"
                     label-position="right">
                     <span style="width:300px; padding-top:20px">
                         <el-button size="mini" @click="showDialog" type="primary" plain>{{$t('pleaseSelect')}}<i class="el-icon-more el-icon--right"></i> </el-button>
@@ -97,7 +97,7 @@
                             label="#" fixed>
                         </el-table-column>
                         <el-table-column
-                            :label="$t('中文名称*')"
+                            :label="$t('cnName')"
                             prop="product_name"
                             header-align="center"
                             align="center"
@@ -112,10 +112,10 @@
                             width="150px">
                         </el-table-column>
                         <el-table-column
-                            :label="$t('采购数量*(个)')"
+                            :label="$t('PurchaseUnit')"
                             header-align="center"
                             align="center"
-                            width="150px;">
+                            width="180px;">
                             <template
                                 slot-scope="scope">
                                 <el-input-number
@@ -137,7 +137,7 @@
                               </template>
                         </el-table-column>
                         <el-table-column
-                            :label="$t('操作')"
+                            :label="$t('operation')"
                             header-align="center"
                             align="center"
                             min-width="60px">
@@ -154,7 +154,7 @@
                     </el-table>
                 </el-form-item>
                 <label class="label"> {{$t('notNecessaryInfo')}} </label>
-                <el-form-item :label="$t('采购备注')" >
+                <el-form-item :label="$t('remark')" >
                         <el-input
                             v-model="form.remark"
                             type="textarea"
@@ -350,17 +350,12 @@ export default {
     },
   },
   methods: {
-    handlerDatePicker(val) {
-      console.log('val:', val);
-      //
-    },
-
     getPurchaseCode() {
-      $http.getBatchCode({
+      $http.getPurchaseCode({
         warehouse_id: this.warehouseId,
       })
         .then((res) => {
-          this.form.purchase_code = res.data.batch_code;
+          this.form.purchase_code = res.data.purchase_code;
         });
     }, // 获取批次号
 
@@ -435,6 +430,13 @@ export default {
           purchase_price: item.purchase_price,
         });
       } // 入库单提交
+      if (!this.items.length) {
+        this.$message({
+          message: this.$t('purchaseTips1'),
+          type: 'error',
+        });
+        return;
+      }
       this.form.items = this.items;
       this.form.warehouse_id = this.warehouseId;
       this.$refs[formName].validate((valid) => {
@@ -452,7 +454,7 @@ export default {
             });
         } else {
           this.$message({
-            message: '请检查您的输入!',
+            message: this.$t('inputRequired'),
             type: 'warning',
           });
           return false;

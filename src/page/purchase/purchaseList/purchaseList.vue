@@ -6,7 +6,7 @@
                 <el-col :span="1" :offset="1">
                     <button-public
                         :loading="isButtonLoading"
-                        :text="'添加采购单'"
+                        :text="$t('addPurchase')"
                         @handleClickCallBack="handlerAddPurchase">
                     </button-public>
                 </el-col>
@@ -27,16 +27,17 @@
                                 <el-table-column label="#" type="index" width="40" header-align="center" align="center" ></el-table-column>
                                 <el-table-column  prop="product_spec_name" :label="$t('ProductName')" header-align="center" align="center" ></el-table-column>
                                 <el-table-column  prop="relevance_code" :label="$t('SKU')" header-align="center" align="center" ></el-table-column>
-                                <el-table-column  prop="status_name" :label="$t('到货状态')" header-align="center" align="center" ></el-table-column>
-                                <el-table-column  prop="purchase_price" :label="$t('进货单价元')" header-align="center" align="center" ></el-table-column>
-                                <el-table-column  prop="total_num.total_need_num" :label="$t('到货数量/采购数量')" header-align="center" align="center" >
+                                <el-table-column  prop="status_name" :label="$t('ArrivalStatus')" header-align="center" align="center" ></el-table-column>
+                                <el-table-column  prop="purchase_price" :label="$t('Purchaseunitprice')" header-align="center" align="center" ></el-table-column>
+                                <el-table-column  prop="total_num.total_need_num" :label="$t('ArrivedPurchaseQty')" header-align="center" align="center" >
                                   <template slot-scope="scope">
                                     {{scope.row.confirm_num}}/{{scope.row.need_num}}
                                   </template>
                                 </el-table-column>
-                                <el-table-column  prop="last_confirm_date"  width="180" :label="$t('到货日期')" header-align="center" align="center" >
+                                <el-table-column  prop="last_confirm_date"  width="180" :label="$t('ArrivalDate')" header-align="center" align="center" >
                                     <template slot-scope="scope">
                                         <el-date-picker
+                                          :disabled="scope.row.status === 3"
                                           style="width: 150px;"
                                           v-model="scope.row.last_confirm_date"
                                           value-format="yyyy-MM-dd"
@@ -45,9 +46,12 @@
                                         </el-date-picker>
                                     </template>
                                 </el-table-column>
-                                <el-table-column  prop="confirm_num" :label="$t('本次到货数量')" width="155" header-align="center" align="center" >
+                                <el-table-column  prop="confirm_num" :label="$t('ArrivedQty')" width="155" header-align="center" align="center" >
                                       <template slot-scope="scope">
-                                          <el-input v-model="scope.row.confirm_num"></el-input>
+                                          <el-input
+                                              :disabled="scope.row.status === 3"
+                                              v-model="scope.row.confirm_num">
+                                          </el-input>
                                       </template>
                                 </el-table-column>
                                 <el-table-column  :label="$t('operation')" width="200" header-align="center">
@@ -59,19 +63,21 @@
                                               :loading="isButtonLoading">
                                           </el-button>
                                         </el-tooltip>
-                                        <el-tooltip :content="$t('修改')" placement="top">
+                                        <el-tooltip :content="$t('edit')" placement="top">
                                           <el-button
                                               size="mini"
                                               type="primary"
                                               icon="el-icon-edit"
+                                              v-if="scope.row.status !== 3"
                                               @click="modifyItem(scope.row)" round
                                               :loading="isButtonLoading">
                                           </el-button>
                                         </el-tooltip>
-                                        <el-tooltip :content="$t('已到货')" placement="top">
+                                        <el-tooltip :content="$t('Arrived')" placement="top">
                                           <el-button
                                               size="mini"
                                               icon="el-icon-success"
+                                              v-if="scope.row.status !== 3"
                                               @click="finishedItem(scope.row)" round
                                               :loading="isButtonLoading">
                                           </el-button>
@@ -82,7 +88,7 @@
                         </template>
                 </el-table-column>
                 <el-table-column label="#" type="index" width="40" header-align="center" align="center" ></el-table-column>
-                <el-table-column  prop="purchase_code" :label="$t('采购单号')" header-align="center" align="center" >
+                <el-table-column  prop="purchase_code" :label="$t('PONumber')" header-align="center" align="center" >
                 </el-table-column>
                 <el-table-column  prop="distributor.name_cn" :label="$t('supplier')" header-align="center" align="center" >
                 </el-table-column>
@@ -90,11 +96,11 @@
                 </el-table-column>
                 <el-table-column  prop="status_name" :label="$t('purchaseStatus')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="" :label="$t('purchaseTotal')" header-align="center" align="center" >
+                <el-table-column  prop="need_num" :label="$t('purchaseTotal')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="" :label="$t('purchaseMoney')" header-align="center" align="center" >
+                <el-table-column  prop="sub_total" :label="$t('purchaseMoney')" header-align="center" align="center" >
                 </el-table-column>
-                <el-table-column  prop="" :label="$t('purchaseRecevice')" width="155" header-align="center" align="center" >
+                <el-table-column  prop="confirm_num" :label="$t('purchaseRecevice')" width="155" header-align="center" align="center" >
                 </el-table-column>
                 <el-table-column  :label="$t('operation')" width="200" header-align="center">
                       <template slot-scope="scope">
@@ -105,7 +111,7 @@
                               :loading="isButtonLoading">
                           </el-button>
                         </el-tooltip>
-                        <el-tooltip :content="$t('完成采购')" placement="top">
+                        <el-tooltip :content="$t('Complete')" placement="top">
                           <el-button
                               size="mini"
                               type="primary"
@@ -118,7 +124,8 @@
                         <el-tooltip :content="$t('delete')" placement="top">
                           <el-button
                               size="mini" icon="el-icon-delete"
-                              @click="purchaseDelete(scope.row.id)"
+                              v-if="scope.row.status !== 3"
+                              @click="deletePurchase(scope.row.id)"
                               type="danger" round
                               :loading="isButtonLoading">
                           </el-button>
@@ -127,70 +134,39 @@
               </el-table-column>
             </el-table>
             <el-row>
-                <!-- <el-col :span="2" :offset="22">
+                <el-col :span="2" :offset="22">
                     <pagination-public
                         :class="$style.pagination"
                         :params="params"
                         @changePage="handlerChangePage">
                     </pagination-public>
-                </el-col> -->
+                </el-col>
             </el-row>
           </slot>
         </template>
         <el-dialog
             width="70%"
             :center="true"
-            title="详情"
+            :title="$t('purchaseOrder')"
             :visible.sync="purcahseView">
-            <el-row>
-              <el-col :class="$style.text" :span="8">发票号：{{itemListDataDetial.purchase_code}}</el-col>
-              <el-col :class="$style.text" :span="8"></el-col>
-              <el-col :class="$style.text" :span="8">NO：</el-col>
-            </el-row>
-            <el-row>
-              <el-col :class="$style.text" :span="8" v-if="itemListDataDetial.distributor">供应商：{{itemListDataDetial.distributor.name_cn}}</el-col>
-              <el-col :class="$style.text" :span="8" v-if="itemListDataDetial.warehouse">采购部门：{{itemListDataDetial.warehouse.name_cn}}</el-col>
-            </el-row>
-            <el-row>
-              <el-table
-                  border
-                  :class="$style.dataList"
-                  :data="itemListData">
-                  <el-table-column label="#" type="index" ></el-table-column>
-                  <el-table-column label="SKU编码" prop="relevance_code"></el-table-column>
-                  <el-table-column label="货品名称" prop="product_spec_name"></el-table-column>
-                  <el-table-column label="数量" prop="need_num"></el-table-column>
-                  <el-table-column label="进货单价（元）" prop="purchase_price"></el-table-column>
-                  <el-table-column label="金额（元）" prop=""></el-table-column>
-                  <el-table-column label="到货数量" prop="confirm_num"></el-table-column>
-              </el-table>
-            </el-row>
-            <el-row>
-                <el-col :class="$style.text">
-                  <span>备注:{{itemListDataDetial.remark}}</span>
-                </el-col>
-            </el-row>
-            <el-row type="flex">
-                <el-col :class="$style.text">制单日期：{{itemListDataDetial.created_at}}</el-col>
-                <el-col :class="$style.text">采购人签名：</el-col>
-            </el-row>
+            <div v-html="pdfHTML">{{pdfHTML}}</div>
             <el-row style="margin: 30px 0 0 0;">
               <el-col :span="2" :offset="11">
-                  <el-button type="primary">下载</el-button>
+                  <el-button type="primary" :disabled="isDisabled" @click="handlerClick">{{$t('download')}}</el-button>
               </el-col>
             </el-row>
         </el-dialog>
         <el-dialog
             width="70%"
             :center="true"
-            title="到货记录"
+            :title="$t('purchaseRecord')"
             :visible.sync="purcahItemsView">
             <el-row>
               <el-table :data="purcahItemsData">
-                <el-table-column label="本次到货数量"></el-table-column>
-                <el-table-column label="采购数量"></el-table-column>
-                <el-table-column label="已到货数"></el-table-column>
-                <el-table-column label="操作时间"></el-table-column>
+                <el-table-column :label="$t('ArrivedQty')" prop="confirm_num"></el-table-column>
+                <el-table-column :label="$t('PurchaseUnit')" prop="need_num"></el-table-column>
+                <el-table-column :label="$t('purchaseArrived')" prop="confirm_num"></el-table-column>
+                <el-table-column :label="$t('Operationdate')" prop="created_at"></el-table-column>
               </el-table>
             </el-row>
             <el-row>
@@ -201,10 +177,14 @@
 
 <script>
 import $http from '@/api/index';
+import baseApi from '@/lib/axios/base_api';
 import listUI from '@/components/listUI';
 import mixin from '@/mixin/form_config';
 import buttonPublic from '@/components/buttonPublic';
+import paginationPublic from '@/components/pagination-public';
+import getNowDate from '@/lib/format/date';
 import purchaseListSearch from './components/purchaseListSearch';
+
 
 export default {
   name: 'purchaseList',
@@ -213,12 +193,25 @@ export default {
     listUI,
     buttonPublic,
     purchaseListSearch,
+    paginationPublic,
   },
   created() {
     this.getPurchaseListData();
   },
+  computed: {
+    api() {
+      return this.$store.state.token.token.substring(7);
+    },
+  },
   data() {
     return {
+      isDisabled: false,
+      pdfHTML: '',
+      currentPageCache: 0, // 缓存当前页
+      params: {
+        total: 0,
+        currentPage: 1,
+      }, // 分页数据
       purchase_list_data: [],
       purcahseView: false,
       itemListData: [],
@@ -231,6 +224,16 @@ export default {
     };
   },
   methods: {
+    handlerClick() {
+      this.isDisabled = true;
+      setTimeout(() => {
+        this.isDisabled = false;
+      }, 200);
+      window.open(`${baseApi}purchase/${this.cache.id}/download?api_token=${this.api}&lang`);
+    },
+    handlerChangePage(val) {
+      this.getPurchaseListData(val);
+    },
     viewItemDetails(row) {
       this.purcahItemsView = !this.purcahItemsView;
       $http.PurchaseDetailData(row.id, {
@@ -242,10 +245,21 @@ export default {
         });
     },
     modifyItem(row) {
-      $http.editPurchaseItem(row.id, {
+      if (row.last_confirm_date === '0000-00-00') {
+        row.last_confirm_date = getNowDate();
+      }
+      const data = {
         arrived_date: row.last_confirm_date,
         arrived_num: row.confirm_num,
-      }).then((res) => {
+      };
+      if (data.arrived_num === 0) {
+        this.$message({
+          type: 'error',
+          message: '本次到货数量必须大于0',
+        });
+        return;
+      }
+      $http.editPurchaseItem(row.id, data).then((res) => {
         if (res.status) return;
         this.$message({
           type: 'success',
@@ -264,14 +278,17 @@ export default {
         this.getPurchaseListData();
       });
     },
-    purchaseDelete(id) {
+    deletePurchase(id) {
       $http.delPurchase(id).then((res) => {
         if (res.status) return;
-        this.getPurchaseListData();
+        this.handlerChangePage(this.currentPageCache);
       });
     },
-    handlerCallBackData() {
-      //
+    handlerCallBackData(res) {
+      this.purchase_list_data = res.data.data;
+      this.params.currentPage = res.data.current_page;
+      this.currentPageCache = res.data.current_page;
+      this.params.total = res.data.total;
     },
     handlerAddPurchase(flag) {
       if (!flag) return;
@@ -280,19 +297,11 @@ export default {
       });
     },
     viewDetails(row) {
-      if (row.id !== this.cache.id) { // 这里缓存了一下
-        this.cache.id = row.id;
-        $http.purchaseDetial(row.id, {
-          warehouse_id: this.warehouseId,
-        }).then((res) => {
-          if (res.status) return;
-          this.itemListData = res.data.items;
-          this.itemListDataDetial = res.data;
-          this.purcahseView = !this.purcahseView;
-        });
-      } else {
+      this.cache.id = row.id;
+      $http.previewPurchase(row.id).then((res) => {
+        this.pdfHTML = res;
         this.purcahseView = !this.purcahseView;
-      }
+      });
     },
     finishedPurchase(row) {
       $http.finishePurchase(row.id, {
@@ -302,12 +311,19 @@ export default {
         this.getPurchaseListData();
       });
     },
-    getPurchaseListData() {
-      $http.purchaseList({
+    getPurchaseListData(val) {
+      const data = {
         warehouse_id: this.warehouseId,
-      }).then((res) => {
+      };
+      if (val) {
+        data.page = val;
+      }
+      $http.purchaseList(data).then((res) => {
         if (res.status) return;
         this.purchase_list_data = res.data.data;
+        this.params.currentPage = res.data.current_page;
+        this.currentPageCache = res.data.current_page;
+        this.params.total = res.data.total;
       });
     },
   },
@@ -323,5 +339,9 @@ export default {
   }
   .dataList {
     margin: 0 0 20px 0;
+  }
+  .pagination {
+    margin: 10px  0 10px 0;
+    float: right;
   }
 </style>

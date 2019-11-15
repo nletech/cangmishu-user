@@ -80,7 +80,7 @@
             <hr/>
             <el-row :gutter="20">
               <el-col :span="5">
-                已添加{{specSelected.length}}种商品
+                {{$t('productionType')}}{{specSelected.length}}
               </el-col>
               <el-col :span="19" class="dialog-footer">
                 <div style="float:right">

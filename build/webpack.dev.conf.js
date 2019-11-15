@@ -59,6 +59,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
+    new PreloadWebpackPliugin({
+      rel: 'preload',
+      include: 'allChunks' // or 'initial'
+    }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {
@@ -69,7 +73,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     ]),
 
     new BundleAnalyzerPlugin(),
-    new PreloadWebpackPliugin(),
     new CleanWebpackPlugin()
   ]
 })

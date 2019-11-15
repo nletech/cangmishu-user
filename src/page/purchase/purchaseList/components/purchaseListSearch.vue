@@ -19,8 +19,8 @@
                 clearable
                 @change="handlerChange"
                 size="small"
-                :placeholder="'采购单状态'">
-                <el-option  v-for="item in purchaseStatusValue"
+                :placeholder="$t('purchaseStatus')">
+                <el-option  v-for="item in purchaseStatusList"
                             :key="item.id"
                             :label="item.name"
                             :value="item.id">
@@ -29,13 +29,13 @@
         </el-col>
         <el-col :span="2" :offset="1">
             <el-select
-                v-model="supplier"
+                v-model="distributorId"
                 clearable
                 size="small"
                 @change="handlerChange"
-                :placeholder="'供应商'">
+                :placeholder="$t('supplier')">
                 <el-option
-                    v-for="item in this.supplierList"
+                    v-for="item in this.distributorList"
                     :key="item.value"
                     :label="item.name"
                     :value="item.id">
@@ -45,8 +45,9 @@
         <el-col :span="4" :offset="1">
             <el-input
                 size="small"
-                :placeholder="'采购单号'"
-                v-model="supplierCodeValue"
+                :placeholder="$t('purchaseNO')"
+                v-model="purchaseCode"
+                clearable
                 @change="handlerChange"
                 @clear="handlerChange">
                     <el-button
@@ -70,28 +71,23 @@ export default {
     return {
       dateValue: [], // 选择时间
       purchaseStatusValue: '',
-
       purchaseTypeList: [],
       supplier: '',
-      distributorValue: '',
+      distributorId: '',
       distributorList: [],
-      supplierCodeValue: '',
+      purchaseCode: '',
     };
   },
   created() {
     this.getTypeList();
     this.getDistributors();
-    if (this.$route.query.checked) {
-      this.supplier = 1; // 待入库
-      this.handlerChange();
-    }
   },
 
   computed: {
-    supplierList() {
+    purchaseStatusList() {
       return [
-        { id: 1, name: this.$t('DRK') },
-        { id: 3, name: this.$t('RKWC') },
+        { id: 1, name: this.$t('purchaseProcessing') },
+        { id: 3, name: this.$t('purchaseFinished') },
       ];
     },
 
@@ -113,7 +109,7 @@ export default {
       });
     },
     handlerClear() {
-      $http.getInbounds({
+      $http.purchaseList·({
         warehouse_id: this.warehouseId,
       })
         .then((res) => {
@@ -133,12 +129,11 @@ export default {
         warehouse_id: this.warehouseId,
         created_at_b: data[0],
         created_at_e: data[1],
-        distributor_id: this.distributorValue,
-        status: this.supplier,
-        type_id: this.purchaseStatusValue,
-        keywords: this.supplierCodeValue,
+        distributor_id: this.distributorId,
+        status: this.purchaseStatusValue,
+        keywords: this.purchaseCode,
       };
-      $http.getInbounds(query)
+      $http.purchaseList(query)
         .then((res) => {
           this.$emit('data_cb', res);
         });

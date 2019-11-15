@@ -58,7 +58,7 @@
                   </el-row>
                   <el-row :gutter="20">
                     <el-col :span="5">
-                      该入库单已添加{{goodsSelected.length}}种商品
+                      {{$t('productionType')}}{{goodsSelected.length}}
                     </el-col>
                     <el-col :span="19" class="dialog-footer">
                       <div style="float:right">

@@ -21,7 +21,7 @@
                                         :key="item.id">
                             </el-option>
                 </el-select>
-                <el-button icon="el-icon-more"></el-button>
+                <el-button @click="addCategory" icon="el-icon-more"></el-button>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -73,7 +73,7 @@
                         <template slot="header" slot-scope="scope">
                             SKU *
                             <el-popover placement="top-start" title="SKU" width="200" trigger="hover"
-                                content="SKU是商品唯一编码，保存后不能更改，且不能重复">
+                                :content="$t('SKUTips')">
                                 <el-button size="mini"  type="text" slot="reference" icon="el-icon-question"></el-button>
                             </el-popover>
                         </template>
@@ -259,6 +259,13 @@ export default {
     },
   },
   methods: {
+    addCategory() {
+      this.$confirm(this.$t('AddingProduct')).then(() => {
+        this.$router.push({
+          name: 'categoryManagement',
+        });
+      });
+    },
     resetData() {
       this.specModel = {
         id: 0,
