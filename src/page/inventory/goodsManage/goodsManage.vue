@@ -116,7 +116,7 @@
             <el-table-column  type="expand">
                 <template
                       slot-scope="props">
-                      <el-table   :data="props.row.specs" border>
+                      <el-table :data="props.row.specs" border>
                         <el-table-column
                             type="index"
                             label="#"
@@ -173,12 +173,15 @@
             <el-table-column
                 prop="name_cn"
                 align="center"
+                width="300"
                 header-align="center"
                 :label="$t('cnName')">
             </el-table-column>
             <!-- 外文名称 -->
             <el-table-column
-                prop="name_en" v-if="isEnabledLangInput()"
+                prop="name_en"
+                width="300"
+                v-if="isEnabledLangInput()"
                 align="center"
                 header-align="center"
                 :label="$t('enName')">
@@ -188,6 +191,7 @@
                 prop="category.name_cn"
                 align="center"
                 header-align="center"
+                width="100"
                 :label="$t('category')">
             </el-table-column>
             <!-- 零售价 -->

@@ -28,15 +28,18 @@
                   :data="stockList"
                   border style="width: 100%">
                   <el-table-column
+                      align="center" header-align="center"
                       type="index"
                       width="55px;">
                   </el-table-column>
                   <el-table-column
                       :label="$t('categoryName')"
+                      align="center" header-align="center"
                       prop="name_cn">
                   </el-table-column>
                   <el-table-column
                       :label="$t('MinimumInventory')"
+                      align="center" header-align="center"
                       width="180px;">
                       <template
                           slot-scope="scope">

@@ -8,9 +8,42 @@
                 v-model="activeName"
                 stretch
                 type="border-card">
-                <el-tab-pane :label="$t('Inbound')" name="entry">
-                    <div v-html="content" v-if="visible">
-                    </div>
+                <el-tab-pane
+                    v-for="(item, id) of tabs"
+                    :key="id"
+                    :label="$t(`${item.label}`)"
+                    :name="item.name">
+                    <div id="iframeHtml" v-if="activeName === `${item.name}`"></div>
+                    <el-row>
+                        <el-col :span="2" :offset="11">
+                            <el-button
+                                :disabled="disable"
+                                :loading="isButtonLoading"
+                                @click="handleDownload(`${item.name}`)"
+                                style="background-color: #5745c5;
+                                color: #fff;">
+                                {{$t('DownloadInbound')}}
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+                <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
+                    <div id="iframeHtml" v-if="visible === true && activeName === 'entry'"></div>
+                    <el-row>
+                        <el-col :span="2" :offset="11">
+                            <el-button
+                                :disabled="disable"
+                                :loading="isButtonLoading"
+                                @click="handleDownload('entry')"
+                                style="background-color: #5745c5;
+                                color: #fff;">
+                                {{$t('DownloadInbound')}}
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane> -->
+                <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
+                    <div id="iframeHtml" v-if="visible === true && activeName === 'entry'"></div>
                     <el-row>
                         <el-col :span="2" :offset="11">
                             <el-button
@@ -25,8 +58,7 @@
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane :label="$t('PurchaseOrder')" name="purchase">
-                    <div v-html="content" v-if="visible">
-                    </div>
+                    <div id="iframeHtml" v-if="visible === true && activeName === 'purchase'"></div>
                     <el-row>
                         <el-col :span="2" :offset="11">
                             <el-button
@@ -41,8 +73,7 @@
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane :label="$t('Inboundbatchnumber')" name="batchno">
-                    <div v-html="content" v-if="visible">
-                    </div>
+                    <div id="iframeHtml" v-if="visible === true && activeName === 'batchno'"></div>
                     <el-row>
                         <el-col :span="2" :offset="11">
                             <el-tooltip :content="$t('printTips')" placement="top">
@@ -57,13 +88,13 @@
                             </el-tooltip>
                         </el-col>
                     </el-row>
-                </el-tab-pane>
+                </el-tab-pane> -->
               </el-tabs>
   </el-dialog>
 </template>
 
 <script>
-import $http from '@/api';
+import { createAnChildNode } from '@/lib/utils/index';
 import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
 
@@ -73,12 +104,23 @@ export default {
     visible: Boolean,
     id: Number,
   },
-  mounted() {
-    this.pdf = `${baseApi}/batch/7/download`;
-  },
   data() {
     return {
-      pdf: '',
+      tabs: [
+        {
+          id: 1,
+          label: 'Inbound',
+          name: 'entry',
+        }, {
+          id: 2,
+          label: 'PurchaseOrder',
+          name: 'purchase',
+        }, {
+          id: 3,
+          label: 'Inboundbatchnumber',
+          name: 'batchno',
+        }],
+      pdfData: '',
       content: '',
       disable: false,
       activeName: 'entry',
@@ -125,8 +167,21 @@ export default {
     },
     getList(template) {
       if (!this.id || !this.warehouseId) return;
-      $http.previewInbound(this.id, template).then((res) => {
-        this.content = res;
+      // eslint-disable-next-line
+      this.$nextTick(() => {
+        const iframeHtml = document.getElementById('iframeHtml');
+        if (iframeHtml) {
+          for (let i = 0; i < iframeHtml.childNodes.length; i += 1) {
+            iframeHtml.removeChild(iframeHtml.childNodes[i]);
+          }
+        }
+        const iframe = createAnChildNode('iframe', {
+          width: '100%',
+          height: '500',
+          frameBorder: '0',
+          src: `${baseApi}batch/${this.id}/pdf/${template}?api_token=${this.api}`,
+        });
+        iframeHtml.appendChild(iframe);
       });
     },
     handleDownload(template) {

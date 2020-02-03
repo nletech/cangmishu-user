@@ -76,22 +76,6 @@ export default {
   z-index: 1000;
   min-width: 80px;
   background: #444154;
-  .side_nav_title {
-    background:rgba(185,173,255,.2);
-    font-size:16px;
-    color: @white;
-    display: flex;
-    flex-flow: row wrap;
-    i {
-      font-size: 17px;
-    }
-    span {
-      display: block;
-      margin-top: 1px;
-      font-weight: 600;
-      margin-left: 11px;
-    }
-  }
   .side_nav_ul {
     min-width: 200px;
     width: 200px;
@@ -107,7 +91,6 @@ export default {
       height: 80px;
       line-height: 80px;
       text-align: center;
-      font-size: 16px;
       color: @white;
       margin: 0px auto;
       position: relative;
@@ -131,6 +114,7 @@ export default {
 <style lang="less">
 @import '../../less/public_variable.less';
 .side_nav {
+  font-size: 14px;
   .router-link-active {
     border-radius: 5px;
   }
@@ -145,7 +129,8 @@ export default {
     width: 80px;
   }
   .iconfont {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+    // font-weight: 400;
   }
 }
 </style>

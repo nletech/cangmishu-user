@@ -4,7 +4,7 @@ import { homeRoute } from './home';
 import interception from './interception';
 
 Vue.use(Router);
-const routes = [].concat(homeRoute).concat([]);
+const routes = [].concat(homeRoute);
 
 const route = new Router({
   routes,

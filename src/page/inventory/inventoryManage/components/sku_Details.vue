@@ -4,9 +4,7 @@
         @update:visible="$emit('update:visible', $event)"
         :visible="visible">
         <div  :class="$style.main">
-            <h1  :class="$style.details_h1">
-                {{rowInfo.sku}}{{$t('StockHistory')}}
-            </h1>
+            <h1  :class="$style.details_h1">{{rowInfo.sku}}{{$t('StockHistory')}}</h1>
             <el-row  :class="$style.header">
                     <el-col :span="6">
                             <date-picker-public @select_data="handlerSelect_data">
@@ -22,20 +20,20 @@
                 :data="SkuList"
                 border
                 style="width: 100%">
-                        <el-table-column type="index" width="60">
-                        </el-table-column>
-                        <el-table-column :label="$t('Type')" prop="type">
-                        </el-table-column>
-                        <el-table-column :label="$t('OperationNumber')" prop="operation_num">
-                        </el-table-column>
-                        <el-table-column prop="sku_total_stock_num" :label="$t('warehouseStock')">
-                        </el-table-column>
-                        <el-table-column prop="created_at" :label="$t('Operationdate')">
-                        </el-table-column>
-                        <el-table-column prop="order_sn" :label="$t('OrderNumber')">
-                        </el-table-column>
-                        <el-table-column prop="remark" :label="$t('remark')">
-                        </el-table-column>
+                <el-table-column align="center" header-align="center" type="index" width="60">
+                </el-table-column>
+                <el-table-column align="center" header-align="center" :label="$t('Type')" prop="type">
+                </el-table-column>
+                <el-table-column align="center" header-align="center" :label="$t('OperationNumber')" prop="operation_num">
+                </el-table-column>
+                <el-table-column align="center" header-align="center" prop="sku_total_stock_num" :label="$t('warehouseStock')">
+                </el-table-column>
+                <el-table-column align="center" header-align="center" prop="created_at" :label="$t('Operationdate')">
+                </el-table-column>
+                <el-table-column align="center" header-align="center" prop="order_sn" :label="$t('OrderNumber')">
+                </el-table-column>
+                <el-table-column align="center" header-align="center" prop="remark" :label="$t('remark')">
+                </el-table-column>
             </el-table>
             <pagination-public
                 :params="params"

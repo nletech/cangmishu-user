@@ -11,7 +11,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const PreloadWebpackPliugin = require('preload-webpack-plugin');
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -58,10 +57,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true
-    }),
-    new PreloadWebpackPliugin({
-      rel: 'preload',
-      include: 'allChunks' // or 'initial'
     }),
     // copy custom static assets
     new CopyWebpackPlugin([

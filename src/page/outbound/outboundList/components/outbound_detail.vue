@@ -9,8 +9,7 @@
                   stretch
                   type="border-card">
                 <el-tab-pane name="out">
-                    <div v-html="content" v-if="visible">
-                    </div>
+                   <div id="iframeHtml" v-if="visible"></div>
                     <el-row>
                         <el-col :span="2" :offset="11">
                             <el-button
@@ -29,7 +28,7 @@
 </template>
 
 <script>
-import $http from '@/api';
+import { createAnChildNode } from '@/lib/utils/index';
 import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
 
@@ -43,8 +42,7 @@ export default {
   },
   data() {
     return {
-      pdf: '',
-      content: '', // html
+      pdfData: '',
       disable: false,
       activeName: 'out',
     };
@@ -73,10 +71,19 @@ export default {
   methods: {
     getList(template) {
       if (!this.id || !this.warehouseId) return;
-      $http.OutboundDetails(this.id, template).then((res) => {
-        this.content = res;
+      // eslint-disable-next-line
+      this.$nextTick(() => {
+        const iframeHtml = document.getElementById('iframeHtml');
+        const iframe = createAnChildNode('iframe', {
+          frameBorder: '0',
+          width: '100%',
+          height: '500',
+          src: `${baseApi}order/${this.id}/pdf/${template}?api_token=${this.api}`,
+        });
+        iframeHtml.appendChild(iframe);
       });
     },
+
     handlerTabClick(tab) {
       switch (+tab.index) {
         case 0: // 出库单

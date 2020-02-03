@@ -18,22 +18,22 @@
                         </el-col>
               </el-row>
               <el-table :data="inventoryList" border style="width: 100%">
-                        <el-table-column :label="$t('Type')">
+                        <el-table-column :label="$t('Type')" align="center" header-align="center" >
                                         <template slot-scope="scope">
                                                   {{scope.row.type}}
                                         </template>
                         </el-table-column>
-                        <el-table-column :label="$t('Inboundbatchnumber')" prop="sku">
+                        <el-table-column align="center" header-align="center" :label="$t('Inboundbatchnumber')" prop="sku">
                         </el-table-column>
-                        <el-table-column :label="$t('OperationNumber')" prop="operation_num">
+                        <el-table-column align="center" header-align="center" :label="$t('OperationNumber')" prop="operation_num">
                         </el-table-column>
-                        <el-table-column prop="spec_total_stock_num" :label="$t('TotalInventory')">
+                        <el-table-column align="center" header-align="center" prop="spec_total_stock_num" :label="$t('TotalInventory')">
                         </el-table-column>
-                        <el-table-column prop="created_at" :label="$t('Operationdate')">
+                        <el-table-column align="center" header-align="center" prop="created_at" :label="$t('Operationdate')">
                         </el-table-column>
-                        <el-table-column prop="order_sn" :label="$t('OrderNumber')">
+                        <el-table-column align="center" header-align="center" prop="order_sn" :label="$t('OrderNumber')">
                         </el-table-column>
-                        <el-table-column prop="remark" :label="$t('remark')">
+                        <el-table-column align="center" header-align="center" prop="remark" :label="$t('remark')">
                         </el-table-column>
               </el-table>
               <el-row  :class="$style.pagination">

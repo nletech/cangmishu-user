@@ -620,6 +620,7 @@ const cn = {
   CangmishuWMS: '仓秘书仓储系统',
   OrdinaryOutboundOrder: '普通出库单',
   purchaseOrder: '采购单',
+  purchaseOrderDetail: '采购单详情',
   Orderinvoicenumber: '订单发票号',
   warehouse: '仓库',
   goodsDetial: '商品详细',

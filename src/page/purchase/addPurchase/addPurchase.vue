@@ -4,7 +4,7 @@
             <el-form
                 slot="left"
                 :rules="rules"
-                :model="form" label-width="140px"
+                :model="form" label-width="150px"
                 ref="form">
                 <el-row type="flex" justify="space-between">
                     <el-col :span="8">
@@ -328,13 +328,13 @@ export default {
       distributorSelectList: [], // 供应商列表
       rules: {
         purchase_code: [
-          { required: true, message: '请输入单据编号', trigger: 'blur' },
+          { required: true, message: this.$t('PleaseEnterNumber'), trigger: 'blur' },
         ],
         distributor_id: [
-          { required: true, message: '请选择供应商', trigger: 'change' },
+          { required: true, message: this.$t('Pleseselectsupplier'), trigger: 'change' },
         ],
         created_date: [
-          { required: true, message: '请选择日期', trigger: 'blur' },
+          { required: true, message: this.$t('Pleaseselectdate'), trigger: 'blur' },
         ],
       },
     };
@@ -361,11 +361,14 @@ export default {
 
     handlerDistributorListClose() {
       this.queryAllDistributor();
-      for (let i = 0; i < this.distributorSelectList.length; i += 1) {
-        if (this.distributorSelectList[i].id === this.form.distributor_id) {
-          this.form.distributor_id = this.distributorSelectList[i].id;
+      // eslint-disable-next-line
+      this.distributorSelectList.map((item) => {
+        if (item.id === this.form.distributor_id) {
+          this.form.distributor_id = item.id;
+        } else {
+          this.form.distributor_id = '';
         }
-      }
+      });
     }, // 关闭供应商筛选框之后重置选择的供应商
 
     queryAllDistributor() {
@@ -401,17 +404,20 @@ export default {
       this.dialogSpecShow = true;
     }, // 待入库货品弹出框
 
-    onSpecSelected(data) {
-      for (let i = 0; i < data.length; i += 1) {
+    onSpecSelected(selectedProductList) {
+      // 检测新添加商品是否存在于表单吧商品列表，
+      // 如果不存在，直接 push 进商品列表，存在则将选择的数量求和。
+      for (let i = 0; i < selectedProductList.length; i += 1) {
         let found = false;
         for (let j = 0; j < this.specList.length; j += 1) {
-          if (data[i].id === this.specList[j].id) {
+          if (selectedProductList[i].id === this.specList[j].id) {
             found = true;
             break;
           }
         }
+
         if (!found) {
-          this.specList.push(data[i]);
+          this.specList.push(selectedProductList[i]);
         }
       }
     }, // 防止已存在商品列表中的商品被重复选择

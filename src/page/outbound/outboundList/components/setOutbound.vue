@@ -52,29 +52,29 @@
                       <el-row>
                               <el-col>
                                       <el-table  v-if="row_data" :data="row_data.order_items" border>
-                                          <el-table-column type="index" width="60">
+                                          <el-table-column align="center" header-align="center" type="index" width="60">
                                           </el-table-column>
-                                          <el-table-column prop="name_cn" :label="$t('cnName')">
+                                          <el-table-column align="center" header-align="center" prop="name_cn" :label="$t('cnName')" width="300">
                                               <template slot-scope="scope">
                                                 {{scope.row.name_cn}}({{scope.row.spec_name_cn}})
                                               </template>
                                           </el-table-column>
-                                          <el-table-column prop="relevance_code" label="SKU">
+                                          <el-table-column align="center" header-align="center" prop="relevance_code" label="SKU">
                                                             <template slot-scope="scope">
                                                                     <div><img :src="scope.row.relevance_code_barcode"/></div>
                                                                     <div>{{scope.row.relevance_code}}</div>
                                                             </template>
                                           </el-table-column>
-                                          <el-table-column prop="sale_price" :label="$t('SalePrice')" width="120" align="center">
+                                          <el-table-column align="center" header-align="center" prop="sale_price" :label="$t('SalePrice')">
                                           </el-table-column>
-                                          <el-table-column prop="amount" :label="$t('OrderQty')" width="100" align="center">
+                                          <el-table-column align="center" header-align="center" prop="amount" :label="$t('OrderQty')" width="100">
                                           </el-table-column>
-                                          <el-table-column :label="$t('Stock')" width="100" align="center">
+                                          <el-table-column align="center" header-align="center" :label="$t('Stock')" width="100">
                                             <template slot-scope="scope">
                                               {{scope.row.spec.total_shelf_num}}
                                             </template>
                                           </el-table-column>
-                                          <el-table-column :label="$t('ConfirmQty')" prop="pick_num, amount">
+                                          <el-table-column align="center" header-align="center" :label="$t('ConfirmQty')" prop="pick_num, amount">
                                               <template slot-scope="scope">
                                                         <el-input-number
                                                             size="mini" type="number"

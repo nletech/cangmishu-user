@@ -118,7 +118,7 @@ export default {
     border: 1px solid @separateLine;
     background: @white;
     color: @textColor;
-    font-size: 18px;
+    font-size: 16px;
     z-index: 99;
     left: 0px;
     line-height: 60px;

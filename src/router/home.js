@@ -454,7 +454,7 @@ export const routerMap = [
     ],
   },
 ];
-// addComponent(routerMap);
+
 export const homeRoute = [
   {
     component: LayoutTop,

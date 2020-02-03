@@ -80,7 +80,7 @@
                     header-align="center"
                     align="center"
                     prop="order_type.name"
-                    width="100">
+                    width="160">
                 </el-table-column>
                 <el-table-column
                     :label="$t('OrderQty')"
@@ -425,6 +425,9 @@ export default {
     api() {
       return this.$store.state.token.token.substring(7);
     },
+    currentLang() {
+      return localStorage.getItem('lang') || 'cn';
+    },
   },
   watch: {
     paymentDialog() {
@@ -469,7 +472,7 @@ export default {
     }, // 跟踪
 
     onPrint(row) {
-      window.open(`${baseApi}order/${row.id}/download/pick/?api_token=${this.api}&lang`);
+      window.open(`${baseApi}order/${row.id}/download/pick/?api_token=${this.api}&lang=${this.currentLang}`);
     }, // 打印拣货单
 
     getPayStatus() {

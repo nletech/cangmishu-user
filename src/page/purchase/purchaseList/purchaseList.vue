@@ -145,11 +145,11 @@
           </slot>
         </template>
         <el-dialog
-            width="70%"
+            width="90%"
             :center="true"
-            :title="$t('purchaseOrder')"
+            :title="$t('purchaseOrderDetail')"
             :visible.sync="purcahseView">
-            <div v-html="pdfHTML">{{pdfHTML}}</div>
+            <div id="iframeHtml" v-if="purcahseView"></div>
             <el-row style="margin: 30px 0 0 0;">
               <el-col :span="2" :offset="11">
                   <el-button type="primary" :disabled="isDisabled" @click="handlerClick">{{$t('download')}}</el-button>
@@ -169,8 +169,6 @@
                 <el-table-column :label="$t('Operationdate')" prop="created_at"></el-table-column>
               </el-table>
             </el-row>
-            <el-row>
-            </el-row>
         </el-dialog>
     </listUI>
 </template>
@@ -183,6 +181,7 @@ import mixin from '@/mixin/form_config';
 import buttonPublic from '@/components/buttonPublic';
 import paginationPublic from '@/components/pagination-public';
 import getNowDate from '@/lib/format/date';
+import { createAnChildNode } from '@/lib/utils/index';
 import purchaseListSearch from './components/purchaseListSearch';
 
 
@@ -206,6 +205,7 @@ export default {
   data() {
     return {
       isDisabled: false,
+      pdfData: '',
       pdfHTML: '',
       currentPageCache: 0, // 缓存当前页
       params: {
@@ -259,6 +259,13 @@ export default {
         });
         return;
       }
+      if (!data.arrived_date) {
+        this.$message({
+          type: 'error',
+          message: '到货日期必填',
+        });
+        return;
+      }
       $http.editPurchaseItem(row.id, data).then((res) => {
         if (res.status) return;
         this.$message({
@@ -297,12 +304,20 @@ export default {
       });
     },
     viewDetails(row) {
-      this.cache.id = row.id;
-      $http.previewPurchase(row.id).then((res) => {
-        this.pdfHTML = res;
-        this.purcahseView = !this.purcahseView;
+      this.purcahseView = !this.purcahseView;
+      // eslint-disable-next-line
+      this.$nextTick(() => {
+        const iframeHtml = document.getElementById('iframeHtml');
+        const iframe = createAnChildNode('iframe', {
+          width: '100%',
+          height: '500',
+          frameBorder: '0',
+          src: `${baseApi}purchase/${row.id}/pdf?api_token=${this.api}`,
+        });
+        iframeHtml.appendChild(iframe);
       });
     },
+
     finishedPurchase(row) {
       $http.finishePurchase(row.id, {
         warehouse_id: this.warehouseId,

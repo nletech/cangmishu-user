@@ -256,6 +256,7 @@ const en = {
   purchase: 'Purchase',
   distributorName: 'Supplier',
   LogoutTips: ' Are you sure ?',
+  purchaseOrderDetail: 'Detail',
   SKUTip: 'SKU is the unique code of the product, can not be changed and repeated, after saving',
   add: 'Add',
   paid: 'Paid',
@@ -492,7 +493,7 @@ const en = {
   pleaseEnterCapacity: 'Please enter capacity',
   PleaseSelectTheTargoarea: 'Plese select section',
   editCargoShelf: 'Edit Rack Information',
-  purchaseTips1: 'The purchase list cannot be empty',
+  purchaseTips1: 'The purchase list must be required',
   inputRequired: 'Please check your input',
   ...enLocale,
 };

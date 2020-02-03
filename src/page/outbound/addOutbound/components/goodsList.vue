@@ -10,29 +10,37 @@
                         border
                         style="width: 100%;"
                         :empty-text="$t('pleaseSelectProductSpec')">
-                        <el-table-column  type="index"
-                                          label="#">
+                        <el-table-column
+                          type="index"
+                          label="#">
                         </el-table-column>
-                        <el-table-column  :label="$t('ProductSpec')">
+                        <el-table-column
+                          header-align="center"
+                          align="center"
+                          :label="$t('ProductSpec')">
                             <template slot-scope="scope">
                                       {{scope.row.product_name}}
                             </template>
                         </el-table-column>
-                        <el-table-column label="SKU" prop="relevance_code">
+                        <el-table-column
+                            header-align="center"
+                            align="center"
+                            label="SKU"
+                            prop="relevance_code">
                         </el-table-column>
-                        <el-table-column :label="$t('SalePrice1')" prop="sale_price">
+                        <el-table-column header-align="center" align="center" :label="$t('SalePrice1')" prop="sale_price">
                               <template slot-scope="scope">
                                   <el-input-number  v-model="scope.row.sale_price" :min="0" size="mini">
                                   </el-input-number>
                               </template>
                         </el-table-column>
-                        <el-table-column :label="$t('Number')" prop="num">
+                        <el-table-column header-align="center" align="center" :label="$t('Number')" prop="num">
                           <template slot-scope="scope">
                               <el-input-number  v-model="scope.row.need_num" :min="0" size="mini">
                               </el-input-number>
                           </template>
                         </el-table-column>
-                        <el-table-column :label="$t('operation')">
+                        <el-table-column header-align="center" align="center" :label="$t('operation')">
                           <template slot-scope="scope">
                               <el-tooltip :content="$t('delete')" placement="top">
                                 <el-button
