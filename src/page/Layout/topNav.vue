@@ -1,105 +1,107 @@
 <template>
-<div>
-  <div
-    :class="$style.top_nav"
-    class="top_nav">
-    <div :class="$style.nav">
-      <div  :class="$style.top_nav_logo"
-             :style="{ width: sideNavStatus ? '80px' : '200px' }">
-             <span v-if="!sideNavStatus">仓秘书</span>
-             <img v-else src="../../assets/img/cang.png" alt="仓秘书">
-      </div>
-      <div  @click="closeSideNav"
-            :class="$style.side_nav_switch">
-            <i class="iconfont">&#xe622;</i>
-      </div>
-      <!-- 切换仓库 选择按钮 -->
-      <div  :class="$style.selectedTag">
-            <div v-if="+UType !== 0">
-              <div style="font-size: 1.2rem; text-align: center; line-height: 80px;">
-                  <i class="medium el-icon-house"></i> <span>{{warehouseName}}</span>
-              </div>
+  <div :class="$style.top_nav_container">
+    <div :class="$style.top_nav" class="top_nav">
+      <div :class="$style.nav">
+        <div :class="$style.top_nav_logo" :style="{ width: sideNavStatus ? '80px' : '200px' }">
+          <span v-if="!sideNavStatus">仓秘书</span>
+          <img v-else src="../../assets/img/cang.png" alt="仓秘书" />
+        </div>
+        <div @click="closeSideNav" :class="$style.side_nav_switch">
+          <i class="iconfont">&#xe622;</i>
+        </div>
+        <!-- 切换仓库 选择按钮 -->
+        <div :class="$style.selectedTag">
+          <div v-if="+UType !== 0">
+            <div style="font-size: 1.2rem; text-align: center; line-height: 80px;">
+              <i class="medium el-icon-house"></i>
+              <span>{{warehouseName}}</span>
             </div>
-            <div v-else>
-                  <el-dropdown  :class="$style.selectedTag_main">
-                      <el-button type="text">
-                          <i class="medium el-icon-house"></i> <strong>{{warehouseName}}</strong>
-                          <i class="el-icon-arrow-down el-icon--right"></i>
-                      </el-button>
-                      <el-dropdown-menu  slot="dropdown"
-                          :class="$style.selectedTag_main_dropdown"
-                          style="width: 200px; text-align: center;">
-                          <el-dropdown-item @click.native="to_store_management">
-                              <span>{{$t('WarehouseList')}}</span>
-                          </el-dropdown-item>
-                          <el-dropdown-item @click.native="shift_warehouse">
-                              <span>{{$t('selectdWh')}}</span>
-                          </el-dropdown-item>
-                          <el-dropdown-item @click.native="to_create_store">
-                              <span>{{$t('addStoreManage')}}</span>
-                          </el-dropdown-item>
-                      </el-dropdown-menu>
-                  </el-dropdown>
+          </div>
+          <div v-else>
+            <el-dropdown :class="$style.selectedTag_main">
+              <el-button type="text">
+                <i class="medium el-icon-house"></i>
+                <strong>{{warehouseName}}</strong>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu
+                slot="dropdown"
+                :class="$style.selectedTag_main_dropdown"
+                style="width: 200px; text-align: center;"
+              >
+                <el-dropdown-item @click.native="to_store_management">
+                  <span>{{$t('WarehouseList')}}</span>
+                </el-dropdown-item>
+                <el-dropdown-item @click.native="shift_warehouse">
+                  <span>{{$t('selectdWh')}}</span>
+                </el-dropdown-item>
+                <el-dropdown-item @click.native="to_create_store">
+                  <span>{{$t('addStoreManage')}}</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
+      </div>
+      <!-- 用户信息 -->
+      <div :class="$style.user_info">
+        <div :class="$style.selectLang" v-if="true">
+          <span @click="handlerClick">
+            <!-- {{$t('CurrentLanguage')}}: -->
+            {{this.$i18n.locale | langFilter}}
+          </span>
+        </div>
+        <div
+          v-if="isShowSelectWarehouseIcon"
+          @click="toggleWarehouseIcon"
+          :class="$style.warehouse"
+        >
+          <i class="iconfont">&#xe6bf;</i>
+          <span>{{selectWarehouse}}</span>
+        </div>
+        <div :class="$style.user">
+          <div
+            :class="$style.img"
+            @mouseover="handlerAvatarMouseOver"
+            @mouseleave="handlerAvatarMouseLeave"
+            @click="handleChangeUserinfo"
+          >
+            <span v-if="!Uavatar" style="border: 1px solid;">管</span>
+            <img v-else :class="$style.avatar" :src="Uavatar" />
+            <div
+              :class="$style.avatar_hover_text"
+              v-show="visible_avatar_text &&
+                              this.$i18n.locale === 'cn'"
+            >
+              <span>修改资料</span>
             </div>
+          </div>
+          <div :class="$style.UnickName">
+            <span v-html="UnickName"></span>
+          </div>
+          <div :class="$style.logout">
+            <el-dropdown>
+              <span class="iconfont">&#xe60e;</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="handleChangePassWord">{{$t('ChangePassword')}}</el-dropdown-item>
+                <el-dropdown-item @click.native="logout">{{$t('LogOut')}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- 用户信息 -->
-    <div :class="$style.user_info">
-         <div :class="$style.selectLang" v-if="true">
-            <span @click="handlerClick">
-              <!-- {{$t('CurrentLanguage')}}: -->
-              {{this.$i18n.locale | langFilter}}
-            </span>
-         </div>
-         <div  v-if="isShowSelectWarehouseIcon"
-               @click="toggleWarehouseIcon"
-               :class="$style.warehouse">
-               <i class="iconfont">&#xe6bf;</i>
-               <span>{{selectWarehouse}}</span>
-         </div>
-         <div :class="$style.user">
-              <div  :class="$style.img"
-                    @mouseover="handlerAvatarMouseOver"
-                    @mouseleave="handlerAvatarMouseLeave"
-                    @click="handleChangeUserinfo">
-                    <span v-if="!Uavatar" style="border: 1px solid;">管</span>
-                    <img  v-else :class="$style.avatar"
-                          :src="Uavatar">
-                    <div
-                      :class="$style.avatar_hover_text"
-                      v-show="visible_avatar_text &&
-                              this.$i18n.locale === 'cn'">
-                          <span>修改资料</span>
-                    </div>
-              </div>
-              <div :class="$style.UnickName">
-                   <span v-html="UnickName"></span>
-              </div>
-              <div :class="$style.logout">
-                   <el-dropdown>
-                               <span class="iconfont">&#xe60e;</span>
-                               <el-dropdown-menu slot="dropdown">
-                                     <el-dropdown-item @click.native="handleChangePassWord">{{$t('ChangePassword')}}</el-dropdown-item>
-                                     <el-dropdown-item @click.native="logout">{{$t('LogOut')}}</el-dropdown-item>
-                               </el-dropdown-menu>
-                   </el-dropdown>
-              </div>
-         </div>
-    </div>
-  </div>
-  <!-- 切换仓库 -->
-  <el-dialog :title="$t('SwitchWarehouse')" :visible.sync="showWarehousesDialog">
+    <!-- 切换仓库 -->
+    <el-dialog :title="$t('SwitchWarehouse')" :visible.sync="showWarehousesDialog">
       <el-form>
         <el-form-item :label="$t('warehouse')">
-          <el-select
-            v-model="currentWarehouseId"
-            :placeholder="$t('checkedWh')" >
+          <el-select v-model="currentWarehouseId" :placeholder="$t('checkedWh')">
             <el-option
-                v-for="item in warehouseList"
-                :label="item.name_cn"
-                :key="item.id"
-                :value="item.id">
-            </el-option>
+              v-for="item in warehouseList"
+              :label="item.name_cn"
+              :key="item.id"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -107,11 +109,11 @@
         <el-button @click="showWarehousesDialog = false">{{$t('cancel')}}</el-button>
         <el-button type="primary" @click="handleConfirm">{{$t('confirm')}}</el-button>
       </div>
-  </el-dialog>
-  <!-- 修改密码 -->
-  <change-pass-word :visible.sync="show_psw_flag"></change-pass-word>
-  <user-info :visible.sync="show_user_info_flag"></user-info>
-</div>
+    </el-dialog>
+    <!-- 修改密码 -->
+    <change-pass-word :visible.sync="show_psw_flag"></change-pass-word>
+    <user-info :visible.sync="show_user_info_flag"></user-info>
+  </div>
 </template>
 
 <script>
@@ -283,7 +285,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../less/public_variable.less';
+@import "../../less/public_variable.less";
 
 .dialogcentered {
   margin: auto;
@@ -297,7 +299,7 @@ export default {
 }
 
 .selectline {
-  display: block!important;
+  display: block !important;
   margin-top: 20px;
   span {
     display: inline-block;
@@ -307,203 +309,206 @@ export default {
   }
 }
 
-.top_nav {
-  height: 80px;
-  background-color: @white;
-  position: fixed;
+.top_nav_container {
+  position: sticky;
   top: 0;
   z-index: 999;
-  width: 100%;
-  min-width: 1280px;
-  display: flex;
-  border-bottom: 1px solid;
-  border-color: @separateLine;
-  .nav {
+  .top_nav {
+    height: 80px;
+    background-color: @white;
+    position: sticky;
+    top: 0;
+    z-index: 999;
     width: 100%;
+    min-width: 1280px;
     display: flex;
-    flex-flow: row wrap;
-    .selectedTag {
-      width: 200px;
-      height: 80px;
-      border-right: 1px solid #d8d3f4;
-      .selectedTag_main {
-        width: 100%;
-        height: 100%;
-        margin: 20px 0 0 0;
-        font-size: 1.2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .selectedTag_main_btn {
-          border: none;
-        }
-        .selectedTag_main_dropdown {
-          width: 200px;
-        }
-        .selectedTag_main_desc {
-          text-align: center;
-          font-size: 1.3rem;
-        }
-      }
-    }
-  }
-
-  .switch(@width) {
-    border-right: 1px solid;
     border-color: @separateLine;
-    width: @width;
-    text-align: center;
-    line-height: 80px;
-  }
-
-  .top_nav_logo {
-    width: 200px;
-    height: 80px;
-    background-color: @ThemeColor;
-    color: @white;
-    font-size: 36px;
-    line-height: 80px;
-    font-weight: 600;
-    text-align: center;
-    transition: width .3s ease-in-out; // 修改 bug
-    img {
-      margin-top: 15px;
-      width: 50px;
-    }
-  }
-
-  .side_nav_switch {
-    height: 80px;
-    .switch(103px);
-    i {
-      font-size: 30px;
-      color: @ThemeColor;
-      cursor: pointer;
-    }
-  }
-
-  .lang_switch {
-    .switch(113px)
-  }
-
-  .user_info {
-    width: 50%;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
-    .selectLang {
-      box-sizing: border-box;
-      font-size: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-    }
-    .warehouse {
-      cursor: pointer;
-      line-height: 80px;
-      text-align: right;
-      i {
-        vertical-align: middle;
-        font-size: 26px;
-        line-height: 80px;
-      }
-      span {
-        font-size: 16px;
-        line-height: 26px;
-      }
-    }
-
-    .user {
-      border-left: 1px solid;
-      margin-left: 20px;
+    .nav {
+      width: 100%;
       display: flex;
       flex-flow: row wrap;
-      border-right: 1px solid;
-      border-color: @separateLine;
-      min-width: 240px;
-      height: 80px;
-      text-align: center;
-      .img {
-        width: 80px;
+      .selectedTag {
+        width: 200px;
         height: 80px;
-        border-radius: 50%;
-        cursor: pointer;
-        color: @ThemeColor;
-        margin: 0 10px 0 10px;
-        position: relative;
-        transform: scale(0.8);
-        .avatar {
-          display: inline-block;
+        border-right: 1px solid #d8d3f4;
+        .selectedTag_main {
           width: 100%;
           height: 100%;
-          border-radius: 50%;
-        }
-        .avatar_hover_text {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          vertical-align: middle;
-          border-radius: 50%;
-          font-size: 1.1rem;
-          color: #fff;
+          margin: 20px 0 0 0;
+          font-size: 1.2rem;
           display: flex;
-          align-items: center;
           justify-content: center;
-          &:hover {
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, .5);
-            transition: all .3s ease-in-out;
+          align-items: center;
+          .selectedTag_main_btn {
+            border: none;
+          }
+          .selectedTag_main_dropdown {
+            width: 200px;
+          }
+          .selectedTag_main_desc {
+            text-align: center;
+            font-size: 1.3rem;
           }
         }
       }
+    }
 
-      .UnickName {
-        width: 100px;
-        height: 100%;
-        display: flex; // 文字垂直居中
-        justify-content: flex-start;
-        align-items: center;
-        overflow: hidden; // 以下样式 单行超出用 省略号代替
-        text-align: left;
-        span {
-          white-space: nowrap;
-          text-overflow:ellipsis;
-          font-size: 1.1rem;
-        }
+    .switch(@width) {
+      border-right: 1px solid;
+      border-color: @separateLine;
+      width: @width;
+      text-align: center;
+      line-height: 80px;
+    }
+
+    .top_nav_logo {
+      width: 200px;
+      height: 80px;
+      background-color: @ThemeColor;
+      color: @white;
+      font-size: 36px;
+      line-height: 80px;
+      font-weight: 600;
+      text-align: center;
+      transition: width 0.3s ease-in-out; // 修改 bug
+      img {
+        margin-top: 15px;
+        width: 50px;
       }
+    }
 
-      .logout {
-        width: 80px;
-        height: 100%;
-        display: flex; // 文字垂直居中
+    .side_nav_switch {
+      height: 80px;
+      .switch(103px);
+      i {
+        font-size: 30px;
+        color: @ThemeColor;
+        cursor: pointer;
+      }
+    }
+
+    .lang_switch {
+      .switch(113px);
+    }
+
+    .user_info {
+      width: 50%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-end;
+      .selectLang {
+        box-sizing: border-box;
+        font-size: 16px;
+        display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
       }
-
-    }
-    .model_color(@color) {
-      width: 21px;
-      height: 21px;
-      background: @textColor;
-      color: @color;
-      line-height: 21px;
-      margin: 0 auto;
-      border-radius: 50%;
-    }
-    .mdoel {
-      margin-top: 25px;
-      cursor: pointer;
-      width: 35px;
-      font-size: 10px;
-      .model_top {
-        .model_color(RGBA(255, 187, 23, 1));
+      .warehouse {
+        cursor: pointer;
+        line-height: 80px;
+        text-align: right;
         i {
-          font-size: 12px;
+          vertical-align: middle;
+          font-size: 26px;
+          line-height: 80px;
+        }
+        span {
+          font-size: 16px;
+          line-height: 26px;
+        }
+      }
+
+      .user {
+        border-left: 1px solid;
+        margin-left: 20px;
+        display: flex;
+        flex-flow: row wrap;
+        border-right: 1px solid;
+        border-color: @separateLine;
+        min-width: 240px;
+        height: 80px;
+        text-align: center;
+        .img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          cursor: pointer;
+          color: @ThemeColor;
+          margin: 0 10px 0 10px;
+          position: relative;
+          transform: scale(0.8);
+          .avatar {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+          }
+          .avatar_hover_text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            vertical-align: middle;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:hover {
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.5);
+              transition: all 0.3s ease-in-out;
+            }
+          }
+        }
+
+        .UnickName {
+          width: 100px;
+          height: 100%;
+          display: flex; // 文字垂直居中
+          justify-content: flex-start;
+          align-items: center;
+          overflow: hidden; // 以下样式 单行超出用 省略号代替
+          text-align: left;
+          span {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 1.1rem;
+          }
+        }
+
+        .logout {
+          width: 80px;
+          height: 100%;
+          display: flex; // 文字垂直居中
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+        }
+      }
+      .model_color(@color) {
+        width: 21px;
+        height: 21px;
+        background: @textColor;
+        color: @color;
+        line-height: 21px;
+        margin: 0 auto;
+        border-radius: 50%;
+      }
+      .mdoel {
+        margin-top: 25px;
+        cursor: pointer;
+        width: 35px;
+        font-size: 10px;
+        .model_top {
+          .model_color(RGBA(255, 187, 23, 1));
+          i {
+            font-size: 12px;
+          }
         }
       }
     }
@@ -512,11 +517,10 @@ export default {
 </style>
 
 <style lang="less">
-@import '../../less/public_variable.less';
+@import "../../less/public_variable.less";
 .top_nav {
   .router-link-active {
-    color:  @ThemeColor !important;
+    color: @ThemeColor !important;
   }
 }
-
 </style>

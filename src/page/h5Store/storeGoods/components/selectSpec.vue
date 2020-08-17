@@ -82,11 +82,9 @@
 import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
-import buttonLoading from '@/mixin/buttonLoading';
 
 export default {
   name: 'selectSpec',
-  mixins: [buttonLoading],
   props: {
     visible: {
       type: Boolean,
@@ -105,6 +103,11 @@ export default {
   components: {
     buttonPagination,
     inputPublic,
+  },
+  computed: {
+    isButtonLoading() {
+      return this.$store.state.config.button_loading;
+    },
   },
   data() {
     return {

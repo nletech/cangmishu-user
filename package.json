@@ -2,7 +2,7 @@
   "name": "cangmishu",
   "version": "1.0.0",
   "description": "CangMiShu",
-  "author": "",
+  "author": "lsy <598348605@qq.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -16,7 +16,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "echarts": "^4.1.0",
-    "element-ui": "^2.11.1",
+    "element-ui": "^2.13.2",
     "es6-promise": "^4.2.8",
     "nprogress": "^0.2.0",
     "qs": "^6.5.1",
@@ -95,5 +95,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": "index.js",
+  "repository": "git@github.com:nletech/cangmishu-user.git",
+  "license": "MIT"
 }

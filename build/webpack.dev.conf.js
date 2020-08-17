@@ -67,7 +67,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       }
     ]),
 
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new CleanWebpackPlugin()
   ]
 })

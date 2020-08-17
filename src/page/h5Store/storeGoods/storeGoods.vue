@@ -1,153 +1,150 @@
 <template>
-    <div :class="$style.page">
-        <div :class="$style.main">
-            <div  :class="$style.header">
-                <el-row>
-                    <el-col :span="4">
-                        <input-public :select="select_batch_code"
-                                      @data_cb="handlerInputQuery">
-                        </input-public>
-                    </el-col>
-                    <el-col :span="2" :offset="18">
-                        <el-button
-                            size="small"
-                            @click="addGoods"
-                            icon="el-icon-plus">
-                            {{$t('AddProduct')}}
-                        </el-button>
-                    </el-col>
-                </el-row>
-            </div>
-            <el-table
-                element-loading-text="loading"
-                v-loading="isButtonLoading"
-                :data="goodsList"
-                @selection-change="handleSelectionChange"
-                border>
-                <el-table-column
-                    type="selection"
-                    width="40"
-                    header-align="center"
-                    align="center">
-                </el-table-column>
-                <el-table-column :label="$t('productImage')" header-align="center" align="center" width="160">
-                  <template slot-scope="scope">
-                    <img style="width: 40px; height: 40px; margin: 0 2px 0 2px;"
-                        v-for="(item, index) in scope.row.pics"
-                        :key="index"
-                        :src="item">
-                  </template>
-                </el-table-column>
-                <el-table-column :label="$t('ProductName2')" header-align="center" align="center" >
-                    <template slot-scope="scope">
-                        <span>{{scope.row.name}}</span>
-                        <el-popover
-                            transition
-                            placement="right"
-                            trigger="hover">
-                            <img
-                              v-if="scope.row.weapp_qrcode"
-                              style="width: 150px; height: 150px;"
-                              :src="scope.row.weapp_qrcode">
-                            <i slot="reference" class="el-icon-view el-icon--right"></i>
-                        </el-popover>
-                    </template>
-                </el-table-column>
-                <el-table-column  prop="sale_price" :label="$t('sale')" header-align="center" align="center" >
-                </el-table-column>
-                <el-table-column  prop="updated_at" :label="$t('time')" header-align="center" align="center" width="200">
-                </el-table-column>
-                <el-table-column :label="$t('PutOn')" header-align="center" align="center" >
-                    <template slot-scope="scope">
-                        <el-switch
-                          @change="handlerShelfSlef($event, scope.row)"
-                          :loading="isButtonLoading"
-                          v-model="scope.row.is_shelf"
-                          :inactive-value="0"
-                          :active-value="1">
-                        </el-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column  :label="$t('operation')" width="200" header-align="center">
-                      <template slot-scope="scope">
-                        <el-tooltip :content="$t('edit')" placement="top">
-                          <el-button
-                              @click="editGoods(scope.row)"
-                              :loading="isButtonLoading"
-                              size="mini"
-                              icon="el-icon-edit"
-                              round>
-                          </el-button>
-                        </el-tooltip>
-                        <el-tooltip :content="$t('delete')" placement="top">
-                          <el-button
-                              size="mini" icon="el-icon-delete"
-                              :loading="isButtonLoading"
-                              @click="delGoods(scope.row.id)"
-                              type="danger" round>
-                          </el-button>
-                        </el-tooltip>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-row>
-                <el-col :span="8" style="position: relative; top: 8px;">
-                  <div v-if="this.goodsList.length">
-                    <span
-                        style="color: rgb(121, 106, 209);
+  <div :class="$style.page">
+    <div :class="$style.main">
+      <div :class="$style.header">
+        <el-row>
+          <el-col :span="4">
+            <input-public :select="select_batch_code" @data_cb="handlerInputQuery"></input-public>
+          </el-col>
+          <el-col :span="2" :offset="18">
+            <el-button size="small" @click="addGoods" icon="el-icon-plus">{{$t('AddProduct')}}</el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <el-table
+        element-loading-text="loading"
+        v-loading="isButtonLoading"
+        :data="goodsList"
+        @selection-change="handleSelectionChange"
+        border
+      >
+        <el-table-column type="selection" width="40" header-align="center" align="center"></el-table-column>
+        <el-table-column
+          :label="$t('productImage')"
+          header-align="center"
+          align="center"
+          width="160"
+        >
+          <template slot-scope="scope">
+            <img
+              style="width: 40px; height: 40px; margin: 0 2px 0 2px;"
+              v-for="(item, index) in scope.row.pics"
+              :key="index"
+              :src="item"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('ProductName2')" header-align="center" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.name}}</span>
+            <el-popover transition placement="right" trigger="hover">
+              <img
+                v-if="scope.row.weapp_qrcode"
+                style="width: 150px; height: 150px;"
+                :src="scope.row.weapp_qrcode"
+              />
+              <i slot="reference" class="el-icon-view el-icon--right"></i>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="sale_price" :label="$t('sale')" header-align="center" align="center"></el-table-column>
+        <el-table-column
+          prop="updated_at"
+          :label="$t('time')"
+          header-align="center"
+          align="center"
+          width="200"
+        ></el-table-column>
+        <el-table-column :label="$t('PutOn')" header-align="center" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              @change="handlerShelfSlef($event, scope.row)"
+              :loading="isButtonLoading"
+              v-model="scope.row.is_shelf"
+              :inactive-value="0"
+              :active-value="1"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('operation')" width="200" header-align="center">
+          <template slot-scope="scope">
+            <el-tooltip :content="$t('edit')" placement="top">
+              <el-button
+                @click="editGoods(scope.row)"
+                :loading="isButtonLoading"
+                size="mini"
+                icon="el-icon-edit"
+                round
+              ></el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('delete')" placement="top">
+              <el-button
+                size="mini"
+                icon="el-icon-delete"
+                :loading="isButtonLoading"
+                @click="delGoods(scope.row.id)"
+                type="danger"
+                round
+              ></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-row>
+        <el-col :span="8" style="position: relative; top: 8px;">
+          <div v-if="this.goodsList.length">
+            <span
+              style="color: rgb(121, 106, 209);
                         font-weight: bold;
-                        font-size: 1.2rem;">
-                        {{$t('Batchoperation')}}
-                    </span>
-                    <el-button
-                      size="mini"
-                      round
-                      :disabled="isSelected"
-                      :loading="isButtonLoading"
-                      style="display: inline; position: relative; left: 20px; top: 2px;"
-                      @click="handlerSeleteionAllInShelf">
-                      {{$t('PutOn')}}
-                    </el-button>
-                    <el-button
-                      size="mini"
-                      round
-                      :loading="isButtonLoading"
-                      :disabled="isSelected"
-                      style="display: inline; position: relative; left: 20px; top: 2px;"
-                      @click="handlerSeleteionAllOutShelf">
-                      {{$t('PutOff')}}
-                    </el-button>
-                    <el-button
-                      size="mini"
-                      round
-                      :disabled="isSelected"
-                      :loading="isButtonLoading"
-                      style="display: inline; position: relative; left: 20px; top: 2px;"
-                      @click="handlerSeleteionAllDelete">
-                      {{$t('delete')}}
-                    </el-button>
-                  </div>
-                </el-col>
-                <el-col :span="2" :offset="14">
-                    <pagination-public  :class="$style.pagination"
-                                        :params="params"
-                                        @changePage="handlerChangePage">
-                    </pagination-public>
-                </el-col>
-            </el-row>
-        </div>
-        <!-- 选择商品弹窗 -->
-        <select-spec-dialog
-            :visible.sync="dialogSpecShow"
-            :warehouseId.sync="warehouseId"
-            @selected="onSpecSelected">
-        </select-spec-dialog>
-        <edit-goods-in-shop
-            :visible.sync="dialogEditShow"
-            @edit_finish_callback="edit_finish_callback"
-            :row_data="row_data">
-        </edit-goods-in-shop>
+                        font-size: 1.2rem;"
+            >{{$t('Batchoperation')}}</span>
+            <el-button
+              size="mini"
+              round
+              :disabled="isSelected"
+              :loading="isButtonLoading"
+              style="display: inline; position: relative; left: 20px; top: 2px;"
+              @click="handlerSeleteionAllInShelf"
+            >{{$t('PutOn')}}</el-button>
+            <el-button
+              size="mini"
+              round
+              :loading="isButtonLoading"
+              :disabled="isSelected"
+              style="display: inline; position: relative; left: 20px; top: 2px;"
+              @click="handlerSeleteionAllOutShelf"
+            >{{$t('PutOff')}}</el-button>
+            <el-button
+              size="mini"
+              round
+              :disabled="isSelected"
+              :loading="isButtonLoading"
+              style="display: inline; position: relative; left: 20px; top: 2px;"
+              @click="handlerSeleteionAllDelete"
+            >{{$t('delete')}}</el-button>
+          </div>
+        </el-col>
+        <el-col :span="2" :offset="14">
+          <pagination-public
+            :class="$style.pagination"
+            :params="params"
+            @changePage="handlerChangePage"
+          ></pagination-public>
+        </el-col>
+      </el-row>
     </div>
+    <!-- 选择商品弹窗 -->
+    <select-spec-dialog
+      :visible.sync="dialogSpecShow"
+      :warehouseId.sync="warehouseId"
+      @selected="onSpecSelected"
+    ></select-spec-dialog>
+    <edit-goods-in-shop
+      :visible.sync="dialogEditShow"
+      @edit_finish_callback="edit_finish_callback"
+      :row_data="row_data"
+    ></edit-goods-in-shop>
+  </div>
 </template>
 
 <script>
@@ -305,7 +302,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../less/public_variable.less';
+@import "../../../less/public_variable.less";
 
 .page {
   margin: @margin;

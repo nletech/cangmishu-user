@@ -1,35 +1,38 @@
 <template>
   <div :class="$style.side_nav" class="side_nav">
-      <el-menu
-          :default-active="this.$route.name"
-          class="el-menu-vertical-demo"
-          background-color="#444154"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-          :collapse="!!sideNavStatus">
-          <el-submenu
-              style="text-align: center;"
-              v-for="(item, index) in sideList"
-              :key="item.name"
-              :index="item.name">
-              <template slot="title">
-                  <i style="color: #fff;" class="iconfont" v-html="item.icon"></i>
-                  <span slot="title" style="font-size: 16px;">{{$t(`${item.name}`)}}</span>
-              </template>
-              <el-menu-item-group>
-                  <el-menu-item
-                    style="text-align: left; padding-left: 96px;"
-                    :class="$style.menuItem"
-                    v-for="item in sideList[index].children"
-                    :key="item.name"
-                    v-if="item.nav === 2"
-                    @click="$router.push({ name: item.name, path: item.path});"
-                    :index="item.name">
-                    <span style="font-size: 14px;">{{$t(`${item.name}`)}}</span>
-                  </el-menu-item>
-              </el-menu-item-group>
-          </el-submenu>
-      </el-menu>
+    <el-menu
+      :default-active="this.$route.name"
+      class="el-menu-vertical-demo"
+      background-color="#444154"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+      :collapse="!!sideNavStatus"
+    >
+      <el-submenu
+        style="text-align: center;"
+        v-for="(item, index) in sideList"
+        :key="item.name"
+        :index="item.name"
+      >
+        <template slot="title">
+          <i style="color: #fff;" class="iconfont" v-html="item.icon"></i>
+          <span slot="title" style="font-size: 16px;">{{$t(`${item.name}`)}}</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item
+            style="text-align: left; padding-left: 96px;"
+            :class="$style.menuItem"
+            v-for="item in sideList[index].children"
+            :key="item.name"
+            v-if="item.nav === 2"
+            @click="$router.push({ name: item.name, path: item.path});"
+            :index="item.name"
+          >
+            <span style="font-size: 14px;">{{$t(`${item.name}`)}}</span>
+          </el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+    </el-menu>
   </div>
 </template>
 <script>
@@ -67,15 +70,15 @@ export default {
 };
 </script>
 <style lang="less" module>
-@import '../../less/public_variable.less';
+@import "../../less/public_variable.less";
 .side_nav {
-  height: 100%;
+  height: calc(100vh - 80px);
+  background: #444154;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: fixed;
   left: 0;
-  top: 80px;
-  z-index: 1000;
-  min-width: 80px;
-  background: #444154;
+  z-index: 100;
   .side_nav_ul {
     min-width: 200px;
     width: 200px;
@@ -104,15 +107,14 @@ export default {
         top: -4px;
       }
       &:hover {
-        background: #463F74;
+        background: #463f74;
       }
     }
   }
 }
-
 </style>
 <style lang="less">
-@import '../../less/public_variable.less';
+@import "../../less/public_variable.less";
 .side_nav {
   font-size: 14px;
   .router-link-active {
@@ -135,17 +137,17 @@ export default {
 }
 </style>
 <style>
-  .el-menu-item-group > .el-menu-item {
-    padding-left: 60px;
-  }
-  .el-menu-item-group__title {
-    display: none;
-  }
-  .el-menu-item-group ul > li:hover {
-    color: #ffd04b !important;
-  }
-  .el-menu--vertical .el-menu .el-menu-item{
-    padding: 0 !important;
-    text-align: center !important;
-  }
+.el-menu-item-group > .el-menu-item {
+  padding-left: 60px;
+}
+.el-menu-item-group__title {
+  display: none;
+}
+.el-menu-item-group ul > li:hover {
+  color: #ffd04b !important;
+}
+.el-menu--vertical .el-menu .el-menu-item {
+  padding: 0 !important;
+  text-align: center !important;
+}
 </style>
