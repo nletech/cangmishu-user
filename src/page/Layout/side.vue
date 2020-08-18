@@ -3,29 +3,9 @@
     <!-- 侧边栏导航 -->
     <side-nav :nav="nav" :sideNavList="sideNavList"></side-nav>
     <div :class="$style.content_container">
-      <!-- 返回 -->
+      <!-- TagsView -->
       <div :class="[$style.title, !sideNavStatus ? $style.nav_left : $style.init_title_left]">
-        <el-row :class="[$style.title_text, $style.title_texts][sideNavStatus]">
-          <el-col :span="12">
-            {{$t(key)}}&nbsp;
-            <span v-if="shopName">/</span>
-            &nbsp;&nbsp;
-            <span>{{shopName}}</span>
-            <el-popover
-              v-if="shopTips"
-              placement="top-start"
-              title="Tips:"
-              width="360"
-              trigger="hover"
-            >
-              <span>{{$t('shoptips')}}</span>
-              <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
-            </el-popover>
-          </el-col>
-          <el-col :span="12" style="text-align: right;">
-            <el-button type="text" @click="$router.go(-1)" icon="el-icon-back">{{$t('Back')}}</el-button>
-          </el-col>
-        </el-row>
+        <tags-view />
       </div>
 
       <!-- 右侧主要内容展示区 -->
@@ -46,11 +26,13 @@
 </template>
 <script>
 import sideNav from './sideNav';
+import TagsView from './components/tagsView';
 
 export default {
   name: 'side',
   components: {
     sideNav,
+    TagsView,
   },
   computed: {
     nav() {
@@ -85,17 +67,11 @@ export default {
 .side_nav {
   display: flex;
   overflow-x: hidden;
-  transition: .5s;
+  transition: 0.5s;
   .content_container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    .title_text {
-      margin: 0 30px 0 80px;
-    }
-    .title_texts {
-      margin: 0 30px 0 100px;
-    }
     .content {
       min-height: 76.6vh;
       background: url("../../assets/img/img.png") no-repeat right bottom;
@@ -106,7 +82,6 @@ export default {
     .title {
       height: 60px;
       width: calc(100% - 200px);
-      top: 80px;
       position: fixed;
       margin-left: 200px;
       border: 1px solid @separateLine;
@@ -118,8 +93,8 @@ export default {
       line-height: 60px;
     }
     .init_title_left {
-      margin-left: 0;
-      width: 100%;
+      margin-left: 80px;
+      width: calc(100% - 80px);
     }
     .init_content_left {
       margin-left: 80px;

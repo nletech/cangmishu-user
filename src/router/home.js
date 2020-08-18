@@ -457,6 +457,16 @@ export const routerMap = [
 
 export const homeRoute = [
   {
+    path: '/redirect',
+    component: LayoutTop,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('../page/Layout/redirect/index'),
+      },
+    ],
+  },
+  {
     component: LayoutTop,
     redirect: 'initPage/home',
     path: '/',

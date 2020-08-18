@@ -92,7 +92,7 @@
       </div>
     </div>
     <!-- 切换仓库 -->
-    <el-dialog :title="$t('SwitchWarehouse')" :visible.sync="showWarehousesDialog">
+    <el-dialog :title="$t('SwitchWarehouse')" :append-to-body="true" :visible.sync="showWarehousesDialog">
       <el-form>
         <el-form-item :label="$t('warehouse')">
           <el-select v-model="currentWarehouseId" :placeholder="$t('checkedWh')">
