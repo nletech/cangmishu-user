@@ -111,7 +111,7 @@
                 <div :class="$style.wechatQR_item">
                     <p :class="$style.wechatQR_item_title">{{$t('WechatOfficialAccount')}}</p>
                     <div :class="$style.wechatQR_item_image">
-                        <img width="100%" height="100%" src="../../../assets/img/Wechatcard2.png" alt="">
+                        <img width="100%" height="100%" src="../../../assets/img/WechatIMG1663.jpeg" alt="">
                     </div>
                     <p :class="$style.wechatQR_item_text">{{$t('AnyQuestionletmeknow')}}</p>
                 </div>
