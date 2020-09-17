@@ -208,19 +208,12 @@
                           <el-form-item
                               :label="$t('Rack')"
                               prop="code">
-                              <el-select
-                                  v-model="form.code"
-                                  style="width: 310px;"
-                                  :placeholder="$t('Pleaseselectrack')">
-                                  <el-option
-                                      v-for="(item, index) in warehouse_shelfs"
-                                      :key="index"
-                                      :disabled="!item.is_enabled"
-                                      :value="item.code"
-                                      style="width: 310px;">
-                                      {{item.code}}
-                                  </el-option>
-                              </el-select>
+                              <el-autocomplete
+                                v-model="form.code"
+                                :fetch-suggestions="querySearchAsync"
+                                placeholder="请输入内容"
+                                @select="handleSelect"
+                              ></el-autocomplete>
                               <el-tooltip :content="$t('moreRack')" placement="top">
                                   <i
                                       @click="handlerEmit"
@@ -346,6 +339,7 @@ export default {
       need_expiration_date: '', // 过期时间标志
       need_best_before_date: '', // 最佳体验期标志
       need_production_batch_number: '', // 生产批次号标志
+      timeout: null
     };
   },
   components: {
@@ -405,17 +399,40 @@ export default {
         }
       });
     },
-    get_warehouse_shelf() {
+    get_warehouse_shelf(keywords) {
       const whId = this.warehouseId;
       $http.getWarehouseshelf({
         warehouse_id: whId,
         page_size: 200,
+        keywords
       })
         .then((res) => {
           if (res.status) return;
           this.warehouse_shelfs = res.data.data;
         });
     }, // 获取货位列表(用于编辑)
+    querySearchAsync(queryString, cb) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        $http.getWarehouseshelf({
+          warehouse_id:  this.warehouseId,
+          page_size: 200,
+          keywords: queryString
+        })
+          .then((res) => {
+            if (res.status) {
+              cb([])
+              return;
+            }
+            cb(res.data.data.map(item => ({value: item.code, label: item.code})));
+          }).catch(() => {
+            cb([])
+          })
+      }, 1500 * Math.random());
+    },
+    handleSelect(item) {
+      // console.log(item, 'item')
+    },
     check_sku() {
       for (let i = 0; i < this.inboundList.length; i += 1) {
         if (+this.sku_input === +this.inboundList[i].relevance_code) {
@@ -437,7 +454,7 @@ export default {
       this.form = row;
       this.form.product_name = row.spec.product_name;
       this.form.editFlag = true;
-      this.get_warehouse_shelf();
+      // this.get_warehouse_shelf();
     }, // 编辑货品列表
     toInbound() {
       let arr = this.inboundList;
