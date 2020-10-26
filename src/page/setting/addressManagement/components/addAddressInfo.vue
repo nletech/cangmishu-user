@@ -1,139 +1,133 @@
 <template>
   <el-dialog
-      :title="title"
-      :center="true"
-      @update:visible="$emit('update:visible', $event)"
-      :visible="visible"
-      width="60%">
-      <el-row  :class="$style.add_warehouse_main">
-          <!-- 添加信息 -->
-          <el-col>
-              <el-form
-                  :class="$style.staff_form"
-                  label-width="140px"
-                  size="middle"
-                  label-position="left"
-                  :model="add_info"
-                  ref="form"
-                  :rules="info_Verify_rules">
-                  <el-form-item
-                      prop="full_name"
-                      :label="$t('name')"
-                      size="middle">
-                      <el-input  v-model="add_info.full_name">
-                      </el-input>
-                  </el-form-item>
-                  <el-form-item
-                      prop="address"
-                      :label="$t('国家')"
-                      size="middle">
-                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
-                        <el-option
-                          v-for="item in ocountryOptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                  </el-form-item>
-                  <el-form-item
-                      prop="address"
-                      :label="$t('Areacode')"
-                      size="middle">
-                      <el-select v-model="Areacode" placeholder="请选择" style="width:100%;">
-                        <el-option
-                          v-for="item in AreaCodeList"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                  </el-form-item>
-                  <el-form-item
-                      prop="phone"
-                      :label="$t('phone')"
-                      size="middle">
-                      <el-input  v-model="add_info.phone">
-                      </el-input>
-                  </el-form-item>
-                  <!-- 地址 -->
-                  <el-form-item
-                      v-show="!visibleOtherCountry"
-                      prop="address"
-                      :label="$t('SSQ')"
-                      size="middle">
-                      <el-cascader  style="width:100%;"
-                                    :props="props"
-                                    :options="addressInfo"
-                                    v-model="add_info.address">
-                      </el-cascader>
-                  </el-form-item>
-                  <el-form-item
-                      v-show="!visibleOtherCountry"
-                      prop="addressDetail"
-                      :label="$t('addressDetial')"
-                      size="middle">
-                      <el-input
-                          type="textarea"
-                          v-model="add_info.addressDetail">
-                      </el-input>
-                  </el-form-item>
-                  <el-form-item
-                      v-show="visibleOtherCountry"
-                      prop="address"
-                      :label="$t('城市')"
-                      size="middle">
-                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
-                        <el-option
-                          v-for="item in ocountryOptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                  </el-form-item>
-                  <el-form-item
-                      v-show="visibleOtherCountry"
-                      prop="address"
-                      :label="$t('街道')"
-                      size="middle">
-                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
-                        <el-option
-                          v-for="item in ocountryOptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                  </el-form-item>
-                  <el-form-item
-                      v-show="visibleOtherCountry"
-                      prop="address"
-                      :label="$t('门牌号')"
-                      size="middle">
-                      <el-select v-model="country" placeholder="请选择" style="width:100%;">
-                        <el-option
-                          v-for="item in ocountryOptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-row>
-                        <el-col>
-                            <el-button
-                                :class="$style.submit_btn"
-                                @click="infoSubmit">
-                                {{$t('submit')}}
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                  </el-form-item>
-              </el-form>
-          </el-col>
-      </el-row>
+    :title="title"
+    :center="true"
+    @update:visible="$emit('update:visible', $event)"
+    :visible="visible"
+    width="60%"
+  >
+    <el-row :class="$style.add_warehouse_main">
+      <!-- 添加信息 -->
+      <el-col>
+        <el-form
+          :class="$style.staff_form"
+          label-width="140px"
+          size="middle"
+          label-position="left"
+          :model="add_info"
+          ref="form"
+          :rules="info_Verify_rules"
+        >
+          <el-form-item prop="full_name" :label="$t('name')" size="middle">
+            <el-input v-model="add_info.full_name" placeholder="请输入姓名">
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="country" :label="$t('国家/地区')" size="middle">
+            <el-select
+              v-model="add_info.country"
+              @change="onChangeCountry"
+              placeholder="请选择国家"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in ocountryOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <!-- <el-form-item prop="address" :label="$t('Areacode')" size="middle">
+            <el-select
+              v-model="Areacode"
+              placeholder="请选择"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in AreaCodeList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item> -->
+          <el-form-item prop="phone" :label="$t('phone')" size="middle">
+            <el-input v-model="add_info.phone" placeholder="请输入电话">
+            </el-input>
+          </el-form-item>
+          <!-- 地址 -->
+          <el-form-item
+            v-if="!visibleOtherCountry"
+            prop="address"
+            :label="$t('SSQ')"
+            size="middle"
+          >
+            <el-cascader
+              style="width: 100%"
+              :props="props"
+              :options="addressInfo"
+              v-model="add_info.address"
+              placeholder="请选择地址"
+            >
+            </el-cascader>
+          </el-form-item>
+          <el-form-item
+            v-if="visibleOtherCountry"
+            prop="city"
+            :label="$t('城市')"
+            size="middle"
+          >
+            <el-input v-model="add_info.city" placeholder="请输入城市">
+            </el-input>
+          </el-form-item>
+          <el-form-item
+            v-if="visibleOtherCountry"
+            prop="street"
+            :label="$t('街道')"
+            size="middle"
+          >
+            <el-input
+              v-model="add_info.street"
+              placeholder="请输入街道"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            v-if="visibleOtherCountry"
+            prop="door_no"
+            :label="$t('门牌号')"
+            size="middle"
+          >
+            <el-input
+              v-model="add_info.door_no"
+              placeholder="请输入门牌号"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="addressDetail"
+            :label="$t('addressDetial')"
+            size="middle"
+          >
+            <el-input
+              type="textarea"
+              v-model="add_info.addressDetail"
+              placeholder="请输入详细地址"
+            >
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-row>
+              <el-col>
+                <el-button :class="$style.submit_btn" @click="infoSubmit">
+                  {{ $t("submit") }}
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
   </el-dialog>
 </template>
 
@@ -153,37 +147,6 @@ export default {
     row_data: [Object],
   },
   data() {
-    // 自定义的验证规则
-    const check = {
-      full_name: (rule, value, callback) => {
-        if (!value) {
-          callback(new Error(this.$t('Pleasetypeinyourname')));
-        } else {
-          callback();
-        }
-      },
-      phone: (rule, value, callback) => {
-        if (!value) {
-          callback(new Error(this.$t('PleaseEnterPhone')));
-        } else {
-          callback();
-        }
-      },
-      address: (rule, value, callback) => {
-        if (!value) {
-          callback(new Error(this.$t('pleaseInputCity')));
-        } else {
-          callback();
-        }
-      },
-      addressDetail: (rule, value, callback) => {
-        if (!value) {
-          callback(new Error(this.$t('Pleaseenteradetailedaddress')));
-        } else {
-          callback();
-        }
-      },
-    };
     return {
       visibleOtherCountry: true,
       country: '',
@@ -274,7 +237,7 @@ export default {
         {
           id: 15,
           label: '泰国',
-          value: 'NL',
+          value: 'TA',
         },
       ],
       add_info: {
@@ -282,6 +245,9 @@ export default {
         phone: '', // 电话
         address: [], // 地址
         addressDetail: '', // 详细地址
+        country: '',
+        door_no: '',
+        street: '',
       },
       formInfo: {},
       text_flag: '',
@@ -292,17 +258,29 @@ export default {
         children: 'children',
       },
       info_Verify_rules: { // 表单输入验证提醒
+        country: [
+          { message: '请选择国家/地区', trigger: 'blur', required: true },
+        ],
+        city: [
+          { message: '请输入城市', trigger: 'blur', required: true },
+        ],
+        street: [
+          { message: '请输入街道', trigger: 'blur', required: true },
+        ],
+        door_no: [
+          { message: '请输入门牌号', trigger: 'blur', required: true },
+        ],
         full_name: [
-          { validator: check.full_name, trigger: 'blur', required: true },
+          { message: this.$t('Pleasetypeinyourname'), trigger: 'blur', required: true },
         ],
         phone: [
-          { validator: check.phone, trigger: 'blur', required: true },
+          { message: this.$t('PleaseEnterPhone'), trigger: 'blur', required: true },
         ],
         address: [
-          { type: Array, validator: check.address, trigger: 'blur', required: true },
+          { message: this.$t('pleaseInputCity'), trigger: 'blur', required: true },
         ],
         addressDetail: [
-          { validator: check.addressDetail, trigger: 'blur', required: true },
+          { message: this.$t('Pleaseenteradetailedaddress'), trigger: 'blur', required: true },
         ],
       },
     };
@@ -323,79 +301,88 @@ export default {
     },
   },
   watch: {
-    country: {
-      handler(countryName) {
-        if (countryName !== 'CN') {
-          this.visibleOtherCountry = false;
-        } else {
-          this.visibleOtherCountry = true;
-        }
-      },
-      immediate: true,
-    },
-    row_data() {
+    row_data(value) {
+      console.log(value, 'value');
       // 监听传入的 row_data 如果是空对象则弹框文字显示为 "添加",然后清除下表单的缓存
       // 如果是通过编辑按钮传入 row_data 则将信息填充进表单，填充的 id 用于请求编辑信息接口
-      if (!Object.keys(this.row_data).length) {
+      if (value.country === 'CN' || !value.country) {
+        this.visibleOtherCountry = false;
+      } else {
+        this.visibleOtherCountry = true;
+      }
+      if (!value.id) {
         this.text_flag = false;
-        this.add_info = {};
+        this.add_info = { address: [] };
       } else {
         /* eslint-disable */
         this.text_flag = true;
-        this.add_info.full_name       = this.row_data.fullname; // 姓名
-        this.add_info.phone           = this.row_data.phone; // 电话
-        this.add_info.address         = [this.row_data.province, this.row_data.city, this.row_data.district]; // 地址
-        this.add_info.addressDetail   = this.row_data.address; // 详细地址
+        this.add_info.full_name = value.fullname; // 姓名
+        this.add_info.phone = value.phone; // 电话
+        this.add_info.address = [value.province, value.city, value.district]; // 地址
+        this.add_info.addressDetail = value.address; // 详细地址
+        this.add_info.door_no = value.door_no;
+        this.add_info.street = value.street;
+        this.add_info.country = value.country;
+        this.add_info.city = value.city;
       }
     },
   },
   methods: {
+    onChangeCountry(v) {
+      this.add_info.address = []
+      if (v === 'CN') {
+        this.visibleOtherCountry = false;
+      } else {
+        this.visibleOtherCountry = true;
+      }
+    },
     // 提交修改信息
     infoSubmit() {
       // 提交的表单信息处理
       /* eslint-disable */
       this.formInfo.fullname = this.add_info.full_name;
-      this.formInfo.phone     = this.add_info.phone;
-      this.formInfo.province  = this.add_info.address[0];
-      this.formInfo.city      = this.add_info.address[1];
-      this.formInfo.district  = this.add_info.address[2];
-      this.formInfo.address   = this.add_info.addressDetail;
-      this.$refs.form.validate((validate) => {
+      this.formInfo.phone = this.add_info.phone;
+      this.formInfo.address = this.add_info.addressDetail;
+      this.formInfo.door_no = this.add_info.door_no;
+      this.formInfo.street = this.add_info.street;
+      this.formInfo.country = this.add_info.country;
+      if (this.add_info.country === 'CN') {
+        this.formInfo.province = this.add_info.address[0]
+        this.formInfo.city = this.add_info.address[1];
+        this.formInfo.district = this.add_info.address[2];
+      } else {
+        this.formInfo.province = this.add_info.city
+        this.formInfo.city = this.add_info.city;
+        this.formInfo.district = this.add_info.city;
+      }
+      this.$refs.form.validate(async (validate) => {
         if (validate) {
           let active_item = this.active_tab_item; // 活动标签
           let id = this.row_data.id; // 用于编辑
           this.formInfo.warehouse_id = this.warehouseId;
           // 如果 id 存在, 则为编辑信息，否则是添加信息
           if (id) {
+            let res;
             if (this.active_tab_item === '发件人信息') {
-              $http.editSenderAddress(id, this.formInfo)
-                .then((re) => {
-                  if (re.status) return;
-                  this.$emit('updata_data', active_item); // 更新数据列表
-                });
-            } else if(this.active_tab_item === '收件人信息') {
-              $http.editReceiverAddress(id, this.formInfo)
-                .then((re) => {
-                  if (re.status) return;
-                  this.$emit('updata_data', active_item); // 更新数据列表
-                });
+              res = await $http.editSenderAddress(id, this.formInfo)
+            } else if (this.active_tab_item === '收件人信息') {
+              res = await $http.editReceiverAddress(id, this.formInfo)
             }
+            if (res.status) return;
+            this.$emit('update:visible', false); // 关闭弹窗
+            this.$emit('updata_data', active_item); // 更新数据列表
           } else {
+            let res;
             if (this.active_tab_item === '发件人信息') {
-              $http.addSenderAddress(this.formInfo)
-                .then((re) => {
-                  if (re.status) return;
-                  this.$emit('updata_data_list', active_item); // 更新数据列表
-                });
-            } else if(this.active_tab_item === '收件人信息') {
-              $http.addReceiverAddress(this.formInfo)
-                .then((re) => {
-                  if (re.status) return;
-                  this.$emit('updata_data_list', active_item); // 更新数据列表
-                });
+              res = await $http.addSenderAddress(this.formInfo)
+
+            } else if (this.active_tab_item === '收件人信息') {
+              res = await $http.addReceiverAddress(this.formInfo)
             }
+            if (res.status) return;
+            this.$emit('update:visible', false); // 关闭弹窗
+            this.$emit('updata_data_list', active_item); // 更新数据列表
           }
-          this.$emit('update:visible', false); // 关闭弹窗
         }
       });
     },
@@ -404,11 +391,10 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+@import "../../../../less/public_variable.less";
 
 .add_warehouse_main {
   width: 96%;
-  height: 62vh;
   margin: 0 auto;
   padding: 30px 0 0 0;
   background-color: white;

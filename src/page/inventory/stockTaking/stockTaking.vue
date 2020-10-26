@@ -51,7 +51,7 @@
                     header-align="center"
                     align="center">
                     <template slot-scope="scope">
-                      {{scope.row.status === 1 ? $t('haveProfit'): $t('noProfit')}}
+                      {{scope.row.diff_count !== 0 ? $t('haveProfit'): $t('noProfit')}}
                     </template>
                 </el-table-column>
                 <el-table-column

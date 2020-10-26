@@ -69,8 +69,8 @@
                                 :offset="8">
                                 <el-upload
                                     :class="$style.uploaddemo"
-                                    :action=goodsapi
-                                    :data=uploadData
+                                    :action="goodsapi"
+                                    :data="uploadData"
                                     :on-success="handleSuccess"
                                     :headers="Authorization"
                                     name="file"
@@ -85,8 +85,8 @@
                                 </el-upload>
                                 <el-upload
                                   :class="$style.uploaddemo"
-                                  :action=goodsapi
-                                  :data=uploadData
+                                  :action="goodsapi"
+                                  :data="uploadData"
                                   :on-success="handleSuccess"
                                   :headers="Authorization"
                                   name="file"
@@ -281,7 +281,7 @@
             slot="footer"
             class="dialog-footer">
             <el-button
-                v-if = "this.selectGoods.length > 0"
+                v-if="this.selectGoods.length > 0"
                 :loading="isButtonLoading"
                 @click="centerDialogVisible = false">
                 {{$t('cancel')}}

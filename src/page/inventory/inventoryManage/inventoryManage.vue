@@ -133,6 +133,7 @@
         <el-dialog
             :title="$t('ExportProductinventory')"
             :visible.sync="dialogVisible"
+            @closed="onClosedDialog"
             width="500px">
             <el-checkbox-group v-model="export_data">
                 <el-checkbox value="1" label="1">{{$t('ExportProductList')}}</el-checkbox>
@@ -221,6 +222,9 @@ export default {
     }
   },
   methods: {
+    onClosedDialog() {
+      this.export_data = [];
+    },
     getStocks(query) {
       if (!query.warehouse_id) return;
       $http.getStocks(query)

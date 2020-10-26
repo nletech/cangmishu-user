@@ -262,7 +262,7 @@ const $http = {
   }, // 分页查询--货位列表
   //                                                          设置 -地址管理
   addSenderAddress(data) {
-    return Axios.post('/senderAddress', data);
+    return Axios.post('/senderAddress', data, { isBtnLoading: true });
   }, // 添加发件人信息
   getSenderAddress(data) {
     return Axios.get('/senderAddress', { params: data });
@@ -271,7 +271,7 @@ const $http = {
     return Axios.get(`/senderAddress/${id}`);
   }, // 获取单个发件人信息
   editSenderAddress(id, data) {
-    return Axios.put(`/senderAddress/${id}`, data);
+    return Axios.put(`/senderAddress/${id}`, data, { isBtnLoading: true });
   }, // 编辑发件人
   checkSenderAddress(data) {
     return Axios.get('/senderAddress', { params: data });
@@ -280,7 +280,7 @@ const $http = {
     return Axios.delete(`/senderAddress/${id}`);
   }, // 删除发件人
   addReceiverAddress(data) {
-    return Axios.post('/receiverAddress', data);
+    return Axios.post('/receiverAddress', data, { isBtnLoading: true });
   }, // 添加收件人信息
   getReceiverAddress(data) {
     return Axios.get('/receiverAddress', { params: data });
@@ -289,7 +289,7 @@ const $http = {
     return Axios.get(`/receiverAddress/${id}`);
   }, // 获取单个收件人信息
   editReceiverAddress(id, data) {
-    return Axios.put(`/receiverAddress/${id}`, data);
+    return Axios.put(`/receiverAddress/${id}`, data, { isBtnLoading: true });
   }, // 编辑收件人
   checkReceiverAddress(data) {
     return Axios.get('/receiverAddress', { params: data });

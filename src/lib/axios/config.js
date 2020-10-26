@@ -16,7 +16,9 @@ Axios.defaults.transformRequest = [
 
 // 发送请求之前
 function requestTime(config) {
-  store.commit('config/loading', true);
+  if (!config.isBtnLoading) {
+    store.commit('config/loading', true);
+  }
   config.headers.Authorization = store.state.token.token;
   config.headers.Language = localStorage.getItem('lang') || 'cn'; // 后端语言标识
   nprogress.start();

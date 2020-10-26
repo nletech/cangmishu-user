@@ -71,7 +71,7 @@
                 ref="form"
                 :model="distributor"
                 label-position="left"
-                label-width="80px">
+                :label-width="labelWidth">
                 <el-form-item
                     prop="name_cn"
                     :label="$t('supplierNameCN')">
@@ -114,6 +114,7 @@ export default {
       total: '', // 列表总条数
       currentPage: 1, // 当前页
       current_page: 1, // 编辑的当前页(当选中的信息不在第一页时)
+      labelWidth: '120px',
     };
   },
   created() {
@@ -214,7 +215,7 @@ export default {
 };
 </script>
 <style lang="less" module>
-@import '../../../less/public_variable.less';
+@import "../../../less/public_variable.less";
 
 .addressManagement {
   margin: 50px 0 10px 0;
@@ -237,31 +238,31 @@ export default {
 }
 </style>
 <style lang="less">
-  .addressManagement {
-    .el-tabs__nav-scroll {
-      .el-tabs__nav {
-        display: flex;
-        position: relative;
-        justify-content: center;
-        align-items: center;
-        // background-color: orange;
-        float: none;
-        .el-tabs__item {
-          width: 50%;
-          text-align: center;
-          font-size: 1.2rem;
-        }
-      }
-    }
-    .el-tabs {
-      .el-tabs__content {
-        margin: 80px 0 0 0;
+.addressManagement {
+  .el-tabs__nav-scroll {
+    .el-tabs__nav {
+      display: flex;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      // background-color: orange;
+      float: none;
+      .el-tabs__item {
+        width: 50%;
+        text-align: center;
+        font-size: 1.2rem;
       }
     }
   }
-  .el-pagination {
-    margin: 20px 0 0 0;
-    float: right;
+  .el-tabs {
+    .el-tabs__content {
+      margin: 80px 0 0 0;
+    }
   }
+}
+.el-pagination {
+  margin: 20px 0 0 0;
+  float: right;
+}
 </style>
 
