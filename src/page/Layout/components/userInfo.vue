@@ -1,52 +1,36 @@
 <template>
-    <el-dialog
-        :title="$t('profile')"
-        width="40%"
-        @update:visible="$emit('update:visible', $event)"
-        :visible="visible"
-        center>
-        <el-form
-            label-width="120px"
-            :rules="rules"
-            ref="validator"
-            :model="form">
-            <el-form-item
-                :label="$t('email')"
-                prop="userEmail">
-                <el-input type="small"
-                          disabled
-                          v-model="userEmail">
-                </el-input>
-            </el-form-item>
-            <el-form-item
-                :label="$t('nick_name')"
-                prop="nickname">
-                <el-input type="small"
-                          v-model="form.nickname">
-                </el-input>
-            </el-form-item>
-            <el-form-item
-                :label="$t('avatar')"
-                prop="avatar">
-                  <my-upload
-                      :img.sync="imageUrl"
-                      :width="180"
-                      :height="180"
-                      @uploadSuccessCallBack="handlerUploadSuccessCallBack">
-                      <template slot="btnTitle">{{$t('upload')}}</template>
-                  </my-upload>
-            </el-form-item>
-        </el-form>
-        <span slot="footer"
-              class="dialog-footer">
-              <el-button
-                  type="primary"
-                  :loading="isButtonLoading"
-                  @click="submit">
-                  {{$t('confirm')}}
-              </el-button>
-        </span>
-    </el-dialog>
+  <el-dialog
+    :title="$t('profile')"
+    width="40%"
+    @update:visible="$emit('update:visible', $event)"
+    :visible="visible"
+    append-to-body
+    center
+  >
+    <el-form label-width="120px" :rules="rules" ref="validator" :model="form">
+      <el-form-item :label="$t('email')" prop="userEmail">
+        <el-input type="small" disabled v-model="userEmail"> </el-input>
+      </el-form-item>
+      <el-form-item :label="$t('nick_name')" prop="nickname">
+        <el-input type="small" v-model="form.nickname"> </el-input>
+      </el-form-item>
+      <el-form-item :label="$t('avatar')" prop="avatar">
+        <my-upload
+          :img.sync="imageUrl"
+          :width="180"
+          :height="180"
+          @uploadSuccessCallBack="handlerUploadSuccessCallBack"
+        >
+          <template slot="btnTitle">{{ $t("upload") }}</template>
+        </my-upload>
+      </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+      <el-button type="primary" :loading="isButtonLoading" @click="submit">
+        {{ $t("confirm") }}
+      </el-button>
+    </span>
+  </el-dialog>
 </template>
 
 <script>
@@ -136,7 +120,8 @@ export default {
                   if (res.status) return;
                   // 更新旧的头像和用户名
                   this.$store.commit('config/setUserInfo',
-                    { avatar: this.imageUrl,
+                    {
+                      avatar: this.imageUrl,
                       nickName: this.form.nickname,
                     });
                   this.$emit('update:visible', false);

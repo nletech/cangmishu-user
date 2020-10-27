@@ -93,11 +93,11 @@ export default {
       line-height: 60px;
     }
     .init_title_left {
-      margin-left: 80px;
-      width: calc(100% - 80px);
+      margin-left: 150px;
+      width: calc(100% - 150px);
     }
     .init_content_left {
-      margin-left: 80px;
+      margin-left: 150px;
     }
     .footer {
       border: 1px solid @separateLine;

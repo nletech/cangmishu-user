@@ -372,6 +372,10 @@ export default {
               res = await $http.editReceiverAddress(id, this.formInfo)
             }
             if (res.status) return;
+            this.$message({
+              message: this.$t('success'),
+              type: 'success',
+            });
             this.$emit('update:visible', false); // 关闭弹窗
             this.$emit('updata_data', active_item); // 更新数据列表
           } else {
@@ -383,6 +387,10 @@ export default {
               res = await $http.addReceiverAddress(this.formInfo)
             }
             if (res.status) return;
+            this.$message({
+              message: this.$t('success'),
+              type: 'success',
+            });
             this.$emit('update:visible', false); // 关闭弹窗
             this.$emit('updata_data_list', active_item); // 更新数据列表
           }

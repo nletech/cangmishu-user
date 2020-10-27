@@ -1,35 +1,36 @@
 <template>
-  <div :class="$style.side_nav" class="side_nav">
+  <div class="side-nav">
     <el-menu
       :default-active="this.$route.name"
       class="el-menu-vertical-demo"
       background-color="#444154"
       text-color="#fff"
       active-text-color="#ffd04b"
-      :collapse="!!sideNavStatus"
+      :collapse="true"
     >
       <el-submenu
-        style="text-align: center;"
+        style="text-align: center"
         v-for="(item, index) in sideList"
         :key="item.name"
         :index="item.name"
       >
         <template slot="title">
-          <i style="color: #fff;" class="iconfont" v-html="item.icon"></i>
-          <span slot="title" style="font-size: 16px;">{{$t(`${item.name}`)}}</span>
+          <i style="color: #fff" class="iconfont" v-html="item.icon"></i>
+          <span slot="title" style="font-size: 16px">{{
+            $t(`${item.name}`)
+          }}</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item
-            style="text-align: left; padding-left: 96px;"
-            :class="$style.menuItem"
-            v-for="item in sideList[index].children"
-            :key="item.name"
-            v-if="item.nav === 2"
-            @click="$router.push({ name: item.name, path: item.path});"
-            :index="item.name"
-          >
-            <span style="font-size: 14px;">{{$t(`${item.name}`)}}</span>
-          </el-menu-item>
+          <template v-for="item in sideList[index].children">
+            <el-menu-item
+              v-if="item.nav === 2"
+              :key="item.name"
+              @click="$router.push({ name: item.name, path: item.path })"
+              :index="item.name"
+            >
+              <span style="font-size: 14px">{{ $t(`${item.name}`) }}</span>
+            </el-menu-item>
+          </template>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
@@ -69,9 +70,9 @@ export default {
   },
 };
 </script>
-<style lang="less" module>
+<style lang="less">
 @import "../../less/public_variable.less";
-.side_nav {
+.side-nav {
   height: calc(100vh - 80px);
   background: #444154;
   overflow-y: auto;
@@ -79,60 +80,29 @@ export default {
   position: fixed;
   left: 0;
   z-index: 100;
-  .side_nav_ul {
-    min-width: 200px;
-    width: 200px;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-    .side_nav_li {
-      list-style: none;
-      width: 100%;
-      cursor: pointer;
-      height: 80px;
-      line-height: 80px;
-      text-align: center;
-      color: @white;
-      margin: 0px auto;
-      position: relative;
-      .li_icon {
-        display: inline-block;
-        padding: 0 10px 0 0;
-      }
-      .li_title {
-        display: inline-block;
-        position: relative;
-        top: -4px;
-      }
-      &:hover {
-        background: #463f74;
-      }
-    }
-  }
-}
-</style>
-<style lang="less">
-@import "../../less/public_variable.less";
-.side_nav {
-  font-size: 14px;
   .router-link-active {
     border-radius: 5px;
   }
   .el-menu-vertical-demo {
     margin-top: 20px;
-    width: 200px;
-  }
-  .el-menu {
+    width: 150px;
     border: none;
-  }
-  .el-menu--collapse {
-    width: 80px;
-  }
-  .iconfont {
-    font-size: 1.4rem;
-    // font-weight: 400;
+    .el-submenu {
+      .el-submenu__title {
+        padding: 0 !important;
+        .iconfont {
+          font-size: 1.6rem;
+        }
+        span {
+          visibility: initial;
+          font-size: 16px;
+          color: #fff;
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+        }
+      }
+    }
   }
 }
 </style>

@@ -2,13 +2,13 @@
   <div :class="$style.top_nav_container">
     <div :class="$style.top_nav" class="top_nav">
       <div :class="$style.nav">
-        <div :class="$style.top_nav_logo" :style="{ width: sideNavStatus ? '80px' : '200px' }">
+        <div :class="$style.top_nav_logo">
           <span v-if="!sideNavStatus">仓秘书</span>
           <img v-else src="../../assets/img/cang.png" alt="仓秘书" />
         </div>
-        <div @click="closeSideNav" :class="$style.side_nav_switch">
+        <!-- <div @click="closeSideNav" :class="$style.side_nav_switch">
           <i class="iconfont">&#xe622;</i>
-        </div>
+        </div> -->
         <!-- 切换仓库 选择按钮 -->
         <div :class="$style.selectedTag">
           <div v-if="+UType !== 0">
@@ -362,7 +362,7 @@ export default {
     }
 
     .top_nav_logo {
-      width: 200px;
+      width: 150px;
       height: 80px;
       background-color: @ThemeColor;
       color: @white;
