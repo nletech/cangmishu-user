@@ -116,7 +116,7 @@ export const routerMap = [
             nav: 2,
           },
           {
-            name: 'addPurchase', // 子菜单-添加入库单
+            name: 'addPurchase', // 子菜单-添加采购单
             path: 'purchaseList/addPurchase',
             component: AddPurchase,
             nav: 2,
@@ -153,14 +153,19 @@ export const routerMap = [
         ],
       },
       {
-        name: 'outbound', // 大菜单 出库
-        path: 'outbound',
+        name: 'navSale', // 大菜单 销售
+        path: 'navSale',
         component: LayoutSide,
         icon: '&#xeb1c;',
         nav: 1,
-        id: 'outbound',
+        id: 'navSale',
         index: 3, // 后端路由鉴权
         children: [
+          {
+            name: 'navSale', // 子菜单-分组 销售
+            type: 'children-group',
+            path: '',
+          },
           {
             name: 'outboundList', // 子菜单-出库单列表
             path: 'outboundList',
@@ -190,6 +195,17 @@ export const routerMap = [
             path: 'setOutbound',
             component: SetOutbound,
             nav: 3,
+          },
+          {
+            name: 'shops', // 子菜单-分组 店铺
+            type: 'children-group',
+            path: '',
+          },
+          {
+            name: 'shopsManagement', // 子菜单-店铺列表
+            path: 'shopsManagement',
+            component: Shops,
+            nav: 2,
           },
         ],
       },
@@ -252,22 +268,22 @@ export const routerMap = [
           },
         ],
       },
-      {
-        name: 'shops', // 店铺管理--店铺列表
-        path: 'shops',
-        component: LayoutSide,
-        icon: '&#xeb3e;',
-        nav: 1,
-        id: 'shops',
-        index: 6, // 后端路由鉴权
-        children: [
-          {
-            name: 'shopsManagement', // 子菜单-员工列表
-            path: 'shopsManagement',
-            component: Shops,
-            nav: 2,
-          }],
-      },
+      // {
+      //   name: 'shops', // 店铺管理--店铺列表
+      //   path: 'shops',
+      //   component: LayoutSide,
+      //   icon: '&#xeb3e;',
+      //   nav: 1,
+      //   id: 'shops',
+      //   index: 6, // 后端路由鉴权
+      //   children: [
+      //     {
+      //       name: 'shopsManagement', // 子菜单-员工列表
+      //       path: 'shopsManagement',
+      //       component: Shops,
+      //       nav: 2,
+      //     }],
+      // },
       // {
       //   name: 'staff', // 大菜单 员工
       //   path: 'staff',

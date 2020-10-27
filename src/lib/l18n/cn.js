@@ -727,6 +727,8 @@ const cn = {
   PleaseEnterGram: '请输入克',
   purchaseTips1: '采购清单不能为空',
   inputRequired: '请检查您的输入',
+  // router
+  navSale: '销售',
   ...zhLocale,
 };
 

@@ -10,28 +10,39 @@
     >
       <el-submenu
         style="text-align: center"
-        v-for="(item, index) in sideList"
-        :key="item.name"
-        :index="item.name"
+        v-for="children in sideList"
+        :key="children.name"
+        :index="children.name"
       >
         <template slot="title">
-          <i style="color: #fff" class="iconfont" v-html="item.icon"></i>
+          <i style="color: #fff" class="iconfont" v-html="children.icon"></i>
           <span slot="title" style="font-size: 16px">{{
-            $t(`${item.name}`)
+            $t(`${children.name}`)
           }}</span>
         </template>
-        <el-menu-item-group>
-          <template v-for="item in sideList[index].children">
+        <template v-for="item in children.children">
+          <el-menu-item-group
+            v-if="item.nav === 2 || typeIsChildrenGroup(item.type)"
+            :key="item.name"
+          >
+            <span
+              v-if="typeIsChildrenGroup(item.type)"
+              slot="title"
+              :style="{
+                display: 'block',
+                margin: typeIsChildrenGroup(item.type) ? '15px 20px' : '0',
+              }"
+              >{{ $t(`${item.name}`) }}
+            </span>
             <el-menu-item
               v-if="item.nav === 2"
-              :key="item.name"
               @click="$router.push({ name: item.name, path: item.path })"
               :index="item.name"
             >
               <span style="font-size: 14px">{{ $t(`${item.name}`) }}</span>
             </el-menu-item>
-          </template>
-        </el-menu-item-group>
+          </el-menu-item-group>
+        </template>
       </el-submenu>
     </el-menu>
   </div>
@@ -57,6 +68,7 @@ export default {
         result.push(this.sideNavList[6]); // 帮助模块是账号默认有的
         return result;
       }
+      console.log(this.sideNavList, 'sideNavList')
       return this.sideNavList;
     },
     sideNavStatus() {
@@ -64,6 +76,13 @@ export default {
     },
   },
   methods: {
+    typeIsChildrenGroup(value) {
+      if (value === 'children-group') {
+        return true
+      } else {
+        return false
+      }
+    },
     handlerClick(name) {
       this.$router.push({ name: `${name}` });
     },
@@ -85,7 +104,7 @@ export default {
   }
   .el-menu-vertical-demo {
     margin-top: 20px;
-    width: 150px;
+    width: 120px;
     border: none;
     .el-submenu {
       .el-submenu__title {
@@ -107,17 +126,18 @@ export default {
 }
 </style>
 <style>
-.el-menu-item-group > .el-menu-item {
-  padding-left: 60px;
+.el-menu-item {
+  height: 45px;
+  line-height: 45px;
 }
 .el-menu-item-group__title {
-  display: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0 !important;
+  margin: 0px;
 }
 .el-menu-item-group ul > li:hover {
   color: #ffd04b !important;
-}
-.el-menu--vertical .el-menu .el-menu-item {
-  padding: 0 !important;
-  text-align: center !important;
 }
 </style>

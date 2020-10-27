@@ -362,7 +362,7 @@ export default {
     }
 
     .top_nav_logo {
-      width: 150px;
+      width: 120px;
       height: 80px;
       background-color: @ThemeColor;
       color: @white;
