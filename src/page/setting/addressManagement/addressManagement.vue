@@ -105,7 +105,6 @@
     <!-- 添加收发人信息 -->
     <add-info
       :visible.sync="switchFlag"
-      :tabs="tabs"
       :active_tab_item="active_tab_item"
       :active_add_text="active_add_text"
       :row_data="row_data"
@@ -216,7 +215,7 @@ export default {
       this.current_page = res.data.current_page;
     }, // 分页查询
     edit(info) {
-      this.row_data = info;
+      this.row_data = { ...info };
       this.switchFlag = true;
     },
     async delete_data(info) {

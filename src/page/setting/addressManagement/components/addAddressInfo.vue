@@ -4,6 +4,7 @@
     :center="true"
     @update:visible="$emit('update:visible', $event)"
     :visible="visible"
+    @closed="onClosedDialog"
     width="60%"
   >
     <el-row :class="$style.add_warehouse_main">
@@ -14,17 +15,17 @@
           label-width="140px"
           size="middle"
           label-position="left"
-          :model="add_info"
-          ref="form"
+          :model="addressInfo"
+          ref="addressForm"
           :rules="info_Verify_rules"
         >
           <el-form-item prop="full_name" :label="$t('name')" size="middle">
-            <el-input v-model="add_info.full_name" placeholder="请输入姓名">
+            <el-input v-model="addressInfo.full_name" placeholder="请输入姓名">
             </el-input>
           </el-form-item>
           <el-form-item prop="country" :label="$t('国家/地区')" size="middle">
             <el-select
-              v-model="add_info.country"
+              v-model="addressInfo.country"
               @change="onChangeCountry"
               placeholder="请选择国家"
               style="width: 100%"
@@ -38,23 +39,8 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item prop="address" :label="$t('Areacode')" size="middle">
-            <el-select
-              v-model="Areacode"
-              placeholder="请选择"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in AreaCodeList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item> -->
           <el-form-item prop="phone" :label="$t('phone')" size="middle">
-            <el-input v-model="add_info.phone" placeholder="请输入电话">
+            <el-input v-model="addressInfo.phone" placeholder="请输入电话">
             </el-input>
           </el-form-item>
           <!-- 地址 -->
@@ -67,8 +53,8 @@
             <el-cascader
               style="width: 100%"
               :props="props"
-              :options="addressInfo"
-              v-model="add_info.address"
+              :options="addressList"
+              v-model="addressInfo.address"
               placeholder="请选择地址"
             >
             </el-cascader>
@@ -79,7 +65,7 @@
             :label="$t('城市')"
             size="middle"
           >
-            <el-input v-model="add_info.city" placeholder="请输入城市">
+            <el-input v-model="addressInfo.city" placeholder="请输入城市">
             </el-input>
           </el-form-item>
           <el-form-item
@@ -89,7 +75,7 @@
             size="middle"
           >
             <el-input
-              v-model="add_info.street"
+              v-model="addressInfo.street"
               placeholder="请输入街道"
             ></el-input>
           </el-form-item>
@@ -100,7 +86,7 @@
             size="middle"
           >
             <el-input
-              v-model="add_info.door_no"
+              v-model="addressInfo.door_no"
               placeholder="请输入门牌号"
             ></el-input>
           </el-form-item>
@@ -111,7 +97,7 @@
           >
             <el-input
               type="textarea"
-              v-model="add_info.addressDetail"
+              v-model="addressInfo.addressDetail"
               placeholder="请输入详细地址"
             >
             </el-input>
@@ -141,7 +127,6 @@ export default {
   mixins: [mixin],
   props: {
     visible: [Boolean],
-    tabs: [Array],
     active_tab_item: [String],
     active_add_text: [String],
     row_data: [Object],
@@ -240,7 +225,7 @@ export default {
           value: 'TA',
         },
       ],
-      add_info: {
+      addressInfo: {
         full_name: '', // 姓名
         phone: '', // 电话
         address: [], // 地址
@@ -248,10 +233,21 @@ export default {
         country: '',
         door_no: '',
         street: '',
+        city: '',
+      },
+      initAddressObj: {
+        full_name: '', // 姓名
+        phone: '', // 电话
+        address: [], // 地址
+        addressDetail: '', // 详细地址
+        country: '',
+        door_no: '',
+        street: '',
+        city: '',
       },
       formInfo: {},
       text_flag: '',
-      addressInfo: Address, // 选择地址联动
+      addressList: Address, // 选择地址联动
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
         value: 'value',
@@ -302,7 +298,6 @@ export default {
   },
   watch: {
     row_data(value) {
-      console.log(value, 'value');
       // 监听传入的 row_data 如果是空对象则弹框文字显示为 "添加",然后清除下表单的缓存
       // 如果是通过编辑按钮传入 row_data 则将信息填充进表单，填充的 id 用于请求编辑信息接口
       if (value.country === 'CN' || !value.country) {
@@ -312,24 +307,32 @@ export default {
       }
       if (!value.id) {
         this.text_flag = false;
-        this.add_info = { address: [] };
+        if (this.$refs.addressForm) {
+          this.$refs.addressForm.resetFields();
+          this.addressInfo = JSON.parse(JSON.stringify(this.initAddressObj));
+        }
       } else {
         /* eslint-disable */
         this.text_flag = true;
-        this.add_info.full_name = value.fullname; // 姓名
-        this.add_info.phone = value.phone; // 电话
-        this.add_info.address = [value.province, value.city, value.district]; // 地址
-        this.add_info.addressDetail = value.address; // 详细地址
-        this.add_info.door_no = value.door_no;
-        this.add_info.street = value.street;
-        this.add_info.country = value.country;
-        this.add_info.city = value.city;
+        this.addressInfo.full_name = value.fullname; // 姓名
+        this.addressInfo.phone = value.phone; // 电话
+        this.addressInfo.address = [value.province, value.city, value.district]; // 地址
+        this.addressInfo.addressDetail = value.address; // 详细地址
+        this.addressInfo.door_no = value.door_no;
+        this.addressInfo.street = value.street;
+        this.addressInfo.country = value.country;
+        this.addressInfo.city = value.city;
       }
     },
   },
   methods: {
+    onClosedDialog() {
+      this.$nextTick(() => {
+        this.$refs.addressForm.resetFields()
+      })
+    },
     onChangeCountry(v) {
-      this.add_info.address = []
+      this.addressInfo.address = []
       if (v === 'CN') {
         this.visibleOtherCountry = false;
       } else {
@@ -340,22 +343,22 @@ export default {
     infoSubmit() {
       // 提交的表单信息处理
       /* eslint-disable */
-      this.formInfo.fullname = this.add_info.full_name;
-      this.formInfo.phone = this.add_info.phone;
-      this.formInfo.address = this.add_info.addressDetail;
-      this.formInfo.door_no = this.add_info.door_no;
-      this.formInfo.street = this.add_info.street;
-      this.formInfo.country = this.add_info.country;
-      if (this.add_info.country === 'CN') {
-        this.formInfo.province = this.add_info.address[0]
-        this.formInfo.city = this.add_info.address[1];
-        this.formInfo.district = this.add_info.address[2];
+      this.formInfo.fullname = this.addressInfo.full_name;
+      this.formInfo.phone = this.addressInfo.phone;
+      this.formInfo.address = this.addressInfo.addressDetail;
+      this.formInfo.door_no = this.addressInfo.door_no;
+      this.formInfo.street = this.addressInfo.street;
+      this.formInfo.country = this.addressInfo.country;
+      if (this.addressInfo.country === 'CN') {
+        this.formInfo.province = this.addressInfo.address[0]
+        this.formInfo.city = this.addressInfo.address[1];
+        this.formInfo.district = this.addressInfo.address[2];
       } else {
-        this.formInfo.province = this.add_info.city
-        this.formInfo.city = this.add_info.city;
-        this.formInfo.district = this.add_info.city;
+        this.formInfo.province = this.addressInfo.city
+        this.formInfo.city = this.addressInfo.city;
+        this.formInfo.district = this.addressInfo.city;
       }
-      this.$refs.form.validate(async (validate) => {
+      this.$refs.addressForm.validate(async (validate) => {
         if (validate) {
           let active_item = this.active_tab_item; // 活动标签
           let id = this.row_data.id; // 用于编辑
