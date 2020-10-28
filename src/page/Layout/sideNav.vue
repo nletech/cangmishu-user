@@ -131,7 +131,7 @@ export default {
   line-height: 45px;
 }
 .el-menu-item-group__title {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.45);
   font-weight: bold;
   font-size: 16px;
   padding: 0 !important;

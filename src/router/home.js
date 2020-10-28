@@ -20,15 +20,17 @@ const AddPurchase = loadOnDemand('purchase/addPurchase/addPurchase');// 添加�
 
 // 入库
 const InboundList = loadOnDemand('inbound/inboundList/inboundList');// 入库单列表
+const InboundCategory = loadOnDemand('inbound/inboundCategory/inboundCategory');// 入库单分类
 const AddInbound = loadOnDemand('inbound/addInbound/addInbound');// 添加入库单
 const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf');// 入库上架
 
-// 出库
-const OutboundList = loadOnDemand('outbound/outboundList/outboundList');// 出库单列表
-const AddOutbound = loadOnDemand('outbound/addOutbound/addOutbound');// 添加出库单
+// 销售
+const OutboundList = loadOnDemand('outbound/outboundList/outboundList');// 销售单列表
+const AddOutbound = loadOnDemand('outbound/addOutbound/addOutbound');// 添加销售单
 const SetOutbound = loadOnDemand('outbound/outboundList/components/setOutbound');// 设为出库
 const EditSender = loadOnDemand('outbound/addOutbound/components/editSender');// 编辑发件人信息
 const EditRecevier = loadOnDemand('outbound/addOutbound/components/editRecevier');// 编辑收件人信息
+const SaleCategory = loadOnDemand('outbound/saleCategory/saleCategory');// 销售单分类
 
 // 库存
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage');// 库存管理
@@ -68,13 +70,12 @@ const EditCargoShelf = loadOnDemand(`${PATH}/components/editCargoShelf`); // 编
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
 const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryManagement'); // 货品分类管理
-const Record = loadOnDemand('setting/record/record'); // 出入库单分类
 
 // 店铺管理
 const Shops = loadOnDemand('h5Store/shops/shops'); // 店铺管理
 const StoreGoods = loadOnDemand('h5Store/storeGoods/storeGoods'); // 店铺商品管理
 // 帮助
-const Help = loadOnDemand('helpCenter/help'); // 货品分类管理
+// const Help = loadOnDemand('helpCenter/help'); // 货品分类管理
 
 export const routerMap = [
   {
@@ -101,58 +102,6 @@ export const routerMap = [
         ],
       },
       {
-        name: 'purchase', // 采购单
-        path: 'purchase',
-        component: LayoutSide,
-        icon: '&#xeb47;',
-        nav: 1,
-        id: 'inbound',
-        index: 10,
-        children: [
-          {
-            name: 'purchaseList', // 采购单列表
-            path: 'purchase/purchaseList',
-            component: PurchaseList,
-            nav: 2,
-          },
-          {
-            name: 'addPurchase', // 子菜单-添加采购单
-            path: 'purchaseList/addPurchase',
-            component: AddPurchase,
-            nav: 2,
-          },
-        ],
-      },
-      {
-        name: 'inbound', // 大菜单 入库
-        path: 'inbound',
-        component: LayoutSide,
-        icon: '&#xeb1b;',
-        nav: 1,
-        id: 'inbound',
-        index: 2, // 后端路由鉴权
-        children: [
-          {
-            name: 'inboundList', // 子菜单-入库单列表
-            path: 'inboundList',
-            component: InboundList,
-            nav: 2,
-          },
-          {
-            name: 'addInbound', // 子菜单-添加入库单
-            path: 'inbound/addInbound',
-            component: AddInbound,
-            nav: 2,
-          },
-          {
-            name: 'inboundShelf', // 组件-入库上架
-            path: 'inboundList/inboundShelf',
-            component: InboundShelf,
-            nav: 3,
-          },
-        ],
-      },
-      {
         name: 'navSale', // 大菜单 销售
         path: 'navSale',
         component: LayoutSide,
@@ -167,34 +116,40 @@ export const routerMap = [
             path: '',
           },
           {
-            name: 'outboundList', // 子菜单-出库单列表
+            name: 'outboundList', // 子菜单-销售列表
             path: 'outboundList',
             component: OutboundList,
             nav: 2,
           },
           {
-            name: 'addOutbound', // 子菜单-添加出库单
+            name: 'addOutbound', // 子菜单-添加销售单
             path: 'addOutbound',
             component: AddOutbound,
-            nav: 2,
+            nav: 3,
           },
           {
-            name: 'editSender', // 子菜单-添加出库单-编辑发件人
+            name: 'editSender', // 子菜单-添加销售单-编辑发件人
             path: 'editSender',
             component: EditSender,
             nav: 3,
           },
           {
-            name: 'editRecevier', // 子菜单-添加出库单-编辑收件人
+            name: 'editRecevier', // 子菜单-添加销售单-编辑收件人
             path: 'editRecevier',
             component: EditRecevier,
             nav: 3,
           },
           {
-            name: 'setOutbound', // 子菜单-添加出库单-编辑收件人
+            name: 'setOutbound', // 子菜单-添加销售单-编辑收件人
             path: 'setOutbound',
             component: SetOutbound,
             nav: 3,
+          },
+          {
+            name: 'saleCategory', // 子菜单-销售单分类
+            path: 'saleCategory',
+            component: SaleCategory,
+            nav: 2,
           },
           {
             name: 'shops', // 子菜单-分组 店铺
@@ -210,6 +165,39 @@ export const routerMap = [
         ],
       },
       {
+        name: 'client',
+        path: 'client',
+        component: LayoutSide,
+        icon: '&#xeb47;',
+        nav: 1,
+        id: 'client',
+        index: 10,
+        children: [
+          {
+            name: 'client', // 子菜单-分组 客户
+            path: '',
+            type: 'children-group',
+          },
+          {
+            name: 'addressManagement', // 子菜单-地址管理
+            path: 'addressManagement',
+            component: AddressManagement,
+            nav: 2,
+          },
+          {
+            name: 'supplier', // 子菜单-分组 供应商
+            path: '',
+            type: 'children-group',
+          },
+          {
+            name: 'supplierManagement', // 子菜单-供应商管理
+            path: 'supplierManagement',
+            component: SupplierManagement,
+            nav: 2,
+          },
+        ],
+      },
+      {
         name: 'inventory', // 大菜单 库存
         path: 'inventory',
         component: LayoutSide,
@@ -219,9 +207,14 @@ export const routerMap = [
         index: 4, // 后端路由鉴权
         children: [
           {
-            name: 'GoodsManage', // 子菜单-货品管理
-            path: 'goodsManage',
-            component: GoodsManage,
+            name: 'inventory', // 子菜单-分组 库存
+            path: '',
+            type: 'children-group',
+          },
+          {
+            name: 'inventoryManage', // 子菜单-库存管理
+            path: 'inventoryManage',
+            component: InventoryManage,
             nav: 2,
           },
           {
@@ -231,15 +224,49 @@ export const routerMap = [
             nav: 2,
           },
           {
-            name: 'inventoryManage', // 子菜单-库存管理
-            path: 'inventoryManage',
-            component: InventoryManage,
-            nav: 2,
-          },
-          {
             name: 'inventoryAlarm', // 子菜单-库存报警
             path: 'inventoryAlarm',
             component: InventoryAlarm,
+            nav: 2,
+          },
+          {
+            name: 'inbound', // 子菜单-分组 入库
+            path: '',
+            type: 'children-group',
+          },
+          {
+            name: 'inboundList', // 子菜单-入库单列表
+            path: 'inboundList',
+            component: InboundList,
+            nav: 2,
+          },
+          {
+            name: 'inboundCategory', // 子菜单-入库单分类
+            path: 'inboundCategory',
+            component: InboundCategory,
+            nav: 2,
+          },
+          {
+            name: 'addInbound', // 子菜单-添加入库单
+            path: 'inbound/addInbound',
+            component: AddInbound,
+            nav: 3,
+          },
+          {
+            name: 'inboundShelf', // 组件-入库上架
+            path: 'inboundList/inboundShelf',
+            component: InboundShelf,
+            nav: 3,
+          },
+          {
+            name: 'goods', // 子菜单-分组 商品
+            path: '',
+            type: 'children-group',
+          },
+          {
+            name: 'GoodsManage', // 子菜单-商品管理
+            path: 'goodsManage',
+            component: GoodsManage,
             nav: 2,
           },
           {
@@ -266,8 +293,95 @@ export const routerMap = [
             component: CheckStockDetail,
             nav: 3,
           },
+          {
+            name: 'categoryManagement', // 子菜单- 商品分类管理
+            path: 'categoryManagement',
+            component: CategoryManagement,
+            nav: 2,
+          },
         ],
       },
+      {
+        name: 'warehouse', // 仓库
+        path: 'warehouse',
+        component: LayoutSide,
+        icon: '&#xeb47;',
+        nav: 1,
+        id: 'inbound',
+        index: 10,
+        children: [
+          {
+            name: 'warehouse', // 子菜单-分组 仓库
+            path: '',
+            type: 'children-group',
+          },
+          // {
+          //   name: 'areaAndShelf', // 子菜单 货区货位
+          //   redirect: {
+          //     name: 'basicSetting',
+          //     query: {
+          //       quickTag: true,
+          //     },
+          //   },
+          //   path: '/setting/basicSetting',
+          //   component: BasicSetting,
+          //   nav: 2,
+          // },
+          {
+            name: 'areaAndShelf', // 仓库管理-基本配置
+            path: 'areaAndShelf',
+            component: BasicSetting,
+            nav: 2,
+          },
+          {
+            name: 'purchaseList', // 采购单列表
+            path: 'purchase/purchaseList',
+            component: PurchaseList,
+            nav: 2,
+          },
+          {
+            name: 'addPurchase', // 子菜单-添加采购单
+            path: 'purchaseList/addPurchase',
+            component: AddPurchase,
+            nav: 3,
+          },
+          {
+            name: 'storeManage', // 子菜单-仓库管理
+            path: 'storeManage',
+            component: StoreManagement,
+            nav: 2,
+          },
+        ],
+      },
+      // {
+      //   name: 'inbound', // 大菜单 入库
+      //   path: 'inbound',
+      //   component: LayoutSide,
+      //   icon: '&#xeb1b;',
+      //   nav: 1,
+      //   id: 'inbound',
+      //   index: 2, // 后端路由鉴权
+      //   children: [
+      //     {
+      //       name: 'inboundList', // 子菜单-入库单列表
+      //       path: 'inboundList',
+      //       component: InboundList,
+      //       nav: 2,
+      //     },
+      //     {
+      //       name: 'addInbound', // 子菜单-添加入库单
+      //       path: 'inbound/addInbound',
+      //       component: AddInbound,
+      //       nav: 2,
+      //     },
+      //     {
+      //       name: 'inboundShelf', // 组件-入库上架
+      //       path: 'inboundList/inboundShelf',
+      //       component: InboundShelf,
+      //       nav: 3,
+      //     },
+      //   ],
+      // },
       // {
       //   name: 'shops', // 店铺管理--店铺列表
       //   path: 'shops',
@@ -364,18 +478,18 @@ export const routerMap = [
         id: 'setting',
         index: 5, // 后端路由鉴权
         children: [
-          {
-            name: 'storeManage', // 子菜单-仓库管理
-            path: 'storeManage',
-            component: StoreManagement,
-            nav: 3,
-          },
-          {
-            name: 'basicSetting', // 仓库管理-基本配置
-            path: 'basicSetting',
-            component: BasicSetting,
-            nav: 3,
-          },
+          // {
+          //   name: 'storeManage', // 子菜单-仓库管理
+          //   path: 'storeManage',
+          //   component: StoreManagement,
+          //   nav: 3,
+          // },
+          // {
+          //   name: 'basicSetting', // 仓库管理-基本配置
+          //   path: 'basicSetting',
+          //   component: BasicSetting,
+          //   nav: 3,
+          // },
           {
             name: 'addWarehouse', // 仓库管理-添加仓库
             path: 'storeManage/addWarehouse',
@@ -406,42 +520,36 @@ export const routerMap = [
             component: EditCargoShelf,
             nav: 3,
           },
-          {
-            name: 'addressManagement', // 子菜单-地址管理
-            path: 'addressManagement',
-            component: AddressManagement,
-            nav: 2,
-          },
-          {
-            name: 'supplierManagement', // 子菜单-供应商管理
-            path: 'supplierManagement',
-            component: SupplierManagement,
-            nav: 2,
-          },
-          {
-            name: 'categoryManagement', // 子菜单-分类管理
-            path: 'categoryManagement',
-            component: CategoryManagement,
-            nav: 2,
-          },
-          {
-            name: 'record', // 子菜单-出入库单分类管理
-            path: 'record',
-            component: Record,
-            nav: 2,
-          },
-          {
-            name: 'areaAndShelf', // 仓库管理-货区货位
-            redirect: {
-              name: 'basicSetting',
-              query: {
-                quickTag: true,
-              },
-            },
-            path: '/setting/basicSetting',
-            component: BasicSetting,
-            nav: 2,
-          },
+          // {
+          //   name: 'addressManagement', // 子菜单-地址管理
+          //   path: 'addressManagement',
+          //   component: AddressManagement,
+          //   nav: 2,
+          // },
+          // {
+          //   name: 'supplierManagement', // 子菜单-供应商管理
+          //   path: 'supplierManagement',
+          //   component: SupplierManagement,
+          //   nav: 2,
+          // },
+          // {
+          //   name: 'categoryManagement', // 子菜单-分类管理
+          //   path: 'categoryManagement',
+          //   component: CategoryManagement,
+          //   nav: 2,
+          // },
+          // {
+          //   name: 'areaAndShelf', // 仓库管理-货区货位
+          //   redirect: {
+          //     name: 'basicSetting',
+          //     query: {
+          //       quickTag: true,
+          //     },
+          //   },
+          //   path: '/setting/basicSetting',
+          //   component: BasicSetting,
+          //   nav: 2,
+          // },
           {
             name: 'storeGoods', // 店铺管理--店铺列表
             path: 'storeGoods',
@@ -450,23 +558,23 @@ export const routerMap = [
           },
         ],
       },
-      {
-        name: 'help', // 大菜单 帮助
-        path: 'help',
-        component: LayoutSide,
-        icon: '&#xeb38;',
-        nav: 1,
-        id: 'helpCenter',
-        index: 7, // 后端路由鉴权
-        children: [
-          {
-            name: 'helpCenter', // 帮助
-            path: 'helpCenter',
-            component: Help,
-            nav: 2,
-          },
-        ],
-      },
+      // {
+      //   name: 'help', // 大菜单 帮助
+      //   path: 'help',
+      //   component: LayoutSide,
+      //   icon: '&#xeb38;',
+      //   nav: 1,
+      //   id: 'helpCenter',
+      //   index: 7, // 后端路由鉴权
+      //   children: [
+      //     {
+      //       name: 'helpCenter', // 帮助
+      //       path: 'helpCenter',
+      //       component: Help,
+      //       nav: 2,
+      //     },
+      //   ],
+      // },
     ],
   },
 ];
