@@ -37,12 +37,12 @@
 </template>
 <script>
 import $http from '@/api';
-import PageModel from './components/page_model';
+// import PageModel from './components/page_model';
 
 export default {
   name: 'modifyPassword',
   components: {
-    PageModel,
+    // PageModel,
   },
   data() {
     return {

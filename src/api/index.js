@@ -469,7 +469,10 @@ const $http = {
     return Axios.get('open/wechat/qr');
   },
   LoginQRCheck(data) {
-    return Axios.get('open/wechat/scan/login_callback', { params: data });
+    return Axios.get('open/wechat/scan/login_callback', { params: data, notNeedNprogress: true });
+  },
+  expLogin() {
+    return Axios.post('expLogin');
   },
   // 采购模块
   purchaseList(data) {

@@ -19,9 +19,11 @@ function requestTime(config) {
   if (!config.isBtnLoading) {
     store.commit('config/loading', true);
   }
+  if (!config.notNeedNprogress) {
+    nprogress.start();
+  }
   config.headers.Authorization = store.state.token.token;
   config.headers.Language = localStorage.getItem('lang') || 'cn'; // 后端语言标识
-  nprogress.start();
   return config;
 }
 
@@ -70,7 +72,7 @@ function responseError(error) {
       break;
     case 404:
       Message({
-        message: error.response.data.msg,
+        message: error.response.data.msg || '后端api未上传',
         type: 'error',
         showClose: true,
       });

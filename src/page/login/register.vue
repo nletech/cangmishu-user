@@ -289,12 +289,12 @@
 import { OnlyNumber } from '@/lib/validateForm';
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
-import PageModel from './components/page_model';
+// import PageModel from './components/page_model';
 
 
 export default {
   components: {
-    PageModel,
+    // PageModel,
   },
   mixins: [mixin],
   data() {

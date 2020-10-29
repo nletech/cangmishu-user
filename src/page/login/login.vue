@@ -1,172 +1,125 @@
 <template>
-    <page-model :title="$t('log_in')">
-        <el-tabs
-            stretch
-            v-model="activeName"
-            style="position: relative; top: -40px;">
-            <el-tab-pane :label="$t('accountWords')" name="account">
-                <el-form
-                    ref="refelogin"
-                    :model="form"
-                    :rules="rules"
-                    :class="$style.input_item">
-                    <el-form-item
-                        prop="email"
-                        class="login_model_form">
-                        <el-input :placeholder="$t('PleaseEnterTheMailbox')"
-                                  clearable
-                                  v-model="form.email"
-                                  @keyup.enter.native="goLogin"
-                                  size="small">
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item
-                        prop="password"
-                        :class="$style.item_password"
-                        class="login_model_form">
-                        <el-input  v-model="form.password"
-                                    @keyup.enter.native="goLogin"
-                                    :type="input_type ? 'password' : 'text'"
-                                    :placeholder="$t('PleaseInputApassword')" size="small">
-                                    <i  slot="suffix"
-                                        @click="input_type = !input_type"
-                                        class="el-input__icon el-icon-view">
-                                    </i>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item
-                        :class="$style.save_user_info">
-                        <div :class="$style.item_user_info">
-                              <div :class="$style.user_info_left">
-                                    <el-checkbox v-model="keep">
-                                      {{$t('AutoFill')}}
-                                    </el-checkbox>
-                              </div>
-                              <div :class="$style.user_info_right">
-                                    <router-link :to="{name: 'backPassword'}">
-                                      {{$t('ForgetPassword')}}
-                                    </router-link>
-                              </div>
-                        </div>
-                    </el-form-item>
-                    <el-form-item class="user_login_button">
-                                  <el-button  type="primary"
-                                              style="position: relative; margin-top: 30px;"
-                                              @click="goLogin">
-                                              {{$t('log_in')}}
-                                  </el-button>
-                    </el-form-item>
-                    <el-form-item class="user_register_button">
-                        <slot name="bottom_text">
-                            <el-button
-                                @click="$router.push({name: 'register'})"
-                                type="text"
-                                plain>
-                                {{$t('register')}}
-                            </el-button>
-                        </slot>
-                    </el-form-item>
-                </el-form>
-            </el-tab-pane>
-            <el-tab-pane :label="$t('wechat')" name="wechat">
-                <div style="text-align: center;">
-                  <img
-                      style="display: inline-block;
-                      padding: 2px;
-                      margin: 10px;
-                      border: 1px solid #ccc;"
-                      width="200px"
-                      height="200px"
-                      :src="qr"
-                      alt="">
-                      <span
-                          style="display: inline-block;
-                          font-size: 1.2rem;">
-                          {{$t('scanWechatQR')}}
-                      </span>
-                </div>
-                <div class="user_register_button" style="margin: 20px 0 0 0;">
-                    <slot name="bottom_text">
-                        <el-button
-                            @click="$router.push({name: 'register'})"
-                            type="text"
-                            plain>
-                            {{$t('register')}}
-                        </el-button>
-                    </slot>
-                </div>
-            </el-tab-pane>
-        </el-tabs>
-    </page-model>
+  <div class="login">
+    <div class="login-main">
+      <div class="left"></div>
+      <div class="right">
+        <div class="title-container">
+          <div class="title">
+            <img class="logo" src="../../assets/img/logo@2x.png" /><span
+              >{{$t('SecretaryWarehouse')}}</span
+            >
+          </div>
+          <div class="wechat-scan">{{$t('wechatScanLogin')}}</div>
+        </div>
+        <div class="progress">
+          <div class="item">
+            <div class="point">1</div>
+            <div class="text">{{ $t("openWechatScan") }}</div>
+          </div>
+          <div class="item">
+            <div class="point">2</div>
+            <div class="text">{{ $t("scanBelowQrcode") }}</div>
+          </div>
+          <div class="item">
+            <div class="point">3</div>
+            <div class="text">{{ $t("autoRegisterLogin") }}</div>
+          </div>
+        </div>
+        <div class="qr-code">
+          <img :src="qr" class="qr-code-img" alt="" />
+        </div>
+        <div class="help">{{ $t("cantUse") }}</div>
+        <div class="demonstration">
+          <el-button
+            @click="expLogin"
+            type="primary"
+            plain
+            style="width: 200px"
+            >{{ $t("demonstrationLogin") }}</el-button
+          >
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="translate" @click="handlerTranslate($event)">
+        <span
+          id="cn"
+          :class="['translate_cn', lang === 'cn' ? 'translate_active' : '']"
+        >
+          中文
+        </span>
+        |
+        <span
+          id="en"
+          :class="['translate_en', lang === 'en' ? 'translate_active' : '']"
+        >
+          English
+        </span>
+      </div>
+      <div class="model_footer">
+        <div class="footer_main">
+          <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
+          <i class="footer_main_logo"></i>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
-import PageModel from './components/page_model';
 
 export default {
   mixins: [mixin],
-  components: {
-    PageModel,
-  },
   data() {
     return {
-      input_type: true, // 密码显示开关
-      keep: false, // 保存用户信息开关
       qr: '', // 登录二维码
       qr_key: '',
-      rules: {
-        email: [
-          { required: true, message: this.$t('PleaseEnterTheMailbox'), trigger: 'blur' },
-        ],
-        password: [
-          { required: true, message: this.$t('inputPsw'), trigger: 'blur' },
-        ],
-      },
-      form: {
-        email: '', // 用户邮箱
-        password: '', // 用户密码
-      },
-      activeName: 'account',
       timer: '',
       timer1: '',
+      lang: '',
     };
   },
-  mounted() {
-    this.form.email = localStorage.getItem('myEmail');
-    this.form.password = localStorage.getItem('myPassword');
-    if (!this.form.email || !this.form.password) {
-      this.form.email = '';
-      this.form.password = '';
-    } else {
-      this.keep = true;
-    }
-    this.getWeChatQR(); // 初始化
+  computed: {
+    translate_lang() {
+      return this.lang;
+    },
+  },
+  created() {
+    this.lang = localStorage.getItem('lang') || 'cn';
+    this.getWeChatQR();
+    this.timer = setInterval(() => {
+      this.getWeChatQR();
+    }, 120 * 1000);
+    this.timer1 = setInterval(() => {
+      if (this.qr_key) {
+        this.getQRChecked();
+      }
+    }, 2000);
   },
   destoryed() {
     clearInterval(this.timer);
     clearInterval(this.timer1);
   },
-  watch: {
-    activeName: {
-      handler(val) {
-        if (val === 'wechat') {
-          this.timer = setInterval(() => {
-            this.getWeChatQR();
-          }, 120 * 1000);
-          this.timer1 = setInterval(() => {
-            this.getQRChecked();
-          }, 2000);
-        } else {
-          clearInterval(this.timer);
-          clearInterval(this.timer1);
-        }
-      },
-      immediate: true,
-    }, // 监听微信扫码登录
-  },
   methods: {
+    handlerTranslate(event) {
+      switch (event.target.id) {
+        case 'cn':
+          this.lang = 'cn';
+          this.$i18n.locale = 'cn';
+          localStorage.setItem('lang', 'cn');
+          break;
 
+        case 'en':
+          this.lang = 'en';
+          this.$i18n.locale = 'en';
+          localStorage.setItem('lang', 'en');
+          break;
+
+        default:
+          break;
+      }
+    },
     getWeChatQR() {
       $http.LoginQR()
         .then((res) => {
@@ -175,7 +128,6 @@ export default {
           this.qr_key = res.data.qr_key;
         });
     }, // 获取微信二维码
-
     getQRChecked() {
       $http.LoginQRCheck({ qr_key: this.qr_key })
         .then((res) => {
@@ -187,7 +139,6 @@ export default {
           }
         });
     }, // 校验微信二维码
-
     hadnlerLoginData(data) {
       this.$store.commit('token/addToken', {
         token: data.data.token.token_value,
@@ -208,49 +159,140 @@ export default {
         name: 'home',
       }); // 跳转到首页
     }, // 处理登录信息
-
-    goLogin() {
-      if (this.keep) {
-        localStorage.setItem('myEmail', this.form.email);
-        localStorage.setItem('myPassword', this.form.password);
-      } else {
-        localStorage.setItem('myEmail', '');
-        localStorage.setItem('myPassword', '');
-      }
-      // 获取到用户输入信息是否符合
-      // validate() 方法对填入的表单进行校验
-      this.$refs.refelogin.validate((valid) => {
-        if (!valid) return; // 验证不通过禁止发起请求
-        $http.login(this.form)
-          .then((res) => {
-            if (res.status) return;
-            this.hadnlerLoginData(res);
-          });
+    expLogin() {
+      $http.expLogin().then((res) => {
+        this.hadnlerLoginData(res);
       });
-    }, // 邮箱手机登陆
+    },
   },
 };
 </script>
 
-<style module lang="less">
-.input_item {
-  margin-top: 10px;
-  .item_password {
-    margin-top: -8px;
-  }
-  .item_user_info {
-    .item_password;
+<style lang="less" scoped>
+.login {
+  background-color: #323232;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .login-main {
     display: flex;
-    flex-flow: row wrap;
-    .user_info_left {
-      width: 50%;
+    .left {
+      width: 560px;
+      height: 580px;
+      background-image: url("../../assets/img/cangmishu-signin-bg.png");
+      background-repeat: no-repeat;
+      background-size: cover;
     }
-    .user_info_right {
-      width: 50%;
-      text-align: right;
-      a {
-        color: #606266;
-        text-decoration: none;
+    .right {
+      width: 560px;
+      background-color: #fff;
+      text-align: center;
+      padding: 30px;
+      box-sizing: border-box;
+      .title-container {
+        .title {
+          color: #5745c5;
+          font-size: 24px;
+          span {
+            vertical-align: middle;
+          }
+          .logo {
+            width: 64px;
+            height: 64px;
+            vertical-align: middle;
+          }
+        }
+        .wechat-scan {
+          margin: 22px 0;
+          font-size: 16px;
+        }
+      }
+      .progress {
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+        .item {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .point {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #5745c5;
+            color: #fff;
+            margin-bottom: 5px;
+          }
+          .text {
+            color: #5745c5;
+          }
+          &:nth-child(2)::before,
+          &:nth-child(3)::before {
+            content: "";
+            display: block;
+            width: 150px;
+            height: 1px;
+            background-color: #d7d0ff;
+            position: absolute;
+            left: -120px;
+            top: 8px;
+          }
+          &:nth-child(3)::before {
+            width: 141px;
+          }
+        }
+      }
+      .qr-code {
+        .qr-code-img {
+          display: inline-block;
+          padding: 2px;
+          margin: 10px;
+          border: 1px solid #ccc;
+          width: 200px;
+          height: 200px;
+        }
+      }
+      .help {
+        margin: 20px 0;
+      }
+    }
+  }
+  .bottom {
+    .translate {
+      margin: 15px auto;
+      height: 16px;
+      line-height: 16px;
+      text-align: center;
+      font-size: 16px;
+      color: #ccc;
+      .translate_active {
+        color: white;
+      }
+      .translate_cn {
+        width: 40px;
+        margin-right: 2px;
+        cursor: pointer;
+      }
+      .translate_en {
+        width: 40px;
+        margin-left: 2px;
+        cursor: pointer;
+      }
+    }
+    .model_footer {
+      width: 1432px;
+      margin-top: 20px;
+      text-align: center;
+      color: white;
+      .footer_main_logo {
+        background-image: url("../../assets/img/homeLogin.png");
+        display: inline-block;
+        width: 72px;
+        height: 15px;
+        vertical-align: middle;
       }
     }
   }

@@ -8,8 +8,8 @@ const LayoutSide = loadOnDemand('Layout/side');
 
 // 登陆
 const Login = loadOnDemand('login/login');
-const Register = loadOnDemand('login/register');
-const BackPassword = loadOnDemand('login/back_password');
+// const Register = loadOnDemand('login/register');
+// const BackPassword = loadOnDemand('login/back_password');
 
 // 首页
 const Home = loadOnDemand('initPage/home');
@@ -354,51 +354,6 @@ export const routerMap = [
         ],
       },
       // {
-      //   name: 'inbound', // 大菜单 入库
-      //   path: 'inbound',
-      //   component: LayoutSide,
-      //   icon: '&#xeb1b;',
-      //   nav: 1,
-      //   id: 'inbound',
-      //   index: 2, // 后端路由鉴权
-      //   children: [
-      //     {
-      //       name: 'inboundList', // 子菜单-入库单列表
-      //       path: 'inboundList',
-      //       component: InboundList,
-      //       nav: 2,
-      //     },
-      //     {
-      //       name: 'addInbound', // 子菜单-添加入库单
-      //       path: 'inbound/addInbound',
-      //       component: AddInbound,
-      //       nav: 2,
-      //     },
-      //     {
-      //       name: 'inboundShelf', // 组件-入库上架
-      //       path: 'inboundList/inboundShelf',
-      //       component: InboundShelf,
-      //       nav: 3,
-      //     },
-      //   ],
-      // },
-      // {
-      //   name: 'shops', // 店铺管理--店铺列表
-      //   path: 'shops',
-      //   component: LayoutSide,
-      //   icon: '&#xeb3e;',
-      //   nav: 1,
-      //   id: 'shops',
-      //   index: 6, // 后端路由鉴权
-      //   children: [
-      //     {
-      //       name: 'shopsManagement', // 子菜单-员工列表
-      //       path: 'shopsManagement',
-      //       component: Shops,
-      //       nav: 2,
-      //     }],
-      // },
-      // {
       //   name: 'staff', // 大菜单 员工
       //   path: 'staff',
       //   component: LayoutSide,
@@ -479,12 +434,6 @@ export const routerMap = [
         index: 5, // 后端路由鉴权
         children: [
           // {
-          //   name: 'storeManage', // 子菜单-仓库管理
-          //   path: 'storeManage',
-          //   component: StoreManagement,
-          //   nav: 3,
-          // },
-          // {
           //   name: 'basicSetting', // 仓库管理-基本配置
           //   path: 'basicSetting',
           //   component: BasicSetting,
@@ -520,36 +469,6 @@ export const routerMap = [
             component: EditCargoShelf,
             nav: 3,
           },
-          // {
-          //   name: 'addressManagement', // 子菜单-地址管理
-          //   path: 'addressManagement',
-          //   component: AddressManagement,
-          //   nav: 2,
-          // },
-          // {
-          //   name: 'supplierManagement', // 子菜单-供应商管理
-          //   path: 'supplierManagement',
-          //   component: SupplierManagement,
-          //   nav: 2,
-          // },
-          // {
-          //   name: 'categoryManagement', // 子菜单-分类管理
-          //   path: 'categoryManagement',
-          //   component: CategoryManagement,
-          //   nav: 2,
-          // },
-          // {
-          //   name: 'areaAndShelf', // 仓库管理-货区货位
-          //   redirect: {
-          //     name: 'basicSetting',
-          //     query: {
-          //       quickTag: true,
-          //     },
-          //   },
-          //   path: '/setting/basicSetting',
-          //   component: BasicSetting,
-          //   nav: 2,
-          // },
           {
             name: 'storeGoods', // 店铺管理--店铺列表
             path: 'storeGoods',
@@ -601,14 +520,14 @@ export const homeRoute = [
     path: '/login',
     component: Login,
   },
-  {
-    name: 'register',
-    path: '/register',
-    component: Register,
-  },
-  {
-    name: 'backPassword',
-    path: '/backPassword',
-    component: BackPassword,
-  },
+  // {
+  //   name: 'register',
+  //   path: '/register',
+  //   component: Register,
+  // },
+  // {
+  //   name: 'backPassword',
+  //   path: '/backPassword',
+  //   component: BackPassword,
+  // },
 ];

@@ -733,6 +733,13 @@ const cn = {
   saleCategory: '销售单分类',
   client: '客户',
   goods: '商品',
+  openWechatScan: '打开微信扫一扫',
+  wechatScanLogin: '微信扫码登录(自动注册登录)',
+  scanBelowQrcode: '扫描下方二维码',
+  autoRegisterLogin: '自动注册登录',
+  cantUse: '无法扫码使用？请联系我们',
+  demonstrationLogin: '演示账号登录',
+  SecretaryWarehouse: '仓秘书',
   ...zhLocale,
 };
 
