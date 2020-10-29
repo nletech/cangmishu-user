@@ -233,15 +233,15 @@ export default {
           &:nth-child(3)::before {
             content: "";
             display: block;
-            width: 150px;
+            width: 172px;
             height: 1px;
             background-color: #d7d0ff;
             position: absolute;
-            left: -120px;
+            left: -140px;
             top: 8px;
           }
           &:nth-child(3)::before {
-            width: 141px;
+            width: 165px;
           }
         }
       }
