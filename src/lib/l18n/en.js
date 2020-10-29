@@ -6,7 +6,7 @@ const en = {
   FistRegister: 'Register',
   AutoFill: 'Remember my login',
   ForgetPassword: 'Forget password',
-  ChangePassword: 'Change Password',
+  modifyPassword: 'Change Password',
   LogOut: 'Log Out',
   SwitchWarehouse: 'Select Warehouse',
   profile: 'Profile',

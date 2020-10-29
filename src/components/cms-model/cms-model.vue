@@ -61,7 +61,6 @@ export default {
 
 .am {
   .am_main {
-    width: 90%;
     margin: 0 auto;
     position: relative;
     .am_tabs {

@@ -59,6 +59,7 @@ const CheckStockDetail = loadOnDemand('inventory/stockTaking/components/checkSto
 const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓库管理
 const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - demo
 const AddWarehouse = loadOnDemand('storeManagement/components/addWarehouse'); // 添加仓库
+const ModifyPassword = loadOnDemand('setting/modifyPassword/modifyPassword');
 
 // 仓库列表--基础配置
 const PATH = 'storeManagement/components/basicSetting/components';
@@ -433,6 +434,12 @@ export const routerMap = [
         id: 'setting',
         index: 5, // 后端路由鉴权
         children: [
+          {
+            name: 'modifyPassword',
+            path: 'modifyPassword',
+            component: ModifyPassword,
+            nav: 2,
+          },
           // {
           //   name: 'basicSetting', // 仓库管理-基本配置
           //   path: 'basicSetting',

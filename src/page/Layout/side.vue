@@ -1,24 +1,20 @@
 <template>
-  <div :class="[$style.side_nav]">
+  <div class="side">
     <!-- 侧边栏导航 -->
     <side-nav :nav="nav" :sideNavList="sideNavList"></side-nav>
-    <div :class="$style.content_container">
-      <!-- TagsView -->
-      <div :class="[$style.title, !sideNavStatus ? $style.nav_left : $style.init_title_left]">
+    <div class="content-container">
+      <div :class="['title', !sideNavStatus ? 'nav_left' : 'init_title_left']">
         <tags-view />
       </div>
-
       <!-- 右侧主要内容展示区 -->
-      <router-view
-        :key="key + change"
-        :class="[$style.content, !sideNavStatus ? $style.nav_left : $style.init_content_left]"
-      ></router-view>
-
-      <!-- 底部说明 -->
-      <div :class="$style.footer">
-        <div :class="$style.footer_description">
-          <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
-          <i class="iconfont">&#xe604;</i>
+      <div class="content">
+        <router-view style="padding: 20px" :key="key + change"></router-view>
+        <!-- 底部说明 -->
+        <div class="footer">
+          <div class="footer_description">
+            <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
+            <i class="iconfont">&#xe604;</i>
+          </div>
         </div>
       </div>
     </div>
@@ -62,42 +58,42 @@ export default {
   },
 };
 </script>
-<style lang="less" module>
+<style lang="less">
 @import "../../less/public_variable.less";
-.side_nav {
+.side {
   display: flex;
   overflow-x: hidden;
   transition: 0.5s;
-  .content_container {
-    display: flex;
-    flex-direction: column;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  .content-container {
+    display: grid;
     width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: relative;
     .content {
-      min-height: 76.6vh;
+      min-height: calc(100vh - 143px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       background: url("../../assets/img/img.png") no-repeat right bottom;
-      margin-left: 200px;
-      margin-top: 72px;
+      width: 100%;
       overflow-x: hidden;
+      position: absolute;
+      top: 62px;
     }
     .title {
+      width: calc(100% - 134px);
       height: 60px;
-      width: calc(100% - 200px);
       position: fixed;
-      margin-left: 200px;
+      top: 80px;
       border: 1px solid @separateLine;
       background: @white;
       color: @textColor;
       font-size: 16px;
       z-index: 99;
-      left: 0px;
       line-height: 60px;
-    }
-    .init_title_left {
-      margin-left: 120px;
-      width: calc(100% - 120px);
-    }
-    .init_content_left {
-      margin-left: 120px;
     }
     .footer {
       border: 1px solid @separateLine;

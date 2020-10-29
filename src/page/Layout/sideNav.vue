@@ -68,7 +68,6 @@ export default {
         result.push(this.sideNavList[6]); // 帮助模块是账号默认有的
         return result;
       }
-      console.log(this.sideNavList, 'sideNavList')
       return this.sideNavList;
     },
     sideNavStatus() {
@@ -96,7 +95,6 @@ export default {
   background: #444154;
   overflow-y: auto;
   overflow-x: hidden;
-  position: fixed;
   left: 0;
   z-index: 100;
   .router-link-active {

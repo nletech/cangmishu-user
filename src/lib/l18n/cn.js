@@ -6,7 +6,7 @@ const cn = {
   FistRegister: '注册',
   AutoFill: '保存用户信息',
   ForgetPassword: '忘记密码',
-  ChangePassword: '修改密码',
+  modifyPassword: '修改密码',
   LogOut: '退出登录',
   LogoutTips: '退出登录 ?',
   SwitchWarehouse: '切换仓库',

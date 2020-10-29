@@ -193,9 +193,7 @@ export default {
 @import "../../../less/public_variable.less";
 
 .addressManagement {
-  margin: @margin;
   .am_main {
-    width: @width;
     margin: 0 auto;
     position: relative;
     background-color: #fff;

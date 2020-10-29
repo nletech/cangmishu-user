@@ -218,16 +218,12 @@ export default {
 @import "../../../less/public_variable.less";
 
 .addressManagement {
-  margin: 50px 0 10px 0;
   .am_main {
-    width: @width;
-    margin: 0 auto;
     position: relative;
     background-color: #fff;
     .am_operation_btn {
-      position: absolute;
-      top: -30px;
-      right: 10px;
+      float: right;
+      margin: 20px 0;
       z-index: 3;
       border: none;
       font-size: 1.2rem;
@@ -245,7 +241,6 @@ export default {
       position: relative;
       justify-content: center;
       align-items: center;
-      // background-color: orange;
       float: none;
       .el-tabs__item {
         width: 50%;

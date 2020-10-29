@@ -40,7 +40,6 @@ export default {
     padding: 45px;
     background: @white;
     min-height: 507px;
-    width: 88%;
     box-shadow:2px 0px 8px rgba(109,96,186,0.3);
     margin: 10px;
   }

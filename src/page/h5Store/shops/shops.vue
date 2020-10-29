@@ -152,9 +152,7 @@ export default {
 @import '../../../less/public_variable.less';
 
 .shops {
-  margin: @margin;
   .main {
-    width: @width;
     margin: 0 auto;
     .btn {
       font-size: @fontSize;

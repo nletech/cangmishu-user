@@ -308,9 +308,7 @@ export default {
 @import '../../../less/public_variable.less';
 
 .stockTaking {
-  margin: @margin;
   .stockTaking_main {
-    width: @width;
     margin: 0 auto;
   }
   .stockTaking_table {

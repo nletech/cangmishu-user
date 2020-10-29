@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :title="$t('ChangePassword')"
+        :title="$t('modifyPassword')"
         width="40%"
         @update:visible="$emit('update:visible', $event)"
         :visible="visible"

@@ -83,7 +83,7 @@
             <el-dropdown>
               <span class="iconfont">&#xe60e;</span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="handleChangePassWord">{{$t('ChangePassword')}}</el-dropdown-item>
+                <el-dropdown-item @click.native="handleChangePassWord">{{$t('modifyPassword')}}</el-dropdown-item>
                 <el-dropdown-item @click.native="logout">{{$t('LogOut')}}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>

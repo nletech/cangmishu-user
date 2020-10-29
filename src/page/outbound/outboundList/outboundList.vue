@@ -1,351 +1,446 @@
 <template>
-    <div :class="$style.outboundList">
-        <div  :class="$style.outboundList_main">
-            <el-row :class="$style.outboundList_tags">
-                <outbound-list-search
-                    @data_cb="handlerCallBackData"
-                    @queryParams="handlerQueryParams">
-                </outbound-list-search>
-            </el-row>
-            <el-row>
-                <el-col :span="2" :offset="19">
-                    <el-button
-                        size="small"
-                        :disabled="isDisabled"
-                        @click="handlerExportOrder">
-                        {{$t('Export')}}
-                    </el-button>
+  <div :class="$style.outboundList">
+    <div :class="$style.outboundList_main">
+      <el-row :class="$style.outboundList_tags">
+        <outbound-list-search
+          @data_cb="handlerCallBackData"
+          @queryParams="handlerQueryParams"
+        >
+        </outbound-list-search>
+      </el-row>
+      <el-row>
+        <el-col :span="2" :offset="19">
+          <el-button
+            size="small"
+            :disabled="isDisabled"
+            @click="handlerExportOrder"
+          >
+            {{ $t("Export") }}
+          </el-button>
+        </el-col>
+        <el-col :span="2" :offset="1">
+          <el-button
+            type="text"
+            :class="$style.btn"
+            @click="addOutbound"
+            icon="el-icon-plus"
+          >
+            {{ $t("addOutbound") }}
+          </el-button>
+        </el-col>
+      </el-row>
+      <el-table
+        element-loading-text="loading"
+        v-loading="isButtonLoading"
+        stripe
+        :data="outbound_list_data"
+        border
+      >
+        <el-table-column
+          label="#"
+          header-align="center"
+          align="center"
+          type="index"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('outboundNumber')"
+          header-align="center"
+          align="center"
+          width="200"
+          prop="out_sn"
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row.out_sn }}</span>
+            <el-tooltip
+              effect="light"
+              :content="$t('paid')"
+              style="cursor: pointer"
+              placement="top"
+            >
+              <i
+                v-if="scope.row.pay_status === 2"
+                style="
+                  position: relative;
+                  left: 10px;
+                  color: red;
+                  font-weight: 400;
+                "
+                class="iconfont"
+                >&#xe668;</i
+              >
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('Status')"
+          header-align="center"
+          align="center"
+          prop="status_name"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('expressOrder')"
+          header-align="center"
+          align="center"
+          width="120"
+          prop="express_num"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="source"
+          :label="$t('orderSources')"
+          width="120"
+          header-align="center"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('outboundType')"
+          header-align="center"
+          align="center"
+          prop="order_type.name"
+          width="160"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('OrderQty')"
+          header-align="center"
+          align="center"
+          prop="sub_order_qty"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('OutboundQuantity')"
+          header-align="center"
+          align="center"
+          prop="sub_pick_num"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('OutboundDate')"
+          header-align="center"
+          align="center"
+          prop="delivery_date"
+          width="100"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('CreateTime')"
+          header-align="center"
+          align="center"
+          prop="created_at"
+          width="155"
+        >
+        </el-table-column>
+        <el-table-column
+          :label="$t('operation')"
+          header-align="center"
+          width="200"
+        >
+          <template slot="header">
+            <span>{{ $t("operation") }}</span>
+            <el-popover
+              placement="top-start"
+              title="Tips:"
+              width="360"
+              trigger="hover"
+            >
+              <span>{{ $t("outboundTips") }}</span>
+              <el-button
+                size="mini"
+                type="text"
+                slot="reference"
+                icon="el-icon-question"
+              ></el-button>
+            </el-popover>
+          </template>
+          <template slot-scope="scope">
+            <el-tooltip :content="$t('detail')" placement="top">
+              <el-button
+                style="margin: 8px 0 0 0"
+                size="mini"
+                icon="el-icon-view"
+                round
+                @click="viewDetails(scope.row)"
+                :loading="isButtonLoading"
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('CheckOrder')" placement="top">
+              <el-button
+                v-if="scope.row.status === 1"
+                style="margin: 8px 0 0 0"
+                size="mini"
+                type="primary"
+                icon="el-icon-sell"
+                :loading="isButtonLoading"
+                @click="checkedOutbound(scope.row)"
+                round
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('PrintPicking')" placement="top">
+              <el-button
+                v-if="
+                  scope.row.status === 4 ||
+                  scope.row.status === 5 ||
+                  scope.row.status === 7
+                "
+                style="margin: 8px 0 0 0"
+                size="mini"
+                icon="el-icon-printer"
+                :loading="isButtonLoading"
+                @click="onPrint(scope.row)"
+                round
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('cancelOrder')" placement="top">
+              <el-button
+                v-if="scope.row.status === 1"
+                style="margin: 8px 0 0 0"
+                size="mini"
+                icon="el-icon-circle-close"
+                :loading="isButtonLoading"
+                @click="cancelOrder(scope.row)"
+                type="danger"
+                round
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('Track')" placement="top">
+              <el-button
+                v-if="scope.row.status === 4 || scope.row.status === 5"
+                style="margin: 8px 0 0 0"
+                size="mini"
+                icon="el-icon-truck"
+                :loading="isButtonLoading"
+                @click="showExpressDialog(scope.row)"
+                round
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('Signing')" placement="top">
+              <el-button
+                v-if="scope.row.status === 5"
+                style="margin: 8px 0 0 0"
+                size="mini"
+                icon="el-icon-finished"
+                :loading="isButtonLoading"
+                @click="showReceviceDialog(scope.row)"
+                round
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('Trace')" placement="top">
+              <el-button
+                v-if="scope.row.status === 5"
+                style="margin: 8px 0 0 0"
+                size="mini"
+                icon="el-icon-position"
+                :loading="isButtonLoading"
+                @click="handlerTrack(scope.row)"
+                round
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('Paid2')" placement="top">
+              <el-button
+                v-if="
+                  scope.row.status === 1 ||
+                  scope.row.status === 4 ||
+                  scope.row.status === 5 ||
+                  scope.row.status === 7
+                "
+                style="margin: 8px 0 0 0"
+                size="mini"
+                icon="el-icon-money"
+                :loading="isButtonLoading"
+                @click="onPayment(scope.row)"
+                round
+              >
+              </el-button>
+            </el-tooltip>
+            <!-- 确认签收 -->
+            <el-dialog
+              align="center"
+              :visible.sync="receviceDialog"
+              width="20%"
+            >
+              <div>
+                <span style="font-size: 1.4rem">{{ $t("Submit") }} ?</span>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button
+                  @click="receviceDialog = false"
+                  :loading="isButtonLoading"
+                  size="small"
+                >
+                  {{ $t("cancel") }}
+                </el-button>
+                <el-button
+                  type="primary"
+                  :loading="isButtonLoading"
+                  @click="confirmRecevice()"
+                  size="small"
+                >
+                  {{ $t("confirm") }}
+                </el-button>
+              </span>
+            </el-dialog>
+            <!-- 确认签收 -->
+            <el-dialog
+              :title="$t('EditTrack')"
+              :visible.sync="expressDialog"
+              width="60%"
+            >
+              <el-row>
+                <el-col :span="18" :offset="3">
+                  <el-form
+                    :model="expressForm"
+                    :rules="rules"
+                    label-width="160px"
+                  >
+                    <el-form-item :label="$t('DeliveryCompany')">
+                      <el-select
+                        v-model="expressForm.express_code"
+                        :placeholder="$t('Pleaseselect')"
+                      >
+                        <el-option
+                          v-for="item in expressList"
+                          :key="item.name"
+                          :label="item.name"
+                          :value="item.code"
+                        >
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item :label="$t('TrackingNumber')">
+                      <el-input
+                        value="number"
+                        v-model="expressForm.express_num"
+                        maxlength="20"
+                        show-word-limit
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item :label="$t('remark')">
+                      <el-input
+                        type="textarea"
+                        v-model="expressForm.shop_remark"
+                        maxlength="100"
+                        show-word-limit
+                      ></el-input>
+                    </el-form-item>
+                  </el-form>
                 </el-col>
-                <el-col :span="2" :offset="1">
-                    <el-button
-                        type="text"
-                        :class="$style.btn"
-                        @click="addOutbound"
-                        icon="el-icon-plus">
-                        {{$t('addOutbound')}}
-                    </el-button>
+              </el-row>
+              <span slot="footer" class="dialog-footer">
+                <el-button
+                  :loading="isButtonLoading"
+                  @click="expressDialog = false"
+                  size="mini"
+                >
+                  {{ $t("cancel") }}
+                </el-button>
+                <el-button
+                  :loading="isButtonLoading"
+                  type="primary"
+                  @click="editExpress()"
+                  size="mini"
+                >
+                  {{ $t("confirm") }}
+                </el-button>
+              </span>
+            </el-dialog>
+            <el-dialog :visible.sync="paymentDialog" width="60%">
+              <el-row>
+                <el-col :span="18" :offset="3">
+                  <el-form :model="payment" :rules="rules" label-width="160px">
+                    <el-form-item :label="$t('Payment')">
+                      <el-select
+                        v-model="payment.pay_type"
+                        placeholder="请选择"
+                      >
+                        <el-option
+                          v-for="item in paymentType"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id"
+                        >
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item :label="$t('PayStatus')">
+                      <el-select
+                        v-model="payment.pay_status"
+                        placeholder="请选择"
+                      >
+                        <el-option
+                          v-for="item in paymentStatus"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id"
+                        >
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item :label="$t('Paid')">
+                      <el-input
+                        value="number"
+                        v-model="payment.sub_pay"
+                        maxlength="15"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item :label="$t('No')">
+                      <el-input
+                        v-model="payment.payment_account_number"
+                        maxlength="100"
+                      ></el-input>
+                    </el-form-item>
+                  </el-form>
                 </el-col>
-            </el-row>
-            <el-table
-                element-loading-text="loading"
-                v-loading="isButtonLoading"
-                stripe
-                :data="outbound_list_data"
-                border>
-                <el-table-column
-                    label="#"
-                    header-align="center"
-                    align="center"
-                    type="index">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('outboundNumber')"
-                    header-align="center"
-                    align="center"
-                    width="200"
-                    prop="out_sn">
-                    <template slot-scope="scope">
-                      <span>{{scope.row.out_sn}}</span>
-                      <el-tooltip
-                          effect="light"
-                          :content="$t('paid')"
-                          style="cursor: pointer;"
-                          placement="top">
-                          <i v-if="scope.row.pay_status === 2" style="position: relative; left: 10px; color: red; font-weight: 400;" class="iconfont">&#xe668;</i>
-                      </el-tooltip>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    :label="$t('Status')"
-                    header-align="center"
-                    align="center"
-                    prop="status_name">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('expressOrder')"
-                    header-align="center"
-                    align="center"
-                    width="120"
-                    prop="express_num">
-                </el-table-column>
-                <el-table-column
-                    prop="source"
-                    :label="$t('orderSources')"
-                    width="120"
-                    header-align="center"
-                    align="center" >
-                </el-table-column>
-                <el-table-column
-                    :label="$t('outboundType')"
-                    header-align="center"
-                    align="center"
-                    prop="order_type.name"
-                    width="160">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('OrderQty')"
-                    header-align="center"
-                    align="center"
-                    prop="sub_order_qty">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('OutboundQuantity')"
-                    header-align="center"
-                    align="center"
-                    prop="sub_pick_num">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('OutboundDate')"
-                    header-align="center"
-                    align="center"
-                    prop="delivery_date" width="100">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('CreateTime')"
-                    header-align="center"
-                    align="center"
-                    prop="created_at" width="155">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('operation')"
-                    header-align="center"
-                    width="200">
-                    <template slot="header">
-                        <span>{{$t('operation')}}</span>
-                        <el-popover
-                            placement="top-start"
-                            title="Tips:"
-                            width="360"
-                            trigger="hover">
-                            <span>{{$t('outboundTips')}}</span>
-                            <el-button size="mini" type="text" slot="reference" icon="el-icon-question"></el-button>
-                        </el-popover>
-                    </template>
-                    <template slot-scope="scope">
-                      <el-tooltip :content="$t('detail')" placement="top">
-                          <el-button
-                              style="margin: 8px 0 0 0;"
-                              size="mini" icon="el-icon-view" round
-                              @click="viewDetails(scope.row)"
-                              :loading="isButtonLoading">
-                          </el-button>
-                      </el-tooltip>
-                      <el-tooltip :content="$t('CheckOrder')" placement="top">
-                          <el-button
-                            v-if="scope.row.status === 1"
-                            style="margin: 8px 0 0 0;"
-                            size="mini" type="primary"
-                            icon="el-icon-sell"
-                            :loading="isButtonLoading"
-                            @click="checkedOutbound(scope.row)"
-                            round>
-                          </el-button>
-                      </el-tooltip>
-                      <el-tooltip :content="$t('PrintPicking')" placement="top">
-                            <el-button
-                                v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
-                                style="margin: 8px 0 0 0;"
-                                size="mini"
-                                icon="el-icon-printer"
-                                :loading="isButtonLoading"
-                                @click="onPrint(scope.row)" round>
-                            </el-button>
-                      </el-tooltip>
-                      <el-tooltip :content="$t('cancelOrder')" placement="top">
-                          <el-button
-                              v-if="scope.row.status === 1"
-                              style="margin: 8px 0 0 0;"
-                              size="mini"
-                              icon="el-icon-circle-close"
-                              :loading="isButtonLoading"
-                              @click="cancelOrder(scope.row)"
-                              type="danger" round>
-                          </el-button>
-                      </el-tooltip>
-                      <el-tooltip :content="$t('Track')" placement="top">
-                          <el-button
-                              v-if="scope.row.status === 4 || scope.row.status === 5"
-                              style="margin: 8px 0 0 0;"
-                              size="mini"
-                              icon="el-icon-truck"
-                              :loading="isButtonLoading"
-                              @click="showExpressDialog(scope.row)" round>
-                          </el-button>
-                      </el-tooltip>
-                      <el-tooltip :content="$t('Signing')" placement="top">
-                            <el-button
-                                v-if="scope.row.status === 5"
-                                style="margin: 8px 0 0 0;"
-                                size="mini"
-                                icon="el-icon-finished"
-                                :loading="isButtonLoading"
-                                @click="showReceviceDialog(scope.row)" round>
-                            </el-button>
-                      </el-tooltip>
-                      <el-tooltip :content="$t('Trace')" placement="top">
-                            <el-button
-                                v-if="scope.row.status === 5"
-                                style="margin: 8px 0 0 0;"
-                                size="mini"
-                                icon="el-icon-position"
-                                :loading="isButtonLoading"
-                                @click="handlerTrack(scope.row)" round>
-                            </el-button>
-                      </el-tooltip>
-                      <el-tooltip :content="$t('Paid2')" placement="top">
-                            <el-button
-                                v-if="scope.row.status === 1 ||scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
-                                style="margin: 8px 0 0 0;"
-                                size="mini"
-                                icon="el-icon-money"
-                                :loading="isButtonLoading"
-                                @click="onPayment(scope.row)" round>
-                            </el-button>
-                      </el-tooltip>
-                      <!-- 确认签收 -->
-                      <el-dialog
-                        align="center"
-                        :visible.sync="receviceDialog"
-                        width="20%">
-                        <div>
-                          <span style="font-size: 1.4rem;">{{$t('Submit')}} ?</span>
-                        </div>
-                        <span slot="footer" class="dialog-footer">
-                          <el-button
-                              @click="receviceDialog = false"
-                              :loading="isButtonLoading"
-                              size="small">
-                              {{$t('cancel')}}
-                          </el-button>
-                          <el-button
-                              type="primary"
-                              :loading="isButtonLoading"
-                              @click="confirmRecevice()"
-                              size="small">
-                              {{$t('confirm')}}
-                          </el-button>
-                        </span>
-                      </el-dialog>
-                      <!-- 确认签收 -->
-                      <el-dialog
-                        :title="$t('EditTrack')"
-                        :visible.sync="expressDialog"
-                        width="60%">
-                        <el-row>
-                          <el-col :span="18" :offset="3">
-                            <el-form
-                                :model="expressForm"
-                                :rules="rules"
-                                label-width="160px">
-                                <el-form-item :label="$t('DeliveryCompany')">
-                                    <el-select v-model="expressForm.express_code" :placeholder="$t('Pleaseselect')">
-                                        <el-option
-                                          v-for="item in expressList"
-                                          :key="item.name"
-                                          :label="item.name"
-                                          :value="item.code">
-                                        </el-option>
-                                      </el-select>
-                                </el-form-item>
-                                <el-form-item :label="$t('TrackingNumber')">
-                                    <el-input value="number" v-model="expressForm.express_num" maxlength="20" show-word-limit></el-input>
-                                </el-form-item>
-                                <el-form-item :label="$t('remark')">
-                                    <el-input type="textarea" v-model="expressForm.shop_remark" maxlength="100" show-word-limit></el-input>
-                                </el-form-item>
-                            </el-form>
-                          </el-col>
-                        </el-row>
-                        <span slot="footer" class="dialog-footer">
-                          <el-button
-                              :loading="isButtonLoading"
-                              @click="expressDialog = false"
-                              size="mini">
-                              {{$t('cancel')}}
-                          </el-button>
-                          <el-button
-                              :loading="isButtonLoading"
-                              type="primary"
-                              @click="editExpress()"
-                              size="mini">
-                              {{$t('confirm')}}
-                          </el-button>
-                        </span>
-                      </el-dialog>
-                      <el-dialog
-                          :visible.sync="paymentDialog"
-                          width="60%">
-                          <el-row>
-                              <el-col :span="18" :offset="3">
-                                  <el-form
-                                      :model="payment"
-                                      :rules="rules"
-                                      label-width="160px">
-                                      <el-form-item :label="$t('Payment')">
-                                          <el-select v-model="payment.pay_type" placeholder="请选择">
-                                            <el-option
-                                              v-for="item in paymentType"
-                                              :key="item.id"
-                                              :label="item.name"
-                                              :value="item.id">
-                                            </el-option>
-                                          </el-select>
-                                      </el-form-item>
-                                      <el-form-item :label="$t('PayStatus')">
-                                          <el-select v-model="payment.pay_status" placeholder="请选择">
-                                            <el-option
-                                              v-for="item in paymentStatus"
-                                              :key="item.id"
-                                              :label="item.name"
-                                              :value="item.id">
-                                            </el-option>
-                                          </el-select>
-                                      </el-form-item>
-                                      <el-form-item :label="$t('Paid')">
-                                          <el-input value="number" v-model="payment.sub_pay" maxlength="15"></el-input>
-                                      </el-form-item>
-                                      <el-form-item :label="$t('No')">
-                                          <el-input v-model="payment.payment_account_number" maxlength="100"></el-input>
-                                      </el-form-item>
-                                  </el-form>
-                              </el-col>
-                          </el-row>
-                          <span slot="footer" class="dialog-footer">
-                              <el-button
-                                  :loading="isButtonLoading"
-                                  @click="paymentDialog = false"
-                                  size="mini">
-                                  {{$t('cancel')}}
-                              </el-button>
-                              <el-button
-                                  :loading="isButtonLoading"
-                                  type="primary"
-                                  @click="ChangPayment(scope.row)"
-                                  size="mini">
-                                  {{$t('confirm')}}
-                              </el-button>
-                          </span>
-                      </el-dialog>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-row>
-                <el-col :span="6" :offset="18">
-                        <pagination-public
-                            :class="$style.pagination"
-                            :params="params"
-                            @changePage="handlerChangePage">
-                        </pagination-public>
-                </el-col>
-            </el-row>
-            <!-- 入库单详情弹框 -->
-            <outbound-detail
-                :visible.sync="outboundDialogVisible"
-                :id="id"
-                :row_data="row_data">
-            </outbound-detail>
-        </div>
+              </el-row>
+              <span slot="footer" class="dialog-footer">
+                <el-button
+                  :loading="isButtonLoading"
+                  @click="paymentDialog = false"
+                  size="mini"
+                >
+                  {{ $t("cancel") }}
+                </el-button>
+                <el-button
+                  :loading="isButtonLoading"
+                  type="primary"
+                  @click="ChangPayment(scope.row)"
+                  size="mini"
+                >
+                  {{ $t("confirm") }}
+                </el-button>
+              </span>
+            </el-dialog>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-row>
+        <el-col :span="6" :offset="18">
+          <pagination-public
+            :class="$style.pagination"
+            :params="params"
+            @changePage="handlerChangePage"
+          >
+          </pagination-public>
+        </el-col>
+      </el-row>
+      <!-- 入库单详情弹框 -->
+      <outbound-detail
+        :visible.sync="outboundDialogVisible"
+        :id="id"
+        :row_data="row_data"
+      >
+      </outbound-detail>
     </div>
+  </div>
 </template>
 
 <script>
@@ -639,12 +734,10 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../less/public_variable.less';
+@import "../../../less/public_variable.less";
 
 .outboundList {
-  margin: @margin;
   .outboundList_main {
-    width: @width;
     margin: 0 auto;
     .outboundList_tags {
       margin: 0 0 10px 0;
@@ -653,7 +746,7 @@ export default {
       }
     }
     .pagination {
-      margin: 10px  0 10px 0;
+      margin: 10px 0 10px 0;
       float: right;
     }
     .btn {

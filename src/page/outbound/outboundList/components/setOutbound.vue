@@ -278,7 +278,6 @@ export default {
 <style lang="less" module>
 @import '../../../../less/public_variable.less';
 .setOutbound {
-  width: 96%;
   padding: 0 0 0 10px;
   .background {
     margin: 10px 0 0 0;

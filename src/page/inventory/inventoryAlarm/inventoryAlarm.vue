@@ -142,8 +142,6 @@ export default {
 
 <style lang="less" scoped>
 .goodsAlarm {
-  width: 95%;
-  margin: 0 auto;
   .el-tabs__nav{
     transform: translateX(100%);
     width:100%;
@@ -152,8 +150,5 @@ export default {
       width:50%;
     }
   }
-}
-.goodsAlarm {
-  margin-left: 20px;
 }
 </style>

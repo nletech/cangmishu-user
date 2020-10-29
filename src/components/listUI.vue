@@ -12,9 +12,7 @@
 @import '../less/public_variable.less';
 
 .page {
-  margin: @margin;
   .main {
-    width: @width;
     margin: 0 auto;
     .header {
       margin: 0 0 10px 0;

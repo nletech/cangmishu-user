@@ -306,8 +306,7 @@ export default {
 @margin-bottom: 20px;
 @box-shadow: 2px 0px 4px rgba(109,96,186,0.3);
   .container {
-    width: @width;
-    margin: 10px auto;
+    margin: 0 auto;
     .container_column1 {
       width: 100%;
       display: flex;

@@ -207,10 +207,8 @@ export default {
 
 .storeManage {
   position: relative;
-  margin: 20px 0 20px 0;
   .body_main {
     margin: 0 auto;
-    width: 96%;
     .btn {
       display: block;
       font-size: 1.2rem;
