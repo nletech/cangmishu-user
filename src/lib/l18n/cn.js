@@ -740,6 +740,10 @@ const cn = {
   cantUse: '无法扫码使用？请联系我们',
   demonstrationLogin: '演示账号登录',
   SecretaryWarehouse: '仓秘书',
+  bindPhone: '绑定手机号',
+  bindEmail: '绑定邮箱',
+  officialAccounts: '关注绑定公众号',
+  modifyInfo: '修改资料',
   ...zhLocale,
 };
 

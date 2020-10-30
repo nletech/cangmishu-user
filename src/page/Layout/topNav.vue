@@ -3,12 +3,8 @@
     <div :class="$style.top_nav" class="top_nav">
       <div :class="$style.nav">
         <div :class="$style.top_nav_logo">
-          <span v-if="!sideNavStatus">仓秘书</span>
-          <img v-else src="../../assets/img/cang.png" alt="仓秘书" />
+          <img src="../../assets/img/cang.png" alt="仓秘书" />
         </div>
-        <!-- <div @click="closeSideNav" :class="$style.side_nav_switch">
-          <i class="iconfont">&#xe622;</i>
-        </div> -->
         <!-- 切换仓库 选择按钮 -->
         <div :class="$style.selectedTag">
           <div v-if="+UType !== 0">
@@ -165,11 +161,6 @@ export default {
     email() {
       return localStorage.getItem('email');
     }, // 获取邮箱
-
-    sideNavStatus() {
-      return +this.$store.state.config.shutdown_status;
-    }, // 隐藏侧边栏标志
-
     Uavatar() {
       return this.$store.state.config.avatar || localStorage.getItem('setUAvatar');
     }, // 用户头像
@@ -275,11 +266,6 @@ export default {
         });
       });
     }, // 注销
-
-    closeSideNav() {
-      this.$store.commit('config/closeSideNav', !+this.sideNavStatus);
-    }, // 关闭导航栏
-
   },
 };
 </script>

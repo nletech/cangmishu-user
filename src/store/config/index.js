@@ -2,7 +2,6 @@ export default {
   namespaced: true,
   state: {
     button_loading: false,
-    shutdown_status: false,
     setWarehouseName: '', // 设置仓库名
     setWarehouseId: '', // 仓库 id
     noneWarehouseId: false,
@@ -44,14 +43,5 @@ export default {
     loading(state, data) {
       state.button_loading = data;
     }, // 按钮动画配置
-
-    closeSideNav(state, data) {
-      state.shutdown_status = data;
-      localStorage.setItem('sideNavStatus', +data);
-    }, // 关闭侧边栏
-
-    getSideNavStatus(state) {
-      state.shutdown_status = localStorage.getItem('sideNavStatus') || false;
-    }, // 读取侧边栏状态
   },
 };

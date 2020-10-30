@@ -60,6 +60,10 @@ const StoreManagement = loadOnDemand('storeManagement/storeManagement'); // 仓�
 const BasicSetting = loadOnDemand('storeManagement/components/basicSetting/basicSetting'); // - demo
 const AddWarehouse = loadOnDemand('storeManagement/components/addWarehouse'); // 添加仓库
 const ModifyPassword = loadOnDemand('setting/modifyPassword/modifyPassword');
+const BindPhone = loadOnDemand('setting/bindPhone/bindPhone');
+const BindEmail = loadOnDemand('setting/bindEmail/bindEmail');
+const OfficialAccounts = loadOnDemand('setting/officialAccounts/officialAccounts');
+const ModifyInfo = loadOnDemand('setting/modifyInfo/modifyInfo');
 
 // 仓库列表--基础配置
 const PATH = 'storeManagement/components/basicSetting/components';
@@ -434,6 +438,30 @@ export const routerMap = [
         id: 'setting',
         index: 5, // 后端路由鉴权
         children: [
+          {
+            name: 'bindPhone',
+            path: 'bindPhone',
+            component: BindPhone,
+            nav: 2,
+          },
+          {
+            name: 'bindEmail',
+            path: 'bindEmail',
+            component: BindEmail,
+            nav: 2,
+          },
+          {
+            name: 'officialAccounts',
+            path: 'officialAccounts',
+            component: OfficialAccounts,
+            nav: 2,
+          },
+          {
+            name: 'modifyInfo',
+            path: 'modifyInfo',
+            component: ModifyInfo,
+            nav: 2,
+          },
           {
             name: 'modifyPassword',
             path: 'modifyPassword',

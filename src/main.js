@@ -17,7 +17,6 @@ Vue.use(ElementUI);
 Vue.component('cancel-button', CancelButton);
 
 store.commit('token/getToken');
-store.commit('config/getSideNavStatus');
 
 /* eslint-disable no-new */
 new Vue({

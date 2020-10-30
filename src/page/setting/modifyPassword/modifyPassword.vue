@@ -1,5 +1,6 @@
 <template>
   <div class="modify-password">
+    <el-card class="box-card">
     <el-form
       :model="ruleForm"
       status-icon
@@ -33,6 +34,7 @@
         <el-button type="primary" @click="onConfirm">提交</el-button>
       </el-form-item>
     </el-form>
+    </el-card>
   </div>
 </template>
 <script>
@@ -41,25 +43,16 @@ import $http from '@/api';
 export default {
   name: 'modifyPassword',
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'));
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
-        }
-        callback();
-      }
-    };
     const validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'));
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.password) {
         callback(new Error('两次输入密码不一致!'));
       } else {
         callback();
       }
     };
+    const minLength = { min: 6, max: 21, message: '最少输入6位数密码', trigger: 'blur' };
     return {
       ruleForm: {
         password: '',
@@ -67,14 +60,17 @@ export default {
         old_password: '',
       },
       rules: {
+        old_password: [
+          { required: true, message: '请输入旧密码', trigger: 'blur' },
+          minLength,
+        ],
         password: [
-          { required: true, validator: validatePass, trigger: 'blur' },
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          minLength,
         ],
         password_confirmation: [
           { required: true, validator: validatePass2, trigger: 'blur' },
-        ],
-        old_password: [
-          { required: true, message: '请输入旧密码', trigger: 'blur' },
+          minLength,
         ],
       },
     };
@@ -86,12 +82,12 @@ export default {
   },
   methods: {
     onConfirm() {
-      this.$refs.ruleForm((valid) => {
+      this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          $http.modifyPsw(this.user_id, this.form)
+          $http.modifyPsw(this.user_id, this.ruleForm)
             .then((res) => {
               if (res.status) return;
-              this.$emit('update:visible', false);
+              this.$refs.ruleForm.resetFields();
               this.$message({
                 type: 'success',
                 message: this.$t('success'),

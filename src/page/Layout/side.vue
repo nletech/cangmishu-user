@@ -3,7 +3,7 @@
     <!-- 侧边栏导航 -->
     <side-nav :nav="nav" :sideNavList="sideNavList"></side-nav>
     <div class="content-container">
-      <div :class="['title', !sideNavStatus ? 'nav_left' : 'init_title_left']">
+      <div class="tags-view">
         <tags-view />
       </div>
       <!-- 右侧主要内容展示区 -->
@@ -52,9 +52,6 @@ export default {
     shopTips() {
       return this.$route.name === 'shopsManagement';
     },
-    sideNavStatus() {
-      return +this.$store.state.config.shutdown_status;
-    },
   },
 };
 </script>
@@ -83,7 +80,7 @@ export default {
       position: absolute;
       top: 62px;
     }
-    .title {
+    .tags-view {
       width: calc(100% - 134px);
       height: 60px;
       position: fixed;

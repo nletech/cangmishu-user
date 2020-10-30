@@ -70,9 +70,6 @@ export default {
       }
       return this.sideNavList;
     },
-    sideNavStatus() {
-      return +this.$store.state.config.shutdown_status;
-    },
   },
   methods: {
     typeIsChildrenGroup(value) {
