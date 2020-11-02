@@ -20,11 +20,11 @@
     "es6-promise": "^4.2.8",
     "nprogress": "^0.2.0",
     "qs": "^6.5.1",
-    "vue": "^2.6.10",
-    "vue-i18n": "^7.8.1",
+    "vue": "^2.6.12",
+    "vue-i18n": "^8.22.1",
     "vue-image-crop-upload": "^2.5.0",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vue-router": "^3.4.8",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -81,7 +81,7 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-svg-icon": "^1.2.9",
-    "vue-template-compiler": "^2.6.10",
+    "vue-template-compiler": "^2.6.12",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",

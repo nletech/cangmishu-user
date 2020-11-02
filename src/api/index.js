@@ -465,6 +465,9 @@ const $http = {
   openCaptcha() {
     return Axios.get('open/captcha');
   },
+  getLoginQR() {
+    return Axios.get('websiteConfig');
+  },
   LoginQR() {
     return Axios.get('open/wechat/qr');
   },

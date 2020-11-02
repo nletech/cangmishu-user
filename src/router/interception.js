@@ -14,7 +14,7 @@ export default function (router) {
   return (to, from, next) => {
     if (store.state.token.token) {
       if (to.name === 'login') {
-        next('/');
+        next();
       } else if (!store.state.routerData.isPermissionFilter) {
         addRouerMap(router, next, to); // 添加登录的路由
       } else {

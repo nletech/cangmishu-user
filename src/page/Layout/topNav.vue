@@ -302,17 +302,12 @@ export default {
   .top_nav {
     height: 80px;
     background-color: @white;
-    position: sticky;
-    top: 0;
-    z-index: 999;
     width: 100%;
-    min-width: 1280px;
     display: flex;
+    justify-content: space-between;
     border-color: @separateLine;
     .nav {
-      width: 100%;
       display: flex;
-      flex-flow: row wrap;
       .selectedTag {
         width: 200px;
         height: 80px;
@@ -378,7 +373,6 @@ export default {
     }
 
     .user_info {
-      width: 50%;
       display: flex;
       flex-flow: row nowrap;
       justify-content: flex-end;
@@ -409,7 +403,6 @@ export default {
         border-left: 1px solid;
         margin-left: 20px;
         display: flex;
-        flex-flow: row wrap;
         border-right: 1px solid;
         border-color: @separateLine;
         min-width: 240px;

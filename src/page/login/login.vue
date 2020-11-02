@@ -5,11 +5,11 @@
       <div class="right">
         <div class="title-container">
           <div class="title">
-            <img class="logo" src="../../assets/img/logo@2x.png" /><span
-              >{{$t('SecretaryWarehouse')}}</span
-            >
+            <img class="logo" src="../../assets/img/logo@2x.png" /><span>{{
+              $t("SecretaryWarehouse")
+            }}</span>
           </div>
-          <div class="wechat-scan">{{$t('wechatScanLogin')}}</div>
+          <div class="wechat-scan">{{ $t("wechatScanLogin") }}</div>
         </div>
         <div class="progress">
           <div class="item">
@@ -66,6 +66,7 @@
   </div>
 </template>
 <script>
+// import WxLogin from 'WxLogin'
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
 
@@ -78,6 +79,7 @@ export default {
       timer: '',
       timer1: '',
       lang: '',
+      wxLoginObj: {},
     };
   },
   computed: {
@@ -91,13 +93,13 @@ export default {
     this.timer = setInterval(() => {
       this.getWeChatQR();
     }, 120 * 1000);
-    this.timer1 = setInterval(() => {
-      if (this.qr_key) {
-        this.getQRChecked();
-      }
-    }, 2000);
+    // this.timer1 = setInterval(() => {
+    //   if (this.qr_key) {
+    //     this.getQRChecked();
+    //   }
+    // }, 2000);
   },
-  destoryed() {
+  destroyed() {
     clearInterval(this.timer);
     clearInterval(this.timer1);
   },
@@ -121,11 +123,16 @@ export default {
       }
     },
     getWeChatQR() {
-      $http.LoginQR()
+      $http.getLoginQR()
         .then((res) => {
           if (res.status) return;
-          this.qr = res.data.qr;
-          this.qr_key = res.data.qr_key;
+          // this.wxLoginObj = new WxLogin({
+          //   id: 'wx_box',
+          //   appid: res.data.app_id,
+          //   scope: 'snsapi_login',
+          //   redirect_uri: res.data.redirect_url,
+          //   href: 'https://jiyun-pc.haiouoms.com/qrcode.css',
+          // });
         });
     }, // 获取微信二维码
     getQRChecked() {
@@ -156,7 +163,7 @@ export default {
       localStorage.setItem('setUModules', JSON.stringify(data.data.modules)); // 存入用户 昵称
       localStorage.setItem('setUType', data.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
       this.$router.push({
-        name: 'home',
+        path: '/initPage/home',
       }); // 跳转到首页
     }, // 处理登录信息
     expLogin() {
