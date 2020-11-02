@@ -103,7 +103,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 
 .staffGroupAdd_main {
   width: @width;

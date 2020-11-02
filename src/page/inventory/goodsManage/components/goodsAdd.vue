@@ -350,7 +350,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 
 .label {
   font-size: 18px;

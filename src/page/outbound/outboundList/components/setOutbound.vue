@@ -276,7 +276,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 .setOutbound {
   padding: 0 0 0 10px;
   .background {

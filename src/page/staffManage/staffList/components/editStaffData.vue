@@ -148,7 +148,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 .staffAdd_main {
   width: 92%;
   min-height: 507px;

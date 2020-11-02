@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../less/public_variable.less';
+
 .login_model_form {
   .el-input-group__append {
     border-color: @white;

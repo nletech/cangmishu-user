@@ -411,7 +411,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../less/public_variable.less';
+
 .main {
   margin: 50px 50px 0 50px;
   background-color: #fff !important;

@@ -236,7 +236,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../less/public_variable.less';
+
 
   .storeManage {
     margin: 20px 0 0 0;

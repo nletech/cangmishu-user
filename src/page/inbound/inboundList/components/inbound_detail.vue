@@ -213,7 +213,7 @@ export default {
 </style>
 
 <style lang="less" scoped>
-@import '../../../../less/public_variable.less';
+
 
 .inbound_info {
   padding-left: 20px;

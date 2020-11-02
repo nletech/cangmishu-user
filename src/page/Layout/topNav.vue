@@ -271,7 +271,6 @@ export default {
 </script>
 
 <style lang="less" module>
-@import "../../less/public_variable.less";
 
 .dialogcentered {
   margin: auto;
@@ -496,7 +495,6 @@ export default {
 </style>
 
 <style lang="less">
-@import "../../less/public_variable.less";
 .top_nav {
   .router-link-active {
     color: @ThemeColor !important;

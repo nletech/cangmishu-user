@@ -287,7 +287,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../less/public_variable.less';
+
   .GroupName_title {
     display: inline-block;
     margin: 0 5px 0 0;

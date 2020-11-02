@@ -202,7 +202,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 .Permissions_main {
   width: 92%;
   min-height: 607px;

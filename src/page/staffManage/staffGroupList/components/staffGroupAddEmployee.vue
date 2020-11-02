@@ -188,7 +188,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 .staffGroupAddEmployee_main {
   .search_box {
     margin: 0 0 8px 0;

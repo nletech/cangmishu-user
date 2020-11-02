@@ -49,7 +49,7 @@
           </span>
           <el-tree
             :props="{
-              label: 'name_cn',
+              label: 'name_cn'
             }"
             :data="categoryListData"
             default-expand-all

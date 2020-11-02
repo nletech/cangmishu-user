@@ -12,7 +12,9 @@
         <!-- 底部说明 -->
         <div class="footer">
           <div class="footer_description">
-            <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
+            <span
+              >Copyright © {{ year }}，Hunan NLE Network Technolgy Co, Ltd {{version}}</span
+            >
             <i class="iconfont">&#xe604;</i>
           </div>
         </div>
@@ -31,6 +33,10 @@ export default {
     TagsView,
   },
   computed: {
+    version() { return process.env.VUE_APP_VERSION },
+    year() {
+      return new Date().getFullYear()
+    },
     nav() {
       return this.$store.state.routerData.routerMap[0].children.filter(
         item => item.name === this.$route.matched[1].name,
@@ -56,7 +62,6 @@ export default {
 };
 </script>
 <style lang="less">
-@import "../../less/public_variable.less";
 .side {
   display: flex;
   overflow-x: hidden;

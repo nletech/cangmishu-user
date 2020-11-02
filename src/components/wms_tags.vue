@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../less/public_variable.less';
+
 .wms_tag_container_table {
     margin: 20px 0 0 0;
   // padding: 10px 45px 20px 45px ;
@@ -80,7 +80,7 @@ export default {
 }
 </style>
 <style lang="less">
-@import '../less/public_variable.less';
+
 .wms-tag {
   .el-tabs__nav-wrap::after {
     display: none;

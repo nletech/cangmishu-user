@@ -206,7 +206,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 
   .edit_sender {
     margin: 20px 0 10px 0;

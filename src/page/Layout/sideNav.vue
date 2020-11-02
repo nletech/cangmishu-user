@@ -86,7 +86,6 @@ export default {
 };
 </script>
 <style lang="less">
-@import "../../less/public_variable.less";
 .side-nav {
   height: calc(100vh - 80px);
   background: #444154;

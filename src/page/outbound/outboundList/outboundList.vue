@@ -734,7 +734,7 @@ export default {
 </script>
 
 <style lang="less" module>
-@import "../../../less/public_variable.less";
+
 
 .outboundList {
   .outboundList_main {

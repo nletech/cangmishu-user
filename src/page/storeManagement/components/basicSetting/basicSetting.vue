@@ -90,7 +90,7 @@ export default {
 };
 </script>
 <style lang="less" module>
-@import '../../../../less/public_variable.less';
+
 
 .address_management {
   padding: 0;

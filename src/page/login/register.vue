@@ -633,7 +633,7 @@ export default {
 };
 </script>
 <style lang="less" module>
-@import '../../less/public_variable.less';
+
 
 .input_item {
   margin-top: 10px;
