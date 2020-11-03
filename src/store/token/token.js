@@ -30,7 +30,7 @@ const token = {
   namespaced: true,
   state: {
     token: '',
-    vip_info: null,
+    vip_info: null
   },
   mutations: {
     // TOKEN 相关
@@ -43,8 +43,8 @@ const token = {
     delToken(state) {
       state.token = '';
       removeToken('TOKEN');
-    }, // 删除token
-  },
+    } // 删除token
+  }
 };
 
 export default token;

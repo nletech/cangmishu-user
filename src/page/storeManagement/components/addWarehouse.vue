@@ -1,53 +1,40 @@
 <template>
-    <div  :class="$style.add_warehouse">
-        <div  :class="$style.main">
-            <el-row  :class="$style.add_warehouse_main">
-                <el-col >
-                    <el-form
-                        ref="rule_form"
-                        label-width="140px"
-                        :rules="rules"
-                        label-position="left"
-                        :model="warehouseInfo">
-                        <el-form-item
-                            prop="name_cn"
-                            :label="$t('storeName')"
-                            size="middle">
-                            <el-input  v-model="warehouseInfo.name_cn"></el-input>
-                        </el-form-item>
-                        <el-form-item
-                            prop="address"
-                            :label="$t('SSQ')"
-                            size="middle">
-                            <el-cascader
-                                :props="props"
-                                :options="addressInfo"
-                                v-model="warehouseInfo.address"
-                                placeholder=""
-                                style="width: 100%;">
-                            </el-cascader>
-                        </el-form-item>
-                        <el-form-item
-                            prop="addressDetail"
-                            :label="$t('addressDetial')"
-                            size="middle">
-                            <el-input
-                              type="textarea"
-                              v-model="warehouseInfo.addressDetail">
-                            </el-input>
-                        </el-form-item>
-                        <label class="label">{{$t('extraInfomation')}}</label>
-                        <el-form-item
-                            prop="area"
-                            :label="$t('WarehouseArea')"
-                            size="medium">
-                            <el-col :span="5">
-                                <el-input v-model="warehouseInfo.area">
-                                  <template slot="append">m²</template>
-                                </el-input>
-                            </el-col>
-                        </el-form-item>
-                        <!-- <el-form-item  label="启用多语言输入">
+  <div :class="$style.add_warehouse">
+    <div :class="$style.main">
+      <el-row :class="$style.add_warehouse_main">
+        <el-col>
+          <el-form
+            ref="rule_form"
+            label-width="140px"
+            :rules="rules"
+            label-position="left"
+            :model="warehouseInfo"
+          >
+            <el-form-item prop="name_cn" :label="$t('storeName')" size="middle">
+              <el-input v-model="warehouseInfo.name_cn"></el-input>
+            </el-form-item>
+            <el-form-item prop="address" :label="$t('SSQ')" size="middle">
+              <el-cascader
+                :props="props"
+                :options="addressInfo"
+                v-model="warehouseInfo.address"
+                placeholder=""
+                style="width: 100%;"
+              >
+              </el-cascader>
+            </el-form-item>
+            <el-form-item prop="addressDetail" :label="$t('addressDetial')" size="middle">
+              <el-input type="textarea" v-model="warehouseInfo.addressDetail"> </el-input>
+            </el-form-item>
+            <label class="label">{{ $t('extraInfomation') }}</label>
+            <el-form-item prop="area" :label="$t('WarehouseArea')" size="medium">
+              <el-col :span="5">
+                <el-input v-model="warehouseInfo.area">
+                  <template slot="append">m²</template>
+                </el-input>
+              </el-col>
+            </el-form-item>
+            <!-- <el-form-item  label="启用多语言输入">
                             <el-switch
                               v-model="warehouseInfo.isEnabledLang"
                               active-text="开启"
@@ -56,19 +43,16 @@
                             </el-switch>
                             <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
                         </el-form-item> -->
-                        <el-form-item>
-                            <el-button
-                                type="primary"
-                                :class="$style.submit_btn"
-                                @click="warehouseInfoSubmit">
-                                {{$t('confirm')}}
-                            </el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-            </el-row>
-        </div>
+            <el-form-item>
+              <el-button type="primary" :class="$style.submit_btn" @click="warehouseInfoSubmit">
+                {{ $t('confirm') }}
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
     </div>
+  </div>
 </template>
 
 <script>
@@ -114,32 +98,29 @@ export default {
         } else {
           callback();
         }
-      },
+      }
     };
     return {
       rules: {
-        name_cn: [
-          { validator: check.name_cn, trigger: 'blur', required: true },
-        ],
-        code: [
-          { validator: check.code, trigger: 'blur', required: true },
-        ],
+        name_cn: [{ validator: check.name_cn, trigger: 'blur', required: true }],
+        code: [{ validator: check.code, trigger: 'blur', required: true }],
         address: [
-          { type: Array, validator: check.address, trigger: 'blur', required: true },
+          {
+            type: Array,
+            validator: check.address,
+            trigger: 'blur',
+            required: true
+          }
         ],
-        addressDetail: [
-          { validator: check.addressDetail, trigger: 'blur', required: true },
-        ],
-        area: [
-          { validator: check.area, trigger: 'blur', required: true },
-        ],
+        addressDetail: [{ validator: check.addressDetail, trigger: 'blur', required: true }],
+        area: [{ validator: check.area, trigger: 'blur', required: true }]
       },
       warehouseInfo: {
         name_cn: '',
         code: '',
         address: [],
         addressDetail: '',
-        area: '',
+        area: ''
         // isEnabledLang: 0,
       },
       id: '',
@@ -149,8 +130,8 @@ export default {
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
         value: 'value',
-        children: 'children',
-      },
+        children: 'children'
+      }
     };
   },
   // watch: {
@@ -174,12 +155,12 @@ export default {
       if (!status) {
         this.$message({
           type: 'success',
-          message: `${successMsg}`,
+          message: `${successMsg}`
         });
       } else {
         this.$message({
           type: 'info',
-          message: `${failMsg}`,
+          message: `${failMsg}`
         });
       }
     },
@@ -210,25 +191,22 @@ export default {
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
       // this.formInfo.is_enabled_lang = this.warehouseInfo.isEnabledLang;
-      this.$refs.rule_form.validate((validate) => {
+      this.$refs.rule_form.validate(validate => {
         if (validate) {
-          $http.addWarehouse(this.formInfo)
-            .then((res) => {
-              if (res.status) return;
-              this.$router.replace({ name: 'storeManage' });
-            });
+          $http.addWarehouse(this.formInfo).then(res => {
+            if (res.status) return;
+            this.$router.replace({ name: 'storeManage' });
+          });
         } else {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-
-
 .add_warehouse {
   .main {
     width: 88%;

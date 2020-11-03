@@ -11,13 +11,11 @@ module.exports = {
     },
     historyApiFallback: true
   },
+  productionSourceMap: false,
   configureWebpack: {
     externals: {
       WxLogin: 'window.WxLogin'
-    }
-  },
-  productionSourceMap: false,
-  configureWebpack: {
+    },
     resolve: {
       alias: {
         '@': path.join(__dirname, './src'),
@@ -42,5 +40,5 @@ module.exports = {
       maskIcon: 'favicon.ico',
       msTileImage: 'favicon.ico'
     }
-  },
-}
+  }
+};

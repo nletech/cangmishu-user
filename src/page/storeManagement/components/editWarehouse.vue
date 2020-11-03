@@ -1,54 +1,51 @@
 <template>
-    <el-dialog
-        :title="$t('edit')"
-        :center="true"
-        :visible.sync="visible"
-        :before-close="handleClose"
-        width="80%">
-        <el-form
-            label-width="140px"
-            :rules="rules"
-            ref="rule_form"
-            label-position="left"
-            :model="warehouseInfo">
-            <label class="label">{{$t('Essentialformrmation')}}</label>
-            <el-form-item
-                prop="name_cn"
-                :label="$t('storeName')"
-                size="medium">
-                <el-input  v-model="warehouseInfo.name_cn"  maxlength="30" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item
-                prop="address"
-                :label="$t('SSQ')"
-                size="medium">
-                <el-cascader
-                    :props="props"
-                    :options="addressInfo"
-                    v-model="warehouseInfo.address"
-                    style="width: 100%;">
-                </el-cascader>
-            </el-form-item>
-            <el-form-item
-                prop="addressDetail"
-                :label="$t('addressDetial')"
-                size="medium">
-                <el-input
-                          v-model="warehouseInfo.addressDetail">
-                </el-input>
-            </el-form-item>
-            <label class="label">{{$t('notNecessaryInfo')}}</label>
-            <el-form-item
-                prop="area"
-                :label="$t('WarehouseArea')"
-                size="medium">
-                <el-col :span="5">
-                    <el-input v-model="warehouseInfo.area">
-                      <template slot="append">m²</template>
-                    </el-input>
-                </el-col>
-            </el-form-item>
-            <!-- <el-form-item  label="启用多语言输入">
+  <el-dialog
+    :title="$t('edit')"
+    :center="true"
+    :visible.sync="visible"
+    :before-close="handleClose"
+    width="80%"
+  >
+    <el-form
+      label-width="140px"
+      :rules="rules"
+      ref="rule_form"
+      label-position="left"
+      :model="warehouseInfo"
+    >
+      <label class="label">{{ $t('Essentialformrmation') }}</label>
+      <el-form-item prop="name_cn" :label="$t('storeName')" size="medium">
+        <el-input
+          v-model="warehouseInfo.name_cn"
+          maxlength="30"
+          show-word-limit
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="address" :label="$t('SSQ')" size="medium">
+        <el-cascader
+          :props="props"
+          :options="addressInfo"
+          v-model="warehouseInfo.address"
+          style="width: 100%;"
+        >
+        </el-cascader>
+      </el-form-item>
+      <el-form-item
+        prop="addressDetail"
+        :label="$t('addressDetial')"
+        size="medium"
+      >
+        <el-input v-model="warehouseInfo.addressDetail"> </el-input>
+      </el-form-item>
+      <label class="label">{{ $t('notNecessaryInfo') }}</label>
+      <el-form-item prop="area" :label="$t('WarehouseArea')" size="medium">
+        <el-col :span="5">
+          <el-input v-model="warehouseInfo.area">
+            <template slot="append">m²</template>
+          </el-input>
+        </el-col>
+      </el-form-item>
+      <!-- <el-form-item  label="启用多语言输入">
                 <el-switch
                   v-model="warehouseInfo.isEnabledLang"
                   active-text="开启"
@@ -57,19 +54,20 @@
                 </el-switch>
                 <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
             </el-form-item> -->
-            <el-form-item>
-                <el-button
-                    type="primary"
-                    :class="$style.submit_btn"
-                    @click="warehouseInfoSubmit">
-                    {{$t('submit')}}
-                </el-button>
-                <el-button @click="handleClose">
-                  {{$t('cancel')}}
-                </el-button>
-            </el-form-item>
-        </el-form>
-    </el-dialog>
+      <el-form-item>
+        <el-button
+          type="primary"
+          :class="$style.submit_btn"
+          @click="warehouseInfoSubmit"
+        >
+          {{ $t('submit') }}
+        </el-button>
+        <el-button @click="handleClose">
+          {{ $t('cancel') }}
+        </el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script>
@@ -80,7 +78,7 @@ export default {
   name: 'editWarehouse',
   props: {
     visible: [Boolean],
-    row_data: [Object],
+    row_data: [Object]
   },
   data() {
     // 自定义的验证规则
@@ -119,32 +117,33 @@ export default {
         } else {
           callback();
         }
-      },
+      }
     };
     return {
       rules: {
         name_cn: [
-          { validator: check.name_cn, trigger: 'blur', required: true },
+          { validator: check.name_cn, trigger: 'blur', required: true }
         ],
-        code: [
-          { validator: check.code, trigger: 'blur', required: true },
-        ],
+        code: [{ validator: check.code, trigger: 'blur', required: true }],
         address: [
-          { type: Array, validator: check.address, trigger: 'blur', required: true },
+          {
+            type: Array,
+            validator: check.address,
+            trigger: 'blur',
+            required: true
+          }
         ],
         addressDetail: [
-          { validator: check.addressDetail, trigger: 'blur', required: true },
+          { validator: check.addressDetail, trigger: 'blur', required: true }
         ],
-        area: [
-          { validator: check.area, trigger: 'blur', required: true },
-        ],
+        area: [{ validator: check.area, trigger: 'blur', required: true }]
       },
       warehouseInfo: {
         name_cn: '',
         code: '',
         address: [],
         addressDetail: '',
-        area: '',
+        area: ''
         // isEnabledLang: 0,
       },
       id: '',
@@ -154,8 +153,8 @@ export default {
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
         value: 'value',
-        children: 'children',
-      },
+        children: 'children'
+      }
     };
   },
   watch: {

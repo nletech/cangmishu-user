@@ -12,8 +12,8 @@ const Store = new Vuex.Store({
     token,
     routerData,
     config,
-    tagsView,
-  },
+    tagsView
+  }
 });
 
 export default Store;

@@ -71,7 +71,7 @@
                 :height="180"
                 @uploadSuccessCallBack="handlerUploadSuccessCallBack"
               >
-                <template slot="btnTitle">{{ $t("upload") }}</template>
+                <template slot="btnTitle">{{ $t('upload') }}</template>
               </my-upload>
             </el-form-item>
           </el-form>
@@ -87,69 +87,77 @@ import myUpload from '@/components/imageUpload/index';
 export default {
   name: 'bindPhone',
   data() {
-    const minLength = { min: 11, max: 11, message: '请输入11位手机号', trigger: 'blur' };
+    const minLength = {
+      min: 11,
+      max: 11,
+      message: '请输入11位手机号',
+      trigger: 'blur'
+    };
     return {
       value: '',
       ruleForm: {
         phone: '',
-        code: '',
+        code: ''
       },
       rules: {
         phone: [
           { required: true, message: '请输入更改手机号', trigger: 'blur' },
-          minLength,
+          minLength
         ],
-        code: [
-          { required: true, message: '请输入验证码', trigger: 'blur' },
-        ],
+        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       },
       imageUrl: '',
-      options: [{
-        value: '选项1',
-        label: '黄金糕',
-      }, {
-        value: '选项2',
-        label: '双皮奶',
-      }, {
-        value: '选项3',
-        label: '蚵仔煎',
-      }, {
-        value: '选项4',
-        label: '龙须面',
-      }, {
-        value: '选项5',
-        label: '北京烤鸭',
-      }],
+      options: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        },
+        {
+          value: '选项2',
+          label: '双皮奶'
+        },
+        {
+          value: '选项3',
+          label: '蚵仔煎'
+        },
+        {
+          value: '选项4',
+          label: '龙须面'
+        },
+        {
+          value: '选项5',
+          label: '北京烤鸭'
+        }
+      ]
     };
   },
   components: {
-    myUpload,
+    myUpload
   },
   computed: {
     user_id() {
       return +localStorage.getItem('setUser');
-    },
+    }
   },
   methods: {
     handlerUploadSuccessCallBack(url) {
       this.imageUrl = url;
     },
     onConfirm() {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          $http.modifyPsw(this.user_id, this.ruleForm)
-            .then((res) => {
-              if (res.status) return;
-              this.$refs.ruleForm.resetFields();
-              this.$message({
-                type: 'success',
-                message: this.$t('success'),
-              });
+          $http.modifyPsw(this.user_id, this.ruleForm).then(res => {
+            if (res.status) return;
+            this.$refs.ruleForm.resetFields();
+            this.$message({
+              type: 'success',
+              message: this.$t('success')
             });
+          });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

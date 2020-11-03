@@ -1,39 +1,39 @@
 <template>
   <div class="modify-password">
     <el-card class="box-card">
-    <el-form
-      :model="ruleForm"
-      status-icon
-      :rules="rules"
-      ref="ruleForm"
-      label-width="100px"
-      class="password-ruleForm"
-    >
-      <el-form-item label="旧密码" prop="old_password">
-        <el-input
-          v-model="ruleForm.old_password"
-          type="password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input
-          v-model="ruleForm.password"
-          type="password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="password_confirmation">
-        <el-input
-          v-model="ruleForm.password_confirmation"
-          type="password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onConfirm">提交</el-button>
-      </el-form-item>
-    </el-form>
+      <el-form
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="password-ruleForm"
+      >
+        <el-form-item label="旧密码" prop="old_password">
+          <el-input
+            v-model="ruleForm.old_password"
+            type="password"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input
+            v-model="ruleForm.password"
+            type="password"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="password_confirmation">
+          <el-input
+            v-model="ruleForm.password_confirmation"
+            type="password"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onConfirm">提交</el-button>
+        </el-form-item>
+      </el-form>
     </el-card>
   </div>
 </template>
@@ -52,51 +52,55 @@ export default {
         callback();
       }
     };
-    const minLength = { min: 6, max: 21, message: '最少输入6位数密码', trigger: 'blur' };
+    const minLength = {
+      min: 6,
+      max: 21,
+      message: '最少输入6位数密码',
+      trigger: 'blur'
+    };
     return {
       ruleForm: {
         password: '',
         password_confirmation: '',
-        old_password: '',
+        old_password: ''
       },
       rules: {
         old_password: [
           { required: true, message: '请输入旧密码', trigger: 'blur' },
-          minLength,
+          minLength
         ],
         password: [
           { required: true, message: '请输入新密码', trigger: 'blur' },
-          minLength,
+          minLength
         ],
         password_confirmation: [
           { required: true, validator: validatePass2, trigger: 'blur' },
-          minLength,
-        ],
-      },
+          minLength
+        ]
+      }
     };
   },
   computed: {
     user_id() {
       return +localStorage.getItem('setUser');
-    },
+    }
   },
   methods: {
     onConfirm() {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          $http.modifyPsw(this.user_id, this.ruleForm)
-            .then((res) => {
-              if (res.status) return;
-              this.$refs.ruleForm.resetFields();
-              this.$message({
-                type: 'success',
-                message: this.$t('success'),
-              });
+          $http.modifyPsw(this.user_id, this.ruleForm).then(res => {
+            if (res.status) return;
+            this.$refs.ruleForm.resetFields();
+            this.$message({
+              type: 'success',
+              message: this.$t('success')
             });
+          });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

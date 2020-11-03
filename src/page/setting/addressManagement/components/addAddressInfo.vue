@@ -106,7 +106,7 @@
             <el-row>
               <el-col>
                 <el-button :class="$style.submit_btn" @click="infoSubmit">
-                  {{ $t("submit") }}
+                  {{ $t('submit') }}
                 </el-button>
               </el-col>
             </el-row>
@@ -129,7 +129,7 @@ export default {
     visible: [Boolean],
     active_tab_item: [String],
     active_add_text: [String],
-    row_data: [Object],
+    row_data: [Object]
   },
   data() {
     return {
@@ -140,90 +140,90 @@ export default {
         {
           id: 0,
           label: '中国',
-          value: 'CN',
-        },
+          value: 'CN'
+        }
       ],
       ocountryOptions: [
         {
           id: 0,
           label: '中国',
-          value: 'CN',
+          value: 'CN'
         },
         {
           id: 1,
           label: '中国台湾',
-          value: 'TW',
+          value: 'TW'
         },
         {
           id: 2,
           label: '中国香港',
-          value: 'HK',
+          value: 'HK'
         },
         {
           id: 3,
           label: '中国澳门',
-          value: 'MO',
+          value: 'MO'
         },
         {
           id: 4,
           label: '荷兰',
-          value: 'NL',
+          value: 'NL'
         },
         {
           id: 5,
           label: '德国',
-          value: 'DE',
+          value: 'DE'
         },
         {
           id: 6,
           label: '比利时',
-          value: 'BE',
+          value: 'BE'
         },
         {
           id: 7,
           label: '波兰',
-          value: 'POL',
+          value: 'POL'
         },
         {
           id: 8,
           label: '法国',
-          value: 'FR',
+          value: 'FR'
         },
         {
           id: 9,
           label: '英国',
-          value: 'GB',
+          value: 'GB'
         },
         {
           id: 10,
           label: '韩国',
-          value: 'KOR',
+          value: 'KOR'
         },
         {
           id: 11,
           label: '美国',
-          value: 'US',
+          value: 'US'
         },
         {
           id: 12,
           label: '新加坡',
-          value: 'SGP',
+          value: 'SGP'
         },
         {
           id: 13,
           label: '马来西亚',
-          value: 'MYS',
+          value: 'MYS'
         },
         {
           id: 14,
           label: '加拿大',
-          value: 'CA',
+          value: 'CA'
         },
         {
           id: 15,
           label: '泰国',
-          value: 'TA',
-        },
+          value: 'TA'
+        }
       ],
       addressInfo: {
         full_name: '', // 姓名
@@ -233,7 +233,7 @@ export default {
         country: '',
         door_no: '',
         street: '',
-        city: '',
+        city: ''
       },
       initAddressObj: {
         full_name: '', // 姓名
@@ -243,7 +243,7 @@ export default {
         country: '',
         door_no: '',
         street: '',
-        city: '',
+        city: ''
       },
       formInfo: {},
       text_flag: '',
@@ -251,34 +251,45 @@ export default {
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
         value: 'value',
-        children: 'children',
+        children: 'children'
       },
-      info_Verify_rules: { // 表单输入验证提醒
+      info_Verify_rules: {
+        // 表单输入验证提醒
         country: [
-          { message: '请选择国家/地区', trigger: 'blur', required: true },
+          { message: '请选择国家/地区', trigger: 'blur', required: true }
         ],
-        city: [
-          { message: '请输入城市', trigger: 'blur', required: true },
-        ],
-        street: [
-          { message: '请输入街道', trigger: 'blur', required: true },
-        ],
-        door_no: [
-          { message: '请输入门牌号', trigger: 'blur', required: true },
-        ],
+        city: [{ message: '请输入城市', trigger: 'blur', required: true }],
+        street: [{ message: '请输入街道', trigger: 'blur', required: true }],
+        door_no: [{ message: '请输入门牌号', trigger: 'blur', required: true }],
         full_name: [
-          { message: this.$t('Pleasetypeinyourname'), trigger: 'blur', required: true },
+          {
+            message: this.$t('Pleasetypeinyourname'),
+            trigger: 'blur',
+            required: true
+          }
         ],
         phone: [
-          { message: this.$t('PleaseEnterPhone'), trigger: 'blur', required: true },
+          {
+            message: this.$t('PleaseEnterPhone'),
+            trigger: 'blur',
+            required: true
+          }
         ],
         address: [
-          { message: this.$t('pleaseInputCity'), trigger: 'blur', required: true },
+          {
+            message: this.$t('pleaseInputCity'),
+            trigger: 'blur',
+            required: true
+          }
         ],
         addressDetail: [
-          { message: this.$t('Pleaseenteradetailedaddress'), trigger: 'blur', required: true },
-        ],
-      },
+          {
+            message: this.$t('Pleaseenteradetailedaddress'),
+            trigger: 'blur',
+            required: true
+          }
+        ]
+      }
     };
   },
   computed: {
@@ -294,7 +305,7 @@ export default {
       } else if (this.active_tab_item === '收件人信息') {
         return this.$t('receiver');
       }
-    },
+    }
   },
   watch: {
     row_data(value) {

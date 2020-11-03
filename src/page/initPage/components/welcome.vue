@@ -2,20 +2,18 @@
   <div :class="$style.container">
     <div :class="$style.container_column1">
       <div :class="$style.statistics">
-        <h3 :class="$style.statistics_title">{{ $t("DataAnalysis") }}:</h3>
+        <h3 :class="$style.statistics_title">{{ $t('DataAnalysis') }}:</h3>
         <div :class="$style.statistics_container">
           <div :class="$style.statistics_container_item">
-            <p>{{ $t("warehouseStock") }}</p>
+            <p>{{ $t('warehouseStock') }}</p>
             <p :class="$style.item_number">
-              <span @click="goToTag('inventoryManage')">{{
-                stock.all_count
-              }}</span>
+              <span @click="goToTag('inventoryManage')">{{ stock.all_count }}</span>
             </p>
             <div :class="$style.item_date">
               <div :class="$style.item_date_title">
-                <p>{{ $t("day") }}:</p>
-                <p>{{ $t("month") }}:</p>
-                <p>{{ $t("year") }}:</p>
+                <p>{{ $t('day') }}:</p>
+                <p>{{ $t('month') }}:</p>
+                <p>{{ $t('year') }}:</p>
               </div>
               <div :class="$style.item_date_number">
                 <p>{{ stock.today_count }}</p>
@@ -25,17 +23,15 @@
             </div>
           </div>
           <div :class="$style.statistics_container_item">
-            <p>{{ $t("ProductData") }}:</p>
+            <p>{{ $t('ProductData') }}:</p>
             <p :class="$style.item_number">
-              <span @click="goToTag('GoodsManage')">{{
-                product.all_count
-              }}</span>
+              <span @click="goToTag('GoodsManage')">{{ product.all_count }}</span>
             </p>
             <div :class="$style.item_date">
               <div :class="$style.item_date_title">
-                <p>{{ $t("day") }}:</p>
-                <p>{{ $t("month") }}:</p>
-                <p>{{ $t("year") }}:</p>
+                <p>{{ $t('day') }}:</p>
+                <p>{{ $t('month') }}:</p>
+                <p>{{ $t('year') }}:</p>
               </div>
               <div :class="$style.item_date_number">
                 <p>{{ product.today_count }}</p>
@@ -45,17 +41,15 @@
             </div>
           </div>
           <div :class="$style.statistics_container_item">
-            <p>{{ $t("OutboundData") }}:</p>
+            <p>{{ $t('OutboundData') }}:</p>
             <p :class="$style.item_number">
-              <span @click="goToTag('outboundList')">{{
-                order.all_count
-              }}</span>
+              <span @click="goToTag('outboundList')">{{ order.all_count }}</span>
             </p>
             <div :class="$style.item_date">
               <div :class="$style.item_date_title">
-                <p>{{ $t("day") }}:</p>
-                <p>{{ $t("month") }}:</p>
-                <p>{{ $t("year") }}:</p>
+                <p>{{ $t('day') }}:</p>
+                <p>{{ $t('month') }}:</p>
+                <p>{{ $t('year') }}:</p>
               </div>
               <div :class="$style.item_date_number">
                 <p>{{ order.today_count }}</p>
@@ -68,10 +62,10 @@
       </div>
 
       <div :class="$style.todo">
-        <h3 :class="$style.title">{{ $t("Todo") }}:</h3>
+        <h3 :class="$style.title">{{ $t('Todo') }}:</h3>
         <div :class="$style.todo_main">
           <div :class="$style.todo_main_item">
-            <p>{{ $t("Warning") }}</p>
+            <p>{{ $t('Warning') }}</p>
             <p :class="$style.todo_main_item_number">
               <span @click="goToTag('inventoryManage', { checked: true })">{{
                 todo.stock_warning
@@ -79,19 +73,15 @@
             </p>
           </div>
           <div :class="$style.todo_main_item">
-            <p>{{ $t("UnShelf") }}</p>
+            <p>{{ $t('UnShelf') }}</p>
             <p :class="$style.todo_main_item_number">
-              <span @click="goToTag('inboundList', { checked: true })">{{
-                todo.unshelf
-              }}</span>
+              <span @click="goToTag('inboundList', { checked: true })">{{ todo.unshelf }}</span>
             </p>
           </div>
           <div :class="$style.todo_main_item">
-            <p>{{ $t("UnConfirm") }}</p>
+            <p>{{ $t('UnConfirm') }}</p>
             <p :class="$style.todo_main_item_number">
-              <span @click="goToTag('outboundList', { checked: true })">{{
-                todo.unconfirm
-              }}</span>
+              <span @click="goToTag('outboundList', { checked: true })">{{ todo.unconfirm }}</span>
             </p>
           </div>
         </div>
@@ -118,34 +108,24 @@
       <div :class="$style.wechatQR">
         <div :class="$style.wechatQR_item">
           <p :class="$style.wechatQR_item_title">
-            {{ $t("OrderWechatMiniProgramDemo") }}
+            {{ $t('OrderWechatMiniProgramDemo') }}
           </p>
           <div :class="$style.wechatQR_item_image">
-            <img
-              width="100%"
-              height="100%"
-              src="../../../assets/img/Wechatcard1.png"
-              alt=""
-            />
+            <img width="100%" height="100%" src="../../../assets/img/Wechatcard1.png" alt="" />
           </div>
           <el-button @click="goToTag('shopsManagement')">{{
-            $t("FreetogetWechatMiniProgram")
+            $t('FreetogetWechatMiniProgram')
           }}</el-button>
         </div>
         <div :class="$style.wechatQR_item">
           <p :class="$style.wechatQR_item_title">
-            {{ $t("WechatOfficialAccount") }}
+            {{ $t('WechatOfficialAccount') }}
           </p>
           <div :class="$style.wechatQR_item_image">
-            <img
-              width="100%"
-              height="100%"
-              src="../../../assets/img/WechatIMG1663.jpeg"
-              alt=""
-            />
+            <img width="100%" height="100%" src="../../../assets/img/WechatIMG1663.jpeg" alt="" />
           </div>
           <p :class="$style.wechatQR_item_text">
-            {{ $t("AnyQuestionletmeknow") }}
+            {{ $t('AnyQuestionletmeknow') }}
           </p>
         </div>
       </div>
@@ -175,12 +155,12 @@ export default {
         order_count: 0, // 今日出库次数
         month_batch_count: 0, // 本月入库次数
         month_order_count: 0, // 本月出库次数
-        product_total: 0, // 可用库存数
+        product_total: 0 // 可用库存数
       },
       order: {}, // 订单
       product: {}, // 产品
       stock: {}, // 库存
-      todo: {}, // 待办事项
+      todo: {} // 待办事项
     };
   },
 
@@ -194,19 +174,21 @@ export default {
   },
 
   computed: {
-
     desc() {
-      return [`${this.$t('Inboundtimes')}`, `${this.$t('Outboundtimes')}`, `${this.$t('InboundItemnumber')}`, `${this.$t('OutboundItemnumber')}`];
+      return [
+        `${this.$t('Inboundtimes')}`,
+        `${this.$t('Outboundtimes')}`,
+        `${this.$t('InboundItemnumber')}`,
+        `${this.$t('OutboundItemnumber')}`
+      ];
     },
 
     lang() {
       return this.$i18n.locale;
-    },
-
+    }
   },
 
   watch: {
-
     warehouseId() {
       this.getWarehouseDate();
       this.initCharts();
@@ -216,35 +198,32 @@ export default {
     lang() {
       this.initCharts();
       this.getEchartsData();
-    },
-
+    }
   },
   methods: {
     goToTag(tag, query) {
-      // eslint-disable-next-line
       this.$router.push({
         name: tag,
-        query,
+        query
       });
     },
-
     getEchartsData() {
       let echartsdate;
       if (this.chart_time.length !== 2) {
         const endtime = new Date();
-        const starttime = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000));
+        const starttime = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         echartsdate = {
           start_time: this.formatTime(starttime),
-          end_time: this.formatTime(endtime),
+          end_time: this.formatTime(endtime)
         };
       } else {
         echartsdate = {
           start_time: this.chart_time[0],
-          end_time: this.chart_time[1],
+          end_time: this.chart_time[1]
         };
       }
       echartsdate.warehouse_id = this.warehouseId || '';
-      $http.echartsData(echartsdate).then((res) => {
+      $http.echartsData(echartsdate).then(res => {
         if (res.data.length !== 0) {
           this.echartsdata = res.data.data.reverse();
         } else {
@@ -255,7 +234,7 @@ export default {
               order_count: 0,
               batch_product_num: 0,
               order_product_num: 0
-            },
+            }
           ];
         }
         this.setCharts();
@@ -266,40 +245,44 @@ export default {
       if (this.echartsdata && this.echartsdata === 0) return;
       this.myCharts.setOption({
         legend: {
-          data: this.desc,
+          data: this.desc
         },
         xAxis: {
           data: this.echartsdata.map(item => item.time),
           splitLine: {
-            show: true,
-          },
+            show: true
+          }
         },
         yAxis: {
           splitLine: {
-            show: true,
-          },
+            show: true
+          }
         },
-        series: [{
-          name: `${this.desc[0]}`,
-          type: 'bar',
-          data: this.echartsdata.map(item => item.batch_count),
-        }, {
-          name: `${this.desc[1]}`,
-          type: 'bar',
-          data: this.echartsdata.map(item => item.order_count),
-        }, {
-          name: `${this.desc[2]}`,
-          type: 'line',
-          data: this.echartsdata.map(item => item.batch_product_num),
-        }, {
-          name: `${this.desc[3]}`,
-          type: 'line',
-          data: this.echartsdata.map(item => item.order_product_num),
-        }],
-        color: ['#abc66c', '#97c1ff', '#ff9797', '#6cc67f'],
+        series: [
+          {
+            name: `${this.desc[0]}`,
+            type: 'bar',
+            data: this.echartsdata.map(item => item.batch_count)
+          },
+          {
+            name: `${this.desc[1]}`,
+            type: 'bar',
+            data: this.echartsdata.map(item => item.order_count)
+          },
+          {
+            name: `${this.desc[2]}`,
+            type: 'line',
+            data: this.echartsdata.map(item => item.batch_product_num)
+          },
+          {
+            name: `${this.desc[3]}`,
+            type: 'line',
+            data: this.echartsdata.map(item => item.order_product_num)
+          }
+        ],
+        color: ['#abc66c', '#97c1ff', '#ff9797', '#6cc67f']
       });
     },
-
     // 处理时间
     formatTime(time) {
       let month = time.getMonth() + 1;
@@ -312,10 +295,9 @@ export default {
       }
       return `${time.getFullYear()}-${month}-${date}`;
     },
-
     getWarehouseDate() {
       if (!this.warehouseId) return;
-      $http.homeWarehouseData({ warehouse_id: this.warehouseId }).then((res) => {
+      $http.homeWarehouseData({ warehouse_id: this.warehouseId }).then(res => {
         if (res.status) return;
         this.$nextTick(() => {
           this.order = res.data.order;
@@ -325,13 +307,11 @@ export default {
         });
       });
     },
-
     initCharts() {
       this.myCharts = echarts.init(document.getElementById('myCharts'));
       window.onresize = this.myCharts.resize;
-    },
-
-  },
+    }
+  }
 };
 </script>
 
