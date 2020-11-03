@@ -1,29 +1,28 @@
 <template>
-  <el-dialog  :title="$t('outboundDetial')"
-              width="90%"
-              @update:visible="$emit('update:visible', $event)"
-              :visible="visible">
-              <el-tabs
-                  v-model="activeName"
-                  @tab-click="handlerTabClick"
-                  stretch
-                  type="border-card">
-                <el-tab-pane name="out">
-                   <div id="iframeHtml" v-if="visible"></div>
-                    <el-row>
-                        <el-col :span="2" :offset="11">
-                            <el-button
-                                :disabled="disable"
-                                :loading="isButtonLoading"
-                                @click="handleDownload('out')"
-                                style="background-color: #5745c5;
-                                color: #fff;">
-                                {{$t('downloadOutbound')}}
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                </el-tab-pane>
-              </el-tabs>
+  <el-dialog
+    :title="$t('outboundDetial')"
+    width="90%"
+    @update:visible="$emit('update:visible', $event)"
+    :visible="visible"
+  >
+    <el-tabs v-model="activeName" @tab-click="handlerTabClick" stretch type="border-card">
+      <el-tab-pane name="out">
+        <div id="iframeHtml" v-if="visible"></div>
+        <el-row>
+          <el-col :span="2" :offset="11">
+            <el-button
+              :disabled="disable"
+              :loading="isButtonLoading"
+              @click="handleDownload('out')"
+              style="background-color: #5745c5;
+                                color: #fff;"
+            >
+              {{ $t('downloadOutbound') }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+    </el-tabs>
   </el-dialog>
 </template>
 
@@ -32,19 +31,18 @@ import { createAnChildNode } from '@/lib/utils/index';
 import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
 
-
 export default {
   mixins: [mixin],
   name: 'outbound-order-detail',
   props: {
     visible: Boolean,
-    id: Number,
+    id: Number
   },
   data() {
     return {
       pdfData: '',
       disable: false,
-      activeName: 'out',
+      activeName: 'out'
     };
   },
   mounted() {
@@ -57,8 +55,8 @@ export default {
         this.activeName = 'out';
         this.getList('out');
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   computed: {
     warehouseId() {
@@ -66,7 +64,7 @@ export default {
     },
     api() {
       return this.$store.state.token.token.substring(7);
-    },
+    }
   },
   methods: {
     getList(template) {
@@ -78,7 +76,7 @@ export default {
           frameBorder: '0',
           width: '100%',
           height: '500',
-          src: `${baseApi}order/${this.id}/pdf/${template}?api_token=${this.api}`,
+          src: `${baseApi.BASE_URL}order/${this.id}/pdf/${template}?api_token=${this.api}`
         });
         iframeHtml.appendChild(iframe);
       });
@@ -91,19 +89,21 @@ export default {
           // eslint-disable-next-line
           return;
         default:
-        // eslint-disable-next-line
+          // eslint-disable-next-line
           return;
       }
     },
     handleDownload(template) {
-      window.open(`${baseApi}order/${this.id}/download/${template}/?api_token=${this.api}&lang`);
+      window.open(
+        `${baseApi.BASE_URL}order/${this.id}/download/${template}/?api_token=${this.api}&lang`
+      );
       this.disable = true;
       const timer = setTimeout(() => {
         this.disable = false;
         clearTimeout(timer);
       }, 500);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -114,7 +114,7 @@ export default {
 .img {
   margin: 0 20px 0 0;
 }
-.contact{
+.contact {
   font-weight: bold;
   line-height: 35px;
   margin-bottom: 20px;

@@ -1,30 +1,27 @@
 <template>
   <div style="display: flex; flex-direction: column;">
-      <el-button
-          size="small"
-          style="width: 120px;"
-          :disabled="disable"
-          @click="toggleShow">
-          <slot name="btnTitle"></slot>
-      </el-button>
-      <my-upload
-          :langExt="langInfo"
-          :langType="langType"
-          field="image"
-          @crop-success="cropSuccess"
-          @crop-upload-success="cropUploadSuccess"
-          @crop-upload-fail="cropUploadFail"
-          v-model="show"
-          :width="width"
-          :height="height"
-          :url="api"
-          :params="params"
-          :headers="headers"
-          img-format="png">
-      </my-upload>
-      <div style="margin: 10px 0 0 0;">
-          <img v-if="img" style="width: 150px; height: 150px;" :src="img">
-      </div>
+    <el-button size="small" style="width: 120px;" :disabled="disable" @click="toggleShow">
+      <slot name="btnTitle"></slot>
+    </el-button>
+    <my-upload
+      :langExt="langInfo"
+      :langType="langType"
+      field="image"
+      @crop-success="cropSuccess"
+      @crop-upload-success="cropUploadSuccess"
+      @crop-upload-fail="cropUploadFail"
+      v-model="show"
+      :width="width"
+      :height="height"
+      :url="api"
+      :params="params"
+      :headers="headers"
+      img-format="png"
+    >
+    </my-upload>
+    <div style="margin: 10px 0 0 0;">
+      <img v-if="img" style="width: 150px; height: 150px;" :src="img" />
+    </div>
   </div>
 </template>
 <script>
@@ -35,51 +32,51 @@ export default {
   props: {
     img: {
       type: String,
-      default: '',
+      default: ''
     },
 
     width: {
       type: Number,
-      default: 180,
+      default: 180
     },
 
     height: {
       type: Number,
-      default: 180,
+      default: 180
     },
 
     disable: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     langType: {
       type: String,
-      default: 'zh',
-    },
+      default: 'zh'
+    }
   },
 
   components: {
-    myUpload,
+    myUpload
   },
 
   data() {
     return {
       show: false,
       params: {
-        name: 'shopLogo',
+        name: 'shopLogo'
       },
       headers: {
-        Authorization: this.$store.state.token.token,
+        Authorization: this.$store.state.token.token
       },
       imgDataUrl: '',
-      temp_img: '',
+      temp_img: ''
     };
   },
   computed: {
     langInfo() {
       return {
-        preview: this.$t('imagePreview'),
+        preview: this.$t('imagePreview')
       };
     },
 
@@ -88,8 +85,8 @@ export default {
     },
 
     api() {
-      return `${baseApi}/upload/image`;
-    },
+      return `${baseApi.BASE_URL}/upload/image`;
+    }
   },
 
   watcch: {
@@ -97,7 +94,7 @@ export default {
       if (!this.show) {
         this.$emit('update:img', '');
       }
-    },
+    }
   },
 
   methods: {
@@ -116,11 +113,9 @@ export default {
 
     cropUploadFail() {
       console.log('-------- upload fail --------');
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

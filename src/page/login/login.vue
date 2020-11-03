@@ -113,7 +113,6 @@ export default {
     getWeChatQR() {
       $http.getLoginQR().then(res => {
         if (res.status) return;
-        console.log(baseApi.BASE_STATE, 'baseApi.BASE_STATE');
         let state = btoa(baseApi.BASE_STATE);
         this.wxLoginObj = new WxLogin({
           id: 'wx-qr-code-box',

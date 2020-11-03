@@ -1,33 +1,33 @@
 <template>
-  <el-dialog  :title="$t('viewInboundList')"
-              width="90%"
-              @update:visible="$emit('update:visible', $event)"
-              :visible="visible">
-              <el-tabs
-                @tab-click="handlerTabClick"
-                v-model="activeName"
-                stretch
-                type="border-card">
-                <el-tab-pane
-                    v-for="(item, id) of tabs"
-                    :key="id"
-                    :label="$t(`${item.label}`)"
-                    :name="item.name">
-                    <div id="iframeHtml" v-if="activeName === `${item.name}`"></div>
-                    <el-row>
-                        <el-col :span="2" :offset="11">
-                            <el-button
-                                :disabled="disable"
-                                :loading="isButtonLoading"
-                                @click="handleDownload(`${item.name}`)"
-                                style="background-color: #5745c5;
-                                color: #fff;">
-                                {{$t('DownloadInbound')}}
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                </el-tab-pane>
-                <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
+  <el-dialog
+    :title="$t('viewInboundList')"
+    width="90%"
+    @update:visible="$emit('update:visible', $event)"
+    :visible="visible"
+  >
+    <el-tabs @tab-click="handlerTabClick" v-model="activeName" stretch type="border-card">
+      <el-tab-pane
+        v-for="(item, id) of tabs"
+        :key="id"
+        :label="$t(`${item.label}`)"
+        :name="item.name"
+      >
+        <div id="iframeHtml" v-if="activeName === `${item.name}`"></div>
+        <el-row>
+          <el-col :span="2" :offset="11">
+            <el-button
+              :disabled="disable"
+              :loading="isButtonLoading"
+              @click="handleDownload(`${item.name}`)"
+              style="background-color: #5745c5;
+                                color: #fff;"
+            >
+              {{ $t('DownloadInbound') }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+      <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
                     <div id="iframeHtml" v-if="visible === true && activeName === 'entry'"></div>
                     <el-row>
                         <el-col :span="2" :offset="11">
@@ -42,7 +42,7 @@
                         </el-col>
                     </el-row>
                 </el-tab-pane> -->
-                <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
+      <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
                     <div id="iframeHtml" v-if="visible === true && activeName === 'entry'"></div>
                     <el-row>
                         <el-col :span="2" :offset="11">
@@ -89,7 +89,7 @@
                         </el-col>
                     </el-row>
                 </el-tab-pane> -->
-              </el-tabs>
+    </el-tabs>
   </el-dialog>
 </template>
 
@@ -102,7 +102,7 @@ export default {
   mixins: [mixin],
   props: {
     visible: Boolean,
-    id: Number,
+    id: Number
   },
   data() {
     return {
@@ -110,20 +110,23 @@ export default {
         {
           id: 1,
           label: 'Inbound',
-          name: 'entry',
-        }, {
+          name: 'entry'
+        },
+        {
           id: 2,
           label: 'PurchaseOrder',
-          name: 'purchase',
-        }, {
+          name: 'purchase'
+        },
+        {
           id: 3,
           label: 'Inboundbatchnumber',
-          name: 'batchno',
-        }],
+          name: 'batchno'
+        }
+      ],
       pdfData: '',
       content: '',
       disable: false,
-      activeName: 'entry',
+      activeName: 'entry'
     };
   },
   computed: {
@@ -132,7 +135,7 @@ export default {
     },
     api() {
       return this.$store.state.token.token.substring(7);
-    },
+    }
   },
   watch: {
     warehouseId() {
@@ -144,8 +147,8 @@ export default {
         this.activeName = 'entry';
         this.getList('entry');
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   methods: {
     handlerTabClick(tab) {
@@ -179,25 +182,27 @@ export default {
           width: '100%',
           height: '500',
           frameBorder: '0',
-          src: `${baseApi}batch/${this.id}/pdf/${template}?api_token=${this.api}`,
+          src: `${baseApi.BASE_URL}batch/${this.id}/pdf/${template}?api_token=${this.api}`
         });
         iframeHtml.appendChild(iframe);
       });
     },
     handleDownload(template) {
-      window.open(`${baseApi}batch/${this.id}/download/${template}/?api_token=${this.api}&lang`);
+      window.open(
+        `${baseApi.BASE_URL}batch/${this.id}/download/${template}/?api_token=${this.api}&lang`
+      );
       this.disable = true;
       const timer = setTimeout(() => {
         this.disable = false;
         clearTimeout(timer);
       }, 500);
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style module>
-.content_box{
+.content_box {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -213,8 +218,6 @@ export default {
 </style>
 
 <style lang="less" scoped>
-
-
 .inbound_info {
   padding-left: 20px;
 }

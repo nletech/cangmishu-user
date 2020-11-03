@@ -21,13 +21,13 @@
           :height="180"
           @uploadSuccessCallBack="handlerUploadSuccessCallBack"
         >
-          <template slot="btnTitle">{{ $t("upload") }}</template>
+          <template slot="btnTitle">{{ $t('upload') }}</template>
         </my-upload>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" :loading="isButtonLoading" @click="submit">
-        {{ $t("confirm") }}
+        {{ $t('confirm') }}
       </el-button>
     </span>
   </el-dialog>
@@ -43,25 +43,23 @@ export default {
   name: 'userInfo',
   mixins: [mixin],
   props: {
-    visible: [Boolean],
+    visible: [Boolean]
   },
   components: {
-    myUpload,
+    myUpload
   },
   data() {
     return {
       form: {
         nickname: '',
-        photos: '',
+        photos: ''
       },
       userEmail: '',
       fileList: [],
       imageUrl: '',
       rules: {
-        nickname: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-        ],
-      },
+        nickname: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
+      }
     };
   },
   mounted() {
@@ -80,8 +78,8 @@ export default {
       return localStorage.getItem('setUEmail');
     }, // 用户名
     api() {
-      return `${baseApi}/upload/image`;
-    }, // 上传图片
+      return `${baseApi.BASE_URL}/upload/image`;
+    } // 上传图片
   },
   methods: {
     handlerUploadSuccessCallBack(url) {
@@ -93,7 +91,7 @@ export default {
       } else if (res.status === 1) {
         this.$notify({
           message: res.msg,
-          type: 'warning',
+          type: 'warning'
         });
       }
     },
@@ -109,31 +107,28 @@ export default {
       return isJPG && isLt2M;
     }, // 请求接口之前的处理
     submit() {
-      this.$refs.validator.validate((valid) => {
+      this.$refs.validator.validate(valid => {
         if (valid) {
-          $http.modifyUserAvatar(this.user_id, { avatar: this.imageUrl })
-            .then((re) => {
-              if (re.status) return;
-              this.form.photos = this.imageUrl;
-              $http.modifyUserInfo(this.user_id, this.form)
-                .then((res) => {
-                  if (res.status) return;
-                  // 更新旧的头像和用户名
-                  this.$store.commit('config/setUserInfo',
-                    {
-                      avatar: this.imageUrl,
-                      nickName: this.form.nickname,
-                    });
-                  this.$emit('update:visible', false);
-                  this.$message({
-                    type: 'success',
-                    message: this.$t('success'),
-                  });
-                });
+          $http.modifyUserAvatar(this.user_id, { avatar: this.imageUrl }).then(re => {
+            if (re.status) return;
+            this.form.photos = this.imageUrl;
+            $http.modifyUserInfo(this.user_id, this.form).then(res => {
+              if (res.status) return;
+              // 更新旧的头像和用户名
+              this.$store.commit('config/setUserInfo', {
+                avatar: this.imageUrl,
+                nickName: this.form.nickname
+              });
+              this.$emit('update:visible', false);
+              this.$message({
+                type: 'success',
+                message: this.$t('success')
+              });
             });
+          });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

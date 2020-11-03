@@ -1,15 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>仓秘书——免费的仓储订货平台系统</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7f7f7;
+        width: 100%;
+        min-height: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .loader {
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAB5lBMVEUAAAAAAP9/f/9VVapAQL9mM8xVVdRJSbZVOcZNTcxOTsRVRMxaS8NVR8ZRQ8lZQL9VScJZQ8hVQMpcR8JYRcRbSchYRsFVRMNaQsVVRsFXQsVaRchXQ8NVSMRZRsZXRMdVQ8JZR8RXRsVVRMZXR8NVRcVYRMZXR8dVRsNYRcRXQ8VVR8ZYRsNXRMRYRsZWRcdVRMNYR8RWRsVVRcZWR8RZRsVXRcVXRsRWRsNXRMVYRcZWRMVYRsVXRcZWRcZYRMZXRsRWRcVYRcVYRcVXRMVWRMVXRsVXRMVYRsRWRcVXRMZYRcRXRMVWRsVXRcRXRcZWRcRYRMVWRcVYRcZXRsRWRcVXRcVXRMZWRsRXRcVWRMZXRsRWRcVXRcZWRcRXRMVYRcZXRMVYRsVXRcVXRcZYRMVXRcVXRcVYRcZXRcVXRMVXRsRYRcVXRMVXRcRWRcVXRcZXRsVXRcZXRcVYRcVYRcVXRcZYRcVXRcVXRcVXRcVXRcVXRcVXRsRXRcVXRcZXRcVXRMVXRcVXRcVXRcVXRcVXRcVWRcVXRcVXRcVWRcVXRsRXRcVWRcVXRcVXRcVYRcVXRcVXRcVXRcVXRcVXRcVXRMVXRcVXRcZXRcVXRcVXRcVXRcVXRcVXRcVXRcVXRcVXRcWWHcxFAAAAoXRSTlMAAQIDBAUGBwkKDQ8REhMUFRcYGRocHR4fISMlJicoKSorLC0vMDEyMzQ1Njc4Ojs8PT4/QUJGSU1PUVNUVVlaW1xdYGFlZm1xc3h6e3x+gYKDhYaHiImKi42Oj5GTlJWXmZqbnJ2en6CipKWmqKqrrbC2ucDDyMnLzM7P0NHU1dfY2drd3+Hj5OXm5+jp6uvs7e7v8PHy8/T19/n6+/z9/upw2f0AAAKySURBVHja7Zj5W0xRGMfvNaNkClGyRFIijEkI2bexJQrJHkIlWVL2nVRGUpMaQ/X+p/Qk850xy733nHvP8/B+f7zv8vn8MOc8pzSNw+FwOBwORyRH6MNilfyjRNSdr45fRRPpUWZwjCbTs0QNv5qm0rtUBf84kVID5BN9LHCaX0PRCThsUEuxCSxzkn+K/s6nQuf4p4mUGtRR/PQVOcOvJ1JqcBaRr/2142hQbD//HPKfZWva/lEnDfTzyH+YOfFtLxp8XmEv/wLyH8yc/LoTDfrtNNAvIv9+xtT3Hd/RoMQ+/iXk302LVCrDUPiy0i7+ZeQ3u7C2xQEDvQH5DXp0dfM3KA6ssoN/Bfl1emy9IgTlQfkG+lXkV8fp2BRlUCqbfw22jx+K21M+DD3B1VL5067D7lF/gi7fEBqskch33YDNP3Yn7PMG0WCtPP5N2BvemqSzdAANvLL4TbA1VJG0t6QfDdbJ4TfDzqGyFN3FfbINXC14z6c+XYUB9PWJ82/h63+5gYmCXpj4KmrgaoVtXcb+Es/vRoMyMf5t2PV2gcGpRV0wNbxegO9ug00v5hqeW/hejoH7Dux5NMvEZN47mBwptyqA/A6PqdHcN3h3bLAoADvaM0zO5rxCg42iAvfSTQ9nv8TzmyUm0Oq2MD3nORhUCQlEP/8MZ/aTiMBTIYFdFn9DWY8jZ1GJgObp/PNPJDUCmqfj94p6RQJaes3grwVjLTNUCWjadO/2yvmCF5GQgEhYgAUSCezzm02aXIEgmY2HBViABf5Vgc62pGm3XSDFHV3EAizAAixgu0Bj9MNrT57TArEZO6OrFSA6oVogPE+xAPlVC5xULXBQsUAoV63AyDZHTkFTgidY4+EcZy4io2EBFpAmcCDTWnyyBMTDAizAAixgUYDD4XA4HA7nP8lPagpiyCqj0wYAAAAASUVORK5CYII=');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 50%;
+        width: 60px;
+        height: 60px;
+        background-size: contain;
+      }
+    </style>
   </head>
   <body>
+    <div id="wrapper">
+      <div class="loader"></div>
+    </div>
     <noscript>
-      <strong>We're sorry but 仓秘书——免费的仓储订货平台系统 doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but 仓秘书——免费的仓储订货平台系统 doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
     </noscript>
     <div id="app"></div>
     <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>

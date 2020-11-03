@@ -2,30 +2,18 @@
   <div :class="$style.outboundList">
     <div :class="$style.outboundList_main">
       <el-row :class="$style.outboundList_tags">
-        <outbound-list-search
-          @data_cb="handlerCallBackData"
-          @queryParams="handlerQueryParams"
-        >
+        <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
         </outbound-list-search>
       </el-row>
       <el-row>
         <el-col :span="2" :offset="19">
-          <el-button
-            size="small"
-            :disabled="isDisabled"
-            @click="handlerExportOrder"
-          >
-            {{ $t("Export") }}
+          <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
+            {{ $t('Export') }}
           </el-button>
         </el-col>
         <el-col :span="2" :offset="1">
-          <el-button
-            type="text"
-            :class="$style.btn"
-            @click="addOutbound"
-            icon="el-icon-plus"
-          >
-            {{ $t("addOutbound") }}
+          <el-button type="text" :class="$style.btn" @click="addOutbound" icon="el-icon-plus">
+            {{ $t('addOutbound') }}
           </el-button>
         </el-col>
       </el-row>
@@ -36,12 +24,7 @@
         :data="outbound_list_data"
         border
       >
-        <el-table-column
-          label="#"
-          header-align="center"
-          align="center"
-          type="index"
-        >
+        <el-table-column label="#" header-align="center" align="center" type="index">
         </el-table-column>
         <el-table-column
           :label="$t('outboundNumber')"
@@ -133,20 +116,11 @@
           width="155"
         >
         </el-table-column>
-        <el-table-column
-          :label="$t('operation')"
-          header-align="center"
-          width="200"
-        >
+        <el-table-column :label="$t('operation')" header-align="center" width="200">
           <template slot="header">
-            <span>{{ $t("operation") }}</span>
-            <el-popover
-              placement="top-start"
-              title="Tips:"
-              width="360"
-              trigger="hover"
-            >
-              <span>{{ $t("outboundTips") }}</span>
+            <span>{{ $t('operation') }}</span>
+            <el-popover placement="top-start" title="Tips:" width="360" trigger="hover">
+              <span>{{ $t('outboundTips') }}</span>
               <el-button
                 size="mini"
                 type="text"
@@ -182,11 +156,7 @@
             </el-tooltip>
             <el-tooltip :content="$t('PrintPicking')" placement="top">
               <el-button
-                v-if="
-                  scope.row.status === 4 ||
-                  scope.row.status === 5 ||
-                  scope.row.status === 7
-                "
+                v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
                 style="margin: 8px 0 0 0"
                 size="mini"
                 icon="el-icon-printer"
@@ -249,9 +219,9 @@
               <el-button
                 v-if="
                   scope.row.status === 1 ||
-                  scope.row.status === 4 ||
-                  scope.row.status === 5 ||
-                  scope.row.status === 7
+                    scope.row.status === 4 ||
+                    scope.row.status === 5 ||
+                    scope.row.status === 7
                 "
                 style="margin: 8px 0 0 0"
                 size="mini"
@@ -263,21 +233,13 @@
               </el-button>
             </el-tooltip>
             <!-- 确认签收 -->
-            <el-dialog
-              align="center"
-              :visible.sync="receviceDialog"
-              width="20%"
-            >
+            <el-dialog align="center" :visible.sync="receviceDialog" width="20%">
               <div>
-                <span style="font-size: 1.4rem">{{ $t("Submit") }} ?</span>
+                <span style="font-size: 1.4rem">{{ $t('Submit') }} ?</span>
               </div>
               <span slot="footer" class="dialog-footer">
-                <el-button
-                  @click="receviceDialog = false"
-                  :loading="isButtonLoading"
-                  size="small"
-                >
-                  {{ $t("cancel") }}
+                <el-button @click="receviceDialog = false" :loading="isButtonLoading" size="small">
+                  {{ $t('cancel') }}
                 </el-button>
                 <el-button
                   type="primary"
@@ -285,23 +247,15 @@
                   @click="confirmRecevice()"
                   size="small"
                 >
-                  {{ $t("confirm") }}
+                  {{ $t('confirm') }}
                 </el-button>
               </span>
             </el-dialog>
             <!-- 确认签收 -->
-            <el-dialog
-              :title="$t('EditTrack')"
-              :visible.sync="expressDialog"
-              width="60%"
-            >
+            <el-dialog :title="$t('EditTrack')" :visible.sync="expressDialog" width="60%">
               <el-row>
                 <el-col :span="18" :offset="3">
-                  <el-form
-                    :model="expressForm"
-                    :rules="rules"
-                    label-width="160px"
-                  >
+                  <el-form :model="expressForm" :rules="rules" label-width="160px">
                     <el-form-item :label="$t('DeliveryCompany')">
                       <el-select
                         v-model="expressForm.express_code"
@@ -336,12 +290,8 @@
                 </el-col>
               </el-row>
               <span slot="footer" class="dialog-footer">
-                <el-button
-                  :loading="isButtonLoading"
-                  @click="expressDialog = false"
-                  size="mini"
-                >
-                  {{ $t("cancel") }}
+                <el-button :loading="isButtonLoading" @click="expressDialog = false" size="mini">
+                  {{ $t('cancel') }}
                 </el-button>
                 <el-button
                   :loading="isButtonLoading"
@@ -349,7 +299,7 @@
                   @click="editExpress()"
                   size="mini"
                 >
-                  {{ $t("confirm") }}
+                  {{ $t('confirm') }}
                 </el-button>
               </span>
             </el-dialog>
@@ -358,10 +308,7 @@
                 <el-col :span="18" :offset="3">
                   <el-form :model="payment" :rules="rules" label-width="160px">
                     <el-form-item :label="$t('Payment')">
-                      <el-select
-                        v-model="payment.pay_type"
-                        placeholder="请选择"
-                      >
+                      <el-select v-model="payment.pay_type" placeholder="请选择">
                         <el-option
                           v-for="item in paymentType"
                           :key="item.id"
@@ -372,10 +319,7 @@
                       </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('PayStatus')">
-                      <el-select
-                        v-model="payment.pay_status"
-                        placeholder="请选择"
-                      >
+                      <el-select v-model="payment.pay_status" placeholder="请选择">
                         <el-option
                           v-for="item in paymentStatus"
                           :key="item.id"
@@ -386,28 +330,17 @@
                       </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('Paid')">
-                      <el-input
-                        value="number"
-                        v-model="payment.sub_pay"
-                        maxlength="15"
-                      ></el-input>
+                      <el-input value="number" v-model="payment.sub_pay" maxlength="15"></el-input>
                     </el-form-item>
                     <el-form-item :label="$t('No')">
-                      <el-input
-                        v-model="payment.payment_account_number"
-                        maxlength="100"
-                      ></el-input>
+                      <el-input v-model="payment.payment_account_number" maxlength="100"></el-input>
                     </el-form-item>
                   </el-form>
                 </el-col>
               </el-row>
               <span slot="footer" class="dialog-footer">
-                <el-button
-                  :loading="isButtonLoading"
-                  @click="paymentDialog = false"
-                  size="mini"
-                >
-                  {{ $t("cancel") }}
+                <el-button :loading="isButtonLoading" @click="paymentDialog = false" size="mini">
+                  {{ $t('cancel') }}
                 </el-button>
                 <el-button
                   :loading="isButtonLoading"
@@ -415,7 +348,7 @@
                   @click="ChangPayment(scope.row)"
                   size="mini"
                 >
-                  {{ $t("confirm") }}
+                  {{ $t('confirm') }}
                 </el-button>
               </span>
             </el-dialog>
@@ -433,11 +366,7 @@
         </el-col>
       </el-row>
       <!-- 入库单详情弹框 -->
-      <outbound-detail
-        :visible.sync="outboundDialogVisible"
-        :id="id"
-        :row_data="row_data"
-      >
+      <outbound-detail :visible.sync="outboundDialogVisible" :id="id" :row_data="row_data">
       </outbound-detail>
     </div>
   </div>
@@ -448,22 +377,21 @@ import paginationPublic from '@/components/pagination-public';
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
-import datePickerPublic from '@/components/date-picker-public';
-import selectPublic from '@/components/select-public';
-import datePickerSingePublic from '@/components/date-picker-singe-public';
+// import datePickerPublic from '@/components/date-picker-public';
+// import selectPublic from '@/components/select-public';
+// import datePickerSingePublic from '@/components/date-picker-singe-public';
 import outboundDetail from './components/outbound_detail';
 import outboundListSearch from './components/outboundListSearch';
-
 
 export default {
   mixins: [mixin],
   components: {
     outboundDetail,
-    datePickerPublic,
-    datePickerSingePublic,
-    selectPublic,
+    // datePickerPublic,
+    // datePickerSingePublic,
+    // selectPublic,
     outboundListSearch,
-    paginationPublic,
+    paginationPublic
   },
 
   data() {
@@ -472,7 +400,7 @@ export default {
       expressForm: {
         express_code: '', // 快递公司代码
         express_num: '', // 快递单号
-        shop_remark: '', // 备注
+        shop_remark: '' // 备注
       },
       expressList: [], // 快递公司列表
       expressDialog: false, // 编辑物流
@@ -490,7 +418,7 @@ export default {
       outboundDialogVisible: false, // 出库单详情弹框
       params: {
         total: 0,
-        currentPage: 1,
+        currentPage: 1
       }, // 分页数据
       row_data: {},
       outboundId: '', // 临时 出库单 id
@@ -504,9 +432,9 @@ export default {
         pay_type: 0,
         pay_status: 0,
         sub_pay: '',
-        payment_account_number: '',
+        payment_account_number: ''
       },
-      payId: 0,
+      payId: 0
     };
   },
 
@@ -522,7 +450,7 @@ export default {
     },
     currentLang() {
       return localStorage.getItem('lang') || 'cn';
-    },
+    }
   },
   watch: {
     paymentDialog() {
@@ -531,7 +459,7 @@ export default {
           pay_type: 0,
           pay_status: 0,
           sub_pay: '',
-          payment_account_number: '',
+          payment_account_number: ''
         };
         this.payment = copy;
       }
@@ -545,11 +473,11 @@ export default {
           id: '', // 订单 id
           express_code: '', // 快递公司代码
           express_num: '', // 快递单号
-          shop_remark: '', // 备注
+          shop_remark: '' // 备注
         };
         this.expressForm = clearExpressForm;
       }
-    },
+    }
   },
   methods: {
     onPayment(row) {
@@ -567,24 +495,26 @@ export default {
     }, // 跟踪
 
     onPrint(row) {
-      window.open(`${baseApi}order/${row.id}/download/pick/?api_token=${this.api}&lang=${this.currentLang}`);
+      window.open(
+        `${baseApi.BASE_URL}order/${row.id}/download/pick/?api_token=${this.api}&lang=${this.currentLang}`
+      );
     }, // 打印拣货单
 
     getPayStatus() {
-      $http.payStatus().then((res) => {
+      $http.payStatus().then(res => {
         this.paymentStatus = res.data;
       });
     }, // 支付状态
 
     getPayTypes() {
-      $http.payTypes().then((res) => {
+      $http.payTypes().then(res => {
         this.paymentType = res.data;
       });
     }, // 支付类型
 
     ChangPayment() {
       if (!this.payId) return;
-      $http.ChangPayment(this.payId, this.payment).then((res) => {
+      $http.ChangPayment(this.payId, this.payment).then(res => {
         if (res.status) return;
         this.paymentDialog = false;
         this.getOutbounds();
@@ -614,7 +544,9 @@ export default {
         this.isDisabled = false;
         clearTimeout(timer);
       }, 2000);
-      window.open(`${baseApi}order/export?api_token=${this.api}&warehouse_id=${this.warehouseId}&${this.tempStr}`);
+      window.open(
+        `${baseApi.BASE_URL}order/export?api_token=${this.api}&warehouse_id=${this.warehouseId}&${this.tempStr}`
+      );
     },
 
     showExpressDialog(row) {
@@ -635,38 +567,36 @@ export default {
 
     confirmRecevice() {
       if (!this.outboundId) return;
-      $http.editReceiveStatus(this.outboundId)
-        .then((res) => {
-          if (res.status) return;
-          this.getOutbounds();
-        });
+      $http.editReceiveStatus(this.outboundId).then(res => {
+        if (res.status) return;
+        this.getOutbounds();
+      });
       this.receviceDialog = false;
     },
 
     editExpress() {
       if (!this.outboundId) return;
-      $http.changeOutboundStatus(this.outboundId, this.expressForm)
-        .then((res) => {
-          if (res.status) return;
-          this.getOutbounds();
-        });
+      $http.changeOutboundStatus(this.outboundId, this.expressForm).then(res => {
+        if (res.status) return;
+        this.getOutbounds();
+      });
       this.expressDialog = false;
     },
 
     getExpressList() {
-      $http.AllExpress()
-        .then((res) => {
-          if (res.status) return;
-          this.expressList = res.data;
-        });
+      $http.AllExpress().then(res => {
+        if (res.status) return;
+        this.expressList = res.data;
+      });
     },
 
     handlerChangePage(val) {
-      $http.getOutbound({
-        warehouse_id: this.warehouseId,
-        page: val,
-      })
-        .then((res) => {
+      $http
+        .getOutbound({
+          warehouse_id: this.warehouseId,
+          page: val
+        })
+        .then(res => {
           this.outbound_list_data = res.data.data;
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;
@@ -682,27 +612,26 @@ export default {
 
     addOutbound() {
       this.$router.push({
-        name: 'addOutbound',
+        name: 'addOutbound'
       });
     }, // 添加出库单
 
     getOutbounds() {
       if (!this.warehouseId) return;
-      $http.getOutbound({ warehouse_id: this.warehouseId })
-        .then((res) => {
-          if (res.status) return;
-          this.outbound_list_data = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
+      $http.getOutbound({ warehouse_id: this.warehouseId }).then(res => {
+        if (res.status) return;
+        this.outbound_list_data = res.data.data;
+        this.params.total = res.data.total;
+        this.params.currentPage = res.data.current_page;
+      });
     }, // 获取出库单列表
 
     checkedOutbound(row) {
       this.$router.push({
         name: 'setOutbound',
         query: {
-          order_id: row.id,
-        },
+          order_id: row.id
+        }
       });
     }, // 设为出库
 
@@ -715,27 +644,23 @@ export default {
     cancelOrder(row) {
       this.$confirm(this.$t('checkTips'), this.$t('tips'), {
         confirmButtonText: this.$t('confirm'),
-        cancelButtonText: this.$t('cancel'),
-      })
-        .then(() => {
-          $http.cancelOutbound(row.id, { warehouse_id: row.warehouse_id })
-            .then((res) => {
-              if (res.status) return;
-              this.getOutbounds();
-              this.$message({
-                type: 'success',
-                message: res.msg,
-              });
-            });
+        cancelButtonText: this.$t('cancel')
+      }).then(() => {
+        $http.cancelOutbound(row.id, { warehouse_id: row.warehouse_id }).then(res => {
+          if (res.status) return;
+          this.getOutbounds();
+          this.$message({
+            type: 'success',
+            message: res.msg
+          });
         });
-    }, // 取消订单
-  },
+      });
+    } // 取消订单
+  }
 };
 </script>
 
 <style lang="less" module>
-
-
 .outboundList {
   .outboundList_main {
     margin: 0 auto;

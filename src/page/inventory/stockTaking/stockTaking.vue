@@ -1,125 +1,120 @@
 <template>
-    <div :class="$style.stockTaking">
-        <div :class="$style.stockTaking_main">
-            <div :class="$style.stockTaking_table">
-              <el-row>
-                    <el-col  :span="2" :offset="21">
-                        <el-button
-                            type="text"
-                            :class="$style.btn"
-                            @click="handlerCheckStock"
-                            icon="el-icon-plus">
-                            {{$t('addStocktaking')}}
-                        </el-button>
-                    </el-col>
-              </el-row>
+  <div :class="$style.stockTaking">
+    <div :class="$style.stockTaking_main">
+      <div :class="$style.stockTaking_table">
+        <el-row>
+          <el-col :span="2" :offset="21">
+            <el-button
+              type="text"
+              :class="$style.btn"
+              @click="handlerCheckStock"
+              icon="el-icon-plus"
+            >
+              {{ $t('addStocktaking') }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <el-table
+        element-loading-text="loading"
+        v-loading="isButtonLoading"
+        :data="outbound_list_data"
+        border
+        style="width:100%"
+      >
+        <el-table-column label="#" type="index" header-align="center" align="center">
+        </el-table-column>
+        <el-table-column
+          :label="$t('OrderCode')"
+          prop="recount_no"
+          header-align="center"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column :label="$t('checkStockGoods')" header-align="center" align="center">
+          <template slot-scope="scope">
+            <div
+              :title="scope.row.stocks | filtersTitle"
+              v-for="(item, index) of scope.row.stocks"
+              :key="index"
+            >
+              <span v-if="index === 0">{{ item.name_cn }}&nbsp;...</span>
             </div>
-            <el-table
-                element-loading-text="loading"
-                v-loading="isButtonLoading"
-                :data="outbound_list_data"
-                border
-                style="width:100%">
-                <el-table-column
-                    label="#"
-                    type="index"
-                    header-align="center"
-                    align="center">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('OrderCode')"
-                    prop="recount_no"
-                    header-align="center"
-                    align="center">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('checkStockGoods')"
-                    header-align="center"
-                    align="center">
-                    <template slot-scope="scope">
-                      <div
-                          :title="scope.row.stocks | filtersTitle"
-                          v-for="(item, index) of scope.row.stocks"
-                          :key="index">
-                          <span v-if="index === 0">{{item.name_cn}}&nbsp;...</span>
-                      </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    :label="$t('checkStockStatus')"
-                    prop="product_name"
-                    header-align="center"
-                    align="center">
-                    <template slot-scope="scope">
-                      {{scope.row.diff_count !== 0 ? $t('haveProfit'): $t('noProfit')}}
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    :label="$t('checkStockDate')"
-                    prop="updated_at"
-                    header-align="center"
-                    align="center">
-                </el-table-column>
-                <el-table-column
-                    :label="$t('operation')"
-                    header-align="center"
-                    width="180">
-                    <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            @click="handleCheck(scope.row)"
-                            :loading="isButtonLoading">
-                            {{$t('detail')}}
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-row>
-                <el-col :span="2" :offset="22">
-                    <pagination-public  :class="$style.pagination"
-                                        :params="params"
-                                        @changePage="handlerChangePage">
-                    </pagination-public>
-                </el-col>
-            </el-row>
-            <!-- 盘点弹框 -->
-            <stock-taking-check
-                :visible.sync="showCheckSwitch"
-                :row_data="row_data"
-                @success="handleSuccess"
-                @close="handleClose">
-            </stock-taking-check>
-            <!-- 记录 -->
-            <record
-              :row="row"
-              :visible.sync="record_visible">
-            </record>
-            <!-- 明细 -->
-            <el-dialog
-              :visible.sync="visible"
-              width="90%"
-              style="width: 100%;"
-              :title="$t('checkStockPre')">
-              <el-row>
-                <el-col>
-                  <div v-html="content" v-if="visible"></div>
-                </el-col>
-              </el-row>
-              <el-row>
-                  <el-col :span="2" :offset="21">
-                      <el-button
-                          :disable="disable"
-                          :loading="isButtonLoading"
-                          style="margin-top: 20px;"
-                          type="primary"
-                          @click="onDownload">
-                          {{$t('download')}}
-                      </el-button>
-                  </el-col>
-              </el-row>
-            </el-dialog>
-        </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('checkStockStatus')"
+          prop="product_name"
+          header-align="center"
+          align="center"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.diff_count !== 0 ? $t('haveProfit') : $t('noProfit') }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('checkStockDate')"
+          prop="updated_at"
+          header-align="center"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column :label="$t('operation')" header-align="center" width="180">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="handleCheck(scope.row)" :loading="isButtonLoading">
+              {{ $t('detail') }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-row>
+        <el-col :span="2" :offset="22">
+          <pagination-public
+            :class="$style.pagination"
+            :params="params"
+            @changePage="handlerChangePage"
+          >
+          </pagination-public>
+        </el-col>
+      </el-row>
+      <!-- 盘点弹框 -->
+      <stock-taking-check
+        :visible.sync="showCheckSwitch"
+        :row_data="row_data"
+        @success="handleSuccess"
+        @close="handleClose"
+      >
+      </stock-taking-check>
+      <!-- 记录 -->
+      <record :row="row" :visible.sync="record_visible"> </record>
+      <!-- 明细 -->
+      <el-dialog
+        :visible.sync="visible"
+        width="90%"
+        style="width: 100%;"
+        :title="$t('checkStockPre')"
+      >
+        <el-row>
+          <el-col>
+            <div v-html="content" v-if="visible"></div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="2" :offset="21">
+            <el-button
+              :disable="disable"
+              :loading="isButtonLoading"
+              style="margin-top: 20px;"
+              type="primary"
+              @click="onDownload"
+            >
+              {{ $t('download') }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
+  </div>
 </template>
 
 <script>
@@ -136,7 +131,7 @@ export default {
   components: {
     paginationPublic,
     stockTakingCheck,
-    Record,
+    Record
   },
   data() {
     return {
@@ -157,7 +152,7 @@ export default {
       content: '',
       visible: false,
       stockId: '',
-      disable: false,
+      disable: false
     };
   },
   filters: {
@@ -179,7 +174,7 @@ export default {
         default:
           return '无盈亏';
       }
-    },
+    }
   },
   created() {
     this.checkStockList();
@@ -192,27 +187,28 @@ export default {
     },
     warehouseId() {
       this.checkStockList();
-    },
+    }
   },
   computed: {
     api() {
       return this.$store.state.token.token.substring(7);
-    },
+    }
   },
   methods: {
     previewStockDetails(stockId) {
       if (!this.warehouseId) return;
-      $http.Stockpreview(stockId)
-        .then((res) => {
-          if (res.status) return;
-          this.content = res;
-        });
+      $http.Stockpreview(stockId).then(res => {
+        if (res.status) return;
+        this.content = res;
+      });
     },
     onDownload() {
       if (!this.stockId) return;
       this.disable = true;
       this.visible = false;
-      window.open(`${baseApi}recount/${this.stockId}/download/?api_token=${this.api}&lang`);
+      window.open(
+        `${baseApi.BASE_URL}recount/${this.stockId}/download/?api_token=${this.api}&lang`
+      );
       this.disable = false;
     },
     handlerChangePage(val) {
@@ -220,32 +216,32 @@ export default {
     }, // 分页回调
     handlerCheckStock() {
       this.$router.push({
-        name: 'addCheckStock',
+        name: 'addCheckStock'
       });
     },
     checkStockList(query) {
       if (!this.warehouseId) return;
       const data = {
-        warehouse_id: this.warehouseId,
+        warehouse_id: this.warehouseId
       };
       if (query && query.page) {
         data.page = query.page;
       } // 分页查询
-      $http.checkStockList(data)
-        .then((res) => {
-          if (res.status) return;
-          this.outbound_list_data = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
+      $http.checkStockList(data).then(res => {
+        if (res.status) return;
+        this.outbound_list_data = res.data.data;
+        this.params.total = res.data.total;
+        this.params.currentPage = res.data.current_page;
+      });
     },
     handleSuccess(val, sku) {
       if (val) {
-        $http.queryInventory({
-          warehouse_id: this.warehouseId,
-          code: sku,
-        })
-          .then((res) => {
+        $http
+          .queryInventory({
+            warehouse_id: this.warehouseId,
+            code: sku
+          })
+          .then(res => {
             this.code = ''; // 初始化
             if (res.status) return;
             this.outbound_list_data = res.data.data;
@@ -258,11 +254,12 @@ export default {
       this.showCheckSwitch = val;
     },
     handleCurrentChange(val) {
-      $http.checkOrder({
-        warehouse_id: this.warehouseId,
-        page: val,
-      })
-        .then((res) => {
+      $http
+        .checkOrder({
+          warehouse_id: this.warehouseId,
+          page: val
+        })
+        .then(res => {
           if (res.status) return;
           this.outbound_list_data = res.data.data;
           this.total = res.data.total;
@@ -286,11 +283,12 @@ export default {
     },
     handleSearch() {
       if (this.code) {
-        $http.queryInventory({
-          warehouse_id: this.warehouseId,
-          code: this.code,
-        })
-          .then((res) => {
+        $http
+          .queryInventory({
+            warehouse_id: this.warehouseId,
+            code: this.code
+          })
+          .then(res => {
             this.code = ''; // 初始化
             if (res.status) return;
             this.outbound_list_data = res.data.data;
@@ -298,15 +296,13 @@ export default {
             this.currentPage = res.data.current_page;
           });
       }
-    },
+    }
     // 获取入库单列表
-  },
+  }
 };
 </script>
 
 <style lang="less" module>
-
-
 .stockTaking {
   .stockTaking_main {
     margin: 0 auto;

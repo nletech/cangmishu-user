@@ -7,13 +7,14 @@
     :on-error="handleError"
     :before-remove="beforeRemove"
     :on-exceed="handleExceed"
-    :action=api
+    :action="api"
     :limit="3"
     name="pdf"
     :file-list="fileList"
-    multiple>
-   <i class="el-icon-upload"></i>
-  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    multiple
+  >
+    <i class="el-icon-upload"></i>
+    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
   </el-upload>
 </template>
 
@@ -24,7 +25,7 @@ export default {
   data() {
     return {
       // myPhoto: this.photo,
-      fileList: [],
+      fileList: []
     };
   },
   computed: {
@@ -32,8 +33,8 @@ export default {
       return { Authorization: this.$store.state.token.token };
     },
     api() {
-      return `${baseApi}/upload/pdf`;
-    },
+      return `${baseApi.BASE_URL}/upload/pdf`;
+    }
   },
   methods: {
     handleExceed() {
@@ -47,7 +48,7 @@ export default {
       } else if (res.status === 1) {
         this.$notify({
           message: res.msg,
-          type: 'warning',
+          type: 'warning'
         });
       }
     },
@@ -56,15 +57,12 @@ export default {
     },
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style lang="less" module>
-
-
-</style>
+<style lang="less" module></style>
 
 <style lang="less" scoped>
 .avatar-uploader-icon {

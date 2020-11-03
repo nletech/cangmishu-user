@@ -3,8 +3,12 @@
 </template>
 
 <script>
+const doc = document;
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    doc.body.removeChild(doc.getElementById('wrapper'));
+  }
 };
 </script>
 

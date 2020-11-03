@@ -23,12 +23,10 @@ switch (baseUrl) {
     };
     break;
   default:
-    // 仓秘书开发服
     baseApi = {
       BASE_URL: 'https://dev-api.cangmishu.com/',
       BASE_STATE: 'https://dev.cangmishu.com/#/'
     };
-    // baseApi = 'https://weapp.cangmishu.com/'; // 本地
     break;
 }
 export default baseApi;

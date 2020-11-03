@@ -10,14 +10,14 @@
           <div v-if="+UType !== 0">
             <div style="font-size: 1.2rem; text-align: center; line-height: 80px;">
               <i class="medium el-icon-house"></i>
-              <span>{{warehouseName}}</span>
+              <span>{{ warehouseName }}</span>
             </div>
           </div>
           <div v-else>
             <el-dropdown :class="$style.selectedTag_main">
               <el-button type="text">
                 <i class="medium el-icon-house"></i>
-                <strong>{{warehouseName}}</strong>
+                <strong>{{ warehouseName }}</strong>
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu
@@ -26,13 +26,13 @@
                 style="width: 200px; text-align: center;"
               >
                 <el-dropdown-item @click.native="to_store_management">
-                  <span>{{$t('WarehouseList')}}</span>
+                  <span>{{ $t('WarehouseList') }}</span>
                 </el-dropdown-item>
                 <el-dropdown-item @click.native="shift_warehouse">
-                  <span>{{$t('selectdWh')}}</span>
+                  <span>{{ $t('selectdWh') }}</span>
                 </el-dropdown-item>
                 <el-dropdown-item @click.native="to_create_store">
-                  <span>{{$t('addStoreManage')}}</span>
+                  <span>{{ $t('addStoreManage') }}</span>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -44,7 +44,7 @@
         <div :class="$style.selectLang" v-if="true">
           <span @click="handlerClick">
             <!-- {{$t('CurrentLanguage')}}: -->
-            {{this.$i18n.locale | langFilter}}
+            {{ this.$i18n.locale | langFilter }}
           </span>
         </div>
         <div
@@ -53,7 +53,7 @@
           :class="$style.warehouse"
         >
           <i class="iconfont">&#xe6bf;</i>
-          <span>{{selectWarehouse}}</span>
+          <span>{{ selectWarehouse }}</span>
         </div>
         <div :class="$style.user">
           <div
@@ -66,8 +66,7 @@
             <img v-else :class="$style.avatar" :src="Uavatar" />
             <div
               :class="$style.avatar_hover_text"
-              v-show="visible_avatar_text &&
-                              this.$i18n.locale === 'cn'"
+              v-show="visible_avatar_text && this.$i18n.locale === 'cn'"
             >
               <span>修改资料</span>
             </div>
@@ -79,8 +78,10 @@
             <el-dropdown>
               <span class="iconfont">&#xe60e;</span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="handleChangePassWord">{{$t('modifyPassword')}}</el-dropdown-item>
-                <el-dropdown-item @click.native="logout">{{$t('LogOut')}}</el-dropdown-item>
+                <el-dropdown-item @click.native="handleChangePassWord">{{
+                  $t('modifyPassword')
+                }}</el-dropdown-item>
+                <el-dropdown-item @click.native="logout">{{ $t('LogOut') }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -88,7 +89,11 @@
       </div>
     </div>
     <!-- 切换仓库 -->
-    <el-dialog :title="$t('SwitchWarehouse')" :append-to-body="true" :visible.sync="showWarehousesDialog">
+    <el-dialog
+      :title="$t('SwitchWarehouse')"
+      :append-to-body="true"
+      :visible.sync="showWarehousesDialog"
+    >
       <el-form>
         <el-form-item :label="$t('warehouse')">
           <el-select v-model="currentWarehouseId" :placeholder="$t('checkedWh')">
@@ -102,8 +107,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showWarehousesDialog = false">{{$t('cancel')}}</el-button>
-        <el-button type="primary" @click="handleConfirm">{{$t('confirm')}}</el-button>
+        <el-button @click="showWarehousesDialog = false">{{ $t('cancel') }}</el-button>
+        <el-button type="primary" @click="handleConfirm">{{ $t('confirm') }}</el-button>
       </div>
     </el-dialog>
     <!-- 修改密码 -->
@@ -122,11 +127,9 @@ export default {
   name: 'topNav',
   components: {
     ChangePassWord,
-    UserInfo,
+    UserInfo
   },
-
   mixins: [mixin],
-
   data() {
     return {
       visible_avatar_text: false,
@@ -137,14 +140,12 @@ export default {
       showWarehousesDialog: false, // 切换仓库弹窗开关
       centerDialogVisible: false,
       isShowSelectWarehouseIcon: false,
-      currentWarehouseId: this.warehouseId,
+      currentWarehouseId: this.warehouseId
     };
   },
-
   created() {
     this.getWarehouses(); // 获取仓库列表
   },
-
   watch: {
     currentWarehouseId(val) {
       const arr = this.warehouseList;
@@ -154,8 +155,7 @@ export default {
           this.selectWarehouse = arr[i].name_cn; // 设置仓库名
         }
       }
-    },
-
+    }
   },
   computed: {
     email() {
@@ -171,8 +171,7 @@ export default {
 
     UType() {
       return +localStorage.getItem('setUType');
-    }, // 用户类型: 商家或员工
-
+    } // 用户类型: 商家或员工
   },
 
   filters: {
@@ -181,13 +180,12 @@ export default {
         return 'EN';
       }
       return '中文';
-    },
+    }
   },
-
   methods: {
     handlerClick() {
       // eslint-disable-next-line
-      this.$i18n.locale === 'cn' ? this.$i18n.locale = 'en' : this.$i18n.locale = 'cn';
+      this.$i18n.locale === 'cn' ? (this.$i18n.locale = 'en') : (this.$i18n.locale = 'cn');
       this.$store.commit('config/setCurrentLanguage', this.$i18n.locale);
       localStorage.setItem('lang', `${this.$i18n.locale}`);
       // this.$store.commit('config/setCurrentLanguage', this.$i18n.locale);
@@ -199,11 +197,9 @@ export default {
     handlerAvatarMouseLeave() {
       this.visible_avatar_text = false;
     },
-
     handleChangeUserinfo() {
       this.show_user_info_flag = true;
     }, // 修改个人资料
-
     handleChangePassWord() {
       this.show_psw_flag = true;
     }, // 修改密码
@@ -215,14 +211,12 @@ export default {
     to_create_store() {
       this.$router.replace({ name: 'addWarehouse' });
     }, // 跳转到-----创建仓库
-
     shift_warehouse() {
       this.showWarehousesDialog = true;
       this.getWarehouses();
     }, // 切换仓库--确定按钮
-
     getWarehouses() {
-      $http.warehouses().then((res) => {
+      $http.warehouses().then(res => {
         const data = res.data.data;
         this.warehouseList = data;
       });
@@ -233,17 +227,17 @@ export default {
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
       this.showWarehousesDialog = false;
     },
-
     toggleWarehouseIcon() {
-      if (this.warehouseList.length === 1) { return; }
+      if (this.warehouseList.length === 1) {
+        return;
+      }
       this.centerDialogVisible = true;
     },
-
     logout() {
       this.$confirm(this.$t('LogoutTips'), this.$t('tips'), {
         confirmButtonText: this.$t('confirm'),
         cancelButtonText: this.$t('cancel'),
-        type: 'warning',
+        type: 'warning'
       }).then(() => {
         $http.logout().then(() => {
           this.$store.commit('token/delToken');
@@ -261,17 +255,16 @@ export default {
           localStorage.removeItem('setUAvatar');
           localStorage.removeItem('setUEmail');
           this.$router.push({
-            name: 'login',
+            name: 'login'
           });
         });
       });
-    }, // 注销
-  },
+    } // 注销
+  }
 };
 </script>
 
 <style lang="less" module>
-
 .dialogcentered {
   margin: auto;
   text-align: center;

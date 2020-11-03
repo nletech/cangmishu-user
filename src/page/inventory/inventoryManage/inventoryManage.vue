@@ -1,165 +1,213 @@
 <template>
-    <div :class="$style.page">
-        <div :class="$style.main">
-            <el-row :class="$style.header">
-                    <el-col :span="4">
-                        <el-input
-                            size="small"
-                            @clear="handlerClear"
-                            clearable
-                            v-model="query.product_name"
-                            :placeholder="$t('ProductName')">
-                        </el-input>
-                    </el-col>
-                    <el-col :span="4" :offset="1">
-                        <el-input
-                            size="small"
-                            clearable
-                            @clear="handlerClear"
-                            v-model="query.sku"
-                            :placeholder="$t('Inboundbatchnumber')">
-                        </el-input>
-                    </el-col>
-                    <el-col :span="1">
-                        <el-button  size="small"
-                                    @click="handlerSearch">
-                                    {{$t('Search')}}
-                        </el-button>
-                    </el-col>
-                    <!-- 低于库存 -->
-                    <el-col :span="2" :offset="1">
-                        <div style="position: relative; top: 5px; font-size: 1.2rem;">
-                            <el-checkbox
-                                :true-label="1"
-                                @change="handlerInventorySwitch"
-                                v-model="query.show_low_stock">
-                              {{$t('Belowstock')}}
-                            </el-checkbox>
-                        </div>
-                    </el-col>
-                    <el-col :span="2" :offset="8">
-                        <el-button
-                            icon="el-icon-plus"
-                            type="text"
-                            :class="$style.header_btn"
-                            :loading="isButtonLoading"
-                            @click="dialogVisible = true">
-                            {{$t('ExportProductinventory')}}
-                        </el-button>
-                    </el-col>
-            </el-row>
-            <el-table
-                element-loading-text="loading"
-                v-loading="isButtonLoading"
-                :data="stockList"
-                border>
-                <el-table-column  type="expand">
-                      <template  slot-scope="props">
-                          <el-table
-                              :data="props.row.stocks"
-                              border>
-                              <el-table-column align="center" header-align="center" :label="$t('Inboundbatchnumber')" prop="sku">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" :label="$t('bestUseTime')" prop="best_before_date">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" :label="$t('Expirydate')" prop="expiration_date">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" :label="$t('ProductionBatch')" prop="production_batch_number">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" label="EAN" prop="ean">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" :label="$t('warehouseStock')" prop="stock_num">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" :label="$t('StockCheck')" prop="recount_times">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" :label="$t('Location')" prop="warehouse_location_code">
-                              </el-table-column>
-                              <el-table-column align="center" header-align="center" :label="$t('StockHistory')">
-                                  <template slot-scope="scope">
-                                    <el-button
-                                    size="small"
-                                    @click="showStockDetail(scope.row)">{{$t('detail')}}</el-button>
-                                  </template>
-                              </el-table-column>
-                          </el-table>
-                      </template>
-                </el-table-column>
-                <el-table-column align="center" header-align="center" type="index" label="#">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" width="300" :label="$t('ProductName')">
-                                  <template slot-scope="scope">
-                                            {{scope.row.product_name}}
-                                  </template>
-                </el-table-column>
-                <el-table-column align="center" header-align="center" :label="$t('Chinesespecifications')">
-                                  <template slot-scope="scope">
-                                            {{scope.row.name_cn}}
-                                  </template>
-                </el-table-column>
-                <el-table-column  align="center" header-align="center" prop="relevance_code"
-                                  label="SKU">
-                </el-table-column>
-                <el-table-column  align="center" header-align="center" prop="total_stock_num"
-                                  :label="$t('warehouseStock')">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" :label="$t('Inboundtimesnumbers')">
-                    <template slot-scope="scope">
-                        {{scope.row.total_stockin_times}} / {{scope.row.total_stockin_num}}
-                    </template>
-                </el-table-column>
-                <el-table-column  align="center" header-align="center" prop="stock_out_times"
-                                  :label="$t('Outboundtimesnumbers')">
-                    <template slot-scope="scope">
-                        {{scope.row.total_stockout_times}} / {{scope.row.total_stockout_num}}
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" header-align="center" :label="$t('StockHistory')">
-                    <template slot-scope="scope">
-                        <el-button size="mini" @click="viewDetails(scope.row)">{{$t('detail')}}</el-button>
-                    </template>
-                </el-table-column>
+  <div :class="$style.page">
+    <div :class="$style.main">
+      <el-row :class="$style.header">
+        <el-col :span="4">
+          <el-input
+            size="small"
+            @clear="handlerClear"
+            clearable
+            v-model="query.product_name"
+            :placeholder="$t('ProductName')"
+          >
+          </el-input>
+        </el-col>
+        <el-col :span="4" :offset="1">
+          <el-input
+            size="small"
+            clearable
+            @clear="handlerClear"
+            v-model="query.sku"
+            :placeholder="$t('Inboundbatchnumber')"
+          >
+          </el-input>
+        </el-col>
+        <el-col :span="1">
+          <el-button size="small" @click="handlerSearch">
+            {{ $t('Search') }}
+          </el-button>
+        </el-col>
+        <!-- 低于库存 -->
+        <el-col :span="2" :offset="1">
+          <div style="position: relative; top: 5px; font-size: 1.2rem;">
+            <el-checkbox
+              :true-label="1"
+              @change="handlerInventorySwitch"
+              v-model="query.show_low_stock"
+            >
+              {{ $t('Belowstock') }}
+            </el-checkbox>
+          </div>
+        </el-col>
+        <el-col :span="2" :offset="8">
+          <el-button
+            icon="el-icon-plus"
+            type="text"
+            :class="$style.header_btn"
+            :loading="isButtonLoading"
+            @click="dialogVisible = true"
+          >
+            {{ $t('ExportProductinventory') }}
+          </el-button>
+        </el-col>
+      </el-row>
+      <el-table element-loading-text="loading" v-loading="isButtonLoading" :data="stockList" border>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-table :data="props.row.stocks" border>
+              <el-table-column
+                align="center"
+                header-align="center"
+                :label="$t('Inboundbatchnumber')"
+                prop="sku"
+              >
+              </el-table-column>
+              <el-table-column
+                align="center"
+                header-align="center"
+                :label="$t('bestUseTime')"
+                prop="best_before_date"
+              >
+              </el-table-column>
+              <el-table-column
+                align="center"
+                header-align="center"
+                :label="$t('Expirydate')"
+                prop="expiration_date"
+              >
+              </el-table-column>
+              <el-table-column
+                align="center"
+                header-align="center"
+                :label="$t('ProductionBatch')"
+                prop="production_batch_number"
+              >
+              </el-table-column>
+              <el-table-column align="center" header-align="center" label="EAN" prop="ean">
+              </el-table-column>
+              <el-table-column
+                align="center"
+                header-align="center"
+                :label="$t('warehouseStock')"
+                prop="stock_num"
+              >
+              </el-table-column>
+              <el-table-column
+                align="center"
+                header-align="center"
+                :label="$t('StockCheck')"
+                prop="recount_times"
+              >
+              </el-table-column>
+              <el-table-column
+                align="center"
+                header-align="center"
+                :label="$t('Location')"
+                prop="warehouse_location_code"
+              >
+              </el-table-column>
+              <el-table-column align="center" header-align="center" :label="$t('StockHistory')">
+                <template slot-scope="scope">
+                  <el-button size="small" @click="showStockDetail(scope.row)">{{
+                    $t('detail')
+                  }}</el-button>
+                </template>
+              </el-table-column>
             </el-table>
-            <el-row>
-                <el-col :span="2" :offset="22">
-                      <pagination-public
-                          :class="$style.pagination"
-                          :params="params"
-                          @changePage="handlerChangePage">
-                      </pagination-public>
-                </el-col>
-            </el-row>
-        </div>
-        <!-- 导出商品库存弹框 -->
-        <el-dialog
-            :title="$t('ExportProductinventory')"
-            :visible.sync="dialogVisible"
-            @closed="onClosedDialog"
-            width="500px">
-            <el-checkbox-group v-model="export_data">
-                <el-checkbox value="1" label="1">{{$t('ExportProductList')}}</el-checkbox>
-                <el-checkbox value="2" label="2">{{$t('Productmeasurementlist')}}</el-checkbox>
-            </el-checkbox-group>
-            <span slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="dialogVisible = false">{{$t('cancel')}}</el-button>
-                <el-button size="mini" type="primary" @click="exportStock">{{$t('confirm')}}</el-button>
-            </span>
-        </el-dialog>
-        <!-- 出入库详情弹框 -->
-        <inventory-detail
-            :visible.sync="inventoryDialogVisible"
-            :rowInfo="rowInfo"
-            :warehouseName="warehouseName"
-            :id="id">
-        </inventory-detail>
-        <!-- SKU详情 弹窗 -->
-        <SkuDetails
-            :visible.sync="skuDetalisSwitch"
-            :stock_id="stock_id"
-            :warehouseId="warehouseId"
-            :warehouseName="warehouseName"
-            :rowInfo="rowInfo">
-        </SkuDetails>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" header-align="center" type="index" label="#">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          width="300"
+          :label="$t('ProductName')"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.product_name }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" header-align="center" :label="$t('Chinesespecifications')">
+          <template slot-scope="scope">
+            {{ scope.row.name_cn }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" header-align="center" prop="relevance_code" label="SKU">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          prop="total_stock_num"
+          :label="$t('warehouseStock')"
+        >
+        </el-table-column>
+        <el-table-column align="center" header-align="center" :label="$t('Inboundtimesnumbers')">
+          <template slot-scope="scope">
+            {{ scope.row.total_stockin_times }} / {{ scope.row.total_stockin_num }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          prop="stock_out_times"
+          :label="$t('Outboundtimesnumbers')"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.total_stockout_times }} / {{ scope.row.total_stockout_num }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" header-align="center" :label="$t('StockHistory')">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="viewDetails(scope.row)">{{ $t('detail') }}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-row>
+        <el-col :span="2" :offset="22">
+          <pagination-public
+            :class="$style.pagination"
+            :params="params"
+            @changePage="handlerChangePage"
+          >
+          </pagination-public>
+        </el-col>
+      </el-row>
     </div>
+    <!-- 导出商品库存弹框 -->
+    <el-dialog
+      :title="$t('ExportProductinventory')"
+      :visible.sync="dialogVisible"
+      @closed="onClosedDialog"
+      width="500px"
+    >
+      <el-checkbox-group v-model="export_data">
+        <el-checkbox value="1" label="1">{{ $t('ExportProductList') }}</el-checkbox>
+        <el-checkbox value="2" label="2">{{ $t('Productmeasurementlist') }}</el-checkbox>
+      </el-checkbox-group>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogVisible = false">{{ $t('cancel') }}</el-button>
+        <el-button size="mini" type="primary" @click="exportStock">{{ $t('confirm') }}</el-button>
+      </span>
+    </el-dialog>
+    <!-- 出入库详情弹框 -->
+    <inventory-detail
+      :visible.sync="inventoryDialogVisible"
+      :rowInfo="rowInfo"
+      :warehouseName="warehouseName"
+      :id="id"
+    >
+    </inventory-detail>
+    <!-- SKU详情 弹窗 -->
+    <SkuDetails
+      :visible.sync="skuDetalisSwitch"
+      :stock_id="stock_id"
+      :warehouseId="warehouseId"
+      :warehouseName="warehouseName"
+      :rowInfo="rowInfo"
+    >
+    </SkuDetails>
+  </div>
 </template>
 
 <script>
@@ -175,13 +223,13 @@ export default {
   components: {
     inventoryDetail,
     SkuDetails,
-    paginationPublic,
+    paginationPublic
   },
   data() {
     return {
       params: {
         total: '',
-        currentPage: 1,
+        currentPage: 1
       }, // 分页数据
       checked: false,
       boundList: [], // 入库仓库列表
@@ -199,20 +247,20 @@ export default {
         show_low_stock: 0, // 低于库存
         product_name: '', // 搜索货品名称
         sku: '', // 搜索SKU
-        page: '', // 分页
-      },
+        page: '' // 分页
+      }
     };
   },
   computed: {
     ownerId() {
       return this.$store.state.token.id;
-    },
+    }
   },
   watch: {
     warehouseId() {
       this.query.warehouse_id = this.warehouseId;
       this.getStocks(this.query);
-    },
+    }
   },
   created() {
     this.query.warehouse_id = this.warehouseId;
@@ -227,13 +275,12 @@ export default {
     },
     getStocks(query) {
       if (!query.warehouse_id) return;
-      $http.getStocks(query)
-        .then((res) => {
-          if (res.status) return;
-          this.stockList = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
+      $http.getStocks(query).then(res => {
+        if (res.status) return;
+        this.stockList = res.data.data;
+        this.params.total = res.data.total;
+        this.params.currentPage = res.data.current_page;
+      });
     }, // 获取库存列表
     handlerInventorySwitch(val) {
       if (val === 1) {
@@ -272,27 +319,32 @@ export default {
       if (this.export_data.length === 0) {
         this.$message({
           type: 'warning',
-          message: '请选择导出方式',
+          message: '请选择导出方式'
         });
         return;
       }
-      if (this.export_data.length === 2) { // 同时导出两个
+      if (this.export_data.length === 2) {
+        // 同时导出两个
         // 导出 SKU 列表
-        window.open(`${baseApi}/export/sku?warehouse_id=${
-          this.warehouseId
-        }&api_token=${this.$store.state.token.token}${exportParams}`);
+        window.open(
+          `${baseApi.BASE_URL}/export/sku?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
+        );
         // 导出 货品库列表
-        window.open(`${baseApi}/export/stock?warehouse_id=${
-          this.warehouseId
-        }&api_token=${this.$store.state.token.token}${exportParams}`);
-      } else if (this.export_data[0] === '1') { // 单独导出货品列表
-        window.open(`${baseApi}/export/stock?warehouse_id=${
-          this.warehouseId
-        }&api_token=${this.$store.state.token.token}${exportParams}`);
+        window.open(
+          `${baseApi.BASE_URL}/export/stock?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
+        );
+      } else if (this.export_data[0] === '1') {
+        // 单独导出货品列表
+        window.open(
+          `${baseApi.BASE_URL}/export/stock?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
+        );
       } else {
-        window.open(`${baseApi}/export/sku?warehouse_id=${ // 单独导出 sku
-          this.warehouseId
-        }&api_token=${this.$store.state.token.token}${exportParams}`);
+        window.open(
+          `${baseApi.BASE_URL}/export/sku?warehouse_id=${
+            // 单独导出 sku
+            this.warehouseId
+          }&api_token=${this.$store.state.token.token}${exportParams}`
+        );
       }
       this.dialogVisible = false;
     }, // 导出库存
@@ -300,14 +352,12 @@ export default {
       this.inventoryDialogVisible = true;
       this.id = row.id;
       this.rowInfo = row;
-    }, // 入库单详情弹框
-  },
+    } // 入库单详情弹框
+  }
 };
 </script>
 
 <style lang="less" module>
-
-
 .page {
   .main {
     margin: 0 auto;
@@ -319,7 +369,7 @@ export default {
       }
     }
     .pagination {
-      margin: 10px  0 0 0;
+      margin: 10px 0 0 0;
       float: right;
     }
   }

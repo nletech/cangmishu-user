@@ -6,14 +6,12 @@
     :on-success="handleAvatarSuccess"
     :on-remove="handleRemove"
     :showFileList="false"
-    :action=api
+    :action="api"
     list-type="picture"
-    name="image">
-    <img
-        v-if="this.photo"
-        :src="this.photo"
-        class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    name="image"
+  >
+    <img v-if="this.photo" :src="this.photo" class="avatar" />
+    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
 </template>
 
@@ -23,22 +21,22 @@ import baseApi from '@/lib/axios/base_api';
 export default {
   props: {
     photo: {
-      type: String,
+      type: String
     },
     disabled: {
-      type: Boolean,
+      type: Boolean
     },
     limit: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   computed: {
     Authorization() {
       return { Authorization: this.$store.state.token.token };
     },
     api() {
-      return `${baseApi}/upload/image`;
-    },
+      return `${baseApi.BASE_URL}/upload/image`;
+    }
   },
   methods: {
     // 上传截图成功回调
@@ -54,7 +52,7 @@ export default {
       } else if (res.status === 1) {
         this.$message({
           message: res.msg,
-          type: 'warning',
+          type: 'warning'
         });
       }
     },
@@ -66,15 +64,12 @@ export default {
         default:
           throw Error('picture upload went wrong');
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style lang="less" module>
-
-
-</style>
+<style lang="less" module></style>
 
 <style lang="less" scoped>
 .avatar-uploader-icon {
