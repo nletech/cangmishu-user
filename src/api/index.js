@@ -514,5 +514,8 @@ const $http = {
   editPurchaseItem(id, data) {
     return Axios.put(`purchase/item/${id}`, data);
   }, // 采购单单项详情--修改
+  getUserInfo() {
+    return Axios.get(`me`);
+  }
 };
 export default $http;

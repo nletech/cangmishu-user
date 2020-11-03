@@ -195,7 +195,8 @@ const cn = {
   addsender: '添加发件人',
   addreceiver: '添加收件人',
   Welcome: '欢迎使用仓秘书',
-  WelcomeText: '仓秘书满足企业精细化库存管理需求同时结合移动订货系统，为您提供免费、专业的互联网仓库+订货管理解决方案',
+  WelcomeText:
+    '仓秘书满足企业精细化库存管理需求同时结合移动订货系统，为您提供免费、专业的互联网仓库+订货管理解决方案',
   accountWords: '账号密码',
   wechat: '微信公众号(快捷)',
   EmailInput: '请输入邮箱地址',
@@ -244,7 +245,8 @@ const cn = {
   imagePreview: '图片预览',
   nomorethan3: '最多 3 张, 建议尺寸 400*400 ',
   nomorethan4: '最多 10 张, 建议尺寸 400*400',
-  shoptips: 'Tips:您可以通过新增店铺生成仓库专属的订货小程序， 生成店铺后添加商品就能同步仓库内的货品至您的订货小程序， 用户通过小程序下单可直接生成货品出库单。 在仓库的业务往来中，无需再手动填单、下单，用订货小程序一键下单即可生成货品出库单。 （一个仓库可生成多个店铺小程序哦!）',
+  shoptips:
+    'Tips:您可以通过新增店铺生成仓库专属的订货小程序， 生成店铺后添加商品就能同步仓库内的货品至您的订货小程序， 用户通过小程序下单可直接生成货品出库单。 在仓库的业务往来中，无需再手动填单、下单，用订货小程序一键下单即可生成货品出库单。 （一个仓库可生成多个店铺小程序哦!）',
   addGoodsTips: '添加商品将会离开当前界面,确定?',
   extraInfomation: '扩展信息',
   PleasescanrackorSKUorinboundbatch: '请扫描货位或SKU或者入库批次号',
@@ -474,7 +476,8 @@ const cn = {
   NLEWarehouseManagementSystem: 'EUT 共享仓储平台',
   registered: '注册',
   MailSentSuccess: '邮件发送成功！',
-  MailSentSuccesss: '请您在2小时内登录邮箱，点击邮件内链接激活账号。账号激活后，您才可以登录EUT共享仓储平台使用相关在线服务，谢谢您的合作！',
+  MailSentSuccesss:
+    '请您在2小时内登录邮箱，点击邮件内链接激活账号。账号激活后，您才可以登录EUT共享仓储平台使用相关在线服务，谢谢您的合作！',
   BackToLogin: '返回登录',
   LeasingReview: '仓储租赁',
   CreateNow: '立即创建',
@@ -715,8 +718,10 @@ const cn = {
   PurchaseUnit: '采购数量*（个）',
   bestUseTime: '最佳食用期',
   Expirydate: '保质期',
-  dateTips: '开启此选项,该分类下面所有货品上架都需要填写保质期,出库将按商品的保质期截止日期从近到远来出库',
-  patchTips: '开启此选项,该分类下面所有货品上架都需要填写生产批次,方便出库时候查询到每次出库的批次信息',
+  dateTips:
+    '开启此选项,该分类下面所有货品上架都需要填写保质期,出库将按商品的保质期截止日期从近到远来出库',
+  patchTips:
+    '开启此选项,该分类下面所有货品上架都需要填写生产批次,方便出库时候查询到每次出库的批次信息',
   goodsTips: '开启此选项,该分类下面所有货品上架都需要填写最佳食用期,主要用于食品行业',
   ProductionBatch: '生产批次号',
   importproductlist: '导入货品表',
@@ -744,7 +749,8 @@ const cn = {
   bindEmail: '绑定邮箱',
   officialAccounts: '关注绑定公众号',
   modifyInfo: '修改资料',
-  ...zhLocale,
+  copyright: '湖南恩尔伊科技有限公司',
+  ...zhLocale
 };
 
 export default cn;

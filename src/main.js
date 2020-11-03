@@ -12,8 +12,8 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
 Vue.component('cancel-button', CancelButton);
-
 store.commit('token/getToken');
+
 new Vue({
   el: '#app',
   router,

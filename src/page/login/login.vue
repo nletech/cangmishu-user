@@ -6,59 +6,47 @@
         <div class="title-container">
           <div class="title">
             <img class="logo" src="../../assets/img/logo@2x.png" /><span>{{
-              $t("SecretaryWarehouse")
+              $t('SecretaryWarehouse')
             }}</span>
           </div>
-          <div class="wechat-scan">{{ $t("wechatScanLogin") }}</div>
+          <div class="wechat-scan">{{ $t('wechatScanLogin') }}</div>
         </div>
         <div class="progress">
           <div class="item">
             <div class="point">1</div>
-            <div class="text">{{ $t("openWechatScan") }}</div>
+            <div class="text">{{ $t('openWechatScan') }}</div>
           </div>
           <div class="item">
             <div class="point">2</div>
-            <div class="text">{{ $t("scanBelowQrcode") }}</div>
+            <div class="text">{{ $t('scanBelowQrcode') }}</div>
           </div>
           <div class="item">
             <div class="point">3</div>
-            <div class="text">{{ $t("autoRegisterLogin") }}</div>
+            <div class="text">{{ $t('autoRegisterLogin') }}</div>
           </div>
         </div>
-        <div class="qr-code">
-          <img :src="qr" class="qr-code-img" alt="" />
-        </div>
-        <div class="help">{{ $t("cantUse") }}</div>
+        <div id="wx-qr-code-box" class="qr-code"></div>
+        <div class="help">{{ $t('cantUse') }}</div>
         <div class="demonstration">
-          <el-button
-            @click="expLogin"
-            type="primary"
-            plain
-            style="width: 200px"
-            >{{ $t("demonstrationLogin") }}</el-button
-          >
+          <el-button @click="expLogin" type="primary" plain style="width: 200px">{{
+            $t('demonstrationLogin')
+          }}</el-button>
         </div>
       </div>
     </div>
     <div class="bottom">
       <div class="translate" @click="handlerTranslate($event)">
-        <span
-          id="cn"
-          :class="['translate_cn', lang === 'cn' ? 'translate_active' : '']"
-        >
+        <span id="cn" :class="['translate_cn', lang === 'cn' ? 'translate_active' : '']">
           中文
         </span>
         |
-        <span
-          id="en"
-          :class="['translate_en', lang === 'en' ? 'translate_active' : '']"
-        >
+        <span id="en" :class="['translate_en', lang === 'en' ? 'translate_active' : '']">
           English
         </span>
       </div>
       <div class="model_footer">
         <div class="footer_main">
-          <span>Copyright © 2019，Hunan NLE Network Technolgy Co, Ltd</span>
+          <span>Copyright © {{ year }} {{ $t('copyright') }} {{ version }} </span>
           <i class="footer_main_logo"></i>
         </div>
       </div>
@@ -66,9 +54,10 @@
   </div>
 </template>
 <script>
-// import WxLogin from 'WxLogin'
+import WxLogin from 'WxLogin';
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
+import baseApi from '@/lib/axios/base_api';
 
 export default {
   mixins: [mixin],
@@ -77,31 +66,30 @@ export default {
       qr: '', // 登录二维码
       qr_key: '',
       timer: '',
-      timer1: '',
       lang: '',
-      wxLoginObj: {},
+      wxLoginObj: {}
     };
   },
   computed: {
+    version() {
+      return process.env.VUE_APP_VERSION;
+    },
+    year() {
+      return new Date().getFullYear();
+    },
     translate_lang() {
       return this.lang;
-    },
+    }
   },
   created() {
     this.lang = localStorage.getItem('lang') || 'cn';
     this.getWeChatQR();
     this.timer = setInterval(() => {
       this.getWeChatQR();
-    }, 120 * 1000);
-    // this.timer1 = setInterval(() => {
-    //   if (this.qr_key) {
-    //     this.getQRChecked();
-    //   }
-    // }, 2000);
+    }, 240 * 1000);
   },
   destroyed() {
     clearInterval(this.timer);
-    clearInterval(this.timer1);
   },
   methods: {
     handlerTranslate(event) {
@@ -123,35 +111,22 @@ export default {
       }
     },
     getWeChatQR() {
-      $http.getLoginQR()
-        .then((res) => {
-          if (res.status) return;
-          // this.wxLoginObj = new WxLogin({
-          //   id: 'wx_box',
-          //   appid: res.data.app_id,
-          //   scope: 'snsapi_login',
-          //   redirect_uri: res.data.redirect_url,
-          //   href: 'https://jiyun-pc.haiouoms.com/qrcode.css',
-          // });
+      $http.getLoginQR().then(res => {
+        if (res.status) return;
+        console.log(baseApi.BASE_STATE, 'baseApi.BASE_STATE');
+        let state = btoa(baseApi.BASE_STATE);
+        this.wxLoginObj = new WxLogin({
+          id: 'wx-qr-code-box',
+          appid: res.data.app_id,
+          scope: 'snsapi_login',
+          state,
+          redirect_uri: res.data.callback_url,
+          href: `${baseApi.BASE_URL}/css/qrcode.css`
         });
+      });
     }, // 获取微信二维码
-    getQRChecked() {
-      $http.LoginQRCheck({ qr_key: this.qr_key })
-        .then((res) => {
-          if (res.status) return;
-          if (res.data.is_valid) {
-            this.hadnlerLoginData(res);
-            clearInterval(this.timer);
-            clearInterval(this.timer1);
-          }
-        });
-    }, // 校验微信二维码
     hadnlerLoginData(data) {
-      this.$store.commit('token/addToken', {
-        token: data.data.token.token_value,
-        keep: this.keep,
-        id: data.data.token.id,
-      }); // 将token保存到本地
+      this.$store.commit('token/addToken', data.data.token.token_value); // 将token保存到本地
       // 存入用户信息
       this.$store.commit('config/setWarehouseName', data.data.user.default_warehouse.name_cn);
       this.$store.commit('config/setWarehouseId', data.data.user.default_warehouse.id);
@@ -163,15 +138,15 @@ export default {
       localStorage.setItem('setUModules', JSON.stringify(data.data.modules)); // 存入用户 昵称
       localStorage.setItem('setUType', data.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
       this.$router.push({
-        path: '/initPage/home',
+        path: '/initPage/home'
       }); // 跳转到首页
     }, // 处理登录信息
     expLogin() {
-      $http.expLogin().then((res) => {
+      $http.expLogin().then(res => {
         this.hadnlerLoginData(res);
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -188,7 +163,7 @@ export default {
     .left {
       width: 560px;
       height: 580px;
-      background-image: url("../../assets/img/cangmishu-signin-bg.png");
+      background-image: url('../../assets/img/cangmishu-signin-bg.png');
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -226,41 +201,39 @@ export default {
           flex-direction: column;
           align-items: center;
           .point {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background-color: #5745c5;
             color: #fff;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
           .text {
+            width: 100px;
             color: #5745c5;
           }
           &:nth-child(2)::before,
           &:nth-child(3)::before {
-            content: "";
+            content: '';
             display: block;
-            width: 172px;
+            width: 164px;
             height: 1px;
             background-color: #d7d0ff;
             position: absolute;
-            left: -140px;
-            top: 8px;
+            left: -131px;
+            top: 9px;
           }
           &:nth-child(3)::before {
-            width: 165px;
+            width: 162px;
           }
         }
       }
       .qr-code {
-        .qr-code-img {
-          display: inline-block;
-          padding: 2px;
-          margin: 10px;
-          border: 1px solid #ccc;
-          width: 200px;
-          height: 200px;
-        }
+        height: 200px;
+        overflow: hidden;
       }
       .help {
         margin: 20px 0;
@@ -295,7 +268,7 @@ export default {
       text-align: center;
       color: white;
       .footer_main_logo {
-        background-image: url("../../assets/img/homeLogin.png");
+        background-image: url('../../assets/img/homeLogin.png');
         display: inline-block;
         width: 72px;
         height: 15px;

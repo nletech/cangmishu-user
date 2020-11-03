@@ -12,9 +12,7 @@
         <!-- 底部说明 -->
         <div class="footer">
           <div class="footer_description">
-            <span
-              >Copyright © {{ year }}，Hunan NLE Network Technolgy Co, Ltd {{version}}</span
-            >
+            <span>Copyright © {{ year }} {{ $t('copyright') }} {{ version }}</span>
             <i class="iconfont">&#xe604;</i>
           </div>
         </div>
@@ -30,16 +28,18 @@ export default {
   name: 'side',
   components: {
     sideNav,
-    TagsView,
+    TagsView
   },
   computed: {
-    version() { return process.env.VUE_APP_VERSION },
+    version() {
+      return process.env.VUE_APP_VERSION;
+    },
     year() {
-      return new Date().getFullYear()
+      return new Date().getFullYear();
     },
     nav() {
       return this.$store.state.routerData.routerMap[0].children.filter(
-        item => item.name === this.$route.matched[1].name,
+        item => item.name === this.$route.matched[1].name
       )[0];
     },
     // 仓秘书
@@ -57,8 +57,8 @@ export default {
     },
     shopTips() {
       return this.$route.name === 'shopsManagement';
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less">
@@ -79,7 +79,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: url("../../assets/img/img.png") no-repeat right bottom;
+      background: url('../../assets/img/img.png') no-repeat right bottom;
       width: 100%;
       overflow-x: hidden;
       position: absolute;

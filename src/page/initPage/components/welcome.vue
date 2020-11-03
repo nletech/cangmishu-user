@@ -9,7 +9,7 @@
             <p :class="$style.item_number">
               <span @click="goToTag('inventoryManage')">{{ stock.all_count }}</span>
             </p>
-            <div :class="$style.item_date">
+            <!-- <div :class="$style.item_date">
               <div :class="$style.item_date_title">
                 <p>{{ $t('day') }}:</p>
                 <p>{{ $t('month') }}:</p>
@@ -20,7 +20,7 @@
                 <p>{{ stock.month_count }}</p>
                 <p>{{ stock.year_count }}</p>
               </div>
-            </div>
+            </div> -->
           </div>
           <div :class="$style.statistics_container_item">
             <p>{{ $t('ProductData') }}:</p>

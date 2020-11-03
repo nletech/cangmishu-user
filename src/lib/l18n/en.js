@@ -37,7 +37,8 @@ const en = {
   imagePreview: 'Preview',
   nomorethan3: ' Maximum 3 pictures,suggested size 400*400',
   nomorethan4: 'Maximum 10 pictures, suggested size 400*400',
-  shoptips: 'You can create a warehouse-specific applet by adding a shop. After you create a shop, you can synchronize the goods in the warehouse to your applet. The user can directly generate the goods outbound order through the applet. In the warehouse business, there is no need to manually place order, and use the applet to place an order to create outbound order. (A warehouse can generate multiple shop applets!)',
+  shoptips:
+    'You can create a warehouse-specific applet by adding a shop. After you create a shop, you can synchronize the goods in the warehouse to your applet. The user can directly generate the goods outbound order through the applet. In the warehouse business, there is no need to manually place order, and use the applet to place an order to create outbound order. (A warehouse can generate multiple shop applets!)',
   addGoodsTips: 'This will leave the current page, will you continue?',
   shopsManagement: 'Shop List',
   shopLogoUpload: 'Upload Logo',
@@ -82,7 +83,8 @@ const en = {
   Pleaseselectexpirydate: 'Please select expiry date',
   Pleaseenterproductionbatch: 'Please enter production batch',
   Pleaseselectbestbeforedate: 'Please select best before date',
-  Thiswillleavethecurrentpagewillyoucontinue: 'This will leave the current page, will you continue?',
+  Thiswillleavethecurrentpagewillyoucontinue:
+    'This will leave the current page, will you continue?',
   Pleasecompletetheform: 'Please complete the form',
   OutboundTag: 'Outbound Tag',
   moreRack: 'More',
@@ -101,7 +103,8 @@ const en = {
   save: 'Save',
   ProductName: 'Name',
   Chinesespecifications: 'Measurement',
-  tipsSku: 'SKU is the unique code of goods. It cannot be changed after saving and cannot be repeated.',
+  tipsSku:
+    'SKU is the unique code of goods. It cannot be changed after saving and cannot be repeated.',
   ExportProductinventory: 'Export inventory',
   Status: 'Status',
   Type: 'Type',
@@ -186,9 +189,12 @@ const en = {
   extraInfomation: 'More',
   PleaseEnterTheWarehouseArea: 'Warehouse area is required',
   PleaseEnterTheMailbox: 'Please enter your email or phone number',
-  dateTips: 'Turn on this option, all the goods below the category need to fill in the shelf life, the outbound will be shipped from near to far according to the expiration date of the product.',
-  patchTips: 'Turn on this option, all the goods below the category need to fill in the production batch, so that you can find the batch information of each outbound when you go out.',
-  goodsTips: 'Turn on this option, all the goods below the category need to fill in the best consumption period, mainly used in the food industry.',
+  dateTips:
+    'Turn on this option, all the goods below the category need to fill in the shelf life, the outbound will be shipped from near to far according to the expiration date of the product.',
+  patchTips:
+    'Turn on this option, all the goods below the category need to fill in the production batch, so that you can find the batch information of each outbound when you go out.',
+  goodsTips:
+    'Turn on this option, all the goods below the category need to fill in the best consumption period, mainly used in the food industry.',
   Estimatednumberofwarehousing: 'Expected Quantity',
   Actualwarehousingquantity: 'Inbounded Quantity',
   Inboundbatchnumber: 'Inbound batch',
@@ -212,7 +218,8 @@ const en = {
   Received: 'Received',
   supplierNameCN: 'Name',
   Welcome: 'Welcome to Use Cangmishu WMS',
-  WelcomeText: 'Cangmishu WMS is free warehouse management software that provide you professional online warehouse and order management solution.',
+  WelcomeText:
+    'Cangmishu WMS is free warehouse management software that provide you professional online warehouse and order management solution.',
   accountWords: 'Password',
   wechat: 'Wechat Scan',
   scanWechatQR: 'No need to register, WeChat scan code to log in',
@@ -336,7 +343,8 @@ const en = {
   USD: 'USD($)',
   OutboundQuantity: 'Outbound Quantity',
   OutboundDate: 'Outbound Date',
-  outboundTips: 'Using the Edit Logistics function, the order status will be changed (to be shipped --> in delivery)',
+  outboundTips:
+    'Using the Edit Logistics function, the order status will be changed (to be shipped --> in delivery)',
   CheckOrder: 'Check Order',
   PrintPicking: 'Print Picking',
   Whethertheshelf: 'Whether the shelf',
@@ -495,6 +503,8 @@ const en = {
   editCargoShelf: 'Edit Rack Information',
   purchaseTips1: 'The purchase list must be required',
   inputRequired: 'Please check your input',
-  ...enLocale,
+
+  copyright: 'Hunan NLE Network Technolgy Co, Ltd',
+  ...enLocale
 };
 export default en;
