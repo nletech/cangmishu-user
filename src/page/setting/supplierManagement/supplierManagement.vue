@@ -212,7 +212,7 @@ export default {
     background-color: #fff;
     .am_operation_btn {
       float: right;
-      margin: 20px 0;
+      margin: 20px;
       z-index: 3;
       border: none;
       font-size: 1.2rem;

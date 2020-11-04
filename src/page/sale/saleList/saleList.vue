@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.outboundList">
+  <div :class="$style.saleList">
     <div :class="$style.outboundList_main">
       <el-row :class="$style.outboundList_tags">
         <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
@@ -12,8 +12,8 @@
           </el-button>
         </el-col>
         <el-col :span="2" :offset="1">
-          <el-button type="text" :class="$style.btn" @click="addOutbound" icon="el-icon-plus">
-            {{ $t('addOutbound') }}
+          <el-button type="text" :class="$style.btn" @click="addSaleList" icon="el-icon-plus">
+            {{ $t('addSaleList') }}
           </el-button>
         </el-col>
       </el-row>
@@ -377,9 +377,6 @@ import paginationPublic from '@/components/pagination-public';
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
-// import datePickerPublic from '@/components/date-picker-public';
-// import selectPublic from '@/components/select-public';
-// import datePickerSingePublic from '@/components/date-picker-singe-public';
 import outboundDetail from './components/outbound_detail';
 import outboundListSearch from './components/outboundListSearch';
 
@@ -387,9 +384,6 @@ export default {
   mixins: [mixin],
   components: {
     outboundDetail,
-    // datePickerPublic,
-    // datePickerSingePublic,
-    // selectPublic,
     outboundListSearch,
     paginationPublic
   },
@@ -421,7 +415,7 @@ export default {
         currentPage: 1
       }, // 分页数据
       row_data: {},
-      outboundId: '', // 临时 出库单 id
+      outboundId: '', // 临时 销售单 id
       tempParmas: {},
       tempStr: '',
       isDisabled: false,
@@ -610,9 +604,9 @@ export default {
       this.$set(this.params);
     }, // 搜索回调
 
-    addOutbound() {
+    addSaleList() {
       this.$router.push({
-        name: 'addOutbound'
+        name: 'addSaleList'
       });
     }, // 添加出库单
 
@@ -661,7 +655,7 @@ export default {
 </script>
 
 <style lang="less" module>
-.outboundList {
+.saleList {
   .outboundList_main {
     margin: 0 auto;
     .outboundList_tags {

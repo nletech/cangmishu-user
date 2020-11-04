@@ -27,15 +27,11 @@
                 <el-col :span="4">{{ $t('sender') }}</el-col>
               </el-row>
               <el-row>
-                <el-col
-                  >{{ row_data.send_fullname }}
-                  {{ row_data.send_phone }}</el-col
-                >
+                <el-col>{{ row_data.send_fullname }} {{ row_data.send_phone }}</el-col>
               </el-row>
               <el-row>
                 <el-col
-                  >{{ row_data.send_province }}{{ row_data.send_city
-                  }}{{ row_data.send_district
+                  >{{ row_data.send_province }}{{ row_data.send_city }}{{ row_data.send_district
                   }}{{ row_data.send_address }}</el-col
                 >
               </el-row>
@@ -47,16 +43,12 @@
                 <el-col :span="4">{{ $t('receiver') }}</el-col>
               </el-row>
               <el-row>
-                <el-col
-                  >{{ row_data.receiver_fullname }}
-                  {{ row_data.receiver_phone }}</el-col
-                >
+                <el-col>{{ row_data.receiver_fullname }} {{ row_data.receiver_phone }}</el-col>
               </el-row>
               <el-row>
                 <el-col
                   >{{ row_data.receiver_province }}{{ row_data.receiver_city
-                  }}{{ row_data.receiver_district
-                  }}{{ row_data.receiver_address }}</el-col
+                  }}{{ row_data.receiver_district }}{{ row_data.receiver_address }}</el-col
                 >
               </el-row>
             </el-card>
@@ -66,12 +58,7 @@
         <el-row>
           <el-col>
             <el-table v-if="row_data" :data="row_data.order_items" border>
-              <el-table-column
-                align="center"
-                header-align="center"
-                type="index"
-                width="60"
-              >
+              <el-table-column align="center" header-align="center" type="index" width="60">
               </el-table-column>
               <el-table-column
                 align="center"
@@ -199,11 +186,7 @@
               </el-col>
               <el-col :span="10">
                 <el-form-item :label="$t('Tracking')">
-                  <el-input
-                    size="mini"
-                    v-model="express_num"
-                    maxlength="40"
-                  ></el-input>
+                  <el-input size="mini" v-model="express_num" maxlength="40"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -324,7 +307,7 @@ export default {
         .then((res) => {
           if (res.status) return;
           this.$router.push({
-            name: 'outboundList',
+            name: 'saleList',
           });
           this.$message({
             message: this.$t('success'),

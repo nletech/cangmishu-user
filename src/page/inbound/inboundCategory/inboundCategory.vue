@@ -15,36 +15,17 @@
           :class="$style.table_main"
           border
         >
-          <el-table-column
-            label="#"
-            header-align="center"
-            align="center"
-            type="index"
-            width="80"
-          >
+          <el-table-column label="#" header-align="center" align="center" type="index" width="80">
           </el-table-column>
-          <el-table-column
-            :label="$t('Type')"
-            header-align="center"
-            align="center"
-            prop="name"
-          >
+          <el-table-column :label="$t('Type')" header-align="center" align="center" prop="name">
           </el-table-column>
-          <el-table-column
-            :label="$t('AreaStatus')"
-            header-align="center"
-            align="center"
-          >
+          <el-table-column :label="$t('AreaStatus')" header-align="center" align="center">
             <template slot-scope="scope">
               <span v-if="scope.row.is_enabled == 1">是</span>
               <span v-if="scope.row.is_enabled == 0">否</span>
             </template>
           </el-table-column>
-          <el-table-column
-            :label="$t('operation')"
-            header-align="center"
-            width="240"
-          >
+          <el-table-column :label="$t('operation')" header-align="center" width="240">
             <template slot-scope="scope">
               <el-tooltip :content="$t('edit')" placement="top">
                 <el-button
@@ -101,7 +82,7 @@ export default {
   name: 'saleCategory',
   mixins: [mixin],
   components: {
-    AddRecordInfo,
+    AddRecordInfo
   },
   data() {
     return {
@@ -110,13 +91,14 @@ export default {
           id: 1,
           title: 'ReceiptCategoryName',
           name: '入库单分类',
-          btn_text: 'addBatchType',
-        }, {
+          btn_text: 'addBatchType'
+        },
+        {
           id: 2,
           title: 'DeliveryListcategoryname',
-          name: '出库单分类',
-          btn_text: 'addOrderType',
-        },
+          name: '销售单分类',
+          btn_text: 'addOrderType'
+        }
       ],
       clear_is_enabled: 0,
       row_data: {}, // 行数据
@@ -126,13 +108,13 @@ export default {
       info_data: [], // 数据
       total: '', // 列表总条数
       currentPage: 1, // 当前页
-      current_page: 1, // 当前页(编辑的时候)
+      current_page: 1 // 当前页(编辑的时候)
     };
   },
   watch: {
     warehouseId() {
       this.getList();
-    },
+    }
   },
   created() {
     this.getList();
@@ -151,21 +133,21 @@ export default {
     }, // 添加信息按钮
     getList() {
       this.info_data = [];
-      $http.getBatchType({ warehouse_id: this.warehouseId })
-        .then((re) => {
-          if (re.status) return;
-          this.info_data = re.data.data;
-          this.total = re.data.total;
-          this.current_page = re.data.current_page;
-        });
+      $http.getBatchType({ warehouse_id: this.warehouseId }).then(re => {
+        if (re.status) return;
+        this.info_data = re.data.data;
+        this.total = re.data.total;
+        this.current_page = re.data.current_page;
+      });
     },
     handleCurrentChange(val) {
       this.current_page = val;
-      $http.checkBatchType({
-        page: val,
-        warehouse_id: this.warehouseId,
-      })
-        .then((re) => {
+      $http
+        .checkBatchType({
+          page: val,
+          warehouse_id: this.warehouseId
+        })
+        .then(re => {
           this.info_data = re.data.data;
           this.total = re.data.total;
           this.current_page = re.data.current_page;
@@ -176,22 +158,19 @@ export default {
       this.switchFlag = true;
     },
     deleteItem(id) {
-      $http.delBatchType(id)
-        .then(() => {
-          if (status) return;
-          this.$message({
-            type: 'success',
-            message: this.$t('success'),
-          });
-          this.getList();
+      $http.delBatchType(id).then(() => {
+        if (status) return;
+        this.$message({
+          type: 'success',
+          message: this.$t('success')
         });
-    },
-  },
+        this.getList();
+      });
+    }
+  }
 };
 </script>
 <style lang="less" module>
-
-
 .addressManagement {
   .am_main {
     margin: 0 auto;

@@ -25,12 +25,13 @@ const AddInbound = loadOnDemand('inbound/addInbound/addInbound'); // 添加入�
 const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf'); // 入库上架
 
 // 销售
-const OutboundList = loadOnDemand('outbound/outboundList/outboundList'); // 销售单列表
-const AddOutbound = loadOnDemand('outbound/addOutbound/addOutbound'); // 添加销售单
-const SetOutbound = loadOnDemand('outbound/outboundList/components/setOutbound'); // 设为出库
-const EditSender = loadOnDemand('outbound/addOutbound/components/editSender'); // 编辑发件人信息
-const EditRecevier = loadOnDemand('outbound/addOutbound/components/editRecevier'); // 编辑收件人信息
-const SaleCategory = loadOnDemand('outbound/saleCategory/saleCategory'); // 销售单分类
+const SaleList = loadOnDemand('sale/saleList/saleList'); // 销售单列表
+const AddSaleList = loadOnDemand('sale/addSaleList/addSaleList'); // 添加销售单
+const SetOutbound = loadOnDemand('sale/saleList/components/setOutbound'); // 设为出库
+const EditSender = loadOnDemand('sale/addSaleList/components/editSender'); // 编辑发件人信息
+const EditRecevier = loadOnDemand('sale/addSaleList/components/editRecevier'); // 编辑收件人信息
+const SaleCategory = loadOnDemand('sale/saleCategory/saleCategory'); // 销售单分类
+const SaleOverview = loadOnDemand('sale/saleOverview/saleOverview'); // 销售概览
 
 // 库存
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage'); // 库存管理
@@ -121,15 +122,15 @@ export const routerMap = [
             path: ''
           },
           {
-            name: 'outboundList', // 子菜单-销售列表
-            path: 'outboundList',
-            component: OutboundList,
+            name: 'saleList', // 子菜单-销售列表
+            path: 'saleList',
+            component: SaleList,
             nav: 2
           },
           {
-            name: 'addOutbound', // 子菜单-添加销售单
-            path: 'addOutbound',
-            component: AddOutbound,
+            name: 'addSaleList', // 子菜单-添加销售单
+            path: 'addSaleList',
+            component: AddSaleList,
             nav: 3
           },
           {
@@ -154,6 +155,12 @@ export const routerMap = [
             name: 'saleCategory', // 子菜单-销售单分类
             path: 'saleCategory',
             component: SaleCategory,
+            nav: 2
+          },
+          {
+            name: 'saleOverview', // 子菜单-销售单分类
+            path: 'saleOverview',
+            component: SaleOverview,
             nav: 2
           },
           {

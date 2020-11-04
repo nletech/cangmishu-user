@@ -6,6 +6,8 @@ import store from '@/store';
 import router from '@/router';
 import baseApi from './base_api';
 
+nprogress.configure({ showSpinner: false });
+
 Axios.defaults.baseURL = baseApi.BASE_URL; // 默认前缀连接
 Axios.defaults.timeout = 60000; // 超时时间
 Axios.defaults.transformRequest = [
@@ -21,6 +23,7 @@ function requestTime(config) {
   }
   if (!config.notNeedNprogress) {
     nprogress.start();
+    nprogress.inc(0.8);
   }
   config.headers.Authorization = store.state.token.token;
   config.headers.Language = localStorage.getItem('lang') || 'cn'; // 后端语言标识

@@ -22,7 +22,7 @@ const $http = {
   forgetPwd(data) {
     return Axios.post('/user/forgetPassword', data);
   },
-  //                                                          首页
+  // 首页
   // 首页仓库数据
   homeWarehouseData(data) {
     return Axios.get('home/analyze', { params: data });
@@ -31,7 +31,7 @@ const $http = {
   echartsData(data) {
     return Axios.get('home/analyzeTable', { params: data });
   },
-  //                                                          入库
+  // 入库
   //                                    入库单列表
   addInbound(data) {
     return Axios.post('/batch', data);
@@ -65,7 +65,7 @@ const $http = {
   }, // 扫描sku获取库存详情
   //                                                          出库
   //                                    出库单列表
-  addOutbound(data) {
+  addSaleList(data) {
     return Axios.post('/order', data);
   }, // 新增出库单
   getOutbound(data) {
@@ -516,6 +516,24 @@ const $http = {
   }, // 采购单单项详情--修改
   getUserInfo() {
     return Axios.get(`me`);
+  },
+  getHomeSaleData(params) {
+    return Axios.get(`index/salesData`, { params });
+  },
+  getHomeStockData(params) {
+    return Axios.get(`index/stockData`, { params });
+  },
+  getHomeTotalData() {
+    return Axios.get(`index/totalData`);
+  },
+  getSaleTotalData() {
+    return Axios.get(`sales/totalData`);
+  },
+  getSaleGraphData(params) {
+    return Axios.get(`sales/graphData`, { params });
+  },
+  getSaleDetailData(params) {
+    return Axios.get(`sales/detailData`, { params });
   }
 };
 export default $http;

@@ -84,7 +84,7 @@ export default {
 
     handlerTabClick(tab) {
       switch (+tab.index) {
-        case 0: // 出库单
+        case 0: // 销售单
           this.getList('out');
           // eslint-disable-next-line
           return;

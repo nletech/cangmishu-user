@@ -28,7 +28,7 @@ const cn = {
   home: '首页',
   goodsAdd: '新增货品',
   addInbound: '新增入库单',
-  addOutbound: '新增出库单',
+  addSaleList: '新增出库单',
   DownloadInbound: '下载入库单',
   DownloadPurchaseOrder: '采购单',
   PurchaseOrder: '采购单',
@@ -701,7 +701,7 @@ const cn = {
   selectReceiver: '选择收件人地址',
   selectSender: '选择发件人地址',
   outboundLists: '出库清单',
-  outboundList: '销售列表',
+  saleList: '销售列表',
   selectGoods: '选择商品',
   pleaseSelectProductSpec: '请选择商品规格',
   stocktalkingName: '商品名(规格)',
@@ -750,6 +750,7 @@ const cn = {
   officialAccounts: '关注绑定公众号',
   modifyInfo: '修改资料',
   copyright: '湖南恩尔伊科技有限公司',
+  saleOverview: '销售概览',
   ...zhLocale
 };
 

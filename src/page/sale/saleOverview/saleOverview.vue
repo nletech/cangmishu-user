@@ -3,37 +3,32 @@
     <div class="container-column-header">
       <div class="statistics">
         <h3 class="statistics-title">{{ $t('DataAnalysis') }}:</h3>
-        <el-row class="statistics-container">
+        <el-row class="statistics-container" type="flex" justify="space-between">
           <el-col
             v-for="item in statistics"
             :key="item.name"
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="3"
-            :xl="3"
+            :span="4"
             class="statistics-container-item"
           >
             <p>{{ $t(item.name) }}</p>
             <p :class="['item_number', item.color ? item.color : '']">
-              <span @click="goToTag(item.pathName)">{{ item.count }}</span>
+              <span>{{ item.count }}</span>
+              <!-- <span @click="goToTag(item.pathName)">{{ item.count }}</span> -->
             </p>
           </el-col>
-          <el-col :md="24" :lg="6" :xl="6" class="wechat-qr">
-            <div class="wechat-qr-item">
-              <div class="wechat-qr-item-image">
-                <img width="100%" height="100%" src="../../assets/img/Wechatcard1.png" alt="" />
-                <p>仓秘书小程序</p>
-                <p class="subtitle">同步数据</p>
-              </div>
-            </div>
-            <div class="wechat-qr-item">
-              <div class="wechat-qr-item-image">
-                <img width="100%" height="100%" src="../../assets/img/WechatIMG1663.jpeg" alt="" />
-                <p>仓秘书公众号</p>
-                <p class="subtitle">推送相关报表数据</p>
-              </div>
-            </div>
+          <el-col :span="12" class="card-list">
+            <el-card class="card-item" shadow="hover">
+              <p>订单列表</p>
+              <p @click="goToTag('saleList')">查看所有订单</p>
+            </el-card>
+            <el-card class="card-item" shadow="hover">
+              <p>收银</p>
+              <p>像收银软件一样下单</p>
+            </el-card>
+            <el-card class="card-item" shadow="hover">
+              <p>下单</p>
+              <p @click="goToTag('addSaleList')">新增出库订单</p>
+            </el-card>
           </el-col>
         </el-row>
       </div>
@@ -74,37 +69,28 @@
         <div class="chart-line" id="chart-sale-line"></div>
       </div>
     </div>
-    <div class="container-echat">
-      <div class="title">
-        <div>库存分析</div>
-        <div>
-          时间：<el-radio-group v-model="stockDateRadio" @change="onStockRadioCahnge" size="small">
-            <el-radio-button label="1">今天</el-radio-button>
-            <el-radio-button label="-1">昨天</el-radio-button>
-            <el-radio-button label="30">最近三十天</el-radio-button>
-          </el-radio-group>
-        </div>
-      </div>
-      <div class="total">
-        <el-row>
-          <el-col :span="6">
-            <p>总入库</p>
-            <p class="value red-color">{{ stockTotal.stock_in_num }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>总出库</p>
-            <p class="value">{{ stockTotal.stock_out_num }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>缺货</p>
-            <p class="value">{{ stockTotal.stock_shortage }}</p>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="echart">
-        <div class="chart-circle" id="chart-stock-circle"></div>
-        <div class="chart-line" id="chart-stock-line"></div>
-      </div>
+    <div class="container-table">
+      <el-table :data="tableList" ref="table" border style="width: 100%; margin-top: 10px">
+        <el-table-column
+          :label="$t('time')"
+          prop="days"
+          header-align="center"
+          align="center"
+        ></el-table-column>
+        <el-table-column :label="$t('订单量')" prop="order_count" align="center"></el-table-column>
+        <el-table-column
+          :label="$t('下单商品数量')"
+          prop="product_amount"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('出库商品数量')"
+          prop="pickup_amount"
+          align="center"
+        ></el-table-column>
+        <el-table-column :label="$t('应收金额')" prop="total" align="center"></el-table-column>
+        <el-table-column :label="$t('实收金额')" prop="total_pay" align="center"></el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -119,88 +105,52 @@ require('echarts/lib/chart/pie');
 require('echarts/lib/component/legend');
 
 export default {
-  name: 'home',
+  name: 'saleOverview',
   mixins: [mixin],
   data() {
     return {
       statistics: [
         {
-          name: 'warehouseStock',
+          name: '今日新增',
           count: '',
           pathName: 'inventoryManage'
         },
         {
-          name: 'ProductData',
+          name: '待处理',
           count: '',
           pathName: 'GoodsManage'
         },
         {
-          name: 'OutboundData',
+          name: '待发货',
           count: '',
           pathName: 'saleList'
-        },
-        {
-          name: 'Warning',
-          count: '',
-          pathName: 'inventoryManage',
-          color: 'red-color'
-        },
-        {
-          name: 'UnShelf',
-          count: '',
-          pathName: 'inboundList'
-        },
-        {
-          name: 'UnConfirm',
-          count: '',
-          pathName: 'saleList',
-          color: 'green-color'
         }
       ],
       saleTotal: {},
       saleDateRadio: '1',
-      stockTotal: {},
-      stockDateRadio: '1',
       chartSaleCircleConfig: {
         domId: 'chart-sale-circle',
         valueKey: 'sales',
         nameKey: 'source'
-      },
-      chartStockCircleConfig: {
-        domId: 'chart-stock-circle',
-        valueKey: 'count',
-        nameKey: 'type'
       },
       chartSaleLineConfig: {
         domId: 'chart-sale-line',
         xAxisKey: 'days',
         seriesKey: 'sales'
       },
-      chartStockLineConfig: {
-        domId: 'chart-stock-line',
-        xAxisKey: 'days',
-        seriesKey: 'stock_in_num',
-        seriesKey2: 'stock_out_num'
-      }
+      tableList: []
     };
   },
   created() {
     this.getWarehouseDate();
   },
   mounted() {
-    this.getEchartSaleData();
-    this.getEchartStockData();
-  },
-  computed: {
-    lang() {
-      return this.$i18n.locale;
-    }
+    this.getSaleGraphData();
   },
   watch: {
     warehouseId() {
       this.getWarehouseDate();
-    },
-    lang() {}
+    }
   },
   methods: {
     goToTag(tag, query) {
@@ -210,23 +160,16 @@ export default {
       });
     },
     onSaleRadioCahnge() {
-      this.getEchartSaleData();
+      this.getSaleGraphData();
     },
-    onStockRadioCahnge() {
-      this.getEchartStockData();
-    },
-    getEchartSaleData() {
-      $http.getHomeSaleData({ days: this.saleDateRadio }).then(res => {
+    getSaleGraphData() {
+      $http.getSaleGraphData({ days: this.saleDateRadio }).then(res => {
         this.saleTotal = res.data.total;
         this.initChartCircle(res.data.pie, this.chartSaleCircleConfig);
         this.initChartLine(res.data.daily, this.chartSaleLineConfig);
       });
-    },
-    getEchartStockData() {
-      $http.getHomeStockData({ days: this.stockDateRadio }).then(res => {
-        this.stockTotal = res.data.total;
-        this.initChartCircle(res.data.pie, this.chartStockCircleConfig);
-        this.initChartLine(res.data.daily, this.chartStockLineConfig);
+      $http.getSaleDetailData({ days: this.saleDateRadio }).then(res => {
+        this.tableList = res.data;
       });
     },
     circleList(pie, value, name) {
@@ -289,7 +232,7 @@ export default {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            type: 'shadow'
           }
         },
         grid: {
@@ -372,13 +315,10 @@ export default {
     },
     getWarehouseDate() {
       if (!this.warehouseId) return;
-      $http.getHomeTotalData().then(res => {
-        this.statistics[0].count = res.data.total_stock;
-        this.statistics[1].count = res.data.total_product;
-        this.statistics[2].count = res.data.total_order;
-        this.statistics[3].count = res.data.stock_warning;
-        this.statistics[4].count = res.data.wait_shelf;
-        this.statistics[5].count = res.data.wait_shipment;
+      $http.getSaleTotalData().then(res => {
+        this.statistics[0].count = res.data.created;
+        this.statistics[1].count = res.data.wait;
+        this.statistics[2].count = res.data.wait_ship;
       });
     }
   }
@@ -400,8 +340,9 @@ export default {
     .statistics {
       width: 100%;
       overflow: hidden;
+      padding: 20px;
       .statistics-title {
-        margin: 20px 0 20px 20px;
+        margin: 0 0 20px 0;
         font-weight: bold;
         color: #000;
         font-size: 26px;
@@ -415,6 +356,27 @@ export default {
           }
           p:last-child {
             font-size: 24px;
+          }
+        }
+        .card-list {
+          display: flex;
+          justify-content: flex-end;
+          .card-item {
+            margin: 0 10px;
+            border-radius: 2px;
+            .el-card__body {
+              padding: 10px 20px;
+            }
+            p:first-child {
+              font-size: 24px;
+              margin: 10px;
+            }
+            p:last-child {
+              margin: 10px;
+              font-size: 14px;
+              color: #909399;
+              cursor: pointer;
+            }
           }
         }
       }
@@ -480,6 +442,13 @@ export default {
         height: 300px;
       }
     }
+  }
+  .container-table {
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 20px;
   }
 }
 </style>
