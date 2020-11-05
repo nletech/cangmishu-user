@@ -534,6 +534,27 @@ const $http = {
   },
   getSaleDetailData(params) {
     return Axios.get(`sales/detailData`, { params });
+  },
+  getCustomersData(params) {
+    return Axios.get(`customers/dailyData`, { params });
+  },
+  getCustomersOrderRankData(params) {
+    return Axios.get(`customers/orderRank`, { params });
+  },
+  getCustomersTotalData() {
+    return Axios.get(`customers/totalData`);
+  },
+  getStocksTotalData() {
+    return Axios.get(`stocks/totalData`);
+  },
+  getStocksGraphData(params) {
+    return Axios.get(`stocks/graphData`, { params });
+  },
+  getStocksRankData(params) {
+    return Axios.get(`stocks/salesRank`, { params });
+  },
+  getStocksWarningData(params) {
+    return Axios.get(`stocks/warningRank`, { params });
   }
 };
 export default $http;

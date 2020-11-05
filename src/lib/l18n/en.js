@@ -385,7 +385,7 @@ const en = {
   downloadtemplate: 'Download template',
   importproductlist: 'Import product list',
   LastUpdated: 'Last Updated',
-  GoodsManage: 'Product Manage',
+  goodsManage: 'Product Manage',
   specificationChineseName: 'Measurement Name',
   specificationEnglishName: 'Measurement In English',
   remove: 'Remove',

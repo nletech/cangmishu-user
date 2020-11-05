@@ -132,7 +132,7 @@
           <template slot-scope="scope">
             <el-tooltip :content="$t('detail')" placement="top">
               <el-button
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 icon="el-icon-view"
                 round
@@ -144,7 +144,7 @@
             <el-tooltip :content="$t('CheckOrder')" placement="top">
               <el-button
                 v-if="scope.row.status === 1"
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 type="primary"
                 icon="el-icon-sell"
@@ -157,7 +157,7 @@
             <el-tooltip :content="$t('PrintPicking')" placement="top">
               <el-button
                 v-if="scope.row.status === 4 || scope.row.status === 5 || scope.row.status === 7"
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 icon="el-icon-printer"
                 :loading="isButtonLoading"
@@ -169,7 +169,7 @@
             <el-tooltip :content="$t('cancelOrder')" placement="top">
               <el-button
                 v-if="scope.row.status === 1"
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 icon="el-icon-circle-close"
                 :loading="isButtonLoading"
@@ -182,7 +182,7 @@
             <el-tooltip :content="$t('Track')" placement="top">
               <el-button
                 v-if="scope.row.status === 4 || scope.row.status === 5"
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 icon="el-icon-truck"
                 :loading="isButtonLoading"
@@ -194,7 +194,7 @@
             <el-tooltip :content="$t('Signing')" placement="top">
               <el-button
                 v-if="scope.row.status === 5"
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 icon="el-icon-finished"
                 :loading="isButtonLoading"
@@ -206,7 +206,7 @@
             <el-tooltip :content="$t('Trace')" placement="top">
               <el-button
                 v-if="scope.row.status === 5"
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 icon="el-icon-position"
                 :loading="isButtonLoading"
@@ -223,7 +223,7 @@
                     scope.row.status === 5 ||
                     scope.row.status === 7
                 "
-                style="margin: 8px 0 0 0"
+                style="margin: 5px"
                 size="mini"
                 icon="el-icon-money"
                 :loading="isButtonLoading"

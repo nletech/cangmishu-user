@@ -42,6 +42,7 @@ const GoodsEdit = loadOnDemand('inventory/goodsManage/components/goodsEdit'); //
 const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking'); // 库存盘点 (新模块)
 const AddCheckStock = loadOnDemand('inventory/stockTaking/components/addCheckStock'); // 库存盘点 (新模块)
 const CheckStockDetail = loadOnDemand('inventory/stockTaking/components/checkStockDetail'); // 库存盘点 (新模块)
+const InventoryOverview = loadOnDemand('inventory/inventoryOverview/inventoryOverview'); // 库存概览
 // 员工管理
 // 员工列表
 // const StaffList = loadOnDemand('staffManage/staffList/staffList'); // 员工列表
@@ -76,6 +77,8 @@ const EditCargoShelf = loadOnDemand(`${PATH}/components/editCargoShelf`); // 编
 const AddressManagement = loadOnDemand('setting/addressManagement/addressManagement'); // 地址管理
 const SupplierManagement = loadOnDemand('setting/supplierManagement/supplierManagement'); // 供应商管理
 const CategoryManagement = loadOnDemand('setting/categoryManagement/categoryManagement'); // 货品分类管理
+
+const ClientOverview = loadOnDemand('client/clientOverview/clientOverview');
 
 // 店铺管理
 const Shops = loadOnDemand('h5Store/shops/shops'); // 店铺管理
@@ -197,6 +200,12 @@ export const routerMap = [
             nav: 2
           },
           {
+            name: 'clientOverview', // 子菜单-地址管理
+            path: 'clientOverview',
+            component: ClientOverview,
+            nav: 2
+          },
+          {
             name: 'supplier', // 子菜单-分组 供应商
             path: '',
             type: 'children-group'
@@ -242,6 +251,12 @@ export const routerMap = [
             nav: 2
           },
           {
+            name: 'inventoryOverview', // 子菜单-库存概览
+            path: 'inventoryOverview',
+            component: InventoryOverview,
+            nav: 2
+          },
+          {
             name: 'inbound', // 子菜单-分组 入库
             path: '',
             type: 'children-group'
@@ -276,7 +291,7 @@ export const routerMap = [
             type: 'children-group'
           },
           {
-            name: 'GoodsManage', // 子菜单-商品管理
+            name: 'goodsManage', // 子菜单-商品管理
             path: 'goodsManage',
             component: GoodsManage,
             nav: 2

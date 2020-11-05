@@ -132,7 +132,7 @@ export default {
         {
           name: 'ProductData',
           count: '',
-          pathName: 'GoodsManage'
+          pathName: 'goodsManage'
         },
         {
           name: 'OutboundData',

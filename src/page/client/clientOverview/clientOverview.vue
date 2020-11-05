@@ -17,16 +17,16 @@
           </el-col>
           <el-col :span="12" class="card-list">
             <el-card class="card-item" shadow="hover">
-              <p>销售列表</p>
-              <p @click="goToTag('saleList')">查看所有订单</p>
+              <p>地址管理</p>
+              <p @click="goToTag('addressManagement')">查看地址</p>
             </el-card>
-            <el-card class="card-item" shadow="hover">
-              <p>收银</p>
+            <!-- <el-card class="card-item" shadow="hover">
+              <p>发件人管理</p>
               <p>像收银软件一样下单</p>
-            </el-card>
+            </el-card> -->
             <el-card class="card-item" shadow="hover">
-              <p>下单</p>
-              <p @click="goToTag('addSaleList')">新增出库订单</p>
+              <p>供应商管理</p>
+              <p @click="goToTag('supplierManagement')">查看供应商</p>
             </el-card>
           </el-col>
         </el-row>
@@ -34,62 +34,46 @@
     </div>
     <div class="container-echat">
       <div class="title">
-        <div>销售分析</div>
+        <div>系统会员统计</div>
         <div>
-          时间：<el-radio-group v-model="saleDateRadio" @change="onSaleRadioCahnge" size="small">
+          时间：<el-radio-group
+            v-model="customersDataRadio"
+            @change="onSaleRadioCahnge"
+            size="small"
+          >
             <el-radio-button label="1">今天</el-radio-button>
             <el-radio-button label="-1">昨天</el-radio-button>
             <el-radio-button label="30">最近三十天</el-radio-button>
           </el-radio-group>
         </div>
       </div>
-      <div class="total">
-        <el-row>
-          <el-col :span="6">
-            <p>总营业额</p>
-            <p class="value red-color">{{ saleTotal.total }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>实收营业额</p>
-            <p class="value">{{ saleTotal.total_pay }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>应收营业额</p>
-            <p class="value">{{ saleTotal.total_wait_pay }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>订单量</p>
-            <p class="value">{{ saleTotal.order_count }}</p>
-          </el-col>
-        </el-row>
-      </div>
       <div class="echart">
-        <div class="chart-circle" id="chart-sale-circle"></div>
-        <div class="chart-line" id="chart-sale-line"></div>
+        <div class="chart-line" id="chart-line"></div>
       </div>
     </div>
-    <div class="container-table">
-      <el-table :data="tableList" ref="table" border style="width: 100%; margin-top: 10px">
-        <el-table-column
-          :label="$t('time')"
-          prop="days"
-          header-align="center"
-          align="center"
-        ></el-table-column>
-        <el-table-column :label="$t('订单量')" prop="order_count" align="center"></el-table-column>
-        <el-table-column
-          :label="$t('下单商品数量')"
-          prop="product_amount"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('出库商品数量')"
-          prop="pickup_amount"
-          align="center"
-        ></el-table-column>
-        <el-table-column :label="$t('应收金额')" prop="total" align="center"></el-table-column>
-        <el-table-column :label="$t('实收金额')" prop="total_pay" align="center"></el-table-column>
-      </el-table>
+    <div class="container-rank">
+      <el-card class="client-order-rank-list" shadow="never">
+        <div slot="header" class="clearfix">
+          <span> 会员下单排行榜 </span>
+        </div>
+        <div v-for="(item, i) in clientOrderRangList" :key="i" class="client-order-rank-item">
+          <div>{{ i + 1 }}</div>
+          <div>
+            <el-avatar :size="60" :src="item.avatar"> </el-avatar>
+          </div>
+          <div class="count-container">
+            <div>{{ item.name }}</div>
+            <div class="count">
+              <div>
+                总订单量: <span>{{ item.order_count }}</span>
+              </div>
+              <div>
+                月订单量: <span>{{ item.current_month_order_count }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-card>
     </div>
   </div>
 </template>
@@ -110,45 +94,44 @@ export default {
     return {
       statistics: [
         {
-          name: '今日新增',
+          name: '收件人总数',
           count: '',
           pathName: 'inventoryManage'
         },
         {
-          name: '待处理',
+          name: '发件人总数',
           count: '',
           pathName: 'goodsManage'
         },
         {
-          name: '待发货',
+          name: '供应商总数',
+          count: '',
+          pathName: 'saleList'
+        },
+        {
+          name: '系统会员',
           count: '',
           pathName: 'saleList'
         }
       ],
-      saleTotal: {},
-      saleDateRadio: '1',
-      chartSaleCircleConfig: {
-        domId: 'chart-sale-circle',
-        valueKey: 'sales',
-        nameKey: 'source'
-      },
-      chartSaleLineConfig: {
-        domId: 'chart-sale-line',
+      customersDataRadio: '1',
+      chartConfig: {
+        domId: 'chart-line',
         xAxisKey: 'days',
-        seriesKey: 'sales'
+        seriesKey: 'counts'
       },
-      tableList: []
+      clientOrderRangList: []
     };
   },
   created() {
-    this.getWarehouseDate();
+    this.getCustomersTotalData();
   },
   mounted() {
-    this.getSaleGraphData();
+    this.getCustomersData();
   },
   watch: {
     warehouseId() {
-      this.getWarehouseDate();
+      this.getCustomersTotalData();
     }
   },
   methods: {
@@ -159,69 +142,15 @@ export default {
       });
     },
     onSaleRadioCahnge() {
-      this.getSaleGraphData();
+      this.getCustomersData();
     },
-    getSaleGraphData() {
-      $http.getSaleGraphData({ days: this.saleDateRadio }).then(res => {
-        this.saleTotal = res.data.total;
-        this.initChartCircle(res.data.pie, this.chartSaleCircleConfig);
-        this.initChartLine(res.data.daily, this.chartSaleLineConfig);
+    getCustomersData() {
+      $http.getCustomersData({ days: this.customersDataRadio }).then(res => {
+        this.initChartLine(res.data, this.chartConfig);
       });
-      $http.getSaleDetailData({ days: this.saleDateRadio }).then(res => {
-        this.tableList = res.data;
+      $http.getCustomersOrderRankData({ days: this.customersDataRadio }).then(res => {
+        this.clientOrderRangList = res.data;
       });
-    },
-    circleList(pie, value, name) {
-      const legedData = [];
-      const circleList = pie.map(i => {
-        legedData.push(i.type);
-        return { value: i[value], name: i[name] };
-      });
-      return { legedData, circleList };
-    },
-    initChartCircle(pie, chartConfig) {
-      const { legedData, circleList } = this.circleList(
-        pie,
-        chartConfig.valueKey,
-        chartConfig.nameKey
-      );
-      const echarCircle = echarts.init(document.getElementById(chartConfig.domId));
-      const option = {
-        backgroundColor: '#ffffff',
-        color: ['#9969BD', '#6495F9', '#E96C5B', '#62DAAB', '#F6C022', '#74CBED'],
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
-        }
-      };
-      option.legend = {
-        orient: 'vertical',
-        left: 10,
-        data: legedData
-      };
-      option.series = [
-        {
-          name: '包裹概览',
-          type: 'pie',
-          radius: ['50%', '70%'],
-          label: {
-            formatter: ' {d}% '
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: '30',
-              fontWeight: 'bold'
-            }
-          },
-          labelLine: {
-            show: true
-          },
-          data: circleList
-        }
-      ];
-      echarCircle.setOption(option);
-      window.onresize = echarCircle.resize;
     },
     initChartLine(data, chartConfig) {
       const echarLine = echarts.init(document.getElementById(chartConfig.domId));
@@ -281,43 +210,24 @@ export default {
           itemStyle: {
             barBorderRadius: 5,
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#14c8d4' },
-              { offset: 1, color: '#43eec6' }
-            ])
-          },
-          data: seriesData1
-        }
-      ];
-      if (chartConfig.domId.indexOf('sale') !== -1) {
-        let seriesData2 = [];
-        data.forEach(item => {
-          seriesData2.push(item[chartConfig.seriesKey2]);
-        });
-        packageOption.series.push({
-          name: chartConfig.seriesKey2,
-          type: 'bar',
-          barGap: '-100%',
-          barWidth: 10,
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               { offset: 0, color: 'rgba(20,200,212,0.5)' },
               { offset: 0.2, color: 'rgba(20,200,212,0.2)' },
               { offset: 1, color: 'rgba(20,200,212,0)' }
             ])
           },
-          z: -12,
-          data: seriesData2
-        });
-      }
+          data: seriesData1
+        }
+      ];
       echarLine.setOption(packageOption);
       window.onresize = echarLine.resize;
     },
-    getWarehouseDate() {
+    getCustomersTotalData() {
       if (!this.warehouseId) return;
-      $http.getSaleTotalData().then(res => {
-        this.statistics[0].count = res.data.created;
-        this.statistics[1].count = res.data.wait;
-        this.statistics[2].count = res.data.wait_ship;
+      $http.getCustomersTotalData().then(res => {
+        this.statistics[0].count = res.data.receiver_count;
+        this.statistics[1].count = res.data.sender_count;
+        this.statistics[2].count = res.data.supplier_count;
+        this.statistics[3].count = res.data.member_count;
       });
     }
   }
@@ -421,33 +331,51 @@ export default {
         align-items: center;
       }
     }
-    .total {
-      p:first-child {
-        color: #909399;
-      }
-      .value {
-        font-size: 24px;
-      }
-    }
     .echart {
       width: 100%;
       display: flex;
       .chart-line {
-        width: 55%;
-        height: 300px;
-      }
-      .chart-circle {
-        width: 45%;
+        width: 100%;
         height: 300px;
       }
     }
   }
-  .container-table {
+  .container-rank {
     width: 100%;
     position: relative;
-    background-color: #fff;
     margin-top: 20px;
-    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    .client-order-rank-list {
+      /deep/ .el-card__body {
+        padding: 0;
+      }
+      .client-order-rank-item {
+        display: grid;
+        grid-template-columns: 50px 120px 1fr;
+        border-bottom: 1px solid #f1f1f1;
+        &:last-child {
+          border-bottom: none;
+        }
+        align-items: center;
+        padding: 15px 20px;
+        .count-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 100%;
+          .count {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #909399;
+            span {
+              color: #e1685a;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>

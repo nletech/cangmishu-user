@@ -17,16 +17,16 @@
           </el-col>
           <el-col :span="12" class="card-list">
             <el-card class="card-item" shadow="hover">
-              <p>销售列表</p>
-              <p @click="goToTag('saleList')">查看所有订单</p>
+              <p>商品管理</p>
+              <p @click="goToTag('goodsManage')">查看所有商品</p>
             </el-card>
             <el-card class="card-item" shadow="hover">
-              <p>收银</p>
-              <p>像收银软件一样下单</p>
+              <p>库存管理</p>
+              <p @click="goToTag('inventoryManage')">查看所有的库存信息</p>
             </el-card>
             <el-card class="card-item" shadow="hover">
-              <p>下单</p>
-              <p @click="goToTag('addSaleList')">新增出库订单</p>
+              <p>库存盘点</p>
+              <p @click="goToTag('stockTaking')">快速修复库存</p>
             </el-card>
           </el-col>
         </el-row>
@@ -34,7 +34,7 @@
     </div>
     <div class="container-echat">
       <div class="title">
-        <div>销售分析</div>
+        <div>库存分析</div>
         <div>
           时间：<el-radio-group v-model="saleDateRadio" @change="onSaleRadioCahnge" size="small">
             <el-radio-button label="1">今天</el-radio-button>
@@ -43,53 +43,50 @@
           </el-radio-group>
         </div>
       </div>
-      <div class="total">
-        <el-row>
-          <el-col :span="6">
-            <p>总营业额</p>
-            <p class="value red-color">{{ saleTotal.total }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>实收营业额</p>
-            <p class="value">{{ saleTotal.total_pay }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>应收营业额</p>
-            <p class="value">{{ saleTotal.total_wait_pay }}</p>
-          </el-col>
-          <el-col :span="6">
-            <p>订单量</p>
-            <p class="value">{{ saleTotal.order_count }}</p>
-          </el-col>
-        </el-row>
-      </div>
       <div class="echart">
         <div class="chart-circle" id="chart-sale-circle"></div>
         <div class="chart-line" id="chart-sale-line"></div>
       </div>
     </div>
-    <div class="container-table">
-      <el-table :data="tableList" ref="table" border style="width: 100%; margin-top: 10px">
-        <el-table-column
-          :label="$t('time')"
-          prop="days"
-          header-align="center"
-          align="center"
-        ></el-table-column>
-        <el-table-column :label="$t('订单量')" prop="order_count" align="center"></el-table-column>
-        <el-table-column
-          :label="$t('下单商品数量')"
-          prop="product_amount"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('出库商品数量')"
-          prop="pickup_amount"
-          align="center"
-        ></el-table-column>
-        <el-table-column :label="$t('应收金额')" prop="total" align="center"></el-table-column>
-        <el-table-column :label="$t('实收金额')" prop="total_pay" align="center"></el-table-column>
-      </el-table>
+    <div class="container-rank">
+      <el-card class="client-order-rank-list" shadow="never">
+        <div slot="header" class="clearfix">
+          <span> 销售排行榜 </span>
+        </div>
+        <div v-for="(item, i) in saleRangeList" :key="i" class="client-order-rank-item">
+          <div class="index">{{ i + 1 }}</div>
+          <div class="count-container">
+            <div>{{ item.name }}</div>
+            <div class="count">
+              <div>
+                销量: <span>{{ item.sales }}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <el-image class="image" fit="cover" :src="item.picture"> </el-image>
+          </div>
+        </div>
+      </el-card>
+      <el-card class="client-order-rank-list" shadow="never">
+        <div slot="header" class="clearfix">
+          <span> 库存预警列表 </span>
+        </div>
+        <div v-for="(item, i) in warningRangeList" :key="i" class="client-order-rank-item">
+          <div class="index">{{ i + 1 }}</div>
+          <div class="count-container">
+            <div>{{ item.name }}</div>
+            <div class="count">
+              <div>
+                库存: <span class="green-color">{{ item.stock }}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <el-image class="image" fit="cover" :src="item.pictures"> </el-image>
+          </div>
+        </div>
+      </el-card>
     </div>
   </div>
 </template>
@@ -104,7 +101,7 @@ require('echarts/lib/chart/pie');
 require('echarts/lib/component/legend');
 
 export default {
-  name: 'saleOverview',
+  name: 'inventoryOverview',
   mixins: [mixin],
   data() {
     return {
@@ -129,26 +126,28 @@ export default {
       saleDateRadio: '1',
       chartSaleCircleConfig: {
         domId: 'chart-sale-circle',
-        valueKey: 'sales',
-        nameKey: 'source'
+        valueKey: 'count',
+        nameKey: 'type'
       },
       chartSaleLineConfig: {
         domId: 'chart-sale-line',
         xAxisKey: 'days',
-        seriesKey: 'sales'
+        seriesKey: 'stock_in_num',
+        seriesKey2: 'stock_out_num'
       },
-      tableList: []
+      saleRangeList: [],
+      warningRangeList: []
     };
   },
   created() {
-    this.getWarehouseDate();
+    this.getStocksTotalData();
   },
   mounted() {
-    this.getSaleGraphData();
+    this.getStocksGraphData();
   },
   watch: {
     warehouseId() {
-      this.getWarehouseDate();
+      this.getStocksTotalData();
     }
   },
   methods: {
@@ -159,16 +158,13 @@ export default {
       });
     },
     onSaleRadioCahnge() {
-      this.getSaleGraphData();
+      this.getStocksGraphData();
     },
-    getSaleGraphData() {
-      $http.getSaleGraphData({ days: this.saleDateRadio }).then(res => {
+    getStocksGraphData() {
+      $http.getStocksGraphData({ days: this.saleDateRadio }).then(res => {
         this.saleTotal = res.data.total;
         this.initChartCircle(res.data.pie, this.chartSaleCircleConfig);
         this.initChartLine(res.data.daily, this.chartSaleLineConfig);
-      });
-      $http.getSaleDetailData({ days: this.saleDateRadio }).then(res => {
-        this.tableList = res.data;
       });
     },
     circleList(pie, value, name) {
@@ -312,12 +308,18 @@ export default {
       echarLine.setOption(packageOption);
       window.onresize = echarLine.resize;
     },
-    getWarehouseDate() {
+    getStocksTotalData() {
       if (!this.warehouseId) return;
-      $http.getSaleTotalData().then(res => {
-        this.statistics[0].count = res.data.created;
-        this.statistics[1].count = res.data.wait;
-        this.statistics[2].count = res.data.wait_ship;
+      $http.getStocksTotalData().then(res => {
+        this.statistics[0].count = res.data.stock_count;
+        this.statistics[1].count = res.data.stock_lack_count;
+        this.statistics[2].count = res.data.product_count;
+      });
+      $http.getStocksRankData({ days: this.saleDateRadio }).then(res => {
+        this.saleRangeList = res.data;
+      });
+      $http.getStocksWarningData({ days: this.saleDateRadio }).then(res => {
+        this.warningRangeList = res.data;
       });
     }
   }
@@ -331,7 +333,7 @@ export default {
     color: #e1685a;
   }
   .green-color {
-    color: #23a13b;
+    color: #23a13b !important;
   }
   .container-column-header {
     width: 100%;
@@ -442,12 +444,47 @@ export default {
       }
     }
   }
-  .container-table {
+  .container-rank {
     width: 100%;
     position: relative;
-    background-color: #fff;
     margin-top: 20px;
-    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    .client-order-rank-list {
+      /deep/ .el-card__body {
+        padding: 0;
+      }
+      .client-order-rank-item {
+        display: grid;
+        grid-template-columns: 50px 1fr 120px;
+        border-bottom: 1px solid #f1f1f1;
+        align-items: center;
+        padding: 15px 20px;
+        &:last-child {
+          border-bottom: none;
+        }
+        .image {
+          width: 100px;
+          height: 100px;
+        }
+        .count-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          height: 100%;
+          .count {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #909399;
+            span {
+              color: #e1685a;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>
