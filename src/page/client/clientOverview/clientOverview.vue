@@ -74,6 +74,25 @@
           </div>
         </div>
       </el-card>
+      <el-card class="client-order-rank-list" shadow="never">
+        <div slot="header" class="clearfix">
+          <span> 供应商销量排行榜 </span>
+        </div>
+        <div v-for="(item, i) in supplierRangList" :key="i" class="client-order-rank-item supplier">
+          <div>{{ i + 1 }}</div>
+          <div class="count-container">
+            <div>{{ item.distributor_name }}</div>
+            <div class="count">
+              <div>
+                总订单量: <span class="green-color">{{ item.count }}</span>
+              </div>
+              <div>
+                月订单量: <span class="green-color">{{ item.current_month_count }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-card>
     </div>
   </div>
 </template>
@@ -120,7 +139,8 @@ export default {
         xAxisKey: 'days',
         seriesKey: 'counts'
       },
-      clientOrderRangList: []
+      clientOrderRangList: [],
+      supplierRangList: []
     };
   },
   created() {
@@ -147,9 +167,6 @@ export default {
     getCustomersData() {
       $http.getCustomersData({ days: this.customersDataRadio }).then(res => {
         this.initChartLine(res.data, this.chartConfig);
-      });
-      $http.getCustomersOrderRankData({ days: this.customersDataRadio }).then(res => {
-        this.clientOrderRangList = res.data;
       });
     },
     initChartLine(data, chartConfig) {
@@ -229,6 +246,12 @@ export default {
         this.statistics[2].count = res.data.supplier_count;
         this.statistics[3].count = res.data.member_count;
       });
+      $http.getCustomersOrderRankData({ days: this.customersDataRadio }).then(res => {
+        this.clientOrderRangList = res.data;
+      });
+      $http.getCustomersSupplierRankData({ days: this.customersDataRadio }).then(res => {
+        this.supplierRangList = res.data;
+      });
     }
   }
 };
@@ -241,7 +264,7 @@ export default {
     color: #e1685a;
   }
   .green-color {
-    color: #23a13b;
+    color: #23a13b !important;
   }
   .container-column-header {
     width: 100%;
@@ -346,6 +369,7 @@ export default {
     margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
     .client-order-rank-list {
       /deep/ .el-card__body {
         padding: 0;
@@ -354,6 +378,7 @@ export default {
         display: grid;
         grid-template-columns: 50px 120px 1fr;
         border-bottom: 1px solid #f1f1f1;
+        height: 94px;
         &:last-child {
           border-bottom: none;
         }
@@ -374,6 +399,9 @@ export default {
             }
           }
         }
+      }
+      .supplier {
+        grid-template-columns: 50px 1fr;
       }
     }
   }

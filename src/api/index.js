@@ -544,6 +544,9 @@ const $http = {
   getCustomersTotalData() {
     return Axios.get(`customers/totalData`);
   },
+  getCustomersSupplierRankData() {
+    return Axios.get(`customers/supplierRank`);
+  },
   getStocksTotalData() {
     return Axios.get(`stocks/totalData`);
   },
