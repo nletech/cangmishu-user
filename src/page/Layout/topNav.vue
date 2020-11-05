@@ -56,23 +56,21 @@
           <span>{{ selectWarehouse }}</span>
         </div>
         <div :class="$style.user">
-          <div
-            :class="$style.img"
-            @mouseover="handlerAvatarMouseOver"
+          <div :class="$style.img">
+            <!-- @click="handleChangeUserinfo"
             @mouseleave="handlerAvatarMouseLeave"
-            @click="handleChangeUserinfo"
-          >
-            <span v-if="!Uavatar" style="border: 1px solid;">管</span>
-            <img v-else :class="$style.avatar" :src="Uavatar" />
-            <div
+            @mouseover="handlerAvatarMouseOver" -->
+            <span v-if="!userInfo.avatar" style="border: 1px solid;">管</span>
+            <img v-else :class="$style.avatar" :src="userInfo.avatar" />
+            <!-- <div
               :class="$style.avatar_hover_text"
               v-show="visible_avatar_text && this.$i18n.locale === 'cn'"
             >
               <span>修改资料</span>
-            </div>
+            </div> -->
           </div>
           <div :class="$style.UnickName">
-            <span v-html="UnickName"></span>
+            <span v-html="userInfo.nickname"></span>
           </div>
           <div :class="$style.logout">
             <el-dropdown>
@@ -112,23 +110,19 @@
       </div>
     </el-dialog>
     <!-- 修改密码 -->
-    <change-pass-word :visible.sync="show_psw_flag"></change-pass-word>
-    <user-info :visible.sync="show_user_info_flag"></user-info>
+    <!-- <change-pass-word :visible.sync="show_psw_flag"></change-pass-word> -->
+    <!-- <user-info :visible.sync="show_user_info_flag"></user-info> -->
   </div>
 </template>
 
 <script>
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
-import ChangePassWord from './components/changePassWord'; // 修改密码
-import UserInfo from './components/userInfo'; // 修改个人资料
+// import ChangePassWord from './components/changePassWord'; // 修改密码
+// import UserInfo from './components/userInfo'; // 修改个人资料
 
 export default {
   name: 'topNav',
-  components: {
-    ChangePassWord,
-    UserInfo
-  },
   mixins: [mixin],
   data() {
     return {
@@ -145,6 +139,7 @@ export default {
   },
   created() {
     this.getWarehouses(); // 获取仓库列表
+    this.getUserInfo();
   },
   watch: {
     currentWarehouseId(val) {
@@ -158,17 +153,9 @@ export default {
     }
   },
   computed: {
-    email() {
-      return localStorage.getItem('email');
-    }, // 获取邮箱
-    Uavatar() {
-      return this.$store.state.config.avatar || localStorage.getItem('setUAvatar');
+    userInfo() {
+      return this.$store.state.config.userInfo;
     }, // 用户头像
-
-    UnickName() {
-      return this.$store.state.config.nickName || localStorage.getItem('setUnickName');
-    }, // 用户名
-
     UType() {
       return +localStorage.getItem('setUType');
     } // 用户类型: 商家或员工
@@ -193,7 +180,6 @@ export default {
     handlerAvatarMouseOver() {
       this.visible_avatar_text = true;
     },
-
     handlerAvatarMouseLeave() {
       this.visible_avatar_text = false;
     },
@@ -203,11 +189,9 @@ export default {
     handleChangePassWord() {
       this.show_psw_flag = true;
     }, // 修改密码
-
     to_store_management() {
       this.$router.replace({ name: 'storeManage' });
     }, // 跳转到-----仓库管理
-
     to_create_store() {
       this.$router.replace({ name: 'addWarehouse' });
     }, // 跳转到-----创建仓库
@@ -221,7 +205,16 @@ export default {
         this.warehouseList = data;
       });
     }, // 获取仓库列表
-
+    getUserInfo() {
+      $http.getUserInfo().then(res => {
+        this.$store.commit('config/setWarehouseName', res.data.user.default_warehouse.name_cn);
+        this.$store.commit('config/setWarehouseId', res.data.user.default_warehouse.id);
+        this.$store.commit('config/updateUserInfo', res.data.user);
+        // localStorage.setItem('setUser', data.data.user.id); // 存入用户 id
+        // localStorage.setItem('setUModules', JSON.stringify(data.data.modules)); // 存入用户 昵称
+        // localStorage.setItem('setUType', data.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
+      });
+    },
     handleConfirm() {
       this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
       this.$store.commit('config/setWarehouseName', this.selectWarehouse);
@@ -242,18 +235,13 @@ export default {
         $http.logout().then(() => {
           this.$store.commit('token/delToken');
           this.$store.commit('config/setWarehouseId', '');
-          sessionStorage.setItem('WAREHOUSEID', '');
-          sessionStorage.setItem('WAREHOUSENAME', '');
+          this.$store.commit('config/updateUserInfo', {});
           // 删除登录的信息
-          localStorage.removeItem('email');
-          localStorage.removeItem('warehouseId');
-          localStorage.removeItem('warehouseName');
-          localStorage.removeItem('setUType');
-          localStorage.removeItem('setUser');
-          localStorage.removeItem('setUnickName');
-          localStorage.removeItem('setUModules');
-          localStorage.removeItem('setUAvatar');
-          localStorage.removeItem('setUEmail');
+          // localStorage.removeItem('warehouseId');
+          // localStorage.removeItem('warehouseName');
+          // localStorage.removeItem('setUType');
+          // localStorage.removeItem('setUser');
+          // localStorage.removeItem('setUModules');
           this.$router.push({
             name: 'login'
           });
@@ -404,7 +392,6 @@ export default {
           width: 80px;
           height: 80px;
           border-radius: 50%;
-          cursor: pointer;
           color: @ThemeColor;
           margin: 0 10px 0 10px;
           position: relative;

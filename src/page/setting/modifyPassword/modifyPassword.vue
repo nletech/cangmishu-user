@@ -10,18 +10,10 @@
         class="password-ruleForm"
       >
         <el-form-item label="旧密码" prop="old_password">
-          <el-input
-            v-model="ruleForm.old_password"
-            type="password"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model="ruleForm.old_password" type="password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input
-            v-model="ruleForm.password"
-            type="password"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model="ruleForm.password" type="password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password_confirmation">
           <el-input
@@ -65,14 +57,8 @@ export default {
         old_password: ''
       },
       rules: {
-        old_password: [
-          { required: true, message: '请输入旧密码', trigger: 'blur' },
-          minLength
-        ],
-        password: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
-          minLength
-        ],
+        old_password: [{ required: true, message: '请输入旧密码', trigger: 'blur' }, minLength],
+        password: [{ required: true, message: '请输入新密码', trigger: 'blur' }, minLength],
         password_confirmation: [
           { required: true, validator: validatePass2, trigger: 'blur' },
           minLength

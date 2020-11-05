@@ -9,19 +9,15 @@ export default {
     avatar: '', // 用户头像URL
     nickName: '', // 用户名
     currentLanguage: '', // 当前语言
+    userInfo: {}
   },
   mutations: {
+    updateUserInfo(state, data) {
+      state.userInfo = data;
+    },
     setCurrentLanguage(state, data) {
       state.currentLanguage = data;
     },
-
-    setUserInfo(state, data) {
-      state.avatar = data.avatar; // 用户头像URL
-      state.nickName = data.nickName; // 用户名
-      localStorage.setItem('setUAvatar', data.avatar);
-      localStorage.setItem('setUnickName', data.nickName);
-    }, // 设置用户头像和用户名
-
     setWarehouseName(state, data) {
       state.setWarehouseName = data;
       localStorage.setItem('warehouseName', data);
@@ -42,6 +38,6 @@ export default {
 
     loading(state, data) {
       state.button_loading = data;
-    }, // 按钮动画配置
-  },
+    } // 按钮动画配置
+  }
 };

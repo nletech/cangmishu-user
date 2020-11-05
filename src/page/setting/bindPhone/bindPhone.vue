@@ -11,22 +11,23 @@
             label-width="120px"
             class="bind-phone-ruleform"
           >
-            <el-form-item label="当前手机号" prop="currentPhone">
-              <el-input
-                disabled
-                v-model="ruleForm.currentPhone"
-                autocomplete="off"
-              ></el-input>
+            <el-form-item label="当前手机号" prop="phone">
+              <el-input disabled v-model="userInfo.phone" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="更改手机号" prop="phone">
               <el-col :span="16">
-                <el-input
-                  v-model="ruleForm.phone"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="ruleForm.phone" autocomplete="off"></el-input>
               </el-col>
               <el-col :span="8" style="text-align: right">
-                <el-button type="primary" plain>发送验证码</el-button>
+                <el-button
+                  :loading="codeBtnLoading"
+                  :disabled="isSendCode"
+                  style="width: 80%"
+                  @click="sendCode"
+                  type="primary"
+                  plain
+                  >{{ !isSendCode ? '发送验证码' : sendCodeCount }}</el-button
+                >
               </el-col>
             </el-form-item>
             <el-form-item label="请输入验证码" prop="code">
@@ -39,17 +40,15 @@
         </el-col>
         <el-col :span="10" :offset="2">
           <div class="title">订阅通知消息</div>
-          <div class="switch">
-            <el-switch v-model="value"> </el-switch>
-            <span>开启下单通知</span>
-          </div>
-          <div class="switch">
-            <el-switch v-model="value"> </el-switch>
-            <span>开启库存预警通知</span>
-          </div>
-          <div class="switch">
-            <el-switch v-model="value"> </el-switch>
-            <span>开启经营日报</span>
+          <div v-for="item in subscribeMessagesList" :key="item.type" class="switch">
+            <el-switch
+              v-model.number="item.status"
+              @change="onSubscribeChange"
+              inactive-value="0"
+              :active-value="1"
+            >
+            </el-switch>
+            <span>{{ item.name }}</span>
           </div>
         </el-col>
       </el-row>
@@ -64,50 +63,100 @@ export default {
   data() {
     const minLength = { min: 11, max: 11, message: '请输入11位手机号', trigger: 'blur' };
     return {
-      value: '',
       ruleForm: {
         phone: '',
-        code: '',
+        code: ''
       },
       rules: {
-        phone: [
-          { required: true, message: '请输入更改手机号', trigger: 'blur' },
-          minLength,
-        ],
-        code: [
-          { required: true, message: '请输入验证码', trigger: 'blur' },
-        ],
+        phone: [{ required: true, message: '请输入更改手机号', trigger: 'blur' }, minLength],
+        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       },
+      isSendCode: false,
+      sendCodeCount: 59,
+      sendCodeInterval: null,
+      codeBtnLoading: false,
+      subscribeMessagesList: [],
+      subscribeTimer: null
     };
   },
+  created() {
+    this.getSubscribeMessages();
+  },
   computed: {
-    user_id() {
-      return +localStorage.getItem('setUser');
-    },
+    userInfo() {
+      return this.$store.state.config.userInfo;
+    }
   },
   methods: {
-    onConfirm() {
-      this.$refs.ruleForm.validate((valid) => {
-        if (valid) {
-          $http.modifyPsw(this.user_id, this.ruleForm)
-            .then((res) => {
-              if (res.status) return;
-              this.$refs.ruleForm.resetFields();
-              this.$message({
-                type: 'success',
-                message: this.$t('success'),
-              });
+    onSubscribeChange() {
+      if (this.subscribeTimer) {
+        clearInterval(this.subscribeTimer);
+      }
+      this.subscribeTimer = setInterval(() => {
+        $http
+          .setSubscribeMessages('phone', this.subscribeMessagesList)
+          .then(res => {
+            this.$message({
+              message: res.msg,
+              type: 'success'
             });
+            clearInterval(this.subscribeTimer);
+            this.subscribeTimer = null;
+          })
+          .catch(() => (this.subscribeTimer = null));
+      }, 1000);
+    },
+    getSubscribeMessages() {
+      $http.getSubscribeMessages('phone').then(res => {
+        this.subscribeMessagesList = res.data;
+      });
+    },
+    sendCode() {
+      this.$refs.ruleForm.validateField('phone', valid => {
+        if (!valid) {
+          this.codeBtnLoading = true;
+          $http
+            .getPhoneCode({ phone: this.ruleForm.phone })
+            .then(res => {
+              this.isSendCode = true;
+              this.$message({
+                message: res.msg,
+                type: 'success'
+              });
+              this.sendCodeInterval = setInterval(() => {
+                if (this.sendCodeCount === 1) {
+                  clearInterval(this.sendCodeInterval);
+                  this.sendCodeCount = 59;
+                  this.isSendCode = false;
+                }
+                this.sendCodeCount--;
+              }, 1000);
+            })
+            .finally(() => (this.codeBtnLoading = false));
         }
       });
     },
-  },
+    onConfirm() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          $http.bindPhone(this.ruleForm).then(res => {
+            if (res.status) return;
+            this.$refs.ruleForm.resetFields();
+            this.$message({
+              type: 'success',
+              message: this.$t('success')
+            });
+          });
+        }
+      });
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
 .bind-phone {
   .bind-phone-ruleform {
-    max-width: 500px;
+    max-width: 600px;
   }
   .title {
     font-size: 16px;
@@ -115,6 +164,9 @@ export default {
   }
   .switch {
     margin: 20px 0;
+    div {
+      margin-right: 20px;
+    }
   }
 }
 </style>

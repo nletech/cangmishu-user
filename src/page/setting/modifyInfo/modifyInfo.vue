@@ -13,28 +13,18 @@
           >
             <el-form-item label="手机号" prop="phone">
               <el-col :span="16">
-                <el-input
-                  v-model="ruleForm.phone"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="ruleForm.phone" autocomplete="off"></el-input>
               </el-col>
               <el-col :span="8" style="text-align: right">
-                <el-button type="primary" plain style="width: 85%"
-                  >绑定</el-button
-                >
+                <el-button type="primary" plain style="width: 85%">绑定</el-button>
               </el-col>
             </el-form-item>
             <el-form-item label="邮箱" prop="phone">
               <el-col :span="16">
-                <el-input
-                  v-model="ruleForm.phone"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="ruleForm.phone" autocomplete="off"></el-input>
               </el-col>
               <el-col :span="8" style="text-align: right">
-                <el-button type="primary" plain style="width: 85%"
-                  >绑定</el-button
-                >
+                <el-button type="primary" plain style="width: 85%">绑定</el-button>
               </el-col>
             </el-form-item>
             <el-form-item label="商户名称" prop="code">
@@ -100,10 +90,7 @@ export default {
         code: ''
       },
       rules: {
-        phone: [
-          { required: true, message: '请输入更改手机号', trigger: 'blur' },
-          minLength
-        ],
+        phone: [{ required: true, message: '请输入更改手机号', trigger: 'blur' }, minLength],
         code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       },
       imageUrl: '',

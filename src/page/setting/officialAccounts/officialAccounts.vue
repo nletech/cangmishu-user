@@ -45,31 +45,30 @@ export default {
   name: 'officialAccounts',
   data() {
     return {
-      value: '',
+      value: ''
     };
   },
   computed: {
     user_id() {
       return +localStorage.getItem('setUser');
-    },
+    }
   },
   methods: {
     onConfirm() {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          $http.modifyPsw(this.user_id, this.ruleForm)
-            .then((res) => {
-              if (res.status) return;
-              this.$refs.ruleForm.resetFields();
-              this.$message({
-                type: 'success',
-                message: this.$t('success'),
-              });
+          $http.modifyPsw(this.user_id, this.ruleForm).then(res => {
+            if (res.status) return;
+            this.$refs.ruleForm.resetFields();
+            this.$message({
+              type: 'success',
+              message: this.$t('success')
             });
+          });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

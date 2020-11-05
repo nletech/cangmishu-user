@@ -9,7 +9,7 @@
       :before-close="handleClose"
     >
       <el-row :gutter="20" style="line-height: 30px">
-        <el-col :span="5">{{ $t("PleaseSelectCategory") }}</el-col>
+        <el-col :span="5">{{ $t('PleaseSelectCategory') }}</el-col>
         <el-col :span="19">
           <!-- 搜索框 -->
           <el-row type="flex">
@@ -21,9 +21,7 @@
                 :placeholder="$t('PleaseEnterAKeyword')"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                <i slot="append" @click="handlerSearchKeyWords">{{
-                  $t("Search")
-                }}</i>
+                <i slot="append" @click="handlerSearchKeyWords">{{ $t('Search') }}</i>
               </el-input>
             </el-col>
             <!-- 添加商品 -->
@@ -34,7 +32,7 @@
                   @click="goToAddGoodPage"
                   icon="el-icon-document-add"
                 >
-                  {{ $t("AddProduct") }}
+                  {{ $t('AddProduct') }}
                 </el-button>
               </div>
             </el-col>
@@ -45,7 +43,7 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <span style="cursor: pointer" @click="handlerAllCatergroy">
-            {{ $t("AllCartory") }}123
+            {{ $t('AllCartory') }}123
           </span>
           <el-tree
             :props="{
@@ -128,9 +126,7 @@
       </el-row>
       <hr />
       <el-row :gutter="20">
-        <el-col :span="5">
-          {{ $t("productionType") }}{{ specSelected.length }}
-        </el-col>
+        <el-col :span="5"> {{ $t('productionType') }}{{ specSelected.length }} </el-col>
         <el-col :span="19" class="dialog-footer">
           <div style="float: right">
             <el-button
@@ -139,10 +135,10 @@
               :loading="isButtonLoading()"
               :disabled="!this.specSelected.length"
             >
-              {{ $t("submit") }}
+              {{ $t('submit') }}
             </el-button>
             <el-button @click="handleClose()" :loading="isButtonLoading()">
-              {{ $t("cancel") }}
+              {{ $t('cancel') }}
             </el-button>
           </div>
         </el-col>
@@ -151,7 +147,6 @@
   </div>
 </template>
 <script>
-import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
 import buttonLoading from '@/mixin/buttonLoading';
@@ -162,34 +157,33 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     onlyShowStock: {
       type: Boolean,
-      default: false,
+      default: false
     },
     warehouseId: {
       type: Number,
       default: 0,
-      required: true,
-    },
+      required: true
+    }
   },
   components: {
-    buttonPagination,
-    inputPublic,
+    buttonPagination
   },
   data() {
     return {
       params: {
         page: 1,
         page_size: 10,
-        data_count: 0,
+        data_count: 0
       },
       specList: [], // 弹出框货品列表
       specSelected: [], // 弹出框选中货品
       categoryListData: [], // 商品分类列表
       categoryId: 0,
-      keywords: '',
+      keywords: ''
     };
   },
   created() {
@@ -206,7 +200,7 @@ export default {
         this.loadSpecDataList();
         clearTimeout(timer);
       }, 300);
-    },
+    }
   },
   methods: {
     handlerSearchKeyWords() {
@@ -235,7 +229,7 @@ export default {
         this.$message({
           message: `该分类(${item.name_cn})还未启用`,
           type: 'error',
-          showClose: true,
+          showClose: true
         });
         return;
       }
@@ -244,12 +238,17 @@ export default {
     },
     loadCategoryList() {
       if (!this.warehouseId) return;
-      $http.getCategoryManagement({
-        warehouse_id: this.warehouseId,
-        page_size: 200,
-      })
-        .then((res) => {
-          this.categoryListData = res.data.data.map(item => ({ id: item.id, disabled: item.is_enabled, name_cn: item.name_cn }));
+      $http
+        .getCategoryManagement({
+          warehouse_id: this.warehouseId,
+          page_size: 200
+        })
+        .then(res => {
+          this.categoryListData = res.data.data.map(item => ({
+            id: item.id,
+            disabled: item.is_enabled,
+            name_cn: item.name_cn
+          }));
         });
     }, // 加载所有分类
     loadSpecDataList() {
@@ -263,11 +262,10 @@ export default {
       if (this.keywords !== '') {
         queryModel.keywords = this.keywords.trim();
       }
-      $http.querySpecs(queryModel)
-        .then((res) => {
-          this.specList = res.data.data;
-          this.params.data_count = res.data.total;
-        });
+      $http.querySpecs(queryModel).then(res => {
+        this.specList = res.data.data;
+        this.params.data_count = res.data.total;
+      });
     }, // 获取商品列表
     onInputQuery(res) {
       this.specList = res.data.data;
@@ -278,7 +276,7 @@ export default {
       this.$confirm(this.$t('addGoodsTips')).then(() => {
         this.$router.push({
           name: 'goodsAdd',
-          query: { warehouse_id: this.warehouseId },
+          query: { warehouse_id: this.warehouseId }
         });
       });
     },
@@ -293,8 +291,8 @@ export default {
       this.specSelected = [];
       this.$refs.table.clearSelection();
       this.$emit('update:visible', false);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -312,4 +310,3 @@ export default {
   }
 }
 </style>
-

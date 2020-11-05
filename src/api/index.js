@@ -558,6 +558,18 @@ const $http = {
   },
   getStocksWarningData(params) {
     return Axios.get(`stocks/warningRank`, { params });
+  },
+  bindPhone(params) {
+    return Axios.put(`profile/phone`, { params });
+  },
+  getPhoneCode(params) {
+    return Axios.get(`phoneCode`, { params });
+  },
+  getSubscribeMessages(type) {
+    return Axios.get(`subscribeMessages/${type}`);
+  },
+  setSubscribeMessages(type, params) {
+    return Axios.put(`subscribeMessages/${type}`, params);
   }
 };
 export default $http;

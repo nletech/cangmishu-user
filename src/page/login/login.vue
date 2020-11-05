@@ -129,13 +129,10 @@ export default {
       // 存入用户信息
       this.$store.commit('config/setWarehouseName', data.data.user.default_warehouse.name_cn);
       this.$store.commit('config/setWarehouseId', data.data.user.default_warehouse.id);
-      this.$store.commit('config/setUserInfo', data.data.user.avatar);
-      localStorage.setItem('setUser', data.data.user.id); // 存入用户 id
-      localStorage.setItem('setUAvatar', data.data.user.avatar); // 存入用户 头像
-      localStorage.setItem('setUnickName', data.data.user.nickname); // 存入用户 昵称
-      localStorage.setItem('setUEmail', data.data.user.email); // 存入用户 昵称
-      localStorage.setItem('setUModules', JSON.stringify(data.data.modules)); // 存入用户 昵称
-      localStorage.setItem('setUType', data.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
+      this.$store.commit('config/updateUserInfo', data.data.user);
+      // localStorage.setItem('setUser', data.data.user.id); // 存入用户 id
+      // localStorage.setItem('setUModules', JSON.stringify(data.data.modules)); // 存入用户 昵称
+      // localStorage.setItem('setUType', data.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
       this.$router.push({
         path: '/initPage/home'
       }); // 跳转到首页

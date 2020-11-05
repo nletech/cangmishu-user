@@ -12,18 +12,11 @@
             class="bind-email-ruleform"
           >
             <el-form-item label="当前邮箱号" prop="currentPhone">
-              <el-input
-                disabled
-                v-model="ruleForm.currentPhone"
-                autocomplete="off"
-              ></el-input>
+              <el-input disabled v-model="ruleForm.currentPhone" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="更改邮箱号" prop="email">
               <el-col :span="16">
-                <el-input
-                  v-model="ruleForm.email"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="ruleForm.email" autocomplete="off"></el-input>
               </el-col>
               <el-col :span="8" style="text-align: right">
                 <el-button type="primary" plain>发送验证码</el-button>
@@ -66,40 +59,35 @@ export default {
       value: '',
       ruleForm: {
         email: '',
-        code: '',
+        code: ''
       },
       rules: {
-        email: [
-          { required: true, message: '请输入更改邮箱号', trigger: 'blur' },
-        ],
-        code: [
-          { required: true, message: '请输入验证码', trigger: 'blur' },
-        ],
-      },
+        email: [{ required: true, message: '请输入更改邮箱号', trigger: 'blur' }],
+        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+      }
     };
   },
   computed: {
     user_id() {
       return +localStorage.getItem('setUser');
-    },
+    }
   },
   methods: {
     onConfirm() {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          $http.modifyPsw(this.user_id, this.ruleForm)
-            .then((res) => {
-              if (res.status) return;
-              this.$refs.ruleForm.resetFields();
-              this.$message({
-                type: 'success',
-                message: this.$t('success'),
-              });
+          $http.modifyPsw(this.user_id, this.ruleForm).then(res => {
+            if (res.status) return;
+            this.$refs.ruleForm.resetFields();
+            this.$message({
+              type: 'success',
+              message: this.$t('success')
             });
+          });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
