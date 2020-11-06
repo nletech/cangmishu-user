@@ -13,7 +13,13 @@
             <el-step>
               <div class="step-height" slot="title">
                 <div>扫描下面二维码</div>
-                <div><img /></div>
+                <div>
+                  <el-image v-if="wechatQrcode" class="wechat-scan" :src="wechatQrcode">
+                    <div slot="placeholder" class="image-slot">
+                      <div>加载中...</div>
+                    </div></el-image
+                  >
+                </div>
               </div>
             </el-step>
             <el-step title="完成关注与帐号的绑定"> </el-step>
@@ -21,17 +27,15 @@
         </el-col>
         <el-col :span="10" :offset="2">
           <div class="title">订阅通知消息</div>
-          <div class="switch">
-            <el-switch v-model="value"> </el-switch>
-            <span>开启下单通知</span>
-          </div>
-          <div class="switch">
-            <el-switch v-model="value"> </el-switch>
-            <span>开启库存预警通知</span>
-          </div>
-          <div class="switch">
-            <el-switch v-model="value"> </el-switch>
-            <span>开启经营日报</span>
+          <div v-for="item in subscribeMessagesList" :key="item.type" class="switch">
+            <el-switch
+              v-model.number="item.status"
+              @change="onSubscribeChange"
+              inactive-value="0"
+              :active-value="1"
+            >
+            </el-switch>
+            <span>{{ item.name }}</span>
           </div>
         </el-col>
       </el-row>
@@ -45,27 +49,43 @@ export default {
   name: 'officialAccounts',
   data() {
     return {
-      value: ''
+      value: '',
+      subscribeMessagesList: [],
+      subscribeTimer: null,
+      wechatQrcode: ''
     };
   },
-  computed: {
-    user_id() {
-      return +localStorage.getItem('setUser');
-    }
+  created() {
+    this.getSubscribeMessages();
+    this.getOfficialAccountQrCode();
   },
   methods: {
-    onConfirm() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          $http.modifyPsw(this.user_id, this.ruleForm).then(res => {
-            if (res.status) return;
-            this.$refs.ruleForm.resetFields();
+    getOfficialAccountQrCode() {
+      $http.getOfficialAccountQrCode().then(res => {
+        this.wechatQrcode = res.data.url;
+      });
+    },
+    onSubscribeChange() {
+      if (this.subscribeTimer) {
+        clearInterval(this.subscribeTimer);
+      }
+      this.subscribeTimer = setInterval(() => {
+        $http
+          .setSubscribeMessages('wechat', this.subscribeMessagesList)
+          .then(res => {
             this.$message({
-              type: 'success',
-              message: this.$t('success')
+              message: res.msg,
+              type: 'success'
             });
-          });
-        }
+            clearInterval(this.subscribeTimer);
+            this.subscribeTimer = null;
+          })
+          .catch(() => (this.subscribeTimer = null));
+      }, 1000);
+    },
+    getSubscribeMessages() {
+      $http.getSubscribeMessages('wechat').then(res => {
+        this.subscribeMessagesList = res.data;
       });
     }
   }
@@ -79,6 +99,12 @@ export default {
       width: 150px;
       height: 150px;
       margin-top: 15px;
+      .image-slot {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
   .title {
@@ -86,7 +112,10 @@ export default {
     font-weight: bold;
   }
   .switch {
-    margin: 40px 0;
+    margin: 20px 0;
+    div {
+      margin-right: 20px;
+    }
   }
 }
 </style>

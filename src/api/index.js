@@ -560,7 +560,7 @@ const $http = {
     return Axios.get(`stocks/warningRank`, { params });
   },
   bindPhone(params) {
-    return Axios.put(`profile/phone`, { params });
+    return Axios.put(`profile/phone`, params);
   },
   getPhoneCode(params) {
     return Axios.get(`phoneCode`, { params });
@@ -570,6 +570,9 @@ const $http = {
   },
   setSubscribeMessages(type, params) {
     return Axios.put(`subscribeMessages/${type}`, params);
+  },
+  getOfficialAccountQrCode() {
+    return Axios.get(`officialAccount/qrCode`);
   }
 };
 export default $http;

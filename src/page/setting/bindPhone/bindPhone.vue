@@ -11,7 +11,7 @@
             label-width="120px"
             class="bind-phone-ruleform"
           >
-            <el-form-item label="当前手机号" prop="phone">
+            <el-form-item label="当前手机号" prop="oldphone">
               <el-input disabled v-model="userInfo.phone" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="更改手机号" prop="phone">
@@ -76,7 +76,8 @@ export default {
       sendCodeInterval: null,
       codeBtnLoading: false,
       subscribeMessagesList: [],
-      subscribeTimer: null
+      subscribeTimer: null,
+      updatePhone: ''
     };
   },
   created() {
@@ -114,6 +115,7 @@ export default {
     sendCode() {
       this.$refs.ruleForm.validateField('phone', valid => {
         if (!valid) {
+          console.log('phone???');
           this.codeBtnLoading = true;
           $http
             .getPhoneCode({ phone: this.ruleForm.phone })
@@ -141,10 +143,12 @@ export default {
         if (valid) {
           $http.bindPhone(this.ruleForm).then(res => {
             if (res.status) return;
+            this.updatePhone = this.ruleForm.phone;
             this.$refs.ruleForm.resetFields();
+            this.$store.dispatch('config/getUserInfo');
             this.$message({
               type: 'success',
-              message: this.$t('success')
+              message: res.msg
             });
           });
         }

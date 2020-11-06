@@ -1,3 +1,4 @@
+import $http from '@/api';
 export default {
   namespaced: true,
   state: {
@@ -39,5 +40,12 @@ export default {
     loading(state, data) {
       state.button_loading = data;
     } // 按钮动画配置
+  },
+  action: {
+    getUserInfo({ dispatch }) {
+      $http.getUserInfo().then(res => {
+        dispatch('updateUserInfo', res.data.user);
+      });
+    }
   }
 };
