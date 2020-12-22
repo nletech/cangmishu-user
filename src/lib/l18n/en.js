@@ -92,6 +92,7 @@ const en = {
   ProductionBatch: 'Production batch',
   record: 'Out/In Tag',
   oldPassword: 'Old Password',
+  password: 'Password',
   newPassword: 'New Password',
   addWarehouse: 'Add warehouse',
   inputPsw: 'Please enter password',

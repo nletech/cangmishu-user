@@ -2,7 +2,7 @@
 import store from '@/store';
 import { routerMap } from './home';
 
-const whiteList = ['login', 'register', 'backPassword'];
+const whiteList = ['login', 'bindAccount', 'register', 'backPassword'];
 
 function addRouerMap(router, next, to) {
   store.commit('routerData/switchPermissionMapFilterStatus', true);

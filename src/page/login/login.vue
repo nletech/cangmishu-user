@@ -137,6 +137,7 @@ export default {
         path: '/initPage/home'
       }); // 跳转到首页
     }, // 处理登录信息
+    // 演示账号登录
     expLogin() {
       $http.expLogin().then(res => {
         this.hadnlerLoginData(res);

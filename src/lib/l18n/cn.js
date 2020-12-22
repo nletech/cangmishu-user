@@ -63,6 +63,7 @@ const cn = {
   categoryManagement: '商品分类',
   record: '出入库单分类',
   oldPassword: '原密码',
+  password: '密码',
   newPassword: '新密码',
   addWarehouse: '添加仓库',
   inputPsw: '请输入密码',

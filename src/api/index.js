@@ -477,6 +477,12 @@ const $http = {
   expLogin() {
     return Axios.post('expLogin');
   },
+  getLoginOfficialAccountQrcode(params) {
+    return Axios.get('bindQrCode', { params });
+  },
+  bindOfficialAccountQrcode(params) {
+    return Axios.post('bindAccount', params, { notNeedNprogress: true });
+  },
   // 采购模块
   purchaseList(data) {
     return Axios.get('purchase', { params: data });

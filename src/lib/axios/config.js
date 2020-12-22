@@ -43,7 +43,8 @@ Axios.interceptors.request.use(requestTime, requestError);
 function responseSuccess(response) {
   store.commit('config/loading', false);
   nprogress.done();
-  if (+response.data.status) {
+  if (response.data.status === 500) {
+    // if (+response.data.status) {
     Message({
       message: response.data.msg,
       type: 'error',

@@ -8,6 +8,7 @@ const LayoutSide = loadOnDemand('Layout/side');
 
 // 登陆
 const Login = loadOnDemand('login/login');
+const BindAccount = loadOnDemand('login/bind_account');
 // const Register = loadOnDemand('login/register');
 // const BackPassword = loadOnDemand('login/back_password');
 
@@ -576,6 +577,11 @@ export const homeRoute = [
     name: 'login',
     path: '/login',
     component: Login
+  },
+  {
+    name: 'bindAccount',
+    path: '/bind_account',
+    component: BindAccount
   }
   // {
   //   name: 'register',
