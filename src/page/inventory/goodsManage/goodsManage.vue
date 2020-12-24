@@ -365,10 +365,10 @@ export default {
       return { Authorization: this.$store.state.token.token };
     },
     goodsapi() {
-      return `${baseApi.BASE_URL}/products/import`;
+      return `${baseApi.BASE_URL}products/import`;
     }, // 导入商品
     specapi() {
-      return `${baseApi.BASE_URL}/specs/import`;
+      return `${baseApi.BASE_URL}specs/import`;
     } // 商品规格导入
   },
   watch: {
@@ -443,7 +443,7 @@ export default {
     },
 
     downloadTemplate() {
-      window.open('/static/goodsList.zip');
+      window.open(`${baseApi.BASE_URL}static/goodsList.zip`);
     },
 
     handleSuccess(res) {

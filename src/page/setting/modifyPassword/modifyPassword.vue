@@ -66,16 +66,11 @@ export default {
       }
     };
   },
-  computed: {
-    user_id() {
-      return +localStorage.getItem('setUser');
-    }
-  },
   methods: {
     onConfirm() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          $http.modifyPsw(this.user_id, this.ruleForm).then(res => {
+          $http.modifyPsw(this.ruleForm).then(res => {
             if (res.status) return;
             this.$refs.ruleForm.resetFields();
             this.$message({

@@ -10,27 +10,28 @@
                 v-for="item in tagList"
                 :label="item.label"
                 :name="item.name"
-                :key="item.name">
+                :key="item.name"
+              >
               </el-tab-pane>
             </el-tabs>
           </el-col>
           <!-- 添加按钮 -->
-          <el-col v-if="addText"
-                  :span="4"
-                  :class="$style.text_right">
+          <el-col v-if="addText" :span="4" :class="$style.text_right">
             <el-button
               type="text"
-              @click="$router.push({name: addText, query: {id: query && query}})"
-              icon="el-icon-plus">
-              {{$t(addText)}}
+              @click="$router.push({ name: addText, query: { id: query && query } })"
+              icon="el-icon-plus"
+            >
+              {{ $t(addText) }}
             </el-button>
           </el-col>
           <el-col v-if="addDeliverInfo" :span="4" :class="$style.text_right">
             <el-button
-            type="text"
-            @click="$router.push({name: addText, query: {id: query && query}})"
-            icon="el-icon-plus">
-            {{$t(addText)}}
+              type="text"
+              @click="$router.push({ name: addText, query: { id: query && query } })"
+              icon="el-icon-plus"
+            >
+              {{ $t(addText) }}
             </el-button>
           </el-col>
         </el-row>
@@ -47,7 +48,7 @@ export default {
     value: [String],
     addText: [String, Array], // 添加文字
     query: [String, Number],
-    addDeliverInfo: [Array], // 包裹信息
+    addDeliverInfo: [Array] // 包裹信息
   },
   methods: {
     // 返回选中的tag
@@ -55,17 +56,16 @@ export default {
       this.$emit('input', val.name);
       this.$emit('change', val.name);
       this.$router.replace({
-        query: { ...this.$route.query, type: val.name },
+        query: { ...this.$route.query, type: val.name }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-
 .wms_tag_container_table {
-    margin: 20px 0 0 0;
+  margin: 20px 0 0 0;
   // padding: 10px 45px 20px 45px ;
   .wms_tag_container {
     // padding: 0 20px 0 20px;
@@ -80,7 +80,6 @@ export default {
 }
 </style>
 <style lang="less">
-
 .wms-tag {
   .el-tabs__nav-wrap::after {
     display: none;

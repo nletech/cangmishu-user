@@ -61,6 +61,7 @@ const cn = {
   addressManagement: '地址管理',
   supplierManagement: '供应商管理',
   categoryManagement: '商品分类',
+  barcode: '条码',
   record: '出入库单分类',
   oldPassword: '原密码',
   password: '密码',

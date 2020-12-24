@@ -190,7 +190,7 @@ export default {
       this.show_psw_flag = true;
     }, // 修改密码
     to_store_management() {
-      this.$router.replace({ name: 'storeManage' });
+      this.$router.push({ name: 'storeManage' });
     }, // 跳转到-----仓库管理
     to_create_store() {
       this.$router.replace({ name: 'addWarehouse' });

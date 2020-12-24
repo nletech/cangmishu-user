@@ -9,7 +9,7 @@
       :before-close="handleClose"
     >
       <el-row :gutter="20" style="line-height:30px;">
-        <el-col :span="5">{{$t('PleaseSelectCategory')}}</el-col>
+        <el-col :span="5">{{ $t('PleaseSelectCategory') }}</el-col>
         <el-col :span="19">
           <!-- 搜索框 -->
           <el-row type="flex">
@@ -30,7 +30,8 @@
                   :loading="isButtonLoading"
                   @click="goToAddGoodPage"
                   icon="el-icon-document-add"
-                >{{$t('AddProduct')}}</el-button>
+                  >{{ $t('AddProduct') }}</el-button
+                >
               </div>
             </el-col>
           </el-row>
@@ -39,9 +40,9 @@
       <hr />
       <el-row :gutter="20">
         <el-col :span="5">
-          <span style="cursor: pointer;" @click="handlerAllCatergroy">{{$t('AllCartory')}}</span>
+          <span style="cursor: pointer;" @click="handlerAllCatergroy">{{ $t('AllCartory') }}</span>
           <el-tree
-            :props="{label:'name_cn'}"
+            :props="{ label: 'name_cn' }"
             :data="categoryListData"
             default-expand-all
             @node-click="onCategoryChange"
@@ -57,22 +58,40 @@
             @selection-change="specRowChange"
             style="width: 100%; margin-top:10px;"
           >
-            <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
-            <el-table-column type="index" label="#" width="60" header-align="center" align="center"></el-table-column>
+            <el-table-column
+              type="selection"
+              width="60"
+              header-align="center"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              type="index"
+              label="#"
+              width="60"
+              header-align="center"
+              align="center"
+            ></el-table-column>
             <el-table-column
               :label="$t('ProductName2')"
               prop="name_cn"
               header-align="center"
               align="center"
             ></el-table-column>
-            <el-table-column :label="$t('CurrentStock')" prop="total_stock_num" align="center"></el-table-column>
+            <el-table-column
+              :label="$t('CurrentStock')"
+              prop="total_stock_num"
+              align="center"
+            ></el-table-column>
           </el-table>
-          <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
+          <button-pagination
+            :pageParams="params"
+            @changePage="handleCurrentChange"
+          ></button-pagination>
         </el-col>
       </el-row>
       <hr />
       <el-row :gutter="20">
-        <el-col :span="5">{{$t('productionType')}}{{specSelected.length}}</el-col>
+        <el-col :span="5">{{ $t('productionType') }}{{ specSelected.length }}</el-col>
         <el-col :span="19" class="dialog-footer">
           <div style="float:right">
             <el-button
@@ -80,8 +99,11 @@
               @click="confirmSelected"
               :loading="isButtonLoading"
               :disabled="!this.specSelected.length"
-            >{{$t('submit')}}</el-button>
-            <el-button :loading="isButtonLoading" @click="handleClose()">{{$t('cancel')}}</el-button>
+              >{{ $t('submit') }}</el-button
+            >
+            <el-button :loading="isButtonLoading" @click="handleClose()">{{
+              $t('cancel')
+            }}</el-button>
           </div>
         </el-col>
       </el-row>
@@ -89,7 +111,6 @@
   </div>
 </template>
 <script>
-import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
 
@@ -98,39 +119,38 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     onlyShowStock: {
       type: Boolean,
-      default: false,
+      default: false
     },
     warehouseId: {
       type: Number,
       default: 0,
-      required: true,
-    },
+      required: true
+    }
   },
   components: {
-    buttonPagination,
-    inputPublic,
+    buttonPagination
   },
   computed: {
     isButtonLoading() {
       return this.$store.state.config.button_loading;
-    },
+    }
   },
   data() {
     return {
       params: {
         page: 1,
         page_size: 10,
-        data_count: 0,
+        data_count: 0
       },
       specList: [], // 弹出框货品列表
       specSelected: [], // 弹出框选中货品
       categoryListData: [], // 商品分类列表
       categoryId: 0,
-      keywords: '', // 关键字
+      keywords: '' // 关键字
     };
   },
   watch: {
@@ -143,7 +163,7 @@ export default {
         this.loadSpecDataList();
         clearTimeout(timer);
       }, 300);
-    },
+    }
   },
   created() {
     this.loadCategoryList(); // 货品分类
@@ -174,11 +194,12 @@ export default {
     },
     loadCategoryList() {
       if (!this.warehouseId) return;
-      $http.getCategoryManagement({
-        warehouse_id: this.warehouseId,
-        page_size: 200,
-      })
-        .then((res) => {
+      $http
+        .getCategoryManagement({
+          warehouse_id: this.warehouseId,
+          page_size: 200
+        })
+        .then(res => {
           this.categoryListData = res.data.data;
         });
     }, // 加载所有分类
@@ -193,12 +214,11 @@ export default {
       if (this.keywords !== '') {
         queryModel.keywords = this.keywords;
       }
-      $http.getProducts(queryModel)
-        .then((res) => {
-          if (res.status) return;
-          this.specList = res.data.data;
-          this.params.data_count = res.data.total;
-        });
+      $http.getProducts(queryModel).then(res => {
+        if (res.status) return;
+        this.specList = res.data.data;
+        this.params.data_count = res.data.total;
+      });
     }, // 获取商品列表
     onInputQuery(res) {
       this.specList = res.data.data;
@@ -209,7 +229,7 @@ export default {
       this.$confirm(this.$t('addGoodsTips')).then(() => {
         this.$router.push({
           name: 'goodsAdd',
-          query: { warehouse_id: this.warehouseId },
+          query: { warehouse_id: this.warehouseId }
         });
       });
     },
@@ -224,8 +244,8 @@ export default {
       this.specSelected = [];
       this.$refs.table.clearSelection();
       this.$emit('update:visible', false);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -243,4 +263,3 @@ export default {
   }
 }
 </style>
-

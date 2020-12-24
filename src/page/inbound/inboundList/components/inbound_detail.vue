@@ -22,7 +22,7 @@
               style="background-color: #5745c5;
                                 color: #fff;"
             >
-              {{ $t('DownloadInbound') }}
+              {{ $t('download') }}{{ $t(item.label) }}
             </el-button>
           </el-col>
         </el-row>

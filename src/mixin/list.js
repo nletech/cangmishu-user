@@ -15,8 +15,8 @@ export default {
         keywords: '',
         data_count: 0,
         created_at_b: '',
-        created_at_e: '',
-      },
+        created_at_e: ''
+      }
     };
   },
   methods: {
@@ -46,6 +46,6 @@ export default {
     handleCurrentChange(pageId) {
       this.params.page = pageId;
       this.getList();
-    },
-  },
+    }
+  }
 };

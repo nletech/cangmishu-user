@@ -1,4 +1,3 @@
-
 <template>
   <el-scrollbar
     ref="scrollContainer"
@@ -17,13 +16,13 @@ export default {
   name: 'ScrollPane',
   data() {
     return {
-      left: 0,
+      left: 0
     };
   },
   computed: {
     scrollWrapper() {
       return this.$refs.scrollContainer.$refs.wrap;
-    },
+    }
   },
   mounted() {
     this.scrollWrapper.addEventListener('scroll', this.emitScroll, true);
@@ -66,7 +65,8 @@ export default {
         const nextTag = tagList[currentIndex + 1];
 
         // the tag's offsetLeft after of nextTag
-        const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing;
+        const afterNextTagOffsetLeft =
+          nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing;
 
         // the tag's offsetLeft before of prevTag
         const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing;
@@ -77,8 +77,8 @@ export default {
           $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft;
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

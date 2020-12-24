@@ -20,8 +20,7 @@
           :rules="info_Verify_rules"
         >
           <el-form-item prop="full_name" :label="$t('name')" size="middle">
-            <el-input v-model="addressInfo.full_name" placeholder="请输入姓名">
-            </el-input>
+            <el-input v-model="addressInfo.full_name" placeholder="请输入姓名"> </el-input>
           </el-form-item>
           <el-form-item prop="country" :label="$t('国家/地区')" size="middle">
             <el-select
@@ -40,16 +39,10 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="phone" :label="$t('phone')" size="middle">
-            <el-input v-model="addressInfo.phone" placeholder="请输入电话">
-            </el-input>
+            <el-input v-model="addressInfo.phone" placeholder="请输入电话"> </el-input>
           </el-form-item>
           <!-- 地址 -->
-          <el-form-item
-            v-if="!visibleOtherCountry"
-            prop="address"
-            :label="$t('SSQ')"
-            size="middle"
-          >
+          <el-form-item v-if="!visibleOtherCountry" prop="address" :label="$t('SSQ')" size="middle">
             <el-cascader
               style="width: 100%"
               :props="props"
@@ -59,25 +52,11 @@
             >
             </el-cascader>
           </el-form-item>
-          <el-form-item
-            v-if="visibleOtherCountry"
-            prop="city"
-            :label="$t('城市')"
-            size="middle"
-          >
-            <el-input v-model="addressInfo.city" placeholder="请输入城市">
-            </el-input>
+          <el-form-item v-if="visibleOtherCountry" prop="city" :label="$t('城市')" size="middle">
+            <el-input v-model="addressInfo.city" placeholder="请输入城市"> </el-input>
           </el-form-item>
-          <el-form-item
-            v-if="visibleOtherCountry"
-            prop="street"
-            :label="$t('街道')"
-            size="middle"
-          >
-            <el-input
-              v-model="addressInfo.street"
-              placeholder="请输入街道"
-            ></el-input>
+          <el-form-item v-if="visibleOtherCountry" prop="street" :label="$t('街道')" size="middle">
+            <el-input v-model="addressInfo.street" placeholder="请输入街道"></el-input>
           </el-form-item>
           <el-form-item
             v-if="visibleOtherCountry"
@@ -85,16 +64,9 @@
             :label="$t('门牌号')"
             size="middle"
           >
-            <el-input
-              v-model="addressInfo.door_no"
-              placeholder="请输入门牌号"
-            ></el-input>
+            <el-input v-model="addressInfo.door_no" placeholder="请输入门牌号"></el-input>
           </el-form-item>
-          <el-form-item
-            prop="addressDetail"
-            :label="$t('addressDetial')"
-            size="middle"
-          >
+          <el-form-item prop="addressDetail" :label="$t('addressDetial')" size="middle">
             <el-input
               type="textarea"
               v-model="addressInfo.addressDetail"
@@ -255,9 +227,7 @@ export default {
       },
       info_Verify_rules: {
         // 表单输入验证提醒
-        country: [
-          { message: '请选择国家/地区', trigger: 'blur', required: true }
-        ],
+        country: [{ message: '请选择国家/地区', trigger: 'blur', required: true }],
         city: [{ message: '请输入城市', trigger: 'blur', required: true }],
         street: [{ message: '请输入街道', trigger: 'blur', required: true }],
         door_no: [{ message: '请输入门牌号', trigger: 'blur', required: true }],
@@ -305,6 +275,7 @@ export default {
       } else if (this.active_tab_item === '收件人信息') {
         return this.$t('receiver');
       }
+      return false;
     }
   },
   watch: {
@@ -334,16 +305,16 @@ export default {
         this.addressInfo.country = value.country;
         this.addressInfo.city = value.city;
       }
-    },
+    }
   },
   methods: {
     onClosedDialog() {
       this.$nextTick(() => {
-        this.$refs.addressForm.resetFields()
-      })
+        this.$refs.addressForm.resetFields();
+      });
     },
     onChangeCountry(v) {
-      this.addressInfo.address = []
+      this.addressInfo.address = [];
       if (v === 'CN') {
         this.visibleOtherCountry = false;
       } else {
@@ -361,15 +332,15 @@ export default {
       this.formInfo.street = this.addressInfo.street;
       this.formInfo.country = this.addressInfo.country;
       if (this.addressInfo.country === 'CN') {
-        this.formInfo.province = this.addressInfo.address[0]
+        this.formInfo.province = this.addressInfo.address[0];
         this.formInfo.city = this.addressInfo.address[1];
         this.formInfo.district = this.addressInfo.address[2];
       } else {
-        this.formInfo.province = this.addressInfo.city
+        this.formInfo.province = this.addressInfo.city;
         this.formInfo.city = this.addressInfo.city;
         this.formInfo.district = this.addressInfo.city;
       }
-      this.$refs.addressForm.validate(async (validate) => {
+      this.$refs.addressForm.validate(async validate => {
         if (validate) {
           let active_item = this.active_tab_item; // 活动标签
           let id = this.row_data.id; // 用于编辑
@@ -378,42 +349,40 @@ export default {
           if (id) {
             let res;
             if (this.active_tab_item === '发件人信息') {
-              res = await $http.editSenderAddress(id, this.formInfo)
+              res = await $http.editSenderAddress(id, this.formInfo);
             } else if (this.active_tab_item === '收件人信息') {
-              res = await $http.editReceiverAddress(id, this.formInfo)
+              res = await $http.editReceiverAddress(id, this.formInfo);
             }
             if (res.status) return;
             this.$message({
               message: this.$t('success'),
-              type: 'success',
+              type: 'success'
             });
             this.$emit('update:visible', false); // 关闭弹窗
             this.$emit('updata_data', active_item); // 更新数据列表
           } else {
             let res;
             if (this.active_tab_item === '发件人信息') {
-              res = await $http.addSenderAddress(this.formInfo)
-
+              res = await $http.addSenderAddress(this.formInfo);
             } else if (this.active_tab_item === '收件人信息') {
-              res = await $http.addReceiverAddress(this.formInfo)
+              res = await $http.addReceiverAddress(this.formInfo);
             }
             if (res.status) return;
             this.$message({
               message: this.$t('success'),
-              type: 'success',
+              type: 'success'
             });
             this.$emit('update:visible', false); // 关闭弹窗
             this.$emit('updata_data_list', active_item); // 更新数据列表
           }
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-
 .add_warehouse_main {
   width: 96%;
   margin: 0 auto;

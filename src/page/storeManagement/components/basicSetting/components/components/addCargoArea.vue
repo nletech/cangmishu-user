@@ -8,29 +8,19 @@
       :rules="formValidator"
     >
       <label class="label">{{ $t('EssentialInformation') }}</label>
-      <el-form-item
-        prop="code"
-        :label="$t('ShippingAreaNumber')"
-        :class="$style.avatar_uploader"
-      >
+      <el-form-item prop="code" :label="$t('ShippingAreaNumber')" :class="$style.avatar_uploader">
         <el-input v-model="form.code" maxlength="255" size="small"> </el-input>
       </el-form-item>
       <el-form-item prop="name_cn" :label="$t('ShippingAreaName')">
-        <el-input v-model="form.name_cn" maxlength="255" size="small">
-        </el-input>
+        <el-input v-model="form.name_cn" maxlength="255" size="small"> </el-input>
       </el-form-item>
       <el-form-item :label="$t('WhetherToEnable')">
-        <el-switch
-          v-model="is_enabled"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-        >
+        <el-switch v-model="is_enabled" active-color="#13ce66" inactive-color="#ff4949">
         </el-switch>
       </el-form-item>
       <label class="label">{{ $t('OptionalInformation') }}</label>
       <el-form-item :label="$t('remark')">
-        <el-input v-model="form.remark" type="textarea" size="small" :rows="3">
-        </el-input>
+        <el-input v-model="form.remark" type="textarea" size="small" :rows="3"> </el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="isButtonLoading">
@@ -101,23 +91,21 @@ export default {
         if (!valid) return;
         this.form.is_enabled = +this.is_enabled;
         this.form.warehouse_id = this.$route.query.warehouse_id;
-        $http
-          .addWarehouseArea(this.form, this.$route.query.warehouse_id)
-          .then(res => {
-            if (res.status) return;
-            this.$message({
-              message: this.$t('success'),
-              type: 'success',
-              showClose: true
-            });
-            this.$router.push({
-              name: 'basicSetting',
-              params: { add_shelf_back: false },
-              query: {
-                warehouse_id: this.form.warehouse_id
-              }
-            });
+        $http.addWarehouseArea(this.form, this.$route.query.warehouse_id).then(res => {
+          if (res.status) return;
+          this.$message({
+            message: this.$t('success'),
+            type: 'success',
+            showClose: true
           });
+          this.$router.push({
+            name: 'areaAndShelf',
+            params: { backType: 'area' },
+            query: {
+              warehouse_id: this.form.warehouse_id
+            }
+          });
+        });
       });
     }
   }

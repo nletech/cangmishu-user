@@ -1,89 +1,122 @@
 <template>
-    <div :class="$style.select_goods">
-        <!-- 选择商品弹窗 -->
-        <el-dialog
-            :title="$t('selectGoods')"
-            width="80%"
-            min-width="1000px"
-            :visible.sync="visible"
-            :before-close="handleClose">
-            <el-row :gutter="20" style="line-height:30px;">
-              <el-col :span="5">{{$t('PleaseSelectCategory')}}</el-col>
-              <el-col :span="19">
-                  <!-- 搜索框 -->
-                  <el-row type="flex">
-                    <el-col  :span="16">
-                        <el-input
-                            clearable
-                            v-model="keywords"
-                            @clear="hanlderClearKeywords"
-                            :placeholder="$t('PleaseEnterAKeyword')">
-                            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                            <i slot="append" @click="handlerSearchKeyWords">{{$t('Search')}}</i>
-                        </el-input>
-                    </el-col>
-                    <!-- 添加商品 -->
-                    <el-col :span="4" :offset="4" >
-                      <div style="float:right">
-                      <el-button :loading="isButtonLoading" @click="goToAddGoodPage" icon="el-icon-document-add"> {{$t('AddProduct')}} </el-button>
-                      </div>
-                    </el-col>
-                  </el-row>
-              </el-col>
-            </el-row>
-            <hr/>
-            <el-row :gutter="20">
-              <el-col :span="5" >
-                  <span style="cursor: pointer;" @click="handlerAllCatergroy">{{$t('AllCartory')}}</span>
-                  <el-tree
-                    :props="{label:'name_cn'}"
-                    :data="categoryListData"
-                    default-expand-all
-                    @node-click="onCategoryChange"
-                    :expand-on-click-node="false"></el-tree>
-              </el-col>
-              <el-col :span="19"  style="border-left:1px solid #ccc">
-                  <!-- 数据表 -->
-                  <el-table
-                      :data="specList"
-                      ref="table"
-                      border
-                      @selection-change="specRowChange" style="width: 100%; margin-top:10px;">
-                      <el-table-column type="selection" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column type="index" label="#" width="60" header-align="center" align="center"></el-table-column>
-                      <el-table-column  :label="$t('ProductSpec')" prop="product_name" header-align="center" align="center"></el-table-column>
-                      <el-table-column  :label="$t('CurrentStock')" prop="total_stock_num" align="center"></el-table-column>
-                  </el-table>
-                  <button-pagination :pageParams="params" @changePage="handleCurrentChange"></button-pagination>
-              </el-col>
-            </el-row>
-            <hr/>
-            <el-row :gutter="20">
-              <el-col :span="5">
-                {{$t('productionType')}}{{specSelected.length}}
-              </el-col>
-              <el-col :span="19" class="dialog-footer">
-                <div style="float:right">
-                  <el-button
-                      type="primary"
-                      @click="confirmSelected"
-                      :loading="isButtonLoading"
-                      :disabled="!this.specSelected.length">
-                      {{$t('submit')}}
-                  </el-button>
-                  <el-button @click="handleClose()" :loading="isButtonLoading">{{$t('cancel')}}</el-button>
-                </div>
-              </el-col>
-            </el-row>
-        </el-dialog>
-    </div>
+  <div :class="$style.select_goods">
+    <!-- 选择商品弹窗 -->
+    <el-dialog
+      :title="$t('selectGoods')"
+      width="80%"
+      min-width="1000px"
+      :visible.sync="visible"
+      :before-close="handleClose"
+    >
+      <el-row :gutter="20" style="line-height:30px;">
+        <el-col :span="5">{{ $t('PleaseSelectCategory') }}</el-col>
+        <el-col :span="19">
+          <!-- 搜索框 -->
+          <el-row type="flex">
+            <el-col :span="16">
+              <el-input
+                clearable
+                v-model="keywords"
+                @clear="hanlderClearKeywords"
+                :placeholder="$t('PleaseEnterAKeyword')"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                <i slot="append" @click="handlerSearchKeyWords">{{ $t('Search') }}</i>
+              </el-input>
+            </el-col>
+            <!-- 添加商品 -->
+            <el-col :span="4" :offset="4">
+              <div style="float:right">
+                <el-button
+                  :loading="isButtonLoading"
+                  @click="goToAddGoodPage"
+                  icon="el-icon-document-add"
+                >
+                  {{ $t('AddProduct') }}
+                </el-button>
+              </div>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+      <hr />
+      <el-row :gutter="20">
+        <el-col :span="5">
+          <span style="cursor: pointer;" @click="handlerAllCatergroy">{{ $t('AllCartory') }}</span>
+          <el-tree
+            :props="{ label: 'name_cn' }"
+            :data="categoryListData"
+            default-expand-all
+            @node-click="onCategoryChange"
+            :expand-on-click-node="false"
+          ></el-tree>
+        </el-col>
+        <el-col :span="19" style="border-left:1px solid #ccc">
+          <!-- 数据表 -->
+          <el-table
+            :data="specList"
+            ref="table"
+            border
+            @selection-change="specRowChange"
+            style="width: 100%; margin-top:10px;"
+          >
+            <el-table-column
+              type="selection"
+              width="60"
+              header-align="center"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              type="index"
+              label="#"
+              width="60"
+              header-align="center"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              :label="$t('ProductSpec')"
+              prop="product_name"
+              header-align="center"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              :label="$t('CurrentStock')"
+              prop="total_stock_num"
+              align="center"
+            ></el-table-column>
+          </el-table>
+          <button-pagination
+            :pageParams="params"
+            @changePage="handleCurrentChange"
+          ></button-pagination>
+        </el-col>
+      </el-row>
+      <hr />
+      <el-row :gutter="20">
+        <el-col :span="5"> {{ $t('productionType') }}{{ specSelected.length }} </el-col>
+        <el-col :span="19" class="dialog-footer">
+          <div style="float:right">
+            <el-button
+              type="primary"
+              @click="confirmSelected"
+              :loading="isButtonLoading"
+              :disabled="!this.specSelected.length"
+            >
+              {{ $t('submit') }}
+            </el-button>
+            <el-button @click="handleClose()" :loading="isButtonLoading">{{
+              $t('cancel')
+            }}</el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </el-dialog>
+  </div>
 </template>
 <script>
-import inputPublic from '@/components/input-public';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
 import mixin from '@/mixin/form_config';
-
 
 export default {
   name: 'selectSpec',
@@ -91,30 +124,29 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     warehouseId: {
       type: Number,
       default: 0,
-      required: true,
-    },
+      required: true
+    }
   },
   components: {
-    buttonPagination,
-    inputPublic,
+    buttonPagination
   },
   data() {
     return {
       params: {
         page: 1,
         page_size: 10,
-        data_count: 0,
+        data_count: 0
       },
       specList: [], // 弹出框货品列表
       specSelected: [], // 弹出框选中货品
       categoryListData: [], // 商品分类列表
       categoryId: 0,
-      keywords: '',
+      keywords: ''
     };
   },
   created() {
@@ -131,7 +163,7 @@ export default {
         this.loadSpecDataList();
         clearTimeout(timer);
       }, 300);
-    },
+    }
   },
   methods: {
     handlerSearchKeyWords() {
@@ -159,13 +191,12 @@ export default {
       }
       const data = {
         warehouse_id: this.warehouseId,
-        spec: selectedId,
+        spec: selectedId
       };
-      $http.queryLocations(data)
-        .then((res) => {
-          this.$emit('selected', res.data); // 回传给父组件
-          this.handleClose();
-        });
+      $http.queryLocations(data).then(res => {
+        this.$emit('selected', res.data); // 回传给父组件
+        this.handleClose();
+      });
     },
     onCategoryChange(item) {
       this.categoryId = item.id;
@@ -173,11 +204,12 @@ export default {
     },
     loadCategoryList() {
       if (!this.warehouseId) return;
-      $http.getCategoryManagement({
-        warehouse_id: this.warehouseId,
-        page_size: 200,
-      })
-        .then((res) => {
+      $http
+        .getCategoryManagement({
+          warehouse_id: this.warehouseId,
+          page_size: 200
+        })
+        .then(res => {
           this.categoryListData = res.data.data;
         });
     }, // 加载所有分类
@@ -193,11 +225,10 @@ export default {
       if (this.keywords !== '') {
         queryModel.keywords = this.keywords.trim();
       }
-      $http.querySpecs(queryModel)
-        .then((res) => {
-          this.specList = res.data.data;
-          this.params.data_count = res.data.total;
-        });
+      $http.querySpecs(queryModel).then(res => {
+        this.specList = res.data.data;
+        this.params.data_count = res.data.total;
+      });
     }, // 获取商品列表
     onInputQuery(res) {
       this.specList = res.data.data;
@@ -208,7 +239,7 @@ export default {
       this.$confirm(this.$t('addGoodsTips')).then(() => {
         this.$router.push({
           name: 'goodsAdd',
-          query: { warehouse_id: this.warehouseId },
+          query: { warehouse_id: this.warehouseId }
         });
       });
     },
@@ -223,13 +254,12 @@ export default {
       this.specSelected = [];
       this.$refs.table.clearSelection();
       this.$emit('update:visible', false);
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-
 .select_goods {
   .select_goods_btn {
     margin: 0 0 10px 0;
@@ -243,4 +273,3 @@ export default {
   }
 }
 </style>
-

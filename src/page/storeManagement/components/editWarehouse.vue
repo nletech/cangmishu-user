@@ -15,11 +15,7 @@
     >
       <label class="label">{{ $t('Essentialformrmation') }}</label>
       <el-form-item prop="name_cn" :label="$t('storeName')" size="medium">
-        <el-input
-          v-model="warehouseInfo.name_cn"
-          maxlength="30"
-          show-word-limit
-        ></el-input>
+        <el-input v-model="warehouseInfo.name_cn" maxlength="30" show-word-limit></el-input>
       </el-form-item>
       <el-form-item prop="address" :label="$t('SSQ')" size="medium">
         <el-cascader
@@ -30,11 +26,7 @@
         >
         </el-cascader>
       </el-form-item>
-      <el-form-item
-        prop="addressDetail"
-        :label="$t('addressDetial')"
-        size="medium"
-      >
+      <el-form-item prop="addressDetail" :label="$t('addressDetial')" size="medium">
         <el-input v-model="warehouseInfo.addressDetail"> </el-input>
       </el-form-item>
       <label class="label">{{ $t('notNecessaryInfo') }}</label>
@@ -55,11 +47,7 @@
                 <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
             </el-form-item> -->
       <el-form-item>
-        <el-button
-          type="primary"
-          :class="$style.submit_btn"
-          @click="warehouseInfoSubmit"
-        >
+        <el-button type="primary" :class="$style.submit_btn" @click="warehouseInfoSubmit">
           {{ $t('submit') }}
         </el-button>
         <el-button @click="handleClose">
@@ -121,9 +109,7 @@ export default {
     };
     return {
       rules: {
-        name_cn: [
-          { validator: check.name_cn, trigger: 'blur', required: true }
-        ],
+        name_cn: [{ validator: check.name_cn, trigger: 'blur', required: true }],
         code: [{ validator: check.code, trigger: 'blur', required: true }],
         address: [
           {
@@ -133,9 +119,7 @@ export default {
             required: true
           }
         ],
-        addressDetail: [
-          { validator: check.addressDetail, trigger: 'blur', required: true }
-        ],
+        addressDetail: [{ validator: check.addressDetail, trigger: 'blur', required: true }],
         area: [{ validator: check.area, trigger: 'blur', required: true }]
       },
       warehouseInfo: {
@@ -165,14 +149,18 @@ export default {
       } else {
         /* eslint-disable */
         this.text_flag = true;
-        this.warehouseInfo.name_cn       = this.row_data.name_cn;
-        this.warehouseInfo.code          = this.row_data.code;
-        this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
+        this.warehouseInfo.name_cn = this.row_data.name_cn;
+        this.warehouseInfo.code = this.row_data.code;
+        this.warehouseInfo.address = [
+          this.row_data.province,
+          this.row_data.city,
+          this.row_data.street
+        ];
         this.warehouseInfo.addressDetail = this.row_data.door_no;
-        this.warehouseInfo.area          = this.row_data.area;
+        this.warehouseInfo.area = this.row_data.area;
         // this.warehouseInfo.isEnabledLang = this.row_data.is_enabled_lang;
       }
-    },
+    }
   },
   methods: {
     handleClose() {
@@ -182,7 +170,7 @@ export default {
       if (!status) {
         this.$message({
           type: 'success',
-          message: `${success_msg}`,
+          message: `${success_msg}`
         });
       }
     },
@@ -213,28 +201,26 @@ export default {
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
       // this.formInfo.is_enabled_lang = this.warehouseInfo.isEnabledLang;
-      this.$refs.rule_form.validate((validate) => {
+      this.$refs.rule_form.validate(validate => {
         if (validate) {
           let id = this.row_data.id; // 用于编辑
           if (id) {
-            $http.modifyWarehouse(id, this.formInfo)
-              .then((res) => {
-                if (res.status) return;
-                this.$emit('updata_data', true); // 更新数据列表
-                this.$emit('update:visible', false); // 关闭弹窗
-              });
+            $http.modifyWarehouse(id, this.formInfo).then(res => {
+              if (res.status) return;
+              this.$emit('updata_data', true); // 更新数据列表
+              this.$emit('update:visible', false); // 关闭弹窗
+            });
           }
         } else {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-
 .tips {
   color: red;
 }

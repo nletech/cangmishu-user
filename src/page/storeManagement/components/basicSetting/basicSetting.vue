@@ -23,9 +23,17 @@ export default {
     if (this.$route.query.quickTag) {
       this.tempWarehouseId = localStorage.getItem('warehouseId');
     }
-    if (this.$route.query.add_shelf_back) {
+    if (this.$route.query.backType === 'shelf') {
       this.active_tab_name = '货位';
-    } // 用于添加货位之后的返回操作
+    } else if (this.$route.query.backType === 'area') {
+      this.active_tab_name = '货区';
+    }
+    const { name, params, query } = this.$route;
+    this.$router.replace({
+      name,
+      params,
+      query: { ...query, backType: '' }
+    });
   },
   name: 'basicSetting',
   components: {

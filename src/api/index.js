@@ -369,8 +369,8 @@ const $http = {
     return Axios.get('/orderType', { params: data });
   }, // 分页查询--出库单分类
   // 辅助功能
-  modifyPsw(id, data) {
-    return Axios.post(`user/${id}/password`, data);
+  modifyPsw(data) {
+    return Axios.put(`user/password`, data);
   }, // 修改密码
   modifyUserInfo(id, data) {
     return Axios.post(`user/${id}/info`, data);

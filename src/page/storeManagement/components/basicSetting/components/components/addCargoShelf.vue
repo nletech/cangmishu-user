@@ -129,6 +129,7 @@ export default {
   methods: {
     get_area_data() {
       if (!this.$route.query.warehouse_id) return;
+
       $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id }).then(res => {
         this.area_list_data = res.data.data;
       });
@@ -146,9 +147,9 @@ export default {
             showClose: true
           });
           this.$router.push({
-            name: 'basicSetting',
+            name: 'areaAndShelf',
             query: {
-              add_shelf_back: true,
+              backType: 'shelf',
               warehouse_id: this.form.warehouse_id
             }
           });

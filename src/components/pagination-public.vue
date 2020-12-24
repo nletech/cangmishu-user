@@ -1,12 +1,13 @@
 <template>
-        <div v-if="+total > 0">
-              <el-pagination
-                  @current-change="handleCurrentChange"
-                  :current-page="this.params.currentPage"
-                  layout="total, prev, pager, next, jumper"
-                  :total="+this.params.total">
-              </el-pagination>
-        </div>
+  <div v-if="+total > 0">
+    <el-pagination
+      @current-change="handleCurrentChange"
+      :current-page="this.params.currentPage"
+      layout="total, prev, pager, next, jumper"
+      :total="+this.params.total"
+    >
+    </el-pagination>
+  </div>
 </template>
 <script>
 export default {
@@ -14,20 +15,21 @@ export default {
   name: 'paginationPublic',
   props: {
     params: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     total() {
       if (this.params.total) {
         return this.params.total;
       }
-    }, // 在初始化 props 中的 params 时，必须声明 total 属性
+      return 0;
+    } // 在初始化 props 中的 params 时，必须声明 total 属性
   },
   methods: {
     handleCurrentChange(val) {
       this.$emit('changePage', val);
-    },
-  },
+    }
+  }
 };
 </script>

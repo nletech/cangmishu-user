@@ -108,11 +108,10 @@
                       >
                       </el-button>
                     </el-tooltip>
-                    <el-tooltip :content="$t('edit')" placement="top">
+                    <el-tooltip :content="$t('Arrived')" placement="top">
                       <el-button
                         size="mini"
-                        type="primary"
-                        icon="el-icon-edit"
+                        icon="el-icon-success"
                         v-if="scope.row.status !== 3"
                         @click="modifyItem(scope.row)"
                         round
@@ -120,10 +119,11 @@
                       >
                       </el-button>
                     </el-tooltip>
-                    <el-tooltip :content="$t('Arrived')" placement="top">
+                    <el-tooltip :content="$t('edit')" placement="top">
                       <el-button
                         size="mini"
-                        icon="el-icon-success"
+                        type="primary"
+                        icon="el-icon-edit"
                         v-if="scope.row.status !== 3"
                         @click="finishedItem(scope.row)"
                         round

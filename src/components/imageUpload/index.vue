@@ -85,7 +85,7 @@ export default {
     },
 
     api() {
-      return `${baseApi.BASE_URL}/upload/image`;
+      return `${baseApi.BASE_URL}upload/image`;
     }
   },
 

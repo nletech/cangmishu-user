@@ -5,12 +5,12 @@
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
-        :class="isActive(tag)?'active':''"
+        :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
-        @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+        @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+        @contextmenu.prevent.native="openMenu(tag, $event)"
       >
         {{ $t(tag.title) }}
         <span
@@ -22,13 +22,13 @@
     </scroll-pane>
     <div class="back-box" @click="$router.go(-1)">
       <span class="el-icon-back back-icon"></span>
-      <span class="back-text">{{$t('返回')}}</span>
+      <span class="back-text">{{ $t('返回') }}</span>
     </div>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">{{$t('刷新')}}</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">{{$t('关闭')}}</li>
-      <li @click="closeOthersTags">{{$t('关闭其他')}}</li>
-      <li @click="closeAllTags(selectedTag)">{{$t('关闭所有')}}</li>
+    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
+      <li @click="refreshSelectedTag(selectedTag)">{{ $t('刷新') }}</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">{{ $t('关闭') }}</li>
+      <li @click="closeOthersTags">{{ $t('关闭其他') }}</li>
+      <li @click="closeAllTags(selectedTag)">{{ $t('关闭所有') }}</li>
     </ul>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default {
       top: 0,
       left: 0,
       selectedTag: {},
-      affixTags: [],
+      affixTags: []
     };
   },
   computed: {
@@ -54,11 +54,13 @@ export default {
       return this.$store.state.tagsView.visitedViews;
     },
     fileterAfterRouterMap() {
-      return this.$store.state.routerData.routerMap[0] ? this.$store.state.routerData.routerMap[0].children : [];
+      return this.$store.state.routerData.routerMap[0]
+        ? this.$store.state.routerData.routerMap[0].children
+        : [];
     },
     routes() {
       return this.$store.state.permission.routes;
-    },
+    }
   },
   watch: {
     $route() {
@@ -71,7 +73,7 @@ export default {
       } else {
         document.body.removeEventListener('click', this.closeMenu);
       }
-    },
+    }
   },
   mounted() {
     this.initTags();
@@ -86,14 +88,14 @@ export default {
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = [];
-      routes.forEach((route) => {
+      routes.forEach(route => {
         if (route.meta && route.meta.affix) {
           const tagPath = path.resolve(basePath, route.path);
           tags.push({
             fullPath: tagPath,
             path: tagPath,
             name: route.name,
-            meta: { ...route.meta },
+            meta: { ...route.meta }
           });
         }
         if (route.children) {
@@ -107,7 +109,7 @@ export default {
     },
     initTags() {
       /* eslint-disable */
-      const affixTags = this.affixTags = this.filterAffixTags(this.fileterAfterRouterMap);
+      const affixTags = (this.affixTags = this.filterAffixTags(this.fileterAfterRouterMap));
       for (const tag of affixTags) {
         // Must have tag name
         if (tag.name) {
@@ -142,7 +144,7 @@ export default {
         const { fullPath } = view;
         this.$nextTick(() => {
           this.$router.replace({
-            path: `/redirect${fullPath}`,
+            path: `/redirect${fullPath}`
           });
         });
       });
@@ -205,8 +207,8 @@ export default {
     },
     handleScroll() {
       this.closeMenu();
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -256,7 +258,7 @@ export default {
         color: #fff;
         border-color: #3540a5;
         &::before {
-          content: "";
+          content: '';
           background: #fff;
           display: inline-block;
           width: 8px;

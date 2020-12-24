@@ -1,31 +1,32 @@
 <template>
   <div class="nle-images-box">
     <div
-        v-for="(item, index) in list"
-        :key="item.id"
-        :class="inline ? 'show-inline' : 'show-block'">
-        <el-card class="image-item">
-            <div class="image-item_move">
-                <span
-                    :class="[inline ? 'el-icon-back' : 'el-icon-top', 'move-left']"
-                    v-if="index !== 0"
-                    @click="onMove(index, -1)">
-                </span>
-                <span
-                    :class="[inline ? 'el-icon-right' : 'el-icon-bottom', 'move-right']"
-                    v-if="index !== list.length - 1"
-                    @click="onMove(index, 1)">
-                </span>
-            </div>
-            <div
-                class="image-item_title"
-                v-if="mainText">
-                <span v-if="index === 0">{{ mainText }}</span>
-                <span v-else>{{ secondText }}</span>
-            </div>
-            <i class="el-icon-close image-close" @click="onDelete(index)"></i>
-            <img :src="item.url" alt="" class="image">
-        </el-card>
+      v-for="(item, index) in list"
+      :key="item.id"
+      :class="inline ? 'show-inline' : 'show-block'"
+    >
+      <el-card class="image-item">
+        <div class="image-item_move">
+          <span
+            :class="[inline ? 'el-icon-back' : 'el-icon-top', 'move-left']"
+            v-if="index !== 0"
+            @click="onMove(index, -1)"
+          >
+          </span>
+          <span
+            :class="[inline ? 'el-icon-right' : 'el-icon-bottom', 'move-right']"
+            v-if="index !== list.length - 1"
+            @click="onMove(index, 1)"
+          >
+          </span>
+        </div>
+        <div class="image-item_title" v-if="mainText">
+          <span v-if="index === 0">{{ mainText }}</span>
+          <span v-else>{{ secondText }}</span>
+        </div>
+        <i class="el-icon-close image-close" @click="onDelete(index)"></i>
+        <img :src="item.url" alt="" class="image" />
+      </el-card>
     </div>
   </div>
 </template>
@@ -33,27 +34,27 @@
 export default {
   model: {
     prop: 'list',
-    event: 'onMove',
+    event: 'onMove'
   },
   props: {
     inline: {
       type: Boolean,
-      default: true,
+      default: true
     },
     mainText: {
       type: String,
-      default: '',
+      default: ''
     },
     secondText: {
       type: String,
-      default: '',
+      default: ''
     },
     list: {
       type: Array,
       default() {
         return [];
-      },
-    },
+      }
+    }
   },
   methods: {
     onDelete(index) {
@@ -63,8 +64,8 @@ export default {
       const item = this.list.splice(index, 1);
       this.list.splice(index + step, 0, item[0]);
       this.$emit('changeItem');
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -109,7 +110,8 @@ export default {
 .move-right {
   float: right;
 }
-.move-left, .move-right {
+.move-left,
+.move-right {
   cursor: pointer;
   display: inline-block;
   width: 30px;
@@ -117,7 +119,7 @@ export default {
   line-height: 30px;
   text-align: center;
   border-radius: 50%;
-  box-shadow: 0 0 5px rgba(0, 0, 0, .12);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.12);
   font-weight: bold;
 }
 </style>

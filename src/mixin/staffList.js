@@ -12,8 +12,8 @@ export default {
       params: {
         page_size: 10,
         page: 1,
-        data_count: 0,
-      },
+        data_count: 0
+      }
     };
   },
   methods: {
@@ -43,6 +43,6 @@ export default {
     handleCurrentChange(pageId) {
       this.params.page = pageId;
       this.getList();
-    },
-  },
+    }
+  }
 };

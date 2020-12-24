@@ -2,12 +2,12 @@ import goGroup from './util';
 
 export default {
   props: {
-    keyName: [String || Array],
+    keyName: [String || Array]
   },
   inject: ['params'],
   data() {
     return {
-      value: this.params[this.keyName],
+      value: this.params[this.keyName]
     };
   },
   created() {
@@ -34,9 +34,9 @@ export default {
       this.$router.replace({
         name,
         params,
-        query: { ...query, [key]: value },
+        query: { ...query, [key]: value }
       });
-    },
+    }
   },
   watch: {
     params: {
@@ -45,7 +45,7 @@ export default {
           this.value = newVlaue[this.keyName];
         });
       },
-      deep: true,
-    },
-  },
+      deep: true
+    }
+  }
 };

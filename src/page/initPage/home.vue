@@ -19,7 +19,7 @@
               <span @click="goToTag(item.pathName)">{{ item.count }}</span>
             </p>
           </el-col>
-          <el-col :md="24" :lg="6" :xl="6" class="wechat-qr">
+          <el-col :offset="4" :md="24" :lg="6" :xl="6" class="wechat-qr">
             <div class="wechat-qr-item">
               <div class="wechat-qr-item-image">
                 <img width="100%" height="100%" src="../../assets/img/Wechatcard1.png" alt="" />
@@ -97,7 +97,7 @@
           </el-col>
           <el-col :span="6">
             <p>缺货</p>
-            <p class="value">{{ stockTotal.stock_shortage }}</p>
+            <p class="value red-color">{{ stockTotal.stock_shortage }}</p>
           </el-col>
         </el-row>
       </div>
@@ -113,10 +113,11 @@ import $http from '@/api';
 import mixin from '@/mixin/form_config';
 
 const echarts = require('echarts/lib/echarts');
-require('echarts/lib/chart/bar');
-require('echarts/lib/chart/line');
-require('echarts/lib/chart/pie');
-require('echarts/lib/component/legend');
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/chart/pie';
+import 'echarts/lib/component/legend';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/graphic';
 
 export default {
   name: 'home',
@@ -144,18 +145,18 @@ export default {
           count: '',
           pathName: 'inventoryManage',
           color: 'red-color'
-        },
-        {
-          name: 'UnShelf',
-          count: '',
-          pathName: 'inboundList'
-        },
-        {
-          name: 'UnConfirm',
-          count: '',
-          pathName: 'saleList',
-          color: 'green-color'
         }
+        // {
+        //   name: 'UnShelf',
+        //   count: '',
+        //   pathName: 'inboundList'
+        // },
+        // {
+        //   name: 'UnConfirm',
+        //   count: '',
+        //   pathName: 'saleList',
+        //   color: 'green-color'
+        // }
       ],
       saleTotal: {},
       saleDateRadio: '1',
@@ -232,7 +233,7 @@ export default {
     circleList(pie, value, name) {
       const legedData = [];
       const circleList = pie.map(i => {
-        legedData.push(i.type);
+        legedData.push(i[name]);
         return { value: i[value], name: i[name] };
       });
       return { legedData, circleList };
@@ -255,11 +256,11 @@ export default {
       option.legend = {
         orient: 'vertical',
         left: 10,
-        data: legedData
+        data: legedData.length ? legedData : ['暂无']
       };
       option.series = [
         {
-          name: '包裹概览',
+          name: '百分比',
           type: 'pie',
           radius: ['50%', '70%'],
           label: {
@@ -275,21 +276,37 @@ export default {
           labelLine: {
             show: true
           },
-          data: circleList
+          data: legedData.length ? circleList : [{ value: 0, name: '暂无' }]
         }
       ];
       echarCircle.setOption(option);
       window.onresize = echarCircle.resize;
     },
     initChartLine(data, chartConfig) {
+      let xData = [];
+      let seriesData1 = [];
+      data.forEach(item => {
+        xData.push(item[chartConfig.xAxisKey]);
+        seriesData1.push(item[chartConfig.seriesKey]);
+      });
       const echarLine = echarts.init(document.getElementById(chartConfig.domId));
+      const isStock = chartConfig.domId.indexOf('stock') !== -1;
       const packageOption = {
-        backgroundColor: '#ffffff',
-        color: ['#cee5fe'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        legend: {
+          data: [`${isStock ? '总入库' : '营业额'}`, '总出库']
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
           }
         },
         grid: {
@@ -297,72 +314,39 @@ export default {
           right: '4%',
           bottom: '3%',
           containLabel: true
-        }
+        },
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            data: xData
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: isStock ? '总入库' : '营业额',
+            type: 'bar',
+            stack: '总量',
+            areaStyle: {},
+            barWidth: '10px',
+            data: seriesData1
+          }
+        ]
       };
-      let xData = [];
-      let seriesData1 = [];
-      data.forEach(item => {
-        xData.push(item[chartConfig.xAxisKey]);
-        seriesData1.push(item[chartConfig.seriesKey]);
-      });
-      packageOption.xAxis = [
-        {
-          type: 'category',
-          data: xData,
-          axisTick: {
-            alignWithLabel: true
-          }
-        }
-      ];
-      packageOption.yAxis = [
-        {
-          type: 'value',
-          axisLine: {
-            // y轴
-            show: false
-          },
-          axisTick: {
-            // y轴刻度线
-            show: false
-          },
-          splitLine: {
-            // 网格线
-            show: true
-          }
-        }
-      ];
-      packageOption.series = [
-        {
-          name: chartConfig.seriesKey,
-          type: 'bar',
-          barWidth: '60%',
-          itemStyle: {
-            barBorderRadius: 5,
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#14c8d4' },
-              { offset: 1, color: '#43eec6' }
-            ])
-          },
-          data: seriesData1
-        }
-      ];
-      if (chartConfig.domId.indexOf('sale') !== -1) {
+      if (isStock) {
         let seriesData2 = [];
         data.forEach(item => {
           seriesData2.push(item[chartConfig.seriesKey2]);
         });
         packageOption.series.push({
-          name: chartConfig.seriesKey2,
+          name: '总出库',
           type: 'bar',
-          barGap: '-100%',
-          barWidth: 10,
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: 'rgba(20,200,212,0.5)' },
-              { offset: 0.2, color: 'rgba(20,200,212,0.2)' },
-              { offset: 1, color: 'rgba(20,200,212,0)' }
-            ])
-          },
+          barWidth: '10px',
           z: -12,
           data: seriesData2
         });
@@ -377,8 +361,8 @@ export default {
         this.statistics[1].count = res.data.total_product;
         this.statistics[2].count = res.data.total_order;
         this.statistics[3].count = res.data.stock_warning;
-        this.statistics[4].count = res.data.wait_shelf;
-        this.statistics[5].count = res.data.wait_shipment;
+        // this.statistics[4].count = res.data.wait_shelf;
+        // this.statistics[5].count = res.data.wait_shipment;
       });
     }
   }

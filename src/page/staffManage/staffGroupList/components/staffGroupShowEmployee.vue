@@ -22,13 +22,7 @@
       <!-- 员工列表数据表格 -->
       <el-table :data="staff_data" border>
         <!-- #序号 -->
-        <el-table-column
-          type="index"
-          align="center"
-          header-align="center"
-          label="#"
-          width="70"
-        >
+        <el-table-column type="index" align="center" header-align="center" label="#" width="70">
         </el-table-column>
         <!-- 用户名 -->
         <el-table-column
@@ -67,12 +61,7 @@
           </template>
         </el-table-column>
         <!-- 手机号 -->
-        <el-table-column
-          prop="phone"
-          align="center"
-          header-align="center"
-          label="手机号"
-        >
+        <el-table-column prop="phone" align="center" header-align="center" label="手机号">
           <template slot-scope="scope">
             {{ scope.row.phone }}
           </template>
@@ -85,8 +74,7 @@
           label="最后登录时间"
         >
           <template slot-scope="scope">
-            <i class="el-icon-time" v-show="Boolean(scope.row.last_login_at)">
-            </i>
+            <i class="el-icon-time" v-show="Boolean(scope.row.last_login_at)"> </i>
             <span>{{ scope.row.last_login_at }}</span>
           </template>
         </el-table-column>
@@ -99,12 +87,7 @@
           width="240"
         >
           <template slot-scope="scope">
-            <el-button
-              type="danger"
-              plain
-              size="mini"
-              @click="deleteStaff(scope.row)"
-            >
+            <el-button type="danger" plain size="mini" @click="deleteStaff(scope.row)">
               移除
             </el-button>
           </template>
@@ -136,10 +119,7 @@ export default {
   },
   computed: {
     warehouseId() {
-      return (
-        this.$store.state.config.setWarehouseId ||
-        +localStorage.getItem('warehouseId')
-      );
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     }
   },
   methods: {

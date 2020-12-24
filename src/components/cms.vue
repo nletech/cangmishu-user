@@ -5,31 +5,30 @@
         <el-row>
           <el-col :span="20">
             <!-- 标签页  -->
-            <el-tabs
-                :value="value"
-                @tab-click="handleClick">
-                <el-tab-pane
-                  v-for="item in tagList"
-                  :label="item.label"
-                  :name="item.name"
-                  :key="item.name">
-                </el-tab-pane>
+            <el-tabs :value="value" @tab-click="handleClick">
+              <el-tab-pane
+                v-for="item in tagList"
+                :label="item.label"
+                :name="item.name"
+                :key="item.name"
+              >
+              </el-tab-pane>
             </el-tabs>
           </el-col>
           <!-- 添加按钮 -->
-          <el-col
-              v-if="addText"
-              :span="4"
-              :class="$style.text_right">
-              <el-button
-                  type="text"
-                  @click="$router.push({
-                    name: addText,
-                    query: {id: query && query}
-                  })"
-                  icon="el-icon-plus">
-                  {{$t(addText)}}
-              </el-button>
+          <el-col v-if="addText" :span="4" :class="$style.text_right">
+            <el-button
+              type="text"
+              @click="
+                $router.push({
+                  name: addText,
+                  query: { id: query && query }
+                })
+              "
+              icon="el-icon-plus"
+            >
+              {{ $t(addText) }}
+            </el-button>
           </el-col>
         </el-row>
       </div>
@@ -45,7 +44,7 @@ export default {
     tagList: [Array], // 标签页数组
     value: [String], // 选择标签页的值
     addText: [String], // 添加按钮文字
-    query: [String, Number], // 查询路由
+    query: [String, Number] // 查询路由
   },
   methods: {
     // 返回选中的tag
@@ -53,10 +52,10 @@ export default {
       this.$emit('input', val.name);
       this.$emit('change', val.name);
       this.$router.replace({
-        query: { ...this.$route.query, type: val.name },
+        query: { ...this.$route.query, type: val.name }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -71,7 +70,7 @@ export default {
   }
 }
 .wms_tag_container_table {
-  padding: 10px 25px 20px 25px ;
+  padding: 10px 25px 20px 25px;
   .page {
     margin-top: 10px;
   }
@@ -85,7 +84,7 @@ export default {
   .el-tabs__header {
     margin: 0;
     .el-tabs__item {
-      height:50px;
+      height: 50px;
       line-height: 50px;
       font-size: 16px;
     }

@@ -1,15 +1,14 @@
 <template>
-      <div :class="$style.page">
-        <div :class="$style.main">
-            <div  :class="$style.header">
-                <slot name="search"></slot>
-            </div>
-            <slot></slot>
-        </div>
+  <div :class="$style.page">
+    <div :class="$style.main">
+      <div :class="$style.header">
+        <slot name="search"></slot>
       </div>
+      <slot></slot>
+    </div>
+  </div>
 </template>
 <style lang="less" module>
-
 .page {
   .main {
     margin: 0 auto;

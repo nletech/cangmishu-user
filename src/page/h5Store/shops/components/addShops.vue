@@ -173,7 +173,7 @@ export default {
       return { Authorization: this.$store.state.token.token };
     },
     api() {
-      return `${baseApi.BASE_URL}/upload/image`;
+      return `${baseApi.BASE_URL}upload/image`;
     },
     langType() {
       switch (this.$i18n.locale) {

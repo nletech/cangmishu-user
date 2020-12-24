@@ -1,4 +1,4 @@
-export default function () {
+export default function() {
   const now = new Date();
   const year = now.getFullYear();
   let month = now.getMonth();

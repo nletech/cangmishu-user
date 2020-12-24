@@ -27,6 +27,9 @@
         <el-form-item :label="$t('cnName')" prop="name_cn" style="width:70%">
           <el-input v-model="form.name_cn"></el-input>
         </el-form-item>
+        <el-form-item :label="$t('barcode')" prop="barcode" style="width:70%">
+          <el-input v-model="form.barcode"></el-input>
+        </el-form-item>
         <el-form-item
           v-if="isEnabledLangInput()"
           :label="$t('enName')"
@@ -230,7 +233,8 @@ export default {
         display_link: '',
         photos: '',
         remark: '',
-        is_warning: '1' // 是否发送邮件
+        is_warning: '1', // 是否发送邮件
+        barcode: '' // 条码
       },
       en: true,
       tips: '',
@@ -268,7 +272,7 @@ export default {
       return { Authorization: this.$store.state.token.token };
     },
     api() {
-      return `${baseApi.BASE_URL}/upload/image`;
+      return `${baseApi.BASE_URL}upload/image`;
     },
     imgUrl() {
       return `${baseApi.BASE_URL}${this.form.photos}`;
@@ -321,6 +325,7 @@ export default {
           display_link: res.data.display_link,
           photos: res.data.photos,
           remark: res.data.remark,
+          barcode: res.data.barcode,
           is_warning: '1' // 是否发送邮件
         };
         res.data.specs.forEach(val => {

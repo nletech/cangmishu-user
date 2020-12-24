@@ -7,7 +7,9 @@
             <input-public :select="select_batch_code" @data_cb="handlerInputQuery"></input-public>
           </el-col>
           <el-col :span="2" :offset="18">
-            <el-button size="small" @click="addGoods" icon="el-icon-plus">{{$t('AddProduct')}}</el-button>
+            <el-button size="small" @click="addGoods" icon="el-icon-plus">{{
+              $t('AddProduct')
+            }}</el-button>
           </el-col>
         </el-row>
       </div>
@@ -18,7 +20,12 @@
         @selection-change="handleSelectionChange"
         border
       >
-        <el-table-column type="selection" width="40" header-align="center" align="center"></el-table-column>
+        <el-table-column
+          type="selection"
+          width="40"
+          header-align="center"
+          align="center"
+        ></el-table-column>
         <el-table-column
           :label="$t('productImage')"
           header-align="center"
@@ -36,7 +43,7 @@
         </el-table-column>
         <el-table-column :label="$t('ProductName2')" header-align="center" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <span>{{ scope.row.name }}</span>
             <el-popover transition placement="right" trigger="hover">
               <img
                 v-if="scope.row.weapp_qrcode"
@@ -47,7 +54,12 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="sale_price" :label="$t('sale')" header-align="center" align="center"></el-table-column>
+        <el-table-column
+          prop="sale_price"
+          :label="$t('sale')"
+          header-align="center"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="updated_at"
           :label="$t('time')"
@@ -97,7 +109,8 @@
               style="color: rgb(121, 106, 209);
                         font-weight: bold;
                         font-size: 1.2rem;"
-            >{{$t('Batchoperation')}}</span>
+              >{{ $t('Batchoperation') }}</span
+            >
             <el-button
               size="mini"
               round
@@ -105,7 +118,8 @@
               :loading="isButtonLoading"
               style="display: inline; position: relative; left: 20px; top: 2px;"
               @click="handlerSeleteionAllInShelf"
-            >{{$t('PutOn')}}</el-button>
+              >{{ $t('PutOn') }}</el-button
+            >
             <el-button
               size="mini"
               round
@@ -113,7 +127,8 @@
               :disabled="isSelected"
               style="display: inline; position: relative; left: 20px; top: 2px;"
               @click="handlerSeleteionAllOutShelf"
-            >{{$t('PutOff')}}</el-button>
+              >{{ $t('PutOff') }}</el-button
+            >
             <el-button
               size="mini"
               round
@@ -121,7 +136,8 @@
               :loading="isButtonLoading"
               style="display: inline; position: relative; left: 20px; top: 2px;"
               @click="handlerSeleteionAllDelete"
-            >{{$t('delete')}}</el-button>
+              >{{ $t('delete') }}</el-button
+            >
           </div>
         </el-col>
         <el-col :span="2" :offset="14">
@@ -162,7 +178,7 @@ export default {
     inputPublic,
     paginationPublic,
     selectSpecDialog,
-    editGoodsInShop,
+    editGoodsInShop
   },
   data() {
     return {
@@ -171,13 +187,13 @@ export default {
       select_batch_code: {
         placeholder: 'ProductName2',
         flag: 1,
-        shopId: this.isShopsOperation(),
+        shopId: this.isShopsOperation()
       },
       row_data: {},
       dialogEditShow: false,
       dialogSpecShow: false,
       params: { total: 1 }, // 分页数据
-      goodsList: [], // 货品列表
+      goodsList: [] // 货品列表
     };
   },
   created() {
@@ -186,7 +202,7 @@ export default {
   computed: {
     isSelected() {
       return !this.selectionList.length;
-    }, // 是否已选择
+    } // 是否已选择
   },
   methods: {
     handlerShelfSlef(val, row) {
@@ -209,23 +225,25 @@ export default {
     handlerShelf(shopId, id, isShelf) {
       // eslint-disable-next-line
       let ArrayId = [];
-      if (Array.isArray(id)) { // 如果是数组则合并
+      if (Array.isArray(id)) {
+        // 如果是数组则合并
         ArrayId = id;
       } else {
         ArrayId.push(id);
       }
-      $http.shelvesStatus(shopId, {
-        is_shelf: isShelf,
-        id: ArrayId,
-      })
-        .then((res) => {
+      $http
+        .shelvesStatus(shopId, {
+          is_shelf: isShelf,
+          id: ArrayId
+        })
+        .then(res => {
           if (res.status) return;
           this.getGoodsInShop({ page: this.params.currentPage });
         });
     }, // 上下架单独方法
     handleSelectionChange(val) {
       this.selectionList = [];
-      val.forEach((e) => {
+      val.forEach(e => {
         this.selectionList.push(e.id);
       });
     },
@@ -233,17 +251,16 @@ export default {
       this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
         confirmButtonText: this.$t('confirm'),
         cancelButtonText: this.$t('cancel'),
-        type: 'warning',
+        type: 'warning'
       }).then(() => {
-        $http.deleteGoodsInShop(this.$route.query.shopId, id)
-          .then(() => {
-            this.$message({
-              message: this.$t('success'),
-              type: 'success',
-              showClose: true,
-            });
-            this.getGoodsInShop({ page: this.params.currentPage });
+        $http.deleteGoodsInShop(this.$route.query.shopId, id).then(() => {
+          this.$message({
+            message: this.$t('success'),
+            type: 'success',
+            showClose: true
           });
+          this.getGoodsInShop({ page: this.params.currentPage });
+        });
       });
     },
     handlerInputQuery(res) {
@@ -267,13 +284,12 @@ export default {
       // eslint-disable-next-line
       let perData = {
         warehouse_id: this.$route.query.warehouse_id,
-        products: productsTemp,
+        products: productsTemp
       };
-      $http.addGoodsToShop(this.$route.query.shopId, perData)
-        .then((res) => {
-          if (res.status) return;
-          this.getGoodsInShop();
-        });
+      $http.addGoodsToShop(this.$route.query.shopId, perData).then(res => {
+        if (res.status) return;
+        this.getGoodsInShop();
+      });
     },
     handlerChangePage(val) {
       this.getGoodsInShop({ page: val });
@@ -283,12 +299,11 @@ export default {
       if (query && query.page) {
         queryDate.page = query.page;
       }
-      $http.goodsInShop(this.$route.query.shopId, queryDate)
-        .then((res) => {
-          this.goodsList = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
+      $http.goodsInShop(this.$route.query.shopId, queryDate).then(res => {
+        this.goodsList = res.data.data;
+        this.params.total = res.data.total;
+        this.params.currentPage = res.data.current_page;
+      });
     }, // 获取列表
     addGoods() {
       this.dialogSpecShow = true;
@@ -296,13 +311,12 @@ export default {
     editGoods(row) {
       this.dialogEditShow = true;
       this.row_data = row;
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-
 .page {
   margin: @margin;
   .main {

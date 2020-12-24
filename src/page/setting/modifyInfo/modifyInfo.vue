@@ -36,7 +36,7 @@
             <el-form-item label="联系人" prop="code">
               <el-input v-model="ruleForm.code" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="所属行业" prop="code">
+            <!-- <el-form-item label="所属行业" prop="code">
               <el-select v-model="ruleForm.value" placeholder="请选择">
                 <el-option
                   v-for="item in options"
@@ -46,7 +46,7 @@
                 >
                 </el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-button type="primary" @click="onConfirm">提交</el-button>
             </el-form-item>

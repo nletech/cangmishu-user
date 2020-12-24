@@ -17,21 +17,10 @@
       <!-- 员工组数据表格 -->
       <el-table :data="staffGroupData" border>
         <!-- #序号 -->
-        <el-table-column
-          type="index"
-          align="center"
-          header-align="center"
-          label="#"
-          width="80"
-        >
+        <el-table-column type="index" align="center" header-align="center" label="#" width="80">
         </el-table-column>
         <!-- 员工组名称 -->
-        <el-table-column
-          prop="nickname"
-          align="center"
-          header-align="center"
-          label="员工组名称"
-        >
+        <el-table-column prop="nickname" align="center" header-align="center" label="员工组名称">
           <template slot-scope="scope">
             {{ scope.row.name }}
           </template>
@@ -52,47 +41,22 @@
           </template>
         </el-table-column>
         <!-- 操作 -->
-        <el-table-column
-          prop="staff_operations"
-          header-align="center"
-          label="操作"
-          width="360"
-        >
+        <el-table-column prop="staff_operations" header-align="center" label="操作" width="360">
           <template slot-scope="scope">
             <!-- 基本信息 -->
-            <el-button
-              type="primary"
-              plain
-              size="mini"
-              @click="handleBasicInfo(scope.row)"
-            >
+            <el-button type="primary" plain size="mini" @click="handleBasicInfo(scope.row)">
               基本信息
             </el-button>
             <!-- 限权 -->
-            <el-button
-              type="success"
-              plain
-              size="mini"
-              @click="handlePermissions(scope.row)"
-            >
+            <el-button type="success" plain size="mini" @click="handlePermissions(scope.row)">
               权限
             </el-button>
             <!-- 查看员工 -->
-            <el-button
-              type="danger"
-              plain
-              size="mini"
-              @click="showStaff(scope.row)"
-            >
+            <el-button type="danger" plain size="mini" @click="showStaff(scope.row)">
               查看员工
             </el-button>
             <!-- 删除 -->
-            <el-button
-              type="danger"
-              plain
-              size="mini"
-              @click="deleteStaffGroup(scope.row)"
-            >
+            <el-button type="danger" plain size="mini" @click="deleteStaffGroup(scope.row)">
               删除
             </el-button>
           </template>
@@ -113,13 +77,11 @@
 </template>
 
 <script>
-import MyGroup from '@/components/my_group';
 import $http from '@/api';
 import paginationPublic from '@/components/pagination-public';
 
 export default {
   components: {
-    MyGroup,
     paginationPublic
   },
   data() {
@@ -136,10 +98,7 @@ export default {
   },
   computed: {
     warehouseId() {
-      return (
-        this.$store.state.config.setWarehouseId ||
-        +localStorage.getItem('warehouseId')
-      );
+      return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     }
   },
   watch: {

@@ -120,7 +120,7 @@ export default {
           scope: 'snsapi_login',
           state,
           redirect_uri: res.data.callback_url,
-          href: `${baseApi.BASE_URL}/css/qrcode.css`
+          href: `${baseApi.BASE_URL}css/qrcode.css`
         });
       });
     }, // 获取微信二维码

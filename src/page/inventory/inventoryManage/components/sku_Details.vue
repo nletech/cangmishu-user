@@ -1,56 +1,66 @@
 <template>
-    <el-dialog
-        width="80%"
-        @update:visible="$emit('update:visible', $event)"
-        :visible="visible">
-        <div  :class="$style.main">
-            <h1  :class="$style.details_h1">{{rowInfo.sku}}{{$t('StockHistory')}}</h1>
-            <el-row  :class="$style.header">
-                    <el-col :span="6">
-                            <date-picker-public @select_data="handlerSelect_data">
-                            </date-picker-public>
-                    </el-col>
-                    <el-col  :span="4" :offset="14">
-                            <select-public  :select="select_data_status"
-                                            @data_cb="handlerQuery">
-                            </select-public>
-                    </el-col>
-            </el-row>
-            <el-table
-                :data="SkuList"
-                border
-                style="width: 100%">
-                <el-table-column align="center" header-align="center" type="index" width="60">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" :label="$t('Type')" prop="type">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" :label="$t('OperationNumber')" prop="operation_num">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" prop="sku_total_stock_num" :label="$t('warehouseStock')">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" prop="created_at" :label="$t('Operationdate')">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" prop="order_sn" :label="$t('OrderNumber')">
-                </el-table-column>
-                <el-table-column align="center" header-align="center" prop="remark" :label="$t('remark')">
-                </el-table-column>
-            </el-table>
-            <pagination-public
-                :params="params"
-                :class="$style.pagination"
-                @changePage="handlerChangePage">
-            </pagination-public>
-        </div>
-    </el-dialog>
+  <el-dialog width="80%" @update:visible="$emit('update:visible', $event)" :visible="visible">
+    <div :class="$style.main">
+      <h1 :class="$style.details_h1">{{ rowInfo.sku }}{{ $t('StockHistory') }}</h1>
+      <el-row :class="$style.header">
+        <el-col :span="6">
+          <date-picker-public @select_data="handlerSelect_data"> </date-picker-public>
+        </el-col>
+        <el-col :span="4" :offset="14">
+          <select-public :select="select_data_status" @data_cb="handlerQuery"> </select-public>
+        </el-col>
+      </el-row>
+      <el-table :data="SkuList" border style="width: 100%">
+        <el-table-column align="center" header-align="center" type="index" width="60">
+        </el-table-column>
+        <el-table-column align="center" header-align="center" :label="$t('Type')" prop="type">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          :label="$t('OperationNumber')"
+          prop="operation_num"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          prop="sku_total_stock_num"
+          :label="$t('warehouseStock')"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          prop="created_at"
+          :label="$t('Operationdate')"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          prop="order_sn"
+          :label="$t('OrderNumber')"
+        >
+        </el-table-column>
+        <el-table-column align="center" header-align="center" prop="remark" :label="$t('remark')">
+        </el-table-column>
+      </el-table>
+      <pagination-public
+        :params="params"
+        :class="$style.pagination"
+        @changePage="handlerChangePage"
+      >
+      </pagination-public>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
 import selectPublic from '@/components/select-public';
 import datePickerPublic from '@/components/date-picker-public';
 import paginationPublic from '@/components/pagination-public';
-import buttonPagination from '@/components/pagination_and_buttons';
 import $http from '@/api';
-import MyGroup from '@/components/my_group';
 
 export default {
   props: {
@@ -58,14 +68,12 @@ export default {
     stock_id: Number,
     warehouseId: Number,
     warehouseName: String,
-    rowInfo: Object,
+    rowInfo: Object
   },
   components: {
-    buttonPagination,
-    MyGroup,
     selectPublic,
     datePickerPublic,
-    paginationPublic,
+    paginationPublic
   },
   data() {
     return {
@@ -74,10 +82,10 @@ export default {
         placeholder: '类型',
         options: [],
         cb_flag: 5,
-        stock_id: '',
+        stock_id: ''
       },
       SkuList: [],
-      date: [],
+      date: []
     };
   },
   watch: {
@@ -86,11 +94,11 @@ export default {
         this.getDatas();
         this.getStockTypes();
       }
-    },
+    }
   },
   methods: {
     getStockTypes() {
-      $http.stocktypes().then((res) => {
+      $http.stocktypes().then(res => {
         if (res.status) return;
         this.select_data_status.options = res.data;
       });
@@ -103,11 +111,12 @@ export default {
       }
     },
     handlerChangePage(val) {
-      $http.getStocks({
-        warehouse_id: this.warehouseId,
-        page: val,
-      })
-        .then((res) => {
+      $http
+        .getStocks({
+          warehouse_id: this.warehouseId,
+          page: val
+        })
+        .then(res => {
           this.stockList = res.data.data;
           this.params.total = res.data.total;
           this.params.currentPage = res.data.current_page;
@@ -129,15 +138,14 @@ export default {
         obj.created_at_e = query[1]; // 结束时间
       }
       if (!this.stock_id || !this.warehouseId) return;
-      $http.queryGoodsRecord(this.stock_id, obj)
-        .then((res) => {
-          this.SkuList = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-          this.select_data_status.stock_id = this.stock_id;
-        });
-    }, // 拉取单个货品出入库记录
-  },
+      $http.queryGoodsRecord(this.stock_id, obj).then(res => {
+        this.SkuList = res.data.data;
+        this.params.total = res.data.total;
+        this.params.currentPage = res.data.current_page;
+        this.select_data_status.stock_id = this.stock_id;
+      });
+    } // 拉取单个货品出入库记录
+  }
 };
 </script>
 <style lang="less" module>

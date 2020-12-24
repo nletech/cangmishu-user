@@ -58,11 +58,7 @@
                   :label="$t('address')"
                 >
                 </el-table-column>
-                <el-table-column
-                  header-align="center"
-                  width="240"
-                  :label="$t('operation')"
-                >
+                <el-table-column header-align="center" width="240" :label="$t('operation')">
                   <template slot-scope="scope">
                     <el-tooltip :content="$t('edit')" placement="top">
                       <el-button
@@ -117,16 +113,13 @@
 <script>
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
-import paginationPublic from '@/components/pagination-public';
 import AddInfo from './components/addAddressInfo';
-
 
 export default {
   name: 'addressManagement',
   mixins: [mixin],
   components: {
-    AddInfo,
-    paginationPublic,
+    AddInfo
   },
   data() {
     return {
@@ -136,13 +129,14 @@ export default {
           id: 1,
           title: 'sender',
           name: '发件人信息',
-          btn_text: 'addsender',
-        }, {
+          btn_text: 'addsender'
+        },
+        {
           id: 2,
           title: 'receiver',
           name: '收件人信息',
-          btn_text: 'addreceiver',
-        },
+          btn_text: 'addreceiver'
+        }
       ],
       row_data: {}, // 行数据
       active_tab_item: '', // 默认选择的标签页 (主要判断标志)
@@ -150,7 +144,7 @@ export default {
       info_data: [], // 数据
       total: '', // 列表总条数
       currentPage: 1, // 当前页
-      current_page: 1, // 当前页(编辑的时候)
+      current_page: 1 // 当前页(编辑的时候)
     };
   },
   watch: {
@@ -161,7 +155,7 @@ export default {
         this.active_add_text = this.tabs[1].btn_text;
       }
       this.active_item_check(val); // 点击不同的标签页显示不同的数据
-    }, // 选中不同标签页，显示不同的添加按钮
+    } // 选中不同标签页，显示不同的添加按钮
   },
   created() {
     this.active_tab_item = this.tabs[0].name; // 默认选中标签页
@@ -201,7 +195,7 @@ export default {
       this.current_page = val;
       const data = {
         page: val,
-        warehouse_id: this.warehouseId,
+        warehouse_id: this.warehouseId
       };
       let res;
       if (this.active_tab_item === '发件人信息') {
@@ -228,16 +222,14 @@ export default {
       if (res.status) return;
       this.$message({
         type: 'success',
-        message: this.$t('success'),
+        message: this.$t('success')
       });
       this.active_item_check(this.active_tab_item);
-    }, // 删除操作
-  },
+    } // 删除操作
+  }
 };
 </script>
 <style lang="less" module>
-
-
 .addressManagement {
   .am_main {
     margin: 0 auto;

@@ -9,8 +9,7 @@
     >
       <el-table-column type="index" label="#"> </el-table-column>
       <el-table-column prop="code" :label="$t('AreaCode')"> </el-table-column>
-      <el-table-column prop="name_cn" :label="$t('AreaName')">
-      </el-table-column>
+      <el-table-column prop="name_cn" :label="$t('AreaName')"> </el-table-column>
       <el-table-column prop="functions" :label="$t('AreaStatus')">
         <template slot-scope="scope">
           {{ scope.row.is_enabled === 1 ? $t('yes') : $t('no') }}
@@ -90,13 +89,11 @@ export default {
   methods: {
     get_data() {
       if (this.active) {
-        $http
-          .getWarehouseArea({ warehouse_id: this.queryWarehouseId })
-          .then(res => {
-            this.Area_data = res.data.data;
-            this.total = res.data.total;
-            this.current_page = res.data.current_page;
-          });
+        $http.getWarehouseArea({ warehouse_id: this.queryWarehouseId }).then(res => {
+          this.Area_data = res.data.data;
+          this.total = res.data.total;
+          this.current_page = res.data.current_page;
+        });
       }
     },
     handleCurrentChange(val) {

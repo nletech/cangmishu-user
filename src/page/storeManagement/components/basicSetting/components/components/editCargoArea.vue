@@ -8,16 +8,11 @@
       :rules="formValidator"
     >
       <label class="label">{{ $t('EssentialInformation') }}</label>
-      <el-form-item
-        prop="code"
-        :label="$t('ShippingAreaNumber')"
-        :class="$style.avatar_uploader"
-      >
+      <el-form-item prop="code" :label="$t('ShippingAreaNumber')" :class="$style.avatar_uploader">
         <el-input v-model="form.code" maxlength="255" size="small"> </el-input>
       </el-form-item>
       <el-form-item prop="name_cn" :label="$t('ShippingAreaName')">
-        <el-input v-model="form.name_cn" maxlength="255" size="small">
-        </el-input>
+        <el-input v-model="form.name_cn" maxlength="255" size="small"> </el-input>
       </el-form-item>
       <el-form-item :label="$t('WhetherToEnable')">
         <el-switch
@@ -31,8 +26,7 @@
       </el-form-item>
       <label class="label">{{ $t('OptionalInformation') }}</label>
       <el-form-item :label="$t('remark')">
-        <el-input v-model="form.remark" type="textarea" size="small" :rows="3">
-        </el-input>
+        <el-input v-model="form.remark" type="textarea" size="small" :rows="3"> </el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="isButtonLoading">
@@ -91,19 +85,17 @@ export default {
   methods: {
     getInfo() {
       if (this.$route.query.edit) {
-        $http
-          .getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id })
-          .then(res => {
-            const data = res.data.data;
-            for (let i = 0; i < data.length; i += 1) {
-              if (data[i].id === +this.$route.query.area_id) {
-                this.form.code = data[i].code;
-                this.form.name_cn = data[i].name_cn;
-                this.is_enabled = `${data[i].is_enabled}`; // 这里必须是字符串
-                this.form.remark = data[i].remark;
-              }
+        $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id }).then(res => {
+          const data = res.data.data;
+          for (let i = 0; i < data.length; i += 1) {
+            if (data[i].id === +this.$route.query.area_id) {
+              this.form.code = data[i].code;
+              this.form.name_cn = data[i].name_cn;
+              this.is_enabled = `${data[i].is_enabled}`; // 这里必须是字符串
+              this.form.remark = data[i].remark;
             }
-          });
+          }
+        });
       }
     },
     onSubmit() {
@@ -111,12 +103,16 @@ export default {
         if (!valid) return;
         this.form.is_enabled = +this.is_enabled;
         this.form.warehouse_id = this.$route.query.warehouse_id;
-        $http
-          .editWarehouseArea(this.$route.query.area_id, this.form)
-          .then(res => {
-            if (res.status) return;
-            this.$router.go(-1);
+        $http.editWarehouseArea(this.$route.query.area_id, this.form).then(res => {
+          if (res.status) return;
+          this.$router.push({
+            name: 'areaAndShelf',
+            query: {
+              backType: 'area',
+              warehouse_id: this.$route.query.warehouse_id
+            }
           });
+        });
       });
     }
   }

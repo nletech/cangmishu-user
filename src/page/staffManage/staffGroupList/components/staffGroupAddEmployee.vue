@@ -14,13 +14,7 @@
       <!-- 员工列表数据表格 -->
       <el-table :data="staff_data" border>
         <!-- #序号 -->
-        <el-table-column
-          type="index"
-          label="#"
-          width="80"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column type="index" label="#" width="80" align="center" header-align="center">
         </el-table-column>
         <!-- 用户名 -->
         <el-table-column
@@ -59,12 +53,7 @@
           </template>
         </el-table-column>
         <!-- 手机号 -->
-        <el-table-column
-          prop="phone"
-          label="手机号"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column prop="phone" label="手机号" align="center" header-align="center">
           <template slot-scope="scope">
             {{ scope.row.phone }}
           </template>
@@ -77,25 +66,14 @@
           header-align="center"
         >
           <template slot-scope="scope">
-            <i class="el-icon-time" v-show="Boolean(scope.row.last_login_at)">
-            </i>
+            <i class="el-icon-time" v-show="Boolean(scope.row.last_login_at)"> </i>
             <span>{{ scope.row.last_login_at }}</span>
           </template>
         </el-table-column>
         <!-- 操作 -->
-        <el-table-column
-          prop="staff_operations"
-          label="操作"
-          width="240"
-          header-align="center"
-        >
+        <el-table-column prop="staff_operations" label="操作" width="240" header-align="center">
           <template slot-scope="scope">
-            <el-button
-              type="danger"
-              plain
-              size="mini"
-              @click="addGroupEmployee(scope.row)"
-            >
+            <el-button type="danger" plain size="mini" @click="addGroupEmployee(scope.row)">
               添加
             </el-button>
           </template>
@@ -108,8 +86,6 @@
 
 <script>
 import WmsTags from '@/components/wms_tags';
-import MyInput from '@/components/my_input';
-import MyGroup from '@/components/my_group';
 import $http from '@/api';
 import buttonPagination from '@/components/pagination_and_buttons';
 import getStaffList from '@/mixin/staffList';
@@ -118,8 +94,6 @@ import myStaffSearch from '@/components/my_staff_search'; // 搜索框
 export default {
   components: {
     WmsTags,
-    MyInput,
-    MyGroup,
     buttonPagination,
     myStaffSearch
   },

@@ -1,16 +1,6 @@
 <template>
-  <el-input
-    clearable
-    @clear= "handleClear"
-    size="small"
-    placeholder="请输入用户名"
-    v-model="value"
-  >
-    <el-button
-      icon="el-icon-search"
-      slot="append"
-      @click="submit"
-    ></el-button>
+  <el-input clearable @clear="handleClear" size="small" placeholder="请输入用户名" v-model="value">
+    <el-button icon="el-icon-search" slot="append" @click="submit"></el-button>
   </el-input>
 </template>
 
@@ -19,11 +9,11 @@ import $http from '@/api';
 
 export default {
   props: {
-    componentFlag: String,
+    componentFlag: String
   },
   data() {
     return {
-      value: '',
+      value: ''
     };
   },
   methods: {
@@ -41,23 +31,24 @@ export default {
       // 过滤内容为空
       if (userName === '') return;
       const requestInfo = {
-        user_name: userName,
-      };// 在员工列表中的 查看员工 模块查询
+        user_name: userName
+      }; // 在员工列表中的 查看员工 模块查询
       if (this.$route.params.groupId) {
         requestInfo.group_id = this.$route.params.groupId;
       } // 在特定的员工组中查找员工
       if (this.componentFlag === 'AddEmployee') {
         requestInfo.rm = 1;
       }
-      $http.getStaffs(requestInfo)
-        .then((res) => {
+      $http
+        .getStaffs(requestInfo)
+        .then(res => {
           // 员工信息
           this.$emit('searchStaff', res.data.data);
         })
         .catch(() => {
           console.log('搜索员工用户名出错');
         });
-    },
-  },
+    }
+  }
 };
 </script>

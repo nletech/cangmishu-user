@@ -33,7 +33,7 @@ export default {
       return { Authorization: this.$store.state.token.token };
     },
     api() {
-      return `${baseApi.BASE_URL}/upload/pdf`;
+      return `${baseApi.BASE_URL}upload/pdf`;
     }
   },
   methods: {

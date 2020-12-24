@@ -12,8 +12,8 @@ const i18n = new VueI18n({
   locale: localStorage.getItem('lang') || 'cn',
   messages: {
     cn,
-    en,
-  },
+    en
+  }
 });
 
 ElementUILocale.i18n((key, value) => i18n.t(key, value));

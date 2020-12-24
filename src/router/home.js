@@ -287,6 +287,23 @@ export const routerMap = [
             nav: 3
           },
           {
+            name: 'purchase', // 子菜单-分组 采购
+            path: '',
+            type: 'children-group'
+          },
+          {
+            name: 'purchaseList', // 采购单列表
+            path: 'purchase/purchaseList',
+            component: PurchaseList,
+            nav: 2
+          },
+          {
+            name: 'addPurchase', // 子菜单-添加采购单
+            path: 'purchaseList/addPurchase',
+            component: AddPurchase,
+            nav: 3
+          },
+          {
             name: 'goods', // 子菜单-分组 商品
             path: '',
             type: 'children-group'
@@ -360,18 +377,6 @@ export const routerMap = [
             path: 'areaAndShelf',
             component: BasicSetting,
             nav: 2
-          },
-          {
-            name: 'purchaseList', // 采购单列表
-            path: 'purchase/purchaseList',
-            component: PurchaseList,
-            nav: 2
-          },
-          {
-            name: 'addPurchase', // 子菜单-添加采购单
-            path: 'purchaseList/addPurchase',
-            component: AddPurchase,
-            nav: 3
           },
           {
             name: 'storeManage', // 子菜单-仓库管理

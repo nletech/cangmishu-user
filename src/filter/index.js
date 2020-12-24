@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-Vue.filter('switchTypeCn', (val) => {
+Vue.filter('switchTypeCn', val => {
   let name = '';
   switch (+val) {
     case 1:
@@ -16,7 +16,7 @@ Vue.filter('switchTypeCn', (val) => {
   return name;
 });
 
-Vue.filter('storeType', (val) => {
+Vue.filter('storeType', val => {
   let name = '';
   switch (+val) {
     case 2:
@@ -32,7 +32,7 @@ Vue.filter('storeType', (val) => {
   return name;
 });
 
-Vue.filter('temperatureType', (val) => {
+Vue.filter('temperatureType', val => {
   let name = '';
   switch (+val) {
     case 1:
@@ -54,7 +54,7 @@ Vue.filter('temperatureType', (val) => {
   return name;
 });
 
-Vue.filter('statusType', (val) => {
+Vue.filter('statusType', val => {
   let name = '';
   switch (+val) {
     case 1:
@@ -73,7 +73,7 @@ Vue.filter('statusType', (val) => {
   return name;
 });
 
-Vue.filter('num_is_no', (val) => {
+Vue.filter('num_is_no', val => {
   if (!val) {
     return 0;
   }
