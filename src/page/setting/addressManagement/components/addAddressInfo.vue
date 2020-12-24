@@ -323,6 +323,8 @@ export default {
     },
     // 提交修改信息
     infoSubmit() {
+      if (this.loading) return;
+      this.loading = true;
       // 提交的表单信息处理
       /* eslint-disable */
       this.formInfo.fullname = this.addressInfo.full_name;
@@ -362,16 +364,21 @@ export default {
             this.$emit('updata_data', active_item); // 更新数据列表
           } else {
             let res;
-            if (this.active_tab_item === '发件人信息') {
-              res = await $http.addSenderAddress(this.formInfo);
-            } else if (this.active_tab_item === '收件人信息') {
-              res = await $http.addReceiverAddress(this.formInfo);
+            try {
+              if (this.active_tab_item === '发件人信息') {
+                res = await $http.addSenderAddress(this.formInfo);
+              } else if (this.active_tab_item === '收件人信息') {
+                res = await $http.addReceiverAddress(this.formInfo);
+              }
+            } catch (error) {
+              this.loading = false;
             }
             if (res.status) return;
             this.$message({
               message: this.$t('success'),
               type: 'success'
             });
+            this.loading = false;
             this.$emit('update:visible', false); // 关闭弹窗
             this.$emit('updata_data_list', active_item); // 更新数据列表
           }
