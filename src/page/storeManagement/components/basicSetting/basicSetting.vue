@@ -20,9 +20,9 @@ import WarehouseShelf from './components/warehouseShelf';
 
 export default {
   created() {
-    if (this.$route.query.quickTag) {
-      this.tempWarehouseId = localStorage.getItem('warehouseId');
-    }
+    // if (this.$route.query.quickTag) {
+    //   this.tempWarehouseId = localStorage.getItem('warehouseId');
+    // }
     if (this.$route.query.backType === 'shelf') {
       this.active_tab_name = '货位';
     } else if (this.$route.query.backType === 'area') {
@@ -72,7 +72,7 @@ export default {
       if (+this.$route.query.warehouse_id) {
         return +this.$route.query.warehouse_id;
       }
-      return this.tempWarehouseId;
+      return localStorage.getItem('warehouseId');
     }
   },
   methods: {

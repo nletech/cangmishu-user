@@ -204,34 +204,14 @@ export default {
       ];
       packageOption.yAxis = [
         {
-          type: 'value',
-          axisLine: {
-            // y轴
-            show: false
-          },
-          axisTick: {
-            // y轴刻度线
-            show: false
-          },
-          splitLine: {
-            // 网格线
-            show: true
-          }
+          type: 'value'
         }
       ];
       packageOption.series = [
         {
           name: chartConfig.seriesKey,
           type: 'bar',
-          barWidth: '60%',
-          itemStyle: {
-            barBorderRadius: 5,
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: 'rgba(20,200,212,0.5)' },
-              { offset: 0.2, color: 'rgba(20,200,212,0.2)' },
-              { offset: 1, color: 'rgba(20,200,212,0)' }
-            ])
-          },
+          barWidth: '10px',
           data: seriesData1
         }
       ];

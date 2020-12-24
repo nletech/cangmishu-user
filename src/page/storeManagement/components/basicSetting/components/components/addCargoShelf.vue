@@ -128,9 +128,13 @@ export default {
   },
   methods: {
     get_area_data() {
-      if (!this.$route.query.warehouse_id) return;
-
-      $http.getWarehouseArea({ warehouse_id: this.$route.query.warehouse_id }).then(res => {
+      let id = '';
+      if (!this.$route.query.warehouse_id) {
+        id = this.warehouseId;
+      } else {
+        id = this.$route.query.warehouse_id;
+      }
+      $http.getWarehouseArea({ warehouse_id: id }).then(res => {
         this.area_list_data = res.data.data;
       });
     },

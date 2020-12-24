@@ -369,14 +369,17 @@ const $http = {
     return Axios.get('/orderType', { params: data });
   }, // 分页查询--出库单分类
   // 辅助功能
+  getUserProfile() {
+    return Axios.get(`user/profile`);
+  }, // 获取资料
+  modifyUserInfo(data) {
+    return Axios.put(`user/profile`, data);
+  }, // 修改资料
   modifyPsw(data) {
     return Axios.put(`user/password`, data);
   }, // 修改密码
-  modifyUserInfo(id, data) {
-    return Axios.post(`user/${id}/info`, data);
-  }, // 修改用户信息
-  modifyUserAvatar(id, data) {
-    return Axios.post(`user/${id}/avatar`, data);
+  modifyUserAvatar(data) {
+    return Axios.put(`user/avatar`, data);
   }, // 修改头像
   Warning(data) {
     return Axios.get('warning', { params: data });

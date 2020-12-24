@@ -41,10 +41,10 @@ export default {
       state.button_loading = data;
     } // 按钮动画配置
   },
-  action: {
-    getUserInfo({ dispatch }) {
+  actions: {
+    getUserInfo({ commit }) {
       $http.getUserInfo().then(res => {
-        dispatch('updateUserInfo', res.data.user);
+        commit('updateUserInfo', res.data.user);
       });
     }
   }

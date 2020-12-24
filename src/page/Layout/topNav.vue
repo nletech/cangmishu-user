@@ -56,7 +56,7 @@
           <span>{{ selectWarehouse }}</span>
         </div>
         <div :class="$style.user">
-          <div :class="$style.img">
+          <div :class="$style.img" @click="show_user_info_flag = true">
             <!-- @click="handleChangeUserinfo"
             @mouseleave="handlerAvatarMouseLeave"
             @mouseover="handlerAvatarMouseOver" -->
@@ -109,20 +109,18 @@
         <el-button type="primary" @click="handleConfirm">{{ $t('confirm') }}</el-button>
       </div>
     </el-dialog>
-    <!-- 修改密码 -->
-    <!-- <change-pass-word :visible.sync="show_psw_flag"></change-pass-word> -->
-    <!-- <user-info :visible.sync="show_user_info_flag"></user-info> -->
+    <user-avatar-dialog :dialogVisible.sync="show_user_info_flag"></user-avatar-dialog>
   </div>
 </template>
 
 <script>
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
-// import ChangePassWord from './components/changePassWord'; // 修改密码
-// import UserInfo from './components/userInfo'; // 修改个人资料
+import UserAvatarDialog from './components/userAvatarDialog';
 
 export default {
   name: 'topNav',
+  components: { UserAvatarDialog },
   mixins: [mixin],
   data() {
     return {
@@ -392,6 +390,7 @@ export default {
           width: 80px;
           height: 80px;
           border-radius: 50%;
+          cursor: pointer;
           color: @ThemeColor;
           margin: 0 10px 0 10px;
           position: relative;

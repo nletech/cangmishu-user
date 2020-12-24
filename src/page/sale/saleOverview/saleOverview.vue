@@ -99,8 +99,8 @@ import mixin from '@/mixin/form_config';
 
 const echarts = require('echarts/lib/echarts');
 require('echarts/lib/chart/bar');
-require('echarts/lib/chart/line');
 require('echarts/lib/chart/pie');
+import 'echarts/lib/component/tooltip';
 require('echarts/lib/component/legend');
 
 export default {
@@ -174,7 +174,7 @@ export default {
     circleList(pie, value, name) {
       const legedData = [];
       const circleList = pie.map(i => {
-        legedData.push(i.type);
+        legedData.push(i[name]);
         return { value: i[value], name: i[name] };
       });
       return { legedData, circleList };
@@ -224,14 +224,29 @@ export default {
       window.onresize = echarCircle.resize;
     },
     initChartLine(data, chartConfig) {
+      let xData = [];
+      let seriesData1 = [];
+      data.forEach(item => {
+        xData.push(item[chartConfig.xAxisKey]);
+        seriesData1.push(item[chartConfig.seriesKey]);
+      });
       const echarLine = echarts.init(document.getElementById(chartConfig.domId));
       const packageOption = {
-        backgroundColor: '#ffffff',
-        color: ['#cee5fe'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow'
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        legend: {
+          data: ['营业额']
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
           }
         },
         grid: {
@@ -239,76 +254,30 @@ export default {
           right: '4%',
           bottom: '3%',
           containLabel: true
-        }
+        },
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            data: xData
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '营业额',
+            type: 'bar',
+            stack: '总量',
+            areaStyle: {},
+            barWidth: '10px',
+            data: seriesData1
+          }
+        ]
       };
-      let xData = [];
-      let seriesData1 = [];
-      data.forEach(item => {
-        xData.push(item[chartConfig.xAxisKey]);
-        seriesData1.push(item[chartConfig.seriesKey]);
-      });
-      packageOption.xAxis = [
-        {
-          type: 'category',
-          data: xData,
-          axisTick: {
-            alignWithLabel: true
-          }
-        }
-      ];
-      packageOption.yAxis = [
-        {
-          type: 'value',
-          axisLine: {
-            // y轴
-            show: false
-          },
-          axisTick: {
-            // y轴刻度线
-            show: false
-          },
-          splitLine: {
-            // 网格线
-            show: true
-          }
-        }
-      ];
-      packageOption.series = [
-        {
-          name: chartConfig.seriesKey,
-          type: 'bar',
-          barWidth: '60%',
-          itemStyle: {
-            barBorderRadius: 5,
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#14c8d4' },
-              { offset: 1, color: '#43eec6' }
-            ])
-          },
-          data: seriesData1
-        }
-      ];
-      if (chartConfig.domId.indexOf('sale') !== -1) {
-        let seriesData2 = [];
-        data.forEach(item => {
-          seriesData2.push(item[chartConfig.seriesKey2]);
-        });
-        packageOption.series.push({
-          name: chartConfig.seriesKey2,
-          type: 'bar',
-          barGap: '-100%',
-          barWidth: 10,
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: 'rgba(20,200,212,0.5)' },
-              { offset: 0.2, color: 'rgba(20,200,212,0.2)' },
-              { offset: 1, color: 'rgba(20,200,212,0)' }
-            ])
-          },
-          z: -12,
-          data: seriesData2
-        });
-      }
       echarLine.setOption(packageOption);
       window.onresize = echarLine.resize;
     },

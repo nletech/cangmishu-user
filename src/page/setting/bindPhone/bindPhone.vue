@@ -115,7 +115,6 @@ export default {
     sendCode() {
       this.$refs.ruleForm.validateField('phone', valid => {
         if (!valid) {
-          console.log('phone???');
           this.codeBtnLoading = true;
           $http
             .getPhoneCode({ phone: this.ruleForm.phone })

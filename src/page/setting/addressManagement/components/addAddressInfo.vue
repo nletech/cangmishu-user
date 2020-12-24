@@ -119,82 +119,82 @@ export default {
         {
           id: 0,
           label: '中国',
-          value: 'CN'
+          value: '中国'
         },
         {
           id: 1,
           label: '中国台湾',
-          value: 'TW'
+          value: '中国台湾'
         },
         {
           id: 2,
           label: '中国香港',
-          value: 'HK'
+          value: '中国香港'
         },
         {
           id: 3,
           label: '中国澳门',
-          value: 'MO'
+          value: '中国澳门'
         },
         {
           id: 4,
           label: '荷兰',
-          value: 'NL'
+          value: '荷兰'
         },
         {
           id: 5,
           label: '德国',
-          value: 'DE'
+          value: '德国'
         },
         {
           id: 6,
           label: '比利时',
-          value: 'BE'
+          value: '比利时'
         },
         {
           id: 7,
           label: '波兰',
-          value: 'POL'
+          value: '波兰'
         },
         {
           id: 8,
           label: '法国',
-          value: 'FR'
+          value: '法国'
         },
         {
           id: 9,
           label: '英国',
-          value: 'GB'
+          value: '英国'
         },
         {
           id: 10,
           label: '韩国',
-          value: 'KOR'
+          value: '韩国'
         },
         {
           id: 11,
           label: '美国',
-          value: 'US'
+          value: '美国'
         },
         {
           id: 12,
           label: '新加坡',
-          value: 'SGP'
+          value: '新加坡'
         },
         {
           id: 13,
           label: '马来西亚',
-          value: 'MYS'
+          value: '马来西亚'
         },
         {
           id: 14,
           label: '加拿大',
-          value: 'CA'
+          value: '加拿大'
         },
         {
           id: 15,
           label: '泰国',
-          value: 'TA'
+          value: '泰国'
         }
       ],
       addressInfo: {
