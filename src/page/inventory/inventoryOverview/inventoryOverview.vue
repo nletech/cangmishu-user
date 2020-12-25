@@ -43,6 +43,22 @@
           </el-radio-group>
         </div>
       </div>
+      <div class="total">
+        <el-row class="statistics-container">
+          <el-col :span="4" class="statistics-container-item">
+            <p>总入库</p>
+            <p class="value red-color">{{ stockTotal.stock_in_num }}</p>
+          </el-col>
+          <el-col :span="4" class="statistics-container-item">
+            <p>总出库</p>
+            <p class="value">{{ stockTotal.stock_out_num }}</p>
+          </el-col>
+          <el-col :span="4" class="statistics-container-item">
+            <p>缺货</p>
+            <p class="value red-color">{{ stockTotal.stock_shortage }}</p>
+          </el-col>
+        </el-row>
+      </div>
       <div class="echart">
         <div class="chart-circle" id="chart-sale-circle"></div>
         <div class="chart-line" id="chart-sale-line"></div>
@@ -114,22 +130,23 @@ export default {
     return {
       statistics: [
         {
-          name: '今日新增',
+          name: '当前总库存',
           count: '',
           pathName: 'inventoryManage'
         },
         {
-          name: '待处理',
+          name: '缺货商品',
           count: '',
+          color: 'red-color',
           pathName: 'goodsManage'
         },
         {
-          name: '待发货',
+          name: '商品数量',
           count: '',
           pathName: 'saleList'
         }
       ],
-      saleTotal: {},
+      stockTotal: {},
       saleDateRadio: '1',
       chartSaleCircleConfig: {
         domId: 'chart-sale-circle',
@@ -169,7 +186,7 @@ export default {
     },
     getStocksGraphData() {
       $http.getStocksGraphData({ days: this.saleDateRadio }).then(res => {
-        this.saleTotal = res.data.total;
+        this.stockTotal = res.data.total;
         this.initChartCircle(res.data.pie, this.chartSaleCircleConfig);
         this.initChartLine(res.data.daily, this.chartSaleLineConfig);
       });
@@ -326,6 +343,39 @@ export default {
   .green-color {
     color: #23a13b !important;
   }
+  .statistics-container {
+    .statistics-container-item {
+      border-right: 1px solid #f1f1f1;
+      text-align: center;
+      p:first-child {
+        color: #909399;
+      }
+      p:last-child {
+        font-size: 24px;
+      }
+    }
+    .card-list {
+      display: flex;
+      justify-content: flex-end;
+      .card-item {
+        margin: 0 10px;
+        border-radius: 2px;
+        .el-card__body {
+          padding: 10px 20px;
+        }
+        p:first-child {
+          font-size: 24px;
+          margin: 10px;
+        }
+        p:last-child {
+          margin: 10px;
+          font-size: 14px;
+          color: #909399;
+          cursor: pointer;
+        }
+      }
+    }
+  }
   .container-column-header {
     width: 100%;
     background-color: @bgc;
@@ -338,39 +388,6 @@ export default {
         font-weight: bold;
         color: #000;
         font-size: 26px;
-      }
-      .statistics-container {
-        .statistics-container-item {
-          border-right: 1px solid #f1f1f1;
-          text-align: center;
-          p:first-child {
-            color: #909399;
-          }
-          p:last-child {
-            font-size: 24px;
-          }
-        }
-        .card-list {
-          display: flex;
-          justify-content: flex-end;
-          .card-item {
-            margin: 0 10px;
-            border-radius: 2px;
-            .el-card__body {
-              padding: 10px 20px;
-            }
-            p:first-child {
-              font-size: 24px;
-              margin: 10px;
-            }
-            p:last-child {
-              margin: 10px;
-              font-size: 14px;
-              color: #909399;
-              cursor: pointer;
-            }
-          }
-        }
       }
     }
     .wechat-qr {

@@ -139,7 +139,7 @@ export default {
     onConfirm() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          $http.bindPhone(this.ruleForm).then(res => {
+          $http.bindEmail(this.ruleForm).then(res => {
             if (res.status) return;
             this.updateEmail = this.ruleForm.email;
             this.$refs.ruleForm.resetFields();

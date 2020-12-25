@@ -76,8 +76,7 @@ export default {
       sendCodeInterval: null,
       codeBtnLoading: false,
       subscribeMessagesList: [],
-      subscribeTimer: null,
-      updatePhone: ''
+      subscribeTimer: null
     };
   },
   created() {
@@ -142,7 +141,8 @@ export default {
         if (valid) {
           $http.bindPhone(this.ruleForm).then(res => {
             if (res.status) return;
-            this.updatePhone = this.ruleForm.phone;
+            clearInterval(this.sendCodeInterval);
+            this.sendCodeCount = 59;
             this.$refs.ruleForm.resetFields();
             this.$store.dispatch('config/getUserInfo');
             this.$message({

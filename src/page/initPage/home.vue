@@ -146,17 +146,6 @@ export default {
           pathName: 'inventoryManage',
           color: 'red-color'
         }
-        // {
-        //   name: 'UnShelf',
-        //   count: '',
-        //   pathName: 'inboundList'
-        // },
-        // {
-        //   name: 'UnConfirm',
-        //   count: '',
-        //   pathName: 'saleList',
-        //   color: 'green-color'
-        // }
       ],
       saleTotal: {},
       saleDateRadio: '1',
@@ -256,7 +245,6 @@ export default {
       const echarCircle = echarts.init(document.getElementById(chartConfig.domId));
       const option = {
         backgroundColor: '#ffffff',
-        // color: ['#9969BD', '#6495F9'],
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -301,7 +289,6 @@ export default {
       const echarLine = echarts.init(document.getElementById(chartConfig.domId));
       const isStock = chartConfig.domId.indexOf('stock') !== -1;
       const packageOption = {
-        // color: ['#9969BD', '#6495F9'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -371,8 +358,6 @@ export default {
         this.statistics[1].count = res.data.total_product;
         this.statistics[2].count = res.data.total_order;
         this.statistics[3].count = res.data.stock_warning;
-        // this.statistics[4].count = res.data.wait_shelf;
-        // this.statistics[5].count = res.data.wait_shipment;
       });
     }
   }

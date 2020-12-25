@@ -571,6 +571,9 @@ const $http = {
   bindPhone(params) {
     return Axios.put(`profile/phone`, params);
   },
+  bindEmail(params) {
+    return Axios.put(`profile/email`, params);
+  },
   getPhoneCode(params) {
     return Axios.get(`phoneCode`, { params });
   },

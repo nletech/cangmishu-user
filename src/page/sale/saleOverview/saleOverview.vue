@@ -188,7 +188,6 @@ export default {
       const echarCircle = echarts.init(document.getElementById(chartConfig.domId));
       const option = {
         backgroundColor: '#ffffff',
-        // color: ['#9969BD'],
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
