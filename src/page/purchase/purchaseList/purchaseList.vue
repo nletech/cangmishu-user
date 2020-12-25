@@ -108,7 +108,7 @@
                       >
                       </el-button>
                     </el-tooltip>
-                    <el-tooltip :content="$t('Arrived')" placement="top">
+                    <el-tooltip :content="$t('edit')" placement="top">
                       <el-button
                         size="mini"
                         type="primary"

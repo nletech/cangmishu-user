@@ -332,7 +332,7 @@
                     <el-form-item :label="$t('Paid')">
                       <el-input value="number" v-model="payment.sub_pay" maxlength="15"></el-input>
                     </el-form-item>
-                    <el-form-item :label="$t('No')">
+                    <el-form-item :label="$t('remark')">
                       <el-input v-model="payment.payment_account_number" maxlength="100"></el-input>
                     </el-form-item>
                   </el-form>

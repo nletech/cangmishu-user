@@ -209,7 +209,7 @@ export default {
       ];
       packageOption.series = [
         {
-          name: chartConfig.seriesKey,
+          name: '数量',
           type: 'bar',
           barWidth: '10px',
           data: seriesData1

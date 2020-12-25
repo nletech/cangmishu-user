@@ -193,12 +193,19 @@ export default {
     this.getEchartStockData();
   },
   computed: {
+    computed: {
+      warehouseId() {
+        return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
+      }
+    },
     lang() {
       return this.$i18n.locale;
     }
   },
   watch: {
     warehouseId() {
+      this.getEchartSaleData();
+      this.getEchartStockData();
       this.getWarehouseDate();
     },
     lang() {}
@@ -217,6 +224,7 @@ export default {
       this.getEchartStockData();
     },
     getEchartSaleData() {
+      if (!this.warehouseId) return;
       $http.getHomeSaleData({ days: this.saleDateRadio }).then(res => {
         this.saleTotal = res.data.total;
         this.initChartCircle(res.data.pie, this.chartSaleCircleConfig);
@@ -224,6 +232,7 @@ export default {
       });
     },
     getEchartStockData() {
+      if (!this.warehouseId) return;
       $http.getHomeStockData({ days: this.stockDateRadio }).then(res => {
         this.stockTotal = res.data.total;
         this.initChartCircle(res.data.pie, this.chartStockCircleConfig);
@@ -247,7 +256,7 @@ export default {
       const echarCircle = echarts.init(document.getElementById(chartConfig.domId));
       const option = {
         backgroundColor: '#ffffff',
-        color: ['#9969BD', '#6495F9', '#E96C5B', '#62DAAB', '#F6C022', '#74CBED'],
+        // color: ['#9969BD', '#6495F9'],
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -292,6 +301,7 @@ export default {
       const echarLine = echarts.init(document.getElementById(chartConfig.domId));
       const isStock = chartConfig.domId.indexOf('stock') !== -1;
       const packageOption = {
+        // color: ['#9969BD', '#6495F9'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {

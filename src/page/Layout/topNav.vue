@@ -57,17 +57,8 @@
         </div>
         <div :class="$style.user">
           <div :class="$style.img" @click="show_user_info_flag = true">
-            <!-- @click="handleChangeUserinfo"
-            @mouseleave="handlerAvatarMouseLeave"
-            @mouseover="handlerAvatarMouseOver" -->
             <span v-if="!userInfo.avatar" style="border: 1px solid;">管</span>
             <img v-else :class="$style.avatar" :src="userInfo.avatar" />
-            <!-- <div
-              :class="$style.avatar_hover_text"
-              v-show="visible_avatar_text && this.$i18n.locale === 'cn'"
-            >
-              <span>修改资料</span>
-            </div> -->
           </div>
           <div :class="$style.UnickName">
             <span v-html="userInfo.nickname"></span>
@@ -76,9 +67,6 @@
             <el-dropdown>
               <span class="iconfont">&#xe60e;</span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="handleChangePassWord">{{
-                  $t('modifyPassword')
-                }}</el-dropdown-item>
                 <el-dropdown-item @click.native="logout">{{ $t('LogOut') }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -126,7 +114,6 @@ export default {
     return {
       visible_avatar_text: false,
       show_user_info_flag: false,
-      show_psw_flag: false,
       warehouseList: [], // 仓库列表
       selectWarehouse: '', // 切换仓库选择的仓库
       showWarehousesDialog: false, // 切换仓库弹窗开关
@@ -184,9 +171,6 @@ export default {
     handleChangeUserinfo() {
       this.show_user_info_flag = true;
     }, // 修改个人资料
-    handleChangePassWord() {
-      this.show_psw_flag = true;
-    }, // 修改密码
     to_store_management() {
       this.$router.push({ name: 'storeManage' });
     }, // 跳转到-----仓库管理
@@ -214,9 +198,13 @@ export default {
       });
     },
     handleConfirm() {
-      this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
-      this.$store.commit('config/setWarehouseName', this.selectWarehouse);
-      this.showWarehousesDialog = false;
+      $http.setDefaultWarehouse(this.currentWarehouseId).then(res => {
+        if (res.status) return;
+        this.$store.commit('config/setWarehouseId', this.currentWarehouseId);
+        this.$store.commit('config/setWarehouseName', this.selectWarehouse);
+        this.showWarehousesDialog = false;
+        window.location.reload();
+      });
     },
     toggleWarehouseIcon() {
       if (this.warehouseList.length === 1) {

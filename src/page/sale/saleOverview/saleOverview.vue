@@ -188,7 +188,7 @@ export default {
       const echarCircle = echarts.init(document.getElementById(chartConfig.domId));
       const option = {
         backgroundColor: '#ffffff',
-        color: ['#9969BD', '#6495F9', '#E96C5B', '#62DAAB', '#F6C022', '#74CBED'],
+        // color: ['#9969BD'],
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -232,6 +232,7 @@ export default {
       });
       const echarLine = echarts.init(document.getElementById(chartConfig.domId));
       const packageOption = {
+        color: ['#9969BD'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {

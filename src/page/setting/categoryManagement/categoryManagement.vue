@@ -67,7 +67,7 @@
               header-align="center"
               prop="address"
               width="180"
-              :label="$t('opreation')"
+              :label="$t('operation')"
             >
               <template slot-scope="scope">
                 <el-tooltip :content="$t('edit')" placement="top">
@@ -349,12 +349,8 @@ export default {
     position: relative;
     background-color: #fff;
     .am_operation_btn {
-      position: absolute;
-      top: -30px;
-      right: 10px;
-      z-index: 3;
-      border: none;
-      font-size: 1.2rem;
+      text-align: right;
+      padding: 20px;
       color: @ThemeColor;
       cursor: pointer;
     }

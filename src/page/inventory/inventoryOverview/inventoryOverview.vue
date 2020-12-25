@@ -191,7 +191,7 @@ export default {
       const echarCircle = echarts.init(document.getElementById(chartConfig.domId));
       const option = {
         backgroundColor: '#ffffff',
-        color: ['#9969BD', '#6495F9', '#E96C5B', '#62DAAB', '#F6C022', '#74CBED'],
+        color: ['#9969BD', '#6495F9'],
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -236,6 +236,7 @@ export default {
       const echarLine = echarts.init(document.getElementById(chartConfig.domId));
       const isStock = chartConfig.domId.indexOf('sale') !== -1;
       const packageOption = {
+        color: ['#9969BD', '#6495F9'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
