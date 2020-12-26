@@ -265,7 +265,8 @@ export default {
     formValidator() {
       return {
         category_id: [{ required: true, message: this.$t('ProductTAG'), trigger: 'change' }],
-        name_cn: [{ required: true, message: this.$t('inputCnWord'), trigger: 'blur' }]
+        name_cn: [{ required: true, message: this.$t('inputCnWord'), trigger: 'blur' }],
+        barcode: [{ required: true, message: this.$t('inputBarcode'), trigger: 'blur' }]
       };
     },
     Authorization() {

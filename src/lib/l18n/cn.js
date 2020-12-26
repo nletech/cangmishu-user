@@ -729,6 +729,7 @@ const cn = {
   importproductlist: '导入商品表',
   LastUpdated: '最后修改时间',
   inputCnWord: '请输入中文名称',
+  inputBarcode: '请输入barcode',
   SizeName: '规格名称',
   pictureNoLargerThan2M: '*图片不可超过2M大小，图片格式为jpg、png、jpeg',
   pleaseEnterSKU: '请输入SKU',

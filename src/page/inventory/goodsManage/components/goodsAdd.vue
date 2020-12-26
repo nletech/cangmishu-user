@@ -27,6 +27,9 @@
         <el-form-item :label="$t('productName')" prop="name_cn" style="width:70%">
           <el-input v-model="form.name_cn"></el-input>
         </el-form-item>
+        <el-form-item :label="$t('barcode')" prop="barcode" style="width:70%">
+          <el-input v-model="form.barcode"></el-input>
+        </el-form-item>
         <el-form-item
           v-if="isEnabledLangInput()"
           :label="$t('enName')"
@@ -230,7 +233,8 @@ export default {
         hs_code: '',
         display_link: '',
         photos: '', // 图片
-        remark: ''
+        remark: '',
+        barcode: ''
       },
       en: true,
       tips: '',
@@ -267,7 +271,8 @@ export default {
         category_id: [
           { required: true, message: this.$t('PleaseSelectCategory'), trigger: 'change' }
         ],
-        name_cn: [{ required: true, message: this.$t('inputCnWord'), trigger: 'blur' }]
+        name_cn: [{ required: true, message: this.$t('inputCnWord'), trigger: 'blur' }],
+        barcode: [{ required: true, message: this.$t('inputBarcode'), trigger: 'blur' }]
       };
     },
 
