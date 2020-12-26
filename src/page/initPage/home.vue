@@ -22,14 +22,14 @@
           <el-col :offset="4" :md="24" :lg="6" :xl="6" class="wechat-qr">
             <div class="wechat-qr-item">
               <div class="wechat-qr-item-image">
-                <img width="100%" height="100%" src="../../assets/img/Wechatcard1.png" alt="" />
+                <img width="100%" height="100%" src="../../assets/img/Wechatcard1.jpg" alt="" />
                 <p>仓秘书小程序</p>
                 <p class="subtitle">同步数据</p>
               </div>
             </div>
             <div class="wechat-qr-item">
               <div class="wechat-qr-item-image">
-                <img width="100%" height="100%" src="../../assets/img/WechatIMG1663.jpeg" alt="" />
+                <img width="100%" height="100%" src="../../assets/img/Wechatcard2.png" alt="" />
                 <p>仓秘书公众号</p>
                 <p class="subtitle">推送相关报表数据</p>
               </div>
