@@ -125,9 +125,7 @@ export default {
               });
               this.sendCodeInterval = setInterval(() => {
                 if (this.sendCodeCount === 1) {
-                  clearInterval(this.sendCodeInterval);
-                  this.sendCodeCount = 59;
-                  this.isSendCode = false;
+                  this.resetCodeInterval();
                 }
                 this.sendCodeCount--;
               }, 1000);
@@ -136,13 +134,17 @@ export default {
         }
       });
     },
+    resetCodeInterval() {
+      clearInterval(this.sendCodeInterval);
+      this.isSendCode = false;
+      this.sendCodeCount = 59;
+    },
     onConfirm() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           $http.bindPhone(this.ruleForm).then(res => {
             if (res.status) return;
-            clearInterval(this.sendCodeInterval);
-            this.sendCodeCount = 59;
+            this.resetCodeInterval();
             this.$refs.ruleForm.resetFields();
             this.$store.dispatch('config/getUserInfo');
             this.$message({
