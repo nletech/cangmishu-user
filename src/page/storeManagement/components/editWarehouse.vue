@@ -26,6 +26,9 @@
         >
         </el-cascader>
       </el-form-item>
+      <el-form-item prop="contact_number" :label="$t('phone')" size="medium">
+        <el-input v-model="warehouseInfo.contact_number"> </el-input>
+      </el-form-item>
       <el-form-item prop="addressDetail" :label="$t('addressDetial')" size="medium">
         <el-input v-model="warehouseInfo.addressDetail"> </el-input>
       </el-form-item>
@@ -120,14 +123,16 @@ export default {
           }
         ],
         addressDetail: [{ validator: check.addressDetail, trigger: 'blur', required: true }],
-        area: [{ validator: check.area, trigger: 'blur', required: true }]
+        area: [{ validator: check.area, trigger: 'blur', required: true }],
+        contact_number: [{ trigger: 'blur', required: true }]
       },
       warehouseInfo: {
         name_cn: '',
         code: '',
         address: [],
         addressDetail: '',
-        area: ''
+        area: '',
+        contact_number: ''
         // isEnabledLang: 0,
       },
       id: '',
@@ -158,6 +163,7 @@ export default {
         ];
         this.warehouseInfo.addressDetail = this.row_data.door_no;
         this.warehouseInfo.area = this.row_data.area;
+        this.warehouseInfo.contact_number = this.row_data.contact_number;
         // this.warehouseInfo.isEnabledLang = this.row_data.is_enabled_lang;
       }
     }
@@ -200,6 +206,7 @@ export default {
       this.formInfo.street = this.warehouseInfo.address[2];
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
+      this.formInfo.contact_number = this.warehouseInfo.contact_number;
       // this.formInfo.is_enabled_lang = this.warehouseInfo.isEnabledLang;
       this.$refs.rule_form.validate(validate => {
         if (validate) {
