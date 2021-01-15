@@ -11,7 +11,6 @@ export default {
   components: {
     TopNav,
   },
-  name: 'Tnav',
+  name: 'Tnav'
 };
 </script>
-

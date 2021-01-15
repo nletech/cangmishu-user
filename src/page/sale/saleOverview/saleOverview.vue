@@ -17,15 +17,11 @@
           </el-col>
           <el-col :span="12" class="card-list">
             <el-card class="card-item" shadow="hover">
-              <p>销售列表</p>
+              <p @click="goToTag('saleList')">销售列表</p>
               <p @click="goToTag('saleList')">查看所有订单</p>
             </el-card>
             <el-card class="card-item" shadow="hover">
-              <p>收银</p>
-              <p>像收银软件一样下单</p>
-            </el-card>
-            <el-card class="card-item" shadow="hover">
-              <p>下单</p>
+              <p @click="goToTag('addSaleList')">下单</p>
               <p @click="goToTag('addSaleList')">新增出库订单</p>
             </el-card>
           </el-col>

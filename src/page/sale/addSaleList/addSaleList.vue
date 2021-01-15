@@ -2,30 +2,39 @@
   <div class="storeManage">
     <mdoel-form :colValue="24">
       <el-form slot="left" label-width="120px" ref="form" label-position="left">
+        <h2 align="center" style="margin:0px;">
+          {{ $t('OrderItems') }}
+          {{ form }}
+        </h2>
+        <hr />
         <el-row type="flex" justify="space-between">
           <el-col :span="8">
-            {{ $t('OutboundTag') }}:
-            <el-select v-model="form.order_type" size="mini" :placeholder="$t('ProductTAG')">
-              <el-option
-                v-for="item in outboundTypes"
-                :key="item.id"
-                :disabled="!item.is_enabled"
-                :label="item.name"
-                :value="item.id"
-              >
-              </el-option>
-            </el-select>
+            <el-form-item label="客户">
+              <!-- 收件人输入框 -->
+              <receiver-input @receiver-input-callback="getReceiverData"></receiver-input>
+            </el-form-item>
           </el-col>
-          <el-col :span="8" :pull="8">
-            <h2 align="center" style="margin:0px;">
-              {{ $t('OrderItems') }}
-            </h2>
+          <el-col :span="8">
+            <el-form-item :label="$t('OutboundTag')">
+              <el-select v-model="form.order_type" :placeholder="$t('ProductTAG')">
+                <el-option
+                  v-for="item in outboundTypes"
+                  :key="item.id"
+                  :disabled="!item.is_enabled"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="出库日期">
+              <el-date-picker v-model="form.delivery_date" type="date" placeholder="选择出库日期">
+              </el-date-picker>
+            </el-form-item>
           </el-col>
         </el-row>
-        <hr />
-        <label class="label"> {{ $t('info') }} </label>
-        <!-- 收发件人信息 -->
-        <sender-and-receiver @sender-and-receiver="getSenderAndReceiverData"></sender-and-receiver>
         <label class="label" style="float:left; width:120px;">{{ $t('outboundLists') }}</label>
         <!-- 出库清单表 -->
         <!-- 选择商品的列表 -->
@@ -63,15 +72,15 @@
 import MdoelForm from '@/components/form';
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
-import SenderAndReceiver from './components/senderAndReceiver';
 import GoodsList from './components/goodsList';
+import ReceiverInput from './components/receiverInput';
 
 export default {
   name: 'addSaleList',
   components: {
-    SenderAndReceiver,
     GoodsList,
-    MdoelForm
+    MdoelForm,
+    ReceiverInput
   },
   mixins: [mixin],
   data() {
@@ -81,6 +90,7 @@ export default {
         order_type: '', // 出库单分类
         goods_data: [], // 出库清单货物列表
         remark: '', // 备注
+        delivery_date: new Date(),
         sender_id: 0, // 发件人 id
         receiver_id: 0 // 收件人 id
       },
@@ -91,7 +101,10 @@ export default {
       // 修改
       goodsList: [], // 选中货品列表
       selectedSpec: [], // 用于处理与提交的商品信息
-      warehouse_id: 0
+      warehouse_id: 0,
+      loading: false,
+      clientSearchResult: [], //客户搜索结果
+      clientKeyword: '' //搜索客户信息
     };
   },
   created() {
@@ -102,12 +115,8 @@ export default {
       this.selectedSpec = goodsList;
     },
 
-    getSenderAndReceiverData(person) {
-      if (person.senderId) {
-        this.form.sender_id = person.senderId;
-      } else if (person.receiverId) {
-        this.form.receiver_id = person.receiverId;
-      }
+    getReceiverData(person) {
+      this.form.receiver_id = person.receiverId;
     },
 
     getOrderTypes() {
