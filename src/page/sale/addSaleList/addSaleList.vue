@@ -4,7 +4,6 @@
       <el-form slot="left" label-width="120px" ref="form" label-position="left">
         <h2 align="center" style="margin:0px;">
           {{ $t('OrderItems') }}
-          {{ form }}
         </h2>
         <hr />
         <el-row type="flex" justify="space-between">
@@ -74,7 +73,6 @@ import $http from '@/api';
 import mixin from '@/mixin/form_config';
 import GoodsList from './components/goodsList';
 import ReceiverInput from './components/receiverInput';
-
 export default {
   name: 'addSaleList',
   components: {
@@ -90,7 +88,7 @@ export default {
         order_type: '', // 出库单分类
         goods_data: [], // 出库清单货物列表
         remark: '', // 备注
-        delivery_date: new Date(),
+        delivery_date: this.$moment(new Date()).format('YYYY-MM-DD'),
         sender_id: 0, // 发件人 id
         receiver_id: 0 // 收件人 id
       },

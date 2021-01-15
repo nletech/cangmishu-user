@@ -1,7 +1,7 @@
 <template>
   <div>
-      <top-nav></top-nav>
-      <router-view />
+    <top-nav></top-nav>
+    <router-view />
   </div>
 </template>
 <script>
@@ -9,7 +9,7 @@ import TopNav from './topNav';
 
 export default {
   components: {
-    TopNav,
+    TopNav
   },
   name: 'Tnav'
 };
