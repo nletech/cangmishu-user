@@ -8,7 +8,7 @@
         <!-- 切换仓库 选择按钮 -->
         <div :class="$style.selectedTag">
           <div v-if="+UType !== 0">
-            <div style="font-size: 1.2rem; text-align: center; line-height: 80px;">
+            <div style="font-size: 1.2rem; text-align: center; line-height: 60px;">
               <i class="medium el-icon-house"></i>
               <span>{{ warehouseName }}</span>
             </div>
@@ -266,7 +266,7 @@ export default {
   top: 0;
   z-index: 999;
   .top_nav {
-    height: 80px;
+    height: 60px;
     background-color: @white;
     width: 100%;
     display: flex;
@@ -276,12 +276,11 @@ export default {
       display: flex;
       .selectedTag {
         width: 200px;
-        height: 80px;
+        height: 60px;
         border-right: 1px solid #d8d3f4;
         .selectedTag_main {
           width: 100%;
-          height: 100%;
-          margin: 20px 0 0 0;
+          height: 60px;
           font-size: 1.2rem;
           display: flex;
           justify-content: center;
@@ -305,27 +304,27 @@ export default {
       border-color: @separateLine;
       width: @width;
       text-align: center;
-      line-height: 80px;
+      line-height: 60px;
     }
 
     .top_nav_logo {
-      width: 120px;
-      height: 80px;
+      width: 100px;
+      height: 60px;
       background-color: @ThemeColor;
       color: @white;
       font-size: 36px;
-      line-height: 80px;
+      line-height: 60px;
       font-weight: 600;
       text-align: center;
       transition: width 0.3s ease-in-out; // 修改 bug
       img {
-        margin-top: 15px;
+        margin-top: 5px;
         width: 50px;
       }
     }
 
     .side_nav_switch {
-      height: 80px;
+      height: 60px;
       .switch(103px);
       i {
         font-size: 30px;
@@ -352,12 +351,12 @@ export default {
       }
       .warehouse {
         cursor: pointer;
-        line-height: 80px;
+        line-height: 60px;
         text-align: right;
         i {
           vertical-align: middle;
           font-size: 26px;
-          line-height: 80px;
+          line-height: 60px;
         }
         span {
           font-size: 16px;
@@ -372,11 +371,11 @@ export default {
         border-right: 1px solid;
         border-color: @separateLine;
         min-width: 240px;
-        height: 80px;
+        height: 60px;
         text-align: center;
         .img {
-          width: 80px;
-          height: 80px;
+          width: 60px;
+          height: 60px;
           border-radius: 50%;
           cursor: pointer;
           color: @ThemeColor;
@@ -427,7 +426,7 @@ export default {
         }
 
         .logout {
-          width: 80px;
+          width: 60px;
           height: 100%;
           display: flex; // 文字垂直居中
           justify-content: center;

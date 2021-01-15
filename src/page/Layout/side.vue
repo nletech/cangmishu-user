@@ -67,7 +67,7 @@ export default {
   overflow-x: hidden;
   transition: 0.5s;
   display: grid;
-  grid-template-columns: 120px 1fr;
+  grid-template-columns: 100px 1fr;
   .content-container {
     display: grid;
     width: 100%;
@@ -86,10 +86,10 @@ export default {
       top: 62px;
     }
     .tags-view {
-      width: calc(100% - 134px);
+      width: calc(100% - 114px);
       height: 60px;
       position: fixed;
-      top: 80px;
+      top: 60px;
       border: 1px solid @separateLine;
       background: @white;
       color: @textColor;

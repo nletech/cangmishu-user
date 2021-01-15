@@ -37,13 +37,15 @@ const SaleOverview = loadOnDemand('sale/saleOverview/saleOverview'); // 销售�
 // 库存
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage'); // 库存管理
 const InventoryAlarm = loadOnDemand('inventory/inventoryAlarm/inventoryAlarm'); // 库存报警
-const GoodsManage = loadOnDemand('inventory/goodsManage/goodsManage'); // 货品管理
-const GoodsAdd = loadOnDemand('inventory/goodsManage/components/goodsAdd'); // 商品新增
-const GoodsEdit = loadOnDemand('inventory/goodsManage/components/goodsEdit'); // 商品编辑
 const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking'); // 库存盘点 (新模块)
 const AddCheckStock = loadOnDemand('inventory/stockTaking/components/addCheckStock'); // 库存盘点 (新模块)
 const CheckStockDetail = loadOnDemand('inventory/stockTaking/components/checkStockDetail'); // 库存盘点 (新模块)
 const InventoryOverview = loadOnDemand('inventory/inventoryOverview/inventoryOverview'); // 库存概览
+
+// 商品
+const GoodsManage = loadOnDemand('inventory/goodsManage/goodsManage'); // 货品管理
+const GoodsAdd = loadOnDemand('inventory/goodsManage/components/goodsAdd'); // 商品新增
+const GoodsEdit = loadOnDemand('inventory/goodsManage/components/goodsEdit'); // 商品编辑
 // 员工管理
 // 员工列表
 // const StaffList = loadOnDemand('staffManage/staffList/staffList'); // 员工列表
@@ -181,40 +183,41 @@ export const routerMap = [
         ]
       },
       {
-        name: 'client',
-        path: 'client',
+        name: 'goods',
+        path: 'goods',
         component: LayoutSide,
-        icon: '&#xeb47;',
+        icon: '&#xeb1c;',
         nav: 1,
-        id: 'client',
-        index: 10,
+        id: 'goods',
+        index: 4,
         children: [
           {
-            name: 'client', // 子菜单-分组 客户
+            name: 'goods', // 子菜单-分组 商品
             path: '',
             type: 'children-group'
           },
           {
-            name: 'addressManagement', // 子菜单-地址管理
-            path: 'addressManagement',
-            component: AddressManagement,
+            name: 'goodsManage', // 子菜单-商品管理
+            path: 'goodsManage',
+            component: GoodsManage,
             nav: 2
           },
           {
-            name: 'clientOverview', // 子菜单-地址管理
-            path: 'clientOverview',
-            component: ClientOverview,
-            nav: 2
+            name: 'goodsAdd', // 模块 货品管理--添加货品
+            path: 'goodsManage/goodsAdd',
+            component: GoodsAdd,
+            nav: 3
           },
           {
-            name: 'supplier', // 子菜单-分组 供应商
-            path: '',
-            type: 'children-group'
+            name: 'goodsEdit', // 模块  // 模块 货品管理--编辑货品
+            path: 'goodsManage/goodsEdit',
+            component: GoodsEdit,
+            nav: 3
           },
           {
-            name: 'supplierManagement', // 子菜单-供应商管理
-            path: 'supplierManagement',
-            component: SupplierManagement,
+            name: 'categoryManagement', // 子菜单- 商品分类管理
+            path: 'categoryManagement',
+            component: CategoryManagement,
             nav: 2
           }
         ]
@@ -304,29 +307,6 @@ export const routerMap = [
             nav: 3
           },
           {
-            name: 'goods', // 子菜单-分组 商品
-            path: '',
-            type: 'children-group'
-          },
-          {
-            name: 'goodsManage', // 子菜单-商品管理
-            path: 'goodsManage',
-            component: GoodsManage,
-            nav: 2
-          },
-          {
-            name: 'goodsAdd', // 模块 货品管理--添加货品
-            path: 'goodsManage/goodsAdd',
-            component: GoodsAdd,
-            nav: 3
-          },
-          {
-            name: 'goodsEdit', // 模块  // 模块 货品管理--编辑货品
-            path: 'goodsManage/goodsEdit',
-            component: GoodsEdit,
-            nav: 3
-          },
-          {
             name: 'addCheckStock', // 模块  // 模块 货品管理--编辑货品
             path: 'stockTaking/addCheckStock',
             component: AddCheckStock,
@@ -337,11 +317,44 @@ export const routerMap = [
             path: 'stockTaking/checkStockDetail',
             component: CheckStockDetail,
             nav: 3
+          }
+        ]
+      },
+      {
+        name: 'client',
+        path: 'client',
+        component: LayoutSide,
+        icon: '&#xeb47;',
+        nav: 1,
+        id: 'client',
+        index: 10,
+        children: [
+          {
+            name: 'client', // 子菜单-分组 客户
+            path: '',
+            type: 'children-group'
           },
           {
-            name: 'categoryManagement', // 子菜单- 商品分类管理
-            path: 'categoryManagement',
-            component: CategoryManagement,
+            name: 'addressManagement', // 子菜单-地址管理
+            path: 'addressManagement',
+            component: AddressManagement,
+            nav: 2
+          },
+          {
+            name: 'clientOverview', // 子菜单-地址管理
+            path: 'clientOverview',
+            component: ClientOverview,
+            nav: 2
+          },
+          {
+            name: 'supplier', // 子菜单-分组 供应商
+            path: '',
+            type: 'children-group'
+          },
+          {
+            name: 'supplierManagement', // 子菜单-供应商管理
+            path: 'supplierManagement',
+            component: SupplierManagement,
             nav: 2
           }
         ]

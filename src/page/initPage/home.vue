@@ -34,6 +34,13 @@
                 <p class="subtitle">推送相关报表数据</p>
               </div>
             </div>
+            <div class="wechat-qr-item">
+              <div class="wechat-qr-item-image">
+                <img width="100%" height="100%" src="../../assets/img/contact-wechat.png" alt="" />
+                <p>建议或使用问题</p>
+                <p class="subtitle">请联系</p>
+              </div>
+            </div>
           </el-col>
         </el-row>
       </div>

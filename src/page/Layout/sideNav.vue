@@ -16,9 +16,7 @@
       >
         <template slot="title">
           <i style="color: #fff" class="iconfont" v-html="children.icon"></i>
-          <span slot="title" style="font-size: 16px">{{
-            $t(`${children.name}`)
-          }}</span>
+          <span slot="title" style="font-size: 16px">{{ $t(`${children.name}`) }}</span>
         </template>
         <template v-for="item in children.children">
           <el-menu-item-group
@@ -30,7 +28,7 @@
               slot="title"
               :style="{
                 display: 'block',
-                margin: typeIsChildrenGroup(item.type) ? '15px 20px' : '0',
+                margin: typeIsChildrenGroup(item.type) ? '15px 20px' : '0'
               }"
               >{{ $t(`${item.name}`) }}
             </span>
@@ -53,12 +51,14 @@ export default {
   props: ['nav', 'sideNavList'],
   computed: {
     sideList() {
-      if (+localStorage.getItem('setUType') !== 0) { // 如果是员工账号则检测对应的模块权限
+      if (+localStorage.getItem('setUType') !== 0) {
+        // 如果是员工账号则检测对应的模块权限
         /* eslint-disable */
         let user = JSON.parse(localStorage.getItem('setUModules')); // 拿到的模块权限
         let result = []; // 预渲染的路由模块
         result.push(this.sideNavList[0]); // 首页模块是账号默认有的
-        for (let i = 0; i < user.length; i += 1) { // 后端拿到的权限模块和前端的路由模块进行映射
+        for (let i = 0; i < user.length; i += 1) {
+          // 后端拿到的权限模块和前端的路由模块进行映射
           for (let j = 0; j < this.sideNavList.length; j += 1) {
             if (user[i] === this.sideNavList[j].index) {
               result.push(this.sideNavList[j]);
@@ -69,25 +69,25 @@ export default {
         return result;
       }
       return this.sideNavList;
-    },
+    }
   },
   methods: {
     typeIsChildrenGroup(value) {
       if (value === 'children-group') {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     },
     handlerClick(name) {
       this.$router.push({ name: `${name}` });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less">
 .side-nav {
-  height: calc(100vh - 80px);
+  height: calc(100vh - 60px);
   background: #444154;
   overflow-y: auto;
   overflow-x: hidden;
@@ -98,7 +98,7 @@ export default {
   }
   .el-menu-vertical-demo {
     margin-top: 20px;
-    width: 120px;
+    width: 100px;
     border: none;
     .el-submenu {
       .el-submenu__title {

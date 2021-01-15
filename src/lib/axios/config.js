@@ -26,8 +26,6 @@ function requestTime(config) {
     nprogress.inc(0.8);
   }
   config.headers.Authorization = store.state.token.token;
-  console.log(store, 'store');
-  console.log(localStorage.getItem('warehouseId'), 'localStorage.getItem(warehouseId)');
   config.headers.warehouse = localStorage.getItem('warehouseId');
   config.headers.Language = localStorage.getItem('lang') || 'cn'; // 后端语言标识
   return config;
