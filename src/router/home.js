@@ -27,6 +27,7 @@ const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf')
 
 // 销售
 const SaleList = loadOnDemand('sale/saleList/saleList'); // 销售单列表
+const SaleDetail = loadOnDemand('sale/saleList/saleDetail'); // 销售单详细
 const AddSaleList = loadOnDemand('sale/addSaleList/addSaleList'); // 添加销售单
 const SetOutbound = loadOnDemand('sale/saleList/components/setOutbound'); // 设为出库
 const EditSender = loadOnDemand('sale/addSaleList/components/editSender'); // 编辑发件人信息
@@ -137,6 +138,12 @@ export const routerMap = [
             name: 'addSaleList', // 子菜单-添加销售单
             path: 'addSaleList',
             component: AddSaleList,
+            nav: 3
+          },
+          {
+            name: 'saleDetail', // 子菜单-销售单详细
+            path: 'saleDetail',
+            component: SaleDetail,
             nav: 3
           },
           {

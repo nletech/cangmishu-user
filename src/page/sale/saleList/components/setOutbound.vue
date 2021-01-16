@@ -1,5 +1,13 @@
 <template>
   <div class="setOutbound">
+    <div>
+      <el-steps :active="1" align-center>
+        <el-step title="待确认" description="确认出库详细数量"></el-step>
+        <el-step title="待发货" description="填写物流信息"></el-step>
+        <el-step title="待签收" description="等待客人签收"></el-step>
+        <el-step title="完成" description="订单已经完成"></el-step>
+      </el-steps>
+    </div>
     <model-form :colValue="24">
       <el-form slot="left" label-width="120px">
         <el-form-item>
@@ -12,7 +20,7 @@
                 icon="el-icon-download"
                 size="small"
               >
-                下载出库单
+                下载订单
               </el-button>
             </el-col>
           </el-row>

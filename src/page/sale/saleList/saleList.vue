@@ -1,6 +1,118 @@
 <template>
   <div :class="$style.saleList">
     <div :class="$style.outboundList_main">
+      <!-- 确认签收 -->
+      <el-dialog align="center" :visible.sync="receviceDialog" width="20%">
+        <div>
+          <span style="font-size: 1.4rem">{{ $t('Submit') }} ?</span>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="receviceDialog = false" :loading="isButtonLoading" size="small">
+            {{ $t('cancel') }}
+          </el-button>
+          <el-button
+            type="primary"
+            :loading="isButtonLoading"
+            @click="confirmRecevice()"
+            size="small"
+          >
+            {{ $t('confirm') }}
+          </el-button>
+        </span>
+      </el-dialog>
+      <!-- 确认签收 -->
+      <el-dialog :title="$t('EditTrack')" :visible.sync="expressDialog" width="60%">
+        <el-row>
+          <el-col :span="18" :offset="3">
+            <el-form :model="expressForm" :rules="rules" label-width="160px">
+              <el-form-item :label="$t('DeliveryCompany')">
+                <el-select v-model="expressForm.express_code" :placeholder="$t('Pleaseselect')">
+                  <el-option
+                    v-for="item in expressList"
+                    :key="item.name"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('TrackingNumber')">
+                <el-input
+                  value="number"
+                  v-model="expressForm.express_num"
+                  maxlength="20"
+                  show-word-limit
+                ></el-input>
+              </el-form-item>
+              <el-form-item :label="$t('remark')">
+                <el-input
+                  type="textarea"
+                  v-model="expressForm.shop_remark"
+                  maxlength="100"
+                  show-word-limit
+                ></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+        <span slot="footer" class="dialog-footer">
+          <el-button :loading="isButtonLoading" @click="expressDialog = false" size="mini">
+            {{ $t('cancel') }}
+          </el-button>
+          <el-button :loading="isButtonLoading" type="primary" @click="editExpress()" size="mini">
+            {{ $t('confirm') }}
+          </el-button>
+        </span>
+      </el-dialog>
+      <el-dialog :visible.sync="paymentDialog" width="60%">
+        <el-row>
+          <el-col :span="18" :offset="3">
+            <el-form :model="payment" :rules="rules" label-width="160px">
+              <el-form-item :label="$t('Payment')">
+                <el-select v-model="payment.pay_type" placeholder="请选择">
+                  <el-option
+                    v-for="item in paymentType"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('PayStatus')">
+                <el-select v-model="payment.pay_status" placeholder="请选择">
+                  <el-option
+                    v-for="item in paymentStatus"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('Paid')">
+                <el-input value="number" v-model="payment.sub_pay" maxlength="15"></el-input>
+              </el-form-item>
+              <el-form-item :label="$t('remark')">
+                <el-input v-model="payment.payment_account_number" maxlength="100"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+        <span slot="footer" class="dialog-footer">
+          <el-button :loading="isButtonLoading" @click="paymentDialog = false" size="mini">
+            {{ $t('cancel') }}
+          </el-button>
+          <el-button
+            :loading="isButtonLoading"
+            type="primary"
+            @click="ChangPayment(scope.row)"
+            size="mini"
+          >
+            {{ $t('confirm') }}
+          </el-button>
+        </span>
+      </el-dialog>
       <el-row type="flex" justify="space-between">
         <el-col :span="18">
           <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
@@ -251,126 +363,6 @@
               >
               </el-button>
             </el-tooltip>
-            <!-- 确认签收 -->
-            <el-dialog align="center" :visible.sync="receviceDialog" width="20%">
-              <div>
-                <span style="font-size: 1.4rem">{{ $t('Submit') }} ?</span>
-              </div>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="receviceDialog = false" :loading="isButtonLoading" size="small">
-                  {{ $t('cancel') }}
-                </el-button>
-                <el-button
-                  type="primary"
-                  :loading="isButtonLoading"
-                  @click="confirmRecevice()"
-                  size="small"
-                >
-                  {{ $t('confirm') }}
-                </el-button>
-              </span>
-            </el-dialog>
-            <!-- 确认签收 -->
-            <el-dialog :title="$t('EditTrack')" :visible.sync="expressDialog" width="60%">
-              <el-row>
-                <el-col :span="18" :offset="3">
-                  <el-form :model="expressForm" :rules="rules" label-width="160px">
-                    <el-form-item :label="$t('DeliveryCompany')">
-                      <el-select
-                        v-model="expressForm.express_code"
-                        :placeholder="$t('Pleaseselect')"
-                      >
-                        <el-option
-                          v-for="item in expressList"
-                          :key="item.name"
-                          :label="item.name"
-                          :value="item.code"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('TrackingNumber')">
-                      <el-input
-                        value="number"
-                        v-model="expressForm.express_num"
-                        maxlength="20"
-                        show-word-limit
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item :label="$t('remark')">
-                      <el-input
-                        type="textarea"
-                        v-model="expressForm.shop_remark"
-                        maxlength="100"
-                        show-word-limit
-                      ></el-input>
-                    </el-form-item>
-                  </el-form>
-                </el-col>
-              </el-row>
-              <span slot="footer" class="dialog-footer">
-                <el-button :loading="isButtonLoading" @click="expressDialog = false" size="mini">
-                  {{ $t('cancel') }}
-                </el-button>
-                <el-button
-                  :loading="isButtonLoading"
-                  type="primary"
-                  @click="editExpress()"
-                  size="mini"
-                >
-                  {{ $t('confirm') }}
-                </el-button>
-              </span>
-            </el-dialog>
-            <el-dialog :visible.sync="paymentDialog" width="60%">
-              <el-row>
-                <el-col :span="18" :offset="3">
-                  <el-form :model="payment" :rules="rules" label-width="160px">
-                    <el-form-item :label="$t('Payment')">
-                      <el-select v-model="payment.pay_type" placeholder="请选择">
-                        <el-option
-                          v-for="item in paymentType"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.id"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('PayStatus')">
-                      <el-select v-model="payment.pay_status" placeholder="请选择">
-                        <el-option
-                          v-for="item in paymentStatus"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.id"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('Paid')">
-                      <el-input value="number" v-model="payment.sub_pay" maxlength="15"></el-input>
-                    </el-form-item>
-                    <el-form-item :label="$t('remark')">
-                      <el-input v-model="payment.payment_account_number" maxlength="100"></el-input>
-                    </el-form-item>
-                  </el-form>
-                </el-col>
-              </el-row>
-              <span slot="footer" class="dialog-footer">
-                <el-button :loading="isButtonLoading" @click="paymentDialog = false" size="mini">
-                  {{ $t('cancel') }}
-                </el-button>
-                <el-button
-                  :loading="isButtonLoading"
-                  type="primary"
-                  @click="ChangPayment(scope.row)"
-                  size="mini"
-                >
-                  {{ $t('confirm') }}
-                </el-button>
-              </span>
-            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
@@ -384,9 +376,6 @@
           </pagination-public>
         </el-col>
       </el-row>
-      <!-- 入库单详情弹框 -->
-      <outbound-detail :visible.sync="outboundDialogVisible" :id="id" :row_data="row_data">
-      </outbound-detail>
     </div>
   </div>
 </template>
@@ -396,13 +385,11 @@ import paginationPublic from '@/components/pagination-public';
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
-import outboundDetail from './components/outbound_detail';
 import outboundListSearch from './components/outboundListSearch';
 
 export default {
   mixins: [mixin],
   components: {
-    outboundDetail,
     outboundListSearch,
     paginationPublic
   },
@@ -649,9 +636,12 @@ export default {
     }, // 设为出库
 
     viewDetails(row) {
-      this.outboundDialogVisible = true;
-      this.id = row.id;
-      this.row_data = row;
+      this.$router.push({
+        name: 'saleDetail',
+        query: {
+          order_id: row.id
+        }
+      });
     }, // 出库单详情弹框
 
     cancelOrder(row) {
