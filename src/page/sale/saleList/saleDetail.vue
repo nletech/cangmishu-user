@@ -318,7 +318,7 @@
                 :loading="isButtonLoading"
                 type="primary"
                 icon="el-icon-sell"
-                @click="handlerSubmit()"
+                @click="handlerNext()"
                 style="float:right"
                 v-if="row_data.status === 1"
               >
@@ -510,6 +510,14 @@ export default {
       window.open(
         `${baseApi.BASE_URL}order/${this.row_data.id}/download/out/?api_token=${this.api}&lang`
       );
+    },
+    handlerNext() {
+      this.$router.push({
+        name: 'setOutbound',
+        query: {
+          order_id: this.row_data.id
+        }
+      });
     },
     loadData() {
       $http.getOutboundDetail(this.$route.query.order_id)
