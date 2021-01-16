@@ -1,22 +1,23 @@
 <template>
   <div :class="$style.saleList">
     <div :class="$style.outboundList_main">
-      <el-row :class="$style.outboundList_tags">
-        <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
-        </outbound-list-search>
-      </el-row>
-      <el-row>
-        <el-col :span="2" :offset="19">
-          <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
-            {{ $t('Export') }}
-          </el-button>
+      <el-row type="flex" justify="space-between">
+        <el-col :span="18">
+          <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
+          </outbound-list-search>
         </el-col>
-        <el-col :span="2" :offset="1">
-          <el-button type="text" :class="$style.btn" @click="addSaleList" icon="el-icon-plus">
-            {{ $t('addSaleList') }}
-          </el-button>
+        <el-col :span="4">
+          <div style="float:right">
+            <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
+              {{ $t('Export') }}
+            </el-button>
+            <el-button size="small" type="primary" @click="addSaleList" icon="el-icon-plus">
+              {{ $t('addSaleList') }}
+            </el-button>
+          </div>
         </el-col>
       </el-row>
+      <br />
       <el-table
         element-loading-text="loading"
         v-loading="isButtonLoading"
