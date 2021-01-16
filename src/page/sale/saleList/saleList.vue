@@ -24,7 +24,7 @@
         :data="outbound_list_data"
         border
       >
-        <el-table-column label="#" header-align="center" align="center" type="index">
+        <el-table-column label="#" header-align="center" align="center" type="index" fixed="left">
         </el-table-column>
         <el-table-column
           :label="$t('outboundNumber')"
@@ -32,6 +32,7 @@
           align="center"
           width="200"
           prop="out_sn"
+          fixed="left"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.out_sn }}</span>
@@ -60,6 +61,7 @@
           header-align="center"
           align="center"
           prop="status_name"
+          width="100"
         >
         </el-table-column>
         <el-table-column
@@ -101,6 +103,22 @@
         >
         </el-table-column>
         <el-table-column
+          label="下单金额"
+          header-align="center"
+          width="100"
+          align="center"
+          prop="sub_total"
+        >
+        </el-table-column>
+        <el-table-column
+          label="实收金额"
+          header-align="center"
+          width="100"
+          align="center"
+          prop="sub_pay"
+        >
+        </el-table-column>
+        <el-table-column
           :label="$t('OutboundDate')"
           header-align="center"
           align="center"
@@ -116,7 +134,7 @@
           width="155"
         >
         </el-table-column>
-        <el-table-column :label="$t('operation')" header-align="center" width="200">
+        <el-table-column :label="$t('operation')" header-align="center" width="200" fixed="right">
           <template slot="header">
             <span>{{ $t('operation') }}</span>
             <el-popover placement="top-start" title="Tips:" width="360" trigger="hover">
