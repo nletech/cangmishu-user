@@ -374,12 +374,12 @@ export default {
         height: 60px;
         text-align: center;
         .img {
-          width: 60px;
-          height: 60px;
+          width: 48px;
+          height: 48px;
           border-radius: 50%;
           cursor: pointer;
           color: @ThemeColor;
-          margin: 0 10px 0 10px;
+          margin: 6px 10px 0 10px;
           position: relative;
           transform: scale(0.8);
           .avatar {

@@ -97,6 +97,9 @@ const $http = {
   getProducts(data) {
     return Axios.get('/products', { params: data });
   }, // 获取货品列表
+  getProductsByScan(data) {
+    return Axios.get('/products/scan', { params: data });
+  }, // 扫描条码获取商品
   getProductsPage(data) {
     return Axios.get('/products', { params: data });
   }, // 分页

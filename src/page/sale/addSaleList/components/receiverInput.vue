@@ -15,7 +15,7 @@
         v-model="clientKeyword"
         slot="reference"
         @input="querySearchClient"
-        placeholder="请输入内容"
+        placeholder="请输入客户关键词"
       >
         <el-button slot="append" icon="el-icon-user-solid" @click="handleSelect(1)"></el-button>
       </el-input>

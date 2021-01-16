@@ -8,13 +8,13 @@
         <hr />
         <el-row type="flex" justify="space-between">
           <el-col :span="8">
-            <el-form-item label="客户">
+            <el-form-item label="客户" label-width="50px">
               <!-- 收件人输入框 -->
               <receiver-input @receiver-input-callback="getReceiverData"></receiver-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('OutboundTag')">
+            <el-form-item :label="$t('OutboundTag')" label-width="50px">
               <el-select v-model="form.order_type" :placeholder="$t('ProductTAG')">
                 <el-option
                   v-for="item in outboundTypes"
@@ -28,21 +28,57 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出库日期">
+            <el-form-item label="出库日期" label-width="100px">
               <el-date-picker v-model="form.delivery_date" type="date" placeholder="选择出库日期">
               </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
-        <label class="label" style="float:left; width:120px;">{{ $t('outboundLists') }}</label>
         <!-- 出库清单表 -->
+        <hr />
         <!-- 选择商品的列表 -->
-        <goods-list
-          @get_data="handleGoodsData"
-          :warehouseId="warehouseId"
-          :specList.sync="selectedSpec"
-        ></goods-list>
+        <el-card class="box-card">
+          <goods-list
+            @get_data="handleGoodsData"
+            :warehouseId="warehouseId"
+            :specList.sync="selectedSpec"
+          ></goods-list>
+        </el-card>
         <!-- 备注 -->
+        <hr />
+        <el-row style="margin-top:20px;">
+          <el-col :span="8">
+            <el-form-item :label="$t('Payment')">
+              <el-select v-model="form.pay_type" placeholder="请选择">
+                <el-option
+                  v-for="item in paymentType"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item :label="$t('PayStatus')">
+              <el-select v-model="form.pay_status" placeholder="请选择">
+                <el-option
+                  v-for="item in paymentStatus"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item :label="$t('Paid')">
+              <el-input value="number" v-model="form.sub_pay" maxlength="15"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item :label="$t('remark')" style="margin: 20px auto;" prop="remark">
           <el-input
             type="textarea"
@@ -54,9 +90,15 @@
         </el-form-item>
         <!-- 提交按钮 -->
         <el-form-item>
-          <el-row>
-            <el-col :span="2" :offset="22">
-              <el-button :loading="isButtonLoading" type="primary" @click="onSubmit()">
+          <el-row :gutter="20" type="flex" justify="end">
+            <el-col :span="2" :sm="4" :lg="2">
+              <el-button @click="onCancel()">取消</el-button>
+              <el-button
+                :loading="isButtonLoading"
+                type="primary"
+                @click="onSubmit()"
+                style="float:right"
+              >
                 {{ $t('submit') }}
               </el-button>
             </el-col>
@@ -90,22 +132,26 @@ export default {
         remark: '', // 备注
         delivery_date: this.$moment(new Date()).format('YYYY-MM-DD'),
         sender_id: 0, // 发件人 id
-        receiver_id: 0 // 收件人 id
+        receiver_id: 0, // 收件人 id
+        pay_type: '',
+        pay_status: 0,
+        sub_pay: 0
       },
       outboundTypes: [], // 出库单分类
-      AddressType: 0,
-      // 收发件人编辑
-      formInfo: {}, // 提交的表格
-      // 修改
+      AddressType: 0, // 修改
       goodsList: [], // 选中货品列表
       selectedSpec: [], // 用于处理与提交的商品信息
       warehouse_id: 0,
       loading: false,
       clientSearchResult: [], //客户搜索结果
+      paymentStatus: [],
+      paymentType: [],
       clientKeyword: '' //搜索客户信息
     };
   },
   created() {
+    this.getPayStatus();
+    this.getPayTypes();
     this.getOrderTypes(); // 获取出库单分类
   },
   methods: {
@@ -117,6 +163,18 @@ export default {
       this.form.receiver_id = person.receiverId;
     },
 
+    getPayStatus() {
+      $http.payStatus().then(res => {
+        this.paymentStatus = res.data;
+      });
+    }, // 支付状态
+
+    getPayTypes() {
+      $http.payTypes().then(res => {
+        this.paymentType = res.data;
+      });
+    }, // 支付类型
+
     getOrderTypes() {
       $http
         .getOrderType({ warehouse_id: this.warehouseId })
@@ -126,7 +184,11 @@ export default {
         })
         .catch();
     }, // 获取出库单分类
-
+    onCancel() {
+      this.$router.push({
+        name: 'saleList'
+      });
+    },
     onSubmit() {
       const arr = [];
       for (let i = 0; i < this.selectedSpec.length; i += 1) {
@@ -167,13 +229,6 @@ export default {
       if (this.form.receiver_id === 0) {
         this.$message({
           message: '请选择收件人',
-          type: 'warning'
-        });
-        return;
-      } // 拦截商品未填写
-      if (this.form.sender_id === 0) {
-        this.$message({
-          message: '请选择发件人',
           type: 'warning'
         });
         return;
