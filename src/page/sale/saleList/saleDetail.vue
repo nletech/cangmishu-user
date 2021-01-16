@@ -290,9 +290,10 @@
               header-align="center"
               :label="$t('ConfirmQty')"
               width="120"
+              prop="pick_num"
             >
               <template slot-scope="scope">
-                {{ scope.row.spec.pick_num }}
+                {{ scope.row.pick_num }}
               </template>
             </el-table-column>
           </el-table>
@@ -430,7 +431,7 @@ export default {
           return;
         }
         const values = data.map(item => Number(item[column.property]));
-        if ((index === 3 || index === 4) && !values.every(value => isNaN(value))) {
+        if ((index >= 3) && !values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
