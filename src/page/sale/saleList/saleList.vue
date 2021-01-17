@@ -113,22 +113,8 @@
           </el-button>
         </span>
       </el-dialog>
-      <el-row type="flex" justify="space-between">
-        <el-col :span="18">
-          <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
-          </outbound-list-search>
-        </el-col>
-        <el-col :span="4">
-          <div style="float:right">
-            <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
-              {{ $t('Export') }}
-            </el-button>
-            <el-button size="small" type="primary" @click="addSaleList" icon="el-icon-plus">
-              {{ $t('addSaleList') }}
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
+      <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
+      </outbound-list-search>
       <br />
       <el-table
         element-loading-text="loading"
@@ -537,18 +523,6 @@ export default {
       this.tempStr = str;
     },
 
-    handlerExportOrder() {
-      if (!this.warehouseId) return;
-      this.isDisabled = true;
-      const timer = setTimeout(() => {
-        this.isDisabled = false;
-        clearTimeout(timer);
-      }, 2000);
-      window.open(
-        `${baseApi.BASE_URL}order/export?api_token=${this.api}&warehouse_id=${this.warehouseId}&${this.tempStr}`
-      );
-    },
-
     showExpressDialog(row) {
       this.outboundId = '';
       this.outboundId = row.id;
@@ -609,13 +583,6 @@ export default {
       this.params.currentPage = res.data.current_page;
       this.$set(this.params);
     }, // 搜索回调
-
-    addSaleList() {
-      this.$router.push({
-        name: 'addSaleList'
-      });
-    }, // 添加出库单
-
     getOutbounds() {
       if (!this.warehouseId) return;
       $http.getOutbound({ warehouse_id: this.warehouseId }).then(res => {
