@@ -34,7 +34,7 @@
                 v-model="keywords"
                 clearable
                 style="width: 360px"
-                placeholder="按商品名称、条码、SKU"
+                placeholder="按商品条码、SKU"
                 size="small"
               />
               <el-button
@@ -93,7 +93,7 @@ export default {
       keywords: '',
       show_low_stock: 0,
       dialogVisible: false,
-      export_data: {}
+      export_data: []
     };
   },
   created() {
@@ -140,7 +140,7 @@ export default {
     processExportOrder() {
       if (!this.warehouseId) return;
       // eslint-disable-next-line
-      const exportParams = `&product_name=${this.query.product_name}&sku=${this.query.sku}`;
+      const exportParams = `&barcode=${this.keywords}`;
       if (this.export_data.length === 0) {
         this.$message({
           type: 'warning',

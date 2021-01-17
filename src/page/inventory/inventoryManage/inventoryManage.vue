@@ -2,6 +2,7 @@
   <div :class="$style.page">
     <div :class="$style.main">
       <search @queryParams="handlerQueryParams"></search>
+      <br />
       <el-table element-loading-text="loading" v-loading="isButtonLoading" :data="stockList" border>
         <el-table-column type="expand">
           <template slot-scope="props">
@@ -69,22 +70,26 @@
         </el-table-column>
         <el-table-column align="center" header-align="center" type="index" label="#">
         </el-table-column>
-        <el-table-column
-          align="center"
-          header-align="center"
-          width="300"
-          :label="$t('ProductName')"
-        >
+        <el-table-column align="center" header-align="center" width="300" label="商品规格名称">
           <template slot-scope="scope">
             {{ scope.row.product_name }}
           </template>
         </el-table-column>
-        <el-table-column align="center" header-align="center" :label="$t('Chinesespecifications')">
+        <el-table-column align="center" header-align="center" label="商品条码">
           <template slot-scope="scope">
-            {{ scope.row.name_cn }}
+            {{ scope.row.barcode }}
           </template>
         </el-table-column>
-        <el-table-column align="center" header-align="center" prop="relevance_code" label="SKU">
+        <el-table-column align="center" header-align="center" prop="relevance_code" label="规格SKU">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          prop="purchase_price"
+          label="进货价格"
+        >
+        </el-table-column>
+        <el-table-column align="center" header-align="center" prop="sale_price" label="销售价格">
         </el-table-column>
         <el-table-column
           align="center"
@@ -108,7 +113,12 @@
             {{ scope.row.total_stockout_times }} / {{ scope.row.total_stockout_num }}
           </template>
         </el-table-column>
-        <el-table-column align="center" header-align="center" :label="$t('StockHistory')">
+        <el-table-column
+          align="center"
+          fixed="right"
+          header-align="center"
+          :label="$t('StockHistory')"
+        >
           <template slot-scope="scope">
             <el-button size="mini" @click="viewDetails(scope.row)">{{ $t('detail') }}</el-button>
           </template>
@@ -171,7 +181,6 @@ export default {
       boundList: [], // 入库仓库列表
       stockList: [],
       id: 0,
-      export_data: [],
       // warehouseName: '',
       rowInfo: {},
       dialogVisible: false,

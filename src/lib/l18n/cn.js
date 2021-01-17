@@ -753,7 +753,7 @@ const cn = {
   bindEmail: '绑定邮箱',
   officialAccounts: '关注绑定公众号',
   modifyInfo: '修改资料',
-  copyright: '湖南恩尔伊科技有限公司',
+  copyright: '湖南恩尔伊网络科技有限公司',
   saleOverview: '销售概览',
   clientOverview: '客户概览',
   inventoryOverview: '库存概览',

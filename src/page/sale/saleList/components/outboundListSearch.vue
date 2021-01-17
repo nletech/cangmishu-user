@@ -28,8 +28,8 @@
               </el-button>
               <el-checkbox
                 v-model="notShowCancel"
-                true-label="0"
-                false-label="1"
+                true-label="1"
+                false-label="0"
                 border
                 type="text"
                 size="small"
@@ -132,7 +132,7 @@ export default {
       planDateValue: '', // 选定的预计出库时间
       outboundStatus: '', // 选定的销售单状态
       outboundStatusList: [],
-      notShowCancel: 0
+      notShowCancel: '1'
     };
   },
   created() {
