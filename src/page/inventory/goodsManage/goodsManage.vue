@@ -2,110 +2,8 @@
   <div :class="$style.page">
     <div :class="$style.main">
       <div :class="$style.header">
-        <el-row>
-          <!-- 请选择分类 -->
-          <el-col :span="4">
-            <el-select
-              clearable
-              v-model="selectCategory_id"
-              @change="handlerSelect"
-              @clear="handlerClear"
-              size="mini"
-              :placeholder="$t('ProductTAG')"
-            >
-              <el-option
-                v-for="item in typeList"
-                :label="item.name_cn"
-                :value="item.id"
-                :key="item.id"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-          <!-- 低于库存 -->
-          <el-col :span="2">
-            <div style="position: relative; top: 5px; font-size: 1.2rem;">
-              <el-checkbox
-                :true-label="1"
-                @change="handlerInventorySwitch"
-                v-model="inventorySwitch"
-              >
-                {{ $t('Belowstock') }}
-              </el-checkbox>
-            </div>
-          </el-col>
-          <!-- 搜索框 -->
-          <el-col :offset="11" :span="4">
-            <input-public :select="select_batch_code" @data_cb="handlerInputQuery"> </input-public>
-          </el-col>
-          <!-- 添加货品 -->
-          <el-col :span="2" :offset="1">
-            <el-button
-              icon="el-icon-plus"
-              type="text"
-              style="font-size: 1.2rem;"
-              @click="dialogVisible = true"
-              size="mini"
-            >
-              {{ $t('addGoods') }}
-            </el-button>
-            <!-- 弹窗 -->
-            <el-dialog :title="$t('addGoods')" :visible.sync="dialogVisible" width="30%">
-              <el-row>
-                <el-col :span="4">
-                  <el-button
-                    @click="addCommodity"
-                    style="position: relative; top: 40px;"
-                    size="medium"
-                  >
-                    {{ $t('addGoods1') }}
-                  </el-button>
-                </el-col>
-                <el-col :span="1">
-                  <div :class="$style.line"></div>
-                </el-col>
-                <el-col :span="6" :offset="8">
-                  <el-upload
-                    :class="$style.uploaddemo"
-                    :action="goodsapi"
-                    :data="uploadData"
-                    :on-success="handleSuccess"
-                    :headers="Authorization"
-                    name="file"
-                    :show-file-list="false"
-                  >
-                    <el-button
-                      size="medium"
-                      style="width: 180px; margin: 0 0 10px 0;"
-                      :class="$style.text_modify"
-                      @click="downloadTemplate"
-                    >
-                      {{ $t('downloadtemplate') }}
-                    </el-button>
-                  </el-upload>
-                  <el-upload
-                    :class="$style.uploaddemo"
-                    :action="goodsapi"
-                    :data="uploadData"
-                    :on-success="handleSuccess"
-                    :headers="Authorization"
-                    name="file"
-                    :show-file-list="false"
-                  >
-                    <el-button
-                      slot="trigger"
-                      style="width: 180px;"
-                      :class="$style.text_modify"
-                      size="medium"
-                    >
-                      {{ $t('importproductlist') }}
-                    </el-button>
-                  </el-upload>
-                </el-col>
-              </el-row>
-            </el-dialog>
-          </el-col>
-        </el-row>
+        <goods-list-search @queryParams="handlerQueryParams"></goods-list-search>
+        <br />
       </div>
       <!-- 货品数据展示列表 -->
       <el-table
@@ -302,9 +200,9 @@
 <script>
 import $http from '@/api';
 import baseApi from '@/lib/axios/base_api';
-import inputPublic from '@/components/input-public';
 import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
+import goodsListSearch from './components/goodsListSearch';
 
 export default {
   name: 'goodsManage',
@@ -329,7 +227,7 @@ export default {
       },
       query: {
         warehouse_id: '',
-        category: '',
+        category_id: '',
         keywords: '',
         page: '',
         show_low_stock: ''
@@ -337,8 +235,8 @@ export default {
     };
   },
   components: {
-    inputPublic,
-    paginationPublic
+    paginationPublic,
+    goodsListSearch
   },
   mixins: [mixin],
   filters: {
@@ -355,7 +253,6 @@ export default {
   created() {
     this.query.warehouse_id = this.warehouseId;
     this.getList(this.query);
-    this.getTypeList();
   },
   mounted() {
     this.uploadData.warehouse_id = this.warehouseId;
@@ -379,6 +276,10 @@ export default {
     }
   },
   methods: {
+    handlerQueryParams(params) {
+      this.query = params;
+      this.getList(this.query);
+    },
     /*
      * 说明: 获取货品列表以及复合查询接口
      * @query {Object} 必须
@@ -428,22 +329,11 @@ export default {
       }
       this.getList(this.query);
     },
-
-    handlerInputQuery(res) {
-      this.goods_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-    }, // 输入框回调
-
     handleSelectionChange(val) {
       this.selectGoods = [];
       val.forEach(element => {
         this.selectGoods.push({ id: element.id });
       });
-    },
-
-    downloadTemplate() {
-      window.open(`${baseApi.BASE_URL}static/goodsList.zip`);
     },
 
     handleSuccess(res) {
@@ -490,28 +380,6 @@ export default {
     importGoods() {
       this.importVisible = true;
     },
-    // 货品分类列表
-
-    getTypeList() {
-      if (!this.warehouseId) return;
-      $http
-        .getCategoryManagement({
-          warehouse_id: this.warehouseId,
-          page_size: 200
-        })
-        .then(res => {
-          this.typeList = res.data.data;
-        });
-    },
-
-    addCommodity() {
-      this.$router.push({
-        name: 'goodsAdd',
-        query: {
-          warehouse_id: this.warehouseId
-        }
-      });
-    }, // 添加货品
 
     editCommodity(idVal, wID) {
       this.$router.push({

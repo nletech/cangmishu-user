@@ -113,8 +113,7 @@
           </el-button>
         </span>
       </el-dialog>
-      <outbound-list-search @data_cb="handlerCallBackData" @queryParams="handlerQueryParams">
-      </outbound-list-search>
+      <outbound-list-search @queryParams="handlerQueryParams"></outbound-list-search>
       <br />
       <el-table
         element-loading-text="loading"
@@ -391,26 +390,25 @@ export default {
       expressList: [], // 快递公司列表
       expressDialog: false, // 编辑物流
       receviceDialog: false, // 确认收货
-      date: '', // 查询日期
-      outbound_date: '', // 预计出库日期
-      outbound_status: '', // 出库状态
-      outbound_status_options: '', // 出库状态选项列表
       outbound_list_data: [], // 出库单列表
-      outbound_number_search: '', // 出库单号查询
       // 分页的参数
       total: '1', // 列表总条数
       currentPage: 1, // 当前页
       id: 0,
       outboundDialogVisible: false, // 出库单详情弹框
       params: {
+        page: 1,
+        warehouse_id: '',
+        keywords: '',
+        created_at_b: null,
+        created_at_e: null,
+        delivery_date: null,
+        status: null,
+        not_show_cancel: null,
         total: 0,
         currentPage: 1
-      }, // 分页数据
+      }, // 分页数
       row_data: {},
-      outboundId: '', // 临时 销售单 id
-      tempParmas: {},
-      tempStr: '',
-      isDisabled: false,
       paymentStatus: [],
       paymentType: [],
       paymentDialog: false,
@@ -508,19 +506,8 @@ export default {
     },
 
     handlerQueryParams(params) {
-      this.tempParmas = params;
-      // eslint-disable-next-line
-      let str = '';
-      // eslint-disable-next-line
-      for (const item in this.tempParmas) {
-        if (Object.prototype.hasOwnProperty.call(this.tempParmas, item)) {
-          if (!this.tempParmas[item]) {
-            this.tempParmas[item] = '';
-          }
-          str += `${item}=${this.tempParmas[item]}&`;
-        }
-      }
-      this.tempStr = str;
+      this.params = params;
+      this.getOutbounds();
     },
 
     showExpressDialog(row) {
@@ -565,27 +552,13 @@ export default {
     },
 
     handlerChangePage(val) {
-      $http
-        .getOutbound({
-          warehouse_id: this.warehouseId,
-          page: val
-        })
-        .then(res => {
-          this.outbound_list_data = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
+      this.params.page = val;
+      this.getOutbounds();
     }, // 分页回调
-
-    handlerCallBackData(res) {
-      this.outbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-      this.$set(this.params);
-    }, // 搜索回调
     getOutbounds() {
       if (!this.warehouseId) return;
-      $http.getOutbound({ warehouse_id: this.warehouseId }).then(res => {
+      this.params.warehouse_id = this.warehouse_id;
+      $http.getOutbound(this.params).then(res => {
         if (res.status) return;
         this.outbound_list_data = res.data.data;
         this.params.total = res.data.total;

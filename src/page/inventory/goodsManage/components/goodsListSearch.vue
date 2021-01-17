@@ -1,5 +1,40 @@
 <template>
   <div class="clearfix">
+    <!-- 添加货品 -->
+    <el-dialog :title="$t('addGoods')" :visible.sync="dialogVisible" width="30%">
+      <el-row>
+        <el-col :span="6" :offset="8">
+          <el-upload
+            :action="goodsapi"
+            :data="uploadData"
+            :on-success="handleSuccess"
+            :headers="Authorization"
+            name="file"
+            :show-file-list="false"
+          >
+            <el-button
+              size="medium"
+              style="width: 180px; margin: 0 0 10px 0;"
+              @click="downloadTemplate"
+            >
+              {{ $t('downloadtemplate') }}
+            </el-button>
+          </el-upload>
+          <el-upload
+            :action="goodsapi"
+            :data="uploadData"
+            :on-success="handleSuccess"
+            :headers="Authorization"
+            name="file"
+            :show-file-list="false"
+          >
+            <el-button slot="trigger" style="width: 180px;" size="medium">
+              {{ $t('importproductlist') }}
+            </el-button>
+          </el-upload>
+        </el-col>
+      </el-row>
+    </el-dialog>
     <el-card shadow="never" class="oper-btn-card">
       <div class="clearfix">
         <el-form
@@ -15,7 +50,7 @@
                 v-model="keywords"
                 clearable
                 style="width: 360px"
-                placeholder="按单据号,收件人手机号"
+                placeholder="按条码商品名称"
                 size="small"
               />
               <el-button
@@ -27,16 +62,15 @@
                 搜索
               </el-button>
               <el-checkbox
-                v-model="notShowCancel"
-                true-label="0"
-                false-label="1"
+                :true-label="1"
+                @change="handlerChange"
+                v-model="inventorySwitch"
                 border
                 type="text"
                 size="small"
                 style="margin-left:10px;"
-                @change="handlerChange"
               >
-                不显示已作废单据
+                {{ $t('Belowstock') }}
               </el-checkbox>
               <el-button
                 type="default"
@@ -54,14 +88,14 @@
             size="small"
             type="primary"
             class="fr"
-            @click="addSaleList"
+            @click="goAddPage"
             icon="el-icon-plus"
             style="margin-left:10px;"
           >
-            {{ $t('addSaleList') }}
+            {{ $t('addGoods') }}
           </el-button>
-          <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
-            {{ $t('Export') }}
+          <el-button size="small" :disabled="isDisabled" @click="handlerImport">
+            导入商品
           </el-button>
         </div>
       </div>
@@ -73,29 +107,27 @@
         <template>
           <div>
             <el-form ref="form" label-width="80px" class="form-no-bottom" size="mini">
-              <el-form-item label="下单日期 :">
+              <el-form-item label="创建日期 :">
                 <date-range ref="date" @on-date-change="handlerDateChange" />
               </el-form-item>
               <el-divider />
-              <el-form-item class="form-no-bottom" label="入库状态 :">
-                <group-radio
-                  @on-value-change="handlerChange"
-                  v-model="outboundStatus"
-                  :options="outboundStatusList"
-                />
-              </el-form-item>
-              <el-divider />
-              <el-form-item class="form-no-bottom" label="出库日期 :">
-                <el-date-picker
-                  v-model="planDateValue"
+              <el-form-item class="form-no-bottom" label="商品分类 :">
+                <el-select
+                  clearable
+                  v-model="category_id"
                   @change="handlerChange"
-                  type="date"
-                  size="small"
-                  format="yyyy-MM-dd"
-                  value-format="yyyy-MM-dd"
-                  :placeholder="$t('planOutboundTime')"
+                  @clear="handlerChange"
+                  size="mini"
+                  :placeholder="$t('ProductTAG')"
                 >
-                </el-date-picker>
+                  <el-option
+                    v-for="item in typeList"
+                    :label="item.name_cn"
+                    :value="item.id"
+                    :key="item.id"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-form>
           </div>
@@ -109,36 +141,32 @@
 import $http from '@/api';
 import searchFilter from '@/components/search-filter';
 import dateRange from '@/components/date-range';
-import groupRadio from '@/components/group-radio';
 import baseApi from '@/lib/axios/base_api';
 
 export default {
   name: 'outboundListSearch',
   components: {
     searchFilter,
-    dateRange,
-    groupRadio
+    dateRange
   },
   data() {
     return {
       btnFilterSearch: {},
-      isDisabled: false,
       isFilterOpen: false,
+      category_id: '',
       dateValue: {
         beginTime: null,
         endTime: null
       }, // 选定的选择时间
       keywords: '',
-      planDateValue: '', // 选定的预计出库时间
-      outboundStatus: '', // 选定的销售单状态
-      outboundStatusList: [],
-      notShowCancel: 0
+      typeList: [], // 分类列表
+      dialogVisible: false,
+      inventorySwitch: 0 // 低于库存
     };
   },
   created() {
-    this.getOutboundTypes();
+    this.loadData();
     if (this.$route.query.checked) {
-      this.outboundStatus = 1; // 待入库
       this.handlerChange();
     }
   },
@@ -154,23 +182,28 @@ export default {
     }
   },
   methods: {
-    addSaleList() {
-      this.$router.push({
-        name: 'addSaleList'
-      });
-    }, // 添加出库单
-    getOutboundTypes() {
-      $http.getOutboundTypes().then(res => {
-        this.outboundStatusList = res.data;
-      });
+    loadData() {
+      // 货品分类列表
+      if (!this.warehouseId) return;
+      $http
+        .getCategoryManagement({
+          warehouse_id: this.warehouseId,
+          page_size: 200
+        })
+        .then(res => {
+          this.typeList = res.data.data;
+        });
     },
+    goAddPage() {
+      this.$router.push({
+        name: 'goodsAdd'
+      });
+    }, // 添加
     handlerDateChange(v) {
       this.dateValue = v;
       this.handlerChange();
     },
     handlerClearConditions() {
-      this.outboundStatus = '';
-      this.planDateValue = '';
       this.keywords = '';
       this.dateValue = {
         beginTime: null,
@@ -183,23 +216,17 @@ export default {
         warehouse_id: this.warehouseId,
         created_at_b: this.dateValue.beginTime,
         created_at_e: this.dateValue.endTime,
-        delivery_date: this.planDateValue,
-        status: this.outboundStatus,
-        keywords: this.keywords,
-        not_show_cancel: this.notShowCancel
+        category_id: this.category_id,
+        show_low_stock: this.inventorySwitch,
+        keywords: this.keywords
       };
       this.$emit('queryParams', query);
     },
-    handlerExportOrder() {
-      if (!this.warehouseId) return;
-      this.isDisabled = true;
-      const timer = setTimeout(() => {
-        this.isDisabled = false;
-        clearTimeout(timer);
-      }, 2000);
-      window.open(
-        `${baseApi.BASE_URL}order/export?api_token=${this.api}&warehouse_id=${this.warehouseId}&${this.tempStr}`
-      );
+    downloadTemplate() {
+      window.open(`${baseApi.BASE_URL}static/goodsList.zip`);
+    },
+    handlerImport() {
+      this.dialogVisible = true;
     }
   }
 };
