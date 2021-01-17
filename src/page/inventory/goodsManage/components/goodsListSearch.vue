@@ -1,7 +1,6 @@
 <template>
   <div class="clearfix">
-    <!-- 添加货品 -->
-    <el-dialog :title="$t('addGoods')" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="导入商品" direction="rtl" :visible.sync="dialogVisible">
       <el-row>
         <el-col :span="6" :offset="8">
           <el-upload
@@ -35,6 +34,7 @@
         </el-col>
       </el-row>
     </el-dialog>
+    <!-- 添加货品 -->
     <el-card shadow="never" class="oper-btn-card">
       <div class="clearfix">
         <el-form
@@ -151,8 +151,10 @@ export default {
   },
   data() {
     return {
+      uploadData: {},
       btnFilterSearch: {},
       isFilterOpen: false,
+      isDisabled: false,
       category_id: '',
       dateValue: {
         beginTime: null,
@@ -164,6 +166,9 @@ export default {
       inventorySwitch: 0 // 低于库存
     };
   },
+  mounted() {
+    this.uploadData.warehouse_id = this.warehouseId;
+  },
   created() {
     this.loadData();
     if (this.$route.query.checked) {
@@ -174,12 +179,21 @@ export default {
     warehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
     },
+    Authorization() {
+      return { Authorization: this.$store.state.token.token };
+    },
     api() {
       return this.$store.state.token.token.substring(7);
     },
     currentLang() {
       return localStorage.getItem('lang') || 'cn';
-    }
+    },
+    goodsapi() {
+      return `${baseApi.BASE_URL}products/import`;
+    }, // 导入商品
+    specapi() {
+      return `${baseApi.BASE_URL}specs/import`;
+    } // 商品规格导入
   },
   methods: {
     loadData() {
@@ -227,7 +241,22 @@ export default {
     },
     handlerImport() {
       this.dialogVisible = true;
-    }
+    },
+    handleSuccess(res) {
+      if (res.status === 0) {
+        this.$message({
+          message: '导入成功',
+          type: 'success'
+        });
+        this.dialogVisible = false;
+        this.getList(this.query);
+      } else if (res.msg) {
+        this.$notify({
+          message: res.msg,
+          type: 'warning'
+        });
+      }
+    } // 上传截图回调
   }
 };
 </script>

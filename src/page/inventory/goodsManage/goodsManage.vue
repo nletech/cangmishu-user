@@ -199,7 +199,6 @@
 
 <script>
 import $http from '@/api';
-import baseApi from '@/lib/axios/base_api';
 import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
 import goodsListSearch from './components/goodsListSearch';
@@ -219,8 +218,7 @@ export default {
       importVisible: false,
       importgoods: '',
       selectCategory_id: '',
-      uploadData: {},
-      dialogVisible: false,
+      dialogVisible: true,
       select_batch_code: {
         placeholder: 'ProductnameorSKU',
         flag: 3
@@ -254,19 +252,10 @@ export default {
     this.query.warehouse_id = this.warehouseId;
     this.getList(this.query);
   },
-  mounted() {
-    this.uploadData.warehouse_id = this.warehouseId;
-  },
   computed: {
     Authorization() {
       return { Authorization: this.$store.state.token.token };
-    },
-    goodsapi() {
-      return `${baseApi.BASE_URL}products/import`;
-    }, // 导入商品
-    specapi() {
-      return `${baseApi.BASE_URL}specs/import`;
-    } // 商品规格导入
+    }
   },
   watch: {
     warehouseId() {
@@ -335,22 +324,6 @@ export default {
         this.selectGoods.push({ id: element.id });
       });
     },
-
-    handleSuccess(res) {
-      if (res.status === 0) {
-        this.$message({
-          message: '导入成功',
-          type: 'success'
-        });
-        this.dialogVisible = false;
-        this.getList(this.query);
-      } else if (res.msg) {
-        this.$notify({
-          message: res.msg,
-          type: 'warning'
-        });
-      }
-    }, // 上传截图回调
 
     handleSubmit() {
       if (!this.warehouseId || this.selectGoods.length === 0) {

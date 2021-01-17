@@ -13,10 +13,6 @@
 export default {
   name: 'SearchFilter',
   props: {
-    search: {
-      type: Function,
-      default: () => {}
-    },
     clear: {
       type: Function,
       default: () => {}
