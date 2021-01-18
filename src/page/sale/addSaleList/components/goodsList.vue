@@ -203,6 +203,7 @@ export default {
             getTotal += item.need_num * item.sale_price;
           });
           sums[index] = Number(getTotal).toFixed(2);
+          this.$emit('getTotal', { total: getTotal, qty: isNaN(sums[4]) ? 0 : sums[4] });
         }
       });
 

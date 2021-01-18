@@ -1,17 +1,7 @@
 <template>
   <listUI>
     <template v-slot:search>
-      <el-row>
-        <inbound-list-search @data_cb="handlerCallBackData"></inbound-list-search>
-        <el-col :span="1" :offset="1">
-          <button-public
-            :loading="isButtonLoading"
-            :text="'addInbound'"
-            @handleClickCallBack="addInbound"
-          >
-          </button-public>
-        </el-col>
-      </el-row>
+      <inbound-list-search @queryParams="handlerCallBackData"></inbound-list-search>
     </template>
     <slot>
       <el-table
@@ -65,6 +55,13 @@
         <el-table-column
           prop="total_num.total_stockin_num"
           :label="$t('realityNumber')"
+          header-align="center"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="total_purchase_price"
+          label="总费用"
           header-align="center"
           align="center"
         >
@@ -137,7 +134,6 @@ import paginationPublic from '@/components/pagination-public';
 import mixin from '@/mixin/form_config';
 import $http from '@/api';
 import listUI from '@/components/listUI';
-import buttonPublic from '@/components/buttonPublic';
 import detailDialog from './components/inbound_detail';
 import inboundListSearch from './components/inboundListSearch';
 
@@ -146,13 +142,13 @@ export default {
   mixins: [mixin],
   components: {
     listUI,
-    buttonPublic,
     detailDialog,
     paginationPublic,
     inboundListSearch
   },
   data() {
     return {
+      query: {},
       params: {
         total: 0
       }, // 分页数据
@@ -195,10 +191,7 @@ export default {
     };
   },
   created() {
-    this.getBatchType();
     this.getData();
-    this.getBatchStatus();
-    this.getDistributors();
   },
   watch: {
     warehouseId() {
@@ -206,76 +199,18 @@ export default {
     }
   },
   methods: {
-    handlerCallBackData(res) {
-      this.inbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-      this.$set(this.params);
+    handlerCallBackData(query) {
+      this.query = query;
+      this.getData(this.query);
     },
-
-    handlerQuery(res) {
-      this.inbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-    }, // 选择框回调
-
-    handlerInputQuery(res) {
-      this.inbound_list_data = res.data.data;
-      this.params.total = res.data.total;
-      this.params.currentPage = res.data.current_page;
-    }, // 输入框回调
-
-    getBatchType() {
-      $http.getBatchType({ warehouse_id: this.warehouseId }).then(res => {
-        if (res.status) return;
-        this.select_data_type.options = res.data.data;
-      });
-    }, // 入库单分类列表
-
-    getBatchStatus() {
-      this.select_data_status.options = this.statusList;
-    }, // 入库单状态列表
-
-    getDistributors() {
-      $http.getDistributor().then(res => {
-        if (res.status) return;
-        this.select_data_distributor.options = res.data.data;
-      });
-    }, // 供应商列表
-
     handlerChangePage(val) {
-      $http
-        .getInboundPage({
-          warehouse_id: this.warehouseId,
-          page: val
-        })
-        .then(res => {
-          this.inbound_list_data = res.data.data;
-          this.params.total = res.data.total;
-          this.params.currentPage = res.data.current_page;
-        });
+      this.query.page = val;
+      this.getData(this.query);
     },
-
-    handlerSelect_data(val) {
-      if (val && val.length === 2) {
-        this.getData(val);
-      } else {
-        // 刷新列表
-        this.getData();
-      }
-    },
-
-    getData(query) {
+    getData() {
       if (!this.warehouseId) return;
-      const obj = {};
-      obj.warehouse_id = this.warehouseId; // 仓库 id 必填
-      // query有几种形式
-      if (Array.isArray(query)) {
-        // 查询时间段
-        obj.created_at_b = query[0]; // 开始时间
-        obj.created_at_e = query[1]; // 结束时间
-      }
-      $http.getInbounds(obj).then(res => {
+      this.query.warehouse_id = this.warehouseId; // 仓库 id 必填
+      $http.getInbounds(this.query).then(res => {
         this.inbound_list_data = res.data.data;
         this.params.total = res.data.total;
         this.params.currentPage = res.data.current_page;
@@ -293,16 +228,6 @@ export default {
         }
       });
     }, // 入库上架
-
-    addInbound(flag) {
-      if (!flag) return;
-      this.$router.push({
-        name: 'addInbound',
-        query: {
-          warehouse_id: this.warehouse_id // 仓库 id
-        }
-      });
-    }, // 添加入库单
 
     viewDetails(row) {
       this.inboundDialogVisible = true;

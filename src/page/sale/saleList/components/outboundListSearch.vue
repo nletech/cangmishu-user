@@ -77,7 +77,7 @@
                 <date-range ref="date" @on-date-change="handlerDateChange" />
               </el-form-item>
               <el-divider />
-              <el-form-item class="form-no-bottom" label="入库状态 :">
+              <el-form-item class="form-no-bottom" label="出库状态 :">
                 <group-radio
                   @on-value-change="handlerChange"
                   v-model="outboundStatus"

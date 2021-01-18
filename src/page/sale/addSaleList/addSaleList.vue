@@ -42,12 +42,38 @@
             @get_data="handleGoodsData"
             :warehouseId="warehouseId"
             :specList.sync="selectedSpec"
+            @getTotal="handleTotal"
           ></goods-list>
         </el-card>
         <!-- 备注 -->
         <hr />
-        <el-row style="margin-top:20px;">
-          <el-col :span="8">
+        <!-- 提交按钮 -->
+        <el-row :gutter="24">
+          <el-col :span="18">
+            <el-form-item style="text-align:right">
+              商品总量:
+              <span style="font-size:18px; font-weight:bold">{{ form.sub_qty }}</span>
+            </el-form-item>
+            <el-divider></el-divider>
+            <el-form-item style="text-align:right;">
+              总金额:
+              <span style="color:red; font-size:18px; font-weight:bold">{{
+                form.sub_total.toFixed(2)
+              }}</span>
+            </el-form-item>
+            <el-divider></el-divider>
+            <el-form-item :label="$t('remark')" style="margin: 20px auto;" prop="remark">
+              <el-input
+                type="textarea"
+                :maxlength="30"
+                rows="5"
+                :placeholder="$t('TheFieldmaynotbegreaterthan30characters')"
+                v-model="form.remark"
+              >
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" style="border-left:1px solid rgba(247,247,247,1)">
             <el-form-item :label="$t('Payment')">
               <el-select v-model="form.pay_type" placeholder="请选择">
                 <el-option
@@ -59,8 +85,11 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="8">
+            <el-divider></el-divider>
+            <el-form-item :label="$t('Paid')">
+              <el-input value="number" v-model="form.sub_pay" maxlength="15"></el-input>
+            </el-form-item>
+            <el-divider></el-divider>
             <el-form-item :label="$t('PayStatus')">
               <el-select v-model="form.pay_status" placeholder="请选择">
                 <el-option
@@ -72,38 +101,16 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item :label="$t('Paid')">
-              <el-input value="number" v-model="form.sub_pay" maxlength="15"></el-input>
-            </el-form-item>
+            <el-button
+              :loading="isButtonLoading"
+              type="primary"
+              @click="onSubmit()"
+              style="width:100%;margin-bottom:15px;height:50px;"
+            >
+              {{ $t('submit') }}
+            </el-button>
           </el-col>
         </el-row>
-        <el-form-item :label="$t('remark')" style="margin: 20px auto;" prop="remark">
-          <el-input
-            type="textarea"
-            :maxlength="30"
-            :placeholder="$t('TheFieldmaynotbegreaterthan30characters')"
-            v-model="form.remark"
-          >
-          </el-input>
-        </el-form-item>
-        <!-- 提交按钮 -->
-        <el-form-item>
-          <el-row :gutter="20" type="flex" justify="end">
-            <el-col :span="2" :sm="4" :lg="2">
-              <el-button @click="onCancel()">取消</el-button>
-              <el-button
-                :loading="isButtonLoading"
-                type="primary"
-                @click="onSubmit()"
-                style="float:right"
-              >
-                {{ $t('submit') }}
-              </el-button>
-            </el-col>
-          </el-row>
-        </el-form-item>
       </el-form>
     </mdoel-form>
   </div>
@@ -135,7 +142,9 @@ export default {
         receiver_id: 0, // 收件人 id
         pay_type: '',
         pay_status: 0,
-        sub_pay: 0
+        sub_pay: 0,
+        sub_total: 0,
+        sub_qty: 0
       },
       outboundTypes: [], // 出库单分类
       AddressType: 0, // 修改
@@ -155,6 +164,10 @@ export default {
     this.getOrderTypes(); // 获取出库单分类
   },
   methods: {
+    handleTotal(v) {
+      this.form.sub_total = v.total;
+      this.form.sub_qty = v.qty;
+    },
     handleGoodsData(goodsList) {
       this.selectedSpec = goodsList;
     },

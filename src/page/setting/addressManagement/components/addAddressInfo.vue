@@ -1,11 +1,9 @@
 <template>
-  <el-dialog
+  <el-drawer
     :title="title"
-    :center="true"
-    @update:visible="$emit('update:visible', $event)"
     :visible="visible"
-    @closed="onClosedDialog"
-    width="60%"
+    :direction="direction"
+    :before-close="onClosedDialog"
   >
     <el-row :class="$style.add_warehouse_main">
       <!-- 添加信息 -->
@@ -86,7 +84,7 @@
         </el-form>
       </el-col>
     </el-row>
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script>
@@ -308,7 +306,9 @@ export default {
     }
   },
   methods: {
-    onClosedDialog() {
+    onClosedDialog(done) {
+      done();
+      this.visible = false;
       this.$nextTick(() => {
         this.$refs.addressForm.resetFields();
       });
