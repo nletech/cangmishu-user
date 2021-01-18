@@ -396,7 +396,7 @@ export default {
       currentPage: 1, // 当前页
       id: 0,
       outboundDialogVisible: false, // 出库单详情弹框
-      params: {
+      query: {
         page: 1,
         warehouse_id: '',
         keywords: '',
@@ -405,6 +405,11 @@ export default {
         delivery_date: null,
         status: null,
         not_show_cancel: null,
+        total: 0,
+        currentPage: 1
+      },
+      params: {
+        page: 1,
         total: 0,
         currentPage: 1
       }, // 分页数
@@ -506,7 +511,7 @@ export default {
     },
 
     handlerQueryParams(params) {
-      this.params = params;
+      this.query = params;
       this.getOutbounds();
     },
 
@@ -552,13 +557,13 @@ export default {
     },
 
     handlerChangePage(val) {
-      this.params.page = val;
+      this.query.page = val;
       this.getOutbounds();
     }, // 分页回调
     getOutbounds() {
       if (!this.warehouseId) return;
-      this.params.warehouse_id = this.warehouse_id;
-      $http.getOutbound(this.params).then(res => {
+      this.query.warehouse_id = this.warehouse_id;
+      $http.getOutbound(this.query).then(res => {
         if (res.status) return;
         this.outbound_list_data = res.data.data;
         this.params.total = res.data.total;
