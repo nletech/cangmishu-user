@@ -27,68 +27,6 @@
           </el-col>
         </el-row>
       </el-tab-pane>
-      <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
-                    <div id="iframeHtml" v-if="visible === true && activeName === 'entry'"></div>
-                    <el-row>
-                        <el-col :span="2" :offset="11">
-                            <el-button
-                                :disabled="disable"
-                                :loading="isButtonLoading"
-                                @click="handleDownload('entry')"
-                                style="background-color: #5745c5;
-                                color: #fff;">
-                                {{$t('DownloadInbound')}}
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                </el-tab-pane> -->
-      <!-- <el-tab-pane :label="$t('Inbound')" name="entry">
-                    <div id="iframeHtml" v-if="visible === true && activeName === 'entry'"></div>
-                    <el-row>
-                        <el-col :span="2" :offset="11">
-                            <el-button
-                                :disabled="disable"
-                                :loading="isButtonLoading"
-                                @click="handleDownload('entry')"
-                                style="background-color: #5745c5;
-                                color: #fff;">
-                                {{$t('DownloadInbound')}}
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                </el-tab-pane>
-                <el-tab-pane :label="$t('PurchaseOrder')" name="purchase">
-                    <div id="iframeHtml" v-if="visible === true && activeName === 'purchase'"></div>
-                    <el-row>
-                        <el-col :span="2" :offset="11">
-                            <el-button
-                                :loading="isButtonLoading"
-                                :disabled="disable"
-                                @click="handleDownload('purchase')"
-                                style="background-color: #5745c5;
-                                color: #fff;">
-                                {{$t('DownloadPurchaseOrder')}}
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                </el-tab-pane>
-                <el-tab-pane :label="$t('Inboundbatchnumber')" name="batchno">
-                    <div id="iframeHtml" v-if="visible === true && activeName === 'batchno'"></div>
-                    <el-row>
-                        <el-col :span="2" :offset="11">
-                            <el-tooltip :content="$t('printTips')" placement="top">
-                                  <el-button
-                                      :disabled="disable"
-                                      :loading="isButtonLoading"
-                                      @click="handleDownload('batchno')"
-                                      style="background-color: #5745c5;
-                                      color: #fff;">
-                                      {{$t('DondownLoadInboundbatchnumber')}}
-                                  </el-button>
-                            </el-tooltip>
-                        </el-col>
-                    </el-row>
-                </el-tab-pane> -->
     </el-tabs>
   </el-dialog>
 </template>
@@ -136,6 +74,9 @@ export default {
     api() {
       return this.$store.state.token.token.substring(7);
     }
+  },
+  created() {
+    this.getList('entry');
   },
   watch: {
     warehouseId() {

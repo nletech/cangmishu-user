@@ -120,6 +120,7 @@ export default {
   mixins: [mixin],
   data() {
     return {
+      btnFilterSearch: {},
       isFilterOpen: false,
       dateValue: {
         beginTime: null,

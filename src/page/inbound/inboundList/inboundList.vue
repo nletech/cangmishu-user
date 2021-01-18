@@ -224,14 +224,20 @@ export default {
         name: 'inboundShelf',
         query: {
           warehouse_id: this.warehouse_id, // 仓库 id
-          batch_id // 入库单 id
+          batch_id: batch_id // 入库单 id
         }
       });
     }, // 入库上架
 
-    viewDetails(row) {
-      this.inboundDialogVisible = true;
-      this.id = row.id;
+    viewDetails(info) {
+      const batch_id = info.id;
+      this.$router.push({
+        name: 'inboundDetail',
+        query: {
+          warehouse_id: this.warehouse_id, // 仓库 id
+          batch_id: batch_id // 入库单 id
+        }
+      });
     }, // 入库单详情弹框
 
     inboundDelete(id) {

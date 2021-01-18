@@ -24,7 +24,7 @@ const InboundList = loadOnDemand('inbound/inboundList/inboundList'); // 入库�
 const InboundCategory = loadOnDemand('inbound/inboundCategory/inboundCategory'); // 入库单分类
 const AddInbound = loadOnDemand('inbound/addInbound/addInbound'); // 添加入库单
 const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf'); // 入库上架
-
+const InboundDetail = loadOnDemand('inbound/inboundList/inboundDetail'); // 入库详细
 // 销售
 const SaleList = loadOnDemand('sale/saleList/saleList'); // 销售单列表
 const SaleDetail = loadOnDemand('sale/saleList/saleDetail'); // 销售单详细
@@ -276,6 +276,12 @@ export const routerMap = [
             name: 'inboundList', // 子菜单-入库单列表
             path: 'inboundList',
             component: InboundList,
+            nav: 2
+          },
+          {
+            name: 'inboundDetail', // 子菜单-入库单列表
+            path: 'inboundDetail',
+            component: InboundDetail,
             nav: 2
           },
           {
