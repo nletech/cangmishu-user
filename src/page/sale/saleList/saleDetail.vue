@@ -330,6 +330,23 @@
         </el-form-item>
       </el-form>
     </model-form>
+    <br />
+    <div style="padding:10px;">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          操作记录
+        </div>
+        <el-timeline :reverse="reverse">
+          <el-timeline-item
+            v-for="(activity, index) in logList"
+            :key="index"
+            :timestamp="activity.created_at"
+          >
+            {{ activity.status_name }}
+          </el-timeline-item>
+        </el-timeline>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -361,6 +378,7 @@ export default {
   mixins: [mixin],
   data() {
     return {
+      reverse: true,
       isButtonLoading: false,
       row_data: {
         id: 0,
@@ -397,6 +415,7 @@ export default {
         express_num: '', // 快递单号
         shop_remark: '' // 备注
       },
+      logList: {}
     };
   },
   mounted() {
@@ -404,6 +423,7 @@ export default {
     this.getExpressList();
     this.getPayStatus();
     this.getPayTypes();
+    this.getOrderLogs();
   },
   methods: {
     getPayStatus() {
@@ -422,6 +442,12 @@ export default {
         this.expressList = res.data;
       });
     },
+    getOrderLogs() {
+      $http.getOrderLogs(this.$route.query.order_id).then(res => {
+        if (res.status) return;
+        this.logList = res.data;
+      });
+    },//订单日志
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];

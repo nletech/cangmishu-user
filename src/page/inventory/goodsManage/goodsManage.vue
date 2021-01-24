@@ -375,11 +375,7 @@ export default {
     },
 
     setGoodsType() {
-      this.centerDialogVisible = true;
-    },
-
-    importGoods() {
-      this.importVisible = true;
+      this.centerDialogVisible = false;
     },
     viewCommodity(id) {
       this.$router.push({

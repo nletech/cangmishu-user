@@ -1,39 +1,82 @@
 <template>
   <div class="clearfix">
-    <el-dialog title="导入商品" direction="rtl" :visible.sync="dialogVisible">
-      <el-row>
-        <el-col :span="6" :offset="8">
-          <el-upload
-            :action="goodsapi"
-            :data="uploadData"
-            :on-success="handleSuccess"
-            :headers="Authorization"
-            name="file"
-            :show-file-list="false"
-          >
+    <el-drawer title="导入商品" :visible.sync="dialogVisible" direction="rtl">
+      <div style="padding:20px;">
+        <el-steps :active="importStep">
+          <el-step title="下载模板"></el-step>
+          <el-step title="上传文件"></el-step>
+          <el-step title="导入完成"></el-step>
+        </el-steps>
+        <div v-if="importStep == 1">
+          <el-card shadow="hover" style="line-height:35px;margin-top:20px;">
+            <b>通用模板</b><br />
+            适用绝大多数行业 <br />
             <el-button
-              size="medium"
-              style="width: 180px; margin: 0 0 10px 0;"
+              size="mini"
+              type="text"
+              round
+              icon="el-icon-download"
               @click="downloadTemplate"
             >
               {{ $t('downloadtemplate') }}
             </el-button>
-          </el-upload>
-          <el-upload
-            :action="goodsapi"
-            :data="uploadData"
-            :on-success="handleSuccess"
-            :headers="Authorization"
-            name="file"
-            :show-file-list="false"
-          >
-            <el-button slot="trigger" style="width: 180px;" size="medium">
-              {{ $t('importproductlist') }}
+          </el-card>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <div style="clear:both; float:right">
+            <el-button
+              size="mini"
+              type="primary"
+              style="width: 180px; margin: 0 0 10px 0;"
+              @click="uploadNext()"
+            >
+              下一步
             </el-button>
-          </el-upload>
-        </el-col>
-      </el-row>
-    </el-dialog>
+          </div>
+          <br />
+          <div style="clear:both;"></div>
+          <div style="font-size:12px; clear:both; text-align:right;">
+            单个模板最多支持录入500条商品数据，超过请填写多个模板分次上传
+          </div>
+        </div>
+        <el-row v-if="importStep == 2">
+          <div style="padding:10px; margin-top:20px;">
+            <el-upload
+              class="upload-demo"
+              drag
+              :action="goodsapi"
+              :data="uploadData"
+              :on-success="handleSuccess"
+              :headers="Authorization"
+              name="file"
+              :show-file-list="false"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">点击或将文件拖拽到这里上传<em>点击上传</em></div>
+              <div class="el-upload__tip" slot="tip">只能上传xlsx文件，且不超过500kb</div>
+            </el-upload>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <div style="clear:both;">
+              <el-button
+                size="mini"
+                style="width: 180px; margin: 0 0 10px 0;"
+                @click="uploadPrev()"
+              >
+                上一步
+              </el-button>
+            </div>
+          </div>
+        </el-row>
+      </div>
+    </el-drawer>
+
     <!-- 添加货品 -->
     <el-card shadow="never" class="oper-btn-card">
       <div class="clearfix">
@@ -152,6 +195,7 @@ export default {
   data() {
     return {
       uploadData: {},
+      importStep: 1,
       btnFilterSearch: {},
       isFilterOpen: false,
       isDisabled: false,
@@ -196,6 +240,12 @@ export default {
     } // 商品规格导入
   },
   methods: {
+    uploadPrev() {
+      this.importStep = 1;
+    },
+    uploadNext() {
+      this.importStep = 2;
+    },
     loadData() {
       // 货品分类列表
       if (!this.warehouseId) return;

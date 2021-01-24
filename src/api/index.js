@@ -377,6 +377,9 @@ const $http = {
   checkOrderType(data) {
     return Axios.get('/orderType', { params: data });
   }, // 分页查询--出库单分类
+  getOrderLogs(id) {
+    return Axios.get(`/order/${id}/logs`);
+  }, // 得到订单日志记录
   // 辅助功能
   getUserProfile() {
     return Axios.get(`user/profile`);
