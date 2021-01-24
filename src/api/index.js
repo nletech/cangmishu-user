@@ -115,6 +115,9 @@ const $http = {
   editProducts(id, data) {
     return Axios.put(`/products/${id}`, data);
   }, // 编辑货品
+  logsProducts(id, data) {
+    return Axios.get(`/product/${id}/logs`, data);
+  }, // 编辑货品
   deleteProducts(id) {
     return Axios.delete(`/products/${id}`);
   }, // 删除货品

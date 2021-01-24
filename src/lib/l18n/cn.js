@@ -351,6 +351,7 @@ const cn = {
   addCargoProperty: '添加仓库特性',
   editCargoProperty: '编辑仓库特性',
   goodsEdit: '编辑商品',
+  goodsDetail: '商品详细',
   goodsAlarm: '预警管理',
   pickGoodsConfig: '拣货配置',
   shopConfig: '店铺配置',

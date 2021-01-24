@@ -69,6 +69,11 @@
                 :label="$t('inventory')"
               >
               </el-table-column>
+              <el-table-column align="center" header-align="center" label="操作">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="showStockDetail(scope.row.id)">详细</el-button>
+                </template>
+              </el-table-column>
             </el-table>
           </template>
         </el-table-column>
@@ -134,8 +139,23 @@
           </template>
         </el-table-column>
         <!-- 操作 -->
-        <el-table-column border :label="$t('operation')" header-align="center">
+        <el-table-column
+          border
+          :label="$t('operation')"
+          width="180"
+          header-align="center"
+          fixed="right"
+        >
           <template slot-scope="scope">
+            <el-tooltip content="详细" placement="top">
+              <el-button
+                :loading="isButtonLoading"
+                size="mini"
+                icon="el-icon-view"
+                @click="viewCommodity(scope.row.id)"
+              >
+              </el-button>
+            </el-tooltip>
             <el-tooltip :content="$t('edit')" placement="top">
               <el-button
                 :loading="isButtonLoading"
@@ -265,6 +285,14 @@ export default {
     }
   },
   methods: {
+    showStockDetail(id) {
+      this.$router.push({
+        name: 'inventoryDetail',
+        query: {
+          id: id
+        }
+      });
+    }, // 规格库存详细
     handlerQueryParams(params) {
       this.query = params;
       this.getList(this.query);
@@ -353,7 +381,14 @@ export default {
     importGoods() {
       this.importVisible = true;
     },
-
+    viewCommodity(id) {
+      this.$router.push({
+        name: 'goodsDetail',
+        query: {
+          id: id
+        }
+      });
+    },
     editCommodity(idVal, wID) {
       this.$router.push({
         name: 'goodsEdit',

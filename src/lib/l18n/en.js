@@ -30,6 +30,7 @@ const en = {
   help: 'Help',
   helpCenter: 'Help Center',
   goodsAdd: 'Add product',
+  goodsDetail: 'Product Detail',
   addInbound: 'Add inbound',
   addSaleList: 'Add outbound',
   inventoryManage: 'Inventory',

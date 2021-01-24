@@ -49,6 +49,7 @@ const InventoryOverview = loadOnDemand('inventory/inventoryOverview/inventoryOve
 const GoodsManage = loadOnDemand('inventory/goodsManage/goodsManage'); // 货品管理
 const GoodsAdd = loadOnDemand('inventory/goodsManage/components/goodsAdd'); // 商品新增
 const GoodsEdit = loadOnDemand('inventory/goodsManage/components/goodsEdit'); // 商品编辑
+const GoodsDetail = loadOnDemand('inventory/goodsManage/components/goodsDetail'); // 商品详细
 // 员工管理
 // 员工列表
 // const StaffList = loadOnDemand('staffManage/staffList/staffList'); // 员工列表
@@ -221,6 +222,12 @@ export const routerMap = [
             name: 'goodsEdit', // 模块  // 模块 货品管理--编辑货品
             path: 'goodsManage/goodsEdit',
             component: GoodsEdit,
+            nav: 3
+          },
+          {
+            name: 'goodsDetail', // 模块  // 模块 货品管理--货品详细
+            path: 'goodsManage/goodsDetail',
+            component: GoodsDetail,
             nav: 3
           },
           {
