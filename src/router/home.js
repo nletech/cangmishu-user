@@ -37,6 +37,8 @@ const SaleOverview = loadOnDemand('sale/saleOverview/saleOverview'); // 销售�
 
 // 库存
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage'); // 库存管理
+const InventoryDetail = loadOnDemand('inventory/inventoryManage/inventoryDetail'); // 库存详细
+
 const InventoryAlarm = loadOnDemand('inventory/inventoryAlarm/inventoryAlarm'); // 库存报警
 const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking'); // 库存盘点 (新模块)
 const AddCheckStock = loadOnDemand('inventory/stockTaking/components/addCheckStock'); // 库存盘点 (新模块)
@@ -250,6 +252,12 @@ export const routerMap = [
             nav: 2
           },
           {
+            name: 'inventoryDetail', // 子菜单-库存详细
+            path: 'inventoryDetail',
+            component: InventoryDetail,
+            nav: 3
+          },
+          {
             name: 'stockTaking', // 子菜单-库存盘点
             path: 'stockTaking',
             component: StockTaking,
@@ -279,10 +287,10 @@ export const routerMap = [
             nav: 2
           },
           {
-            name: 'inboundDetail', // 子菜单-入库单列表
+            name: 'inboundDetail', // 子菜单-入库单详细
             path: 'inboundDetail',
             component: InboundDetail,
-            nav: 2
+            nav: 3
           },
           {
             name: 'inboundCategory', // 子菜单-入库单分类

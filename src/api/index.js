@@ -141,6 +141,9 @@ const $http = {
     return Axios.put(`/stock/${id}`, data);
   },
   //                                               库存管理
+  getSpecStocks(id, data) {
+    return Axios.get(`/spec/${id}/stocks`, { params: data });
+  }, // 获取库存列表
   getStocks(data) {
     return Axios.get('/stock', { params: data });
   }, // 获取库存列表

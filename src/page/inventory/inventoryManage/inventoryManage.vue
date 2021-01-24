@@ -135,14 +135,6 @@
         </el-col>
       </el-row>
     </div>
-    <!-- 出入库详情弹框 -->
-    <inventory-detail
-      :visible.sync="inventoryDialogVisible"
-      :rowInfo="rowInfo"
-      :warehouseName="warehouseName"
-      :id="id"
-    >
-    </inventory-detail>
     <!-- SKU详情 弹窗 -->
     <SkuDetails
       :visible.sync="skuDetalisSwitch"
@@ -159,14 +151,12 @@
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
-import inventoryDetail from './components/inventory_detail';
 import SkuDetails from './components/sku_Details';
 import search from './components/search';
 
 export default {
   mixins: [mixin],
   components: {
-    inventoryDetail,
     SkuDetails,
     paginationPublic,
     search
@@ -240,9 +230,12 @@ export default {
       this.rowInfo = row;
     }, // sku 的详情
     viewDetails(row) {
-      this.inventoryDialogVisible = true;
-      this.id = row.id;
-      this.rowInfo = row;
+      this.$router.push({
+        name: 'inventoryDetail',
+        query: {
+          id: row.id
+        }
+      });
     } // 入库单详情弹框
   }
 };

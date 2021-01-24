@@ -37,6 +37,8 @@ const cn = {
   Pleaseenterrackcode: '请输入货区编号',
   Themailhasbeensent: '邮件已发送，请查收',
   inventoryManage: '库存管理',
+  inventoryDetail: '库存详细',
+  inventoryView: '库存详细',
   storeManage: '仓库管理',
   shopsManagement: '店铺管理',
   shopAdd: '新增店铺',

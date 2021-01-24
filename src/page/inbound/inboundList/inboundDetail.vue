@@ -2,7 +2,7 @@
   <div>
     <detail-dialog
       :visible.sync="inboundDialogVisible"
-      v-if="batch_id > 0"
+      v-if="inboundInfo"
       :id.sync="batch_id"
     ></detail-dialog>
     <model-form :colValue="24" v-if="inboundInfo">

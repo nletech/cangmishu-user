@@ -60,7 +60,7 @@
               >
               </el-table-column>
               <el-table-column
-                :label="$t('Rack ')"
+                :label="$t('Rack')"
                 prop="location_code"
                 header-align="center"
                 align="center"

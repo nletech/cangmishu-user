@@ -33,6 +33,7 @@ const en = {
   addInbound: 'Add inbound',
   addSaleList: 'Add outbound',
   inventoryManage: 'Inventory',
+  inventoryDetail: 'Detail',
   storeManage: 'Warehouse',
   imagePreview: 'Preview',
   nomorethan3: ' Maximum 3 pictures,suggested size 400*400',
