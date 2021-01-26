@@ -38,6 +38,7 @@ const cn = {
   Themailhasbeensent: '邮件已发送，请查收',
   inventoryManage: '库存管理',
   inventoryDetail: '库存详细',
+  locationStock: '货位库存',
   inventoryView: '库存详细',
   storeManage: '仓库管理',
   shopsManagement: '店铺管理',

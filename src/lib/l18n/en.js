@@ -34,6 +34,7 @@ const en = {
   addInbound: 'Add inbound',
   addSaleList: 'Add outbound',
   inventoryManage: 'Inventory',
+  locationStock: 'Location Inventory',
   inventoryDetail: 'Detail',
   storeManage: 'Warehouse',
   imagePreview: 'Preview',

@@ -1,64 +1,11 @@
 <template>
   <div v-if="dataInfo">
     <!--盘点库存-->
-    <el-drawer title="库存盘点" :visible.sync="recount.drawer" direction="rtl" size="50%">
-      <div style="padding:20px" v-if="recount">
-        <div class="demo-drawer__content">
-          <el-form>
-            <el-form-item>
-              <el-table :data="recount.dataList" border style="width:100%">
-                <el-table-column label="#" type="index" header-align="center" align="center">
-                </el-table-column>
-                <el-table-column
-                  :label="$t('Inboundbatchnumber')"
-                  prop="stock_sku"
-                  header-align="center"
-                  align="center"
-                >
-                </el-table-column>
-                <el-table-column
-                  :label="$t('Rack')"
-                  prop="location_code"
-                  header-align="center"
-                  align="center"
-                >
-                </el-table-column>
-                <el-table-column
-                  :label="$t('Originalstock')"
-                  prop="shelf_num_orgin"
-                  header-align="center"
-                  align="center"
-                >
-                </el-table-column>
-                <el-table-column :label="$t('InventoryCount')" header-align="center" align="center">
-                  <template slot-scope="scope">
-                    <el-input-number
-                      size="mini"
-                      :min="0"
-                      :max="10000000"
-                      :step="1"
-                      v-if="scope.row"
-                      v-model="scope.row.num"
-                    >
-                    </el-input-number>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-form-item>
-            <el-form-item :label="$t('remark')">
-              <el-input type="textarea" v-model="recount.remark" maxlength="500" show-word-limit>
-              </el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="demo-drawer__footer" style="float:right">
-          <el-button @click="cancelForm">取 消</el-button>
-          <el-button type="primary" :loading="recount.loading" @click="sumbitRecount">{{
-            recount.loading ? '提交中 ...' : '确 定'
-          }}</el-button>
-        </div>
-      </div>
-    </el-drawer>
+    <recount-drawer
+      :dataList="recountDataList"
+      @success="refreshLocationStockData()"
+    ></recount-drawer>
+    <move-location :dataList="moveDataList" @success="refreshAllData()"></move-location>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <h2 align="center" style="margin:0px;">
@@ -173,14 +120,10 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column align="center" header-align="center" width="150" label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="showStockDetail(scope.row)">移动</el-button>
-          </template>
-        </el-table-column>
       </el-table>
       <div style="margin-top: 20px">
         <el-button @click="handlerRecount()">盘点库存</el-button>
+        <el-button @click="handlerMove()">移动货位</el-button>
       </div>
     </el-card>
     <br />
@@ -247,23 +190,23 @@
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
+import recountDrawer from '@/components/recount/index';
+import moveLocation from '@/components/move-location/index';
 
 export default {
   mixins: [mixin],
   components: {
-    paginationPublic
+    paginationPublic,
+    recountDrawer,
+    moveLocation
   },
   data() {
     return {
       dataInfo: {
         stocks: []
       },
-      recount: {
-        drawer: false,
-        dataList: [],
-        loading: false,
-        remark: ''
-      },
+      recountDataList: [],
+      moveDataList: [],
       logs: {
         dataList: [],
         params: {}
@@ -293,58 +236,26 @@ export default {
     this.loadLogs();
   },
   methods: {
+    refreshAllData() {
+      this.$message({
+        type: 'success',
+        message: '操作成功'
+      });
+      this.loadData();
+      this.loadLogs();
+    },
     onTableSelect(rows, row) {
       // let selected = rows.length && rows.indexOf(row) !== -1;
       console.log(row);
     },
-    cancelForm() {
-      this.recount.dataList = [];
-      this.recount.drawer = false;
-    }, // 取消盘点
-    sumbitRecount() {
-      this.recount.loading = true;
-      let flag = false;
-      for (let i = 0; i < this.recount.dataList.length; i += 1) {
-        if (`${this.recount.dataList[i].num}` === 'undefined') {
-          flag = true;
-        }
-      }
-      if (flag) {
-        this.$message({
-          type: 'error',
-          message: '盘点数量必填'
+    refreshLocationStockData() {
+      this.loadData();
+      this.$confirm('盘点成功, 是否查看库存盘点记录列表').then(() => {
+        this.$router.replace({
+          name: 'stockTaking'
         });
-        return;
-      }
-      const stockArr = [];
-      for (let i = 0; i < this.recount.dataList.length; i += 1) {
-        const obj = Object.create(null);
-        obj.id = this.recount.dataList[i].id;
-        obj.num = this.recount.dataList[i].num;
-        stockArr.push(obj);
-      }
-      const data = {
-        remark: this.recount.remark,
-        stock: stockArr
-      };
-      $http
-        .addCheckStock(data)
-        .then(res => {
-          if (res.status) return;
-          this.loadData();
-          this.loadLogs();
-          this.recount.loading = false;
-          this.recount.drawer = false;
-          this.$confirm('盘点成功, 是否查看库存盘点记录列表').then(() => {
-            this.$router.replace({
-              name: 'stockTaking'
-            });
-          });
-        })
-        .catch(() => {
-          this.recount.loading = false;
-        });
-    }, //提匀盘点
+      });
+    },
     handlerRecount() {
       console.log(this.$refs.stocksTable.selection.length);
       if (this.$refs.stocksTable.selection.length === 0) {
@@ -354,10 +265,10 @@ export default {
         });
         return;
       }
-      this.recount.dataList = [];
+      let recountDataList = [];
       this.$refs.stocksTable.selection.forEach(row => {
         row.locations.forEach(location => {
-          this.recount.dataList.push({
+          recountDataList.push({
             id: location.id,
             stock_sku: location.sku,
             shelf_num_orgin: location.shelf_num,
@@ -366,8 +277,30 @@ export default {
           });
         });
       });
-
-      this.recount.drawer = true;
+      this.recountDataList = recountDataList;
+    },
+    handlerMove() {
+      console.log(this.$refs.stocksTable.selection.length);
+      if (this.$refs.stocksTable.selection.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请选中一行数据！'
+        });
+        return;
+      }
+      let moveDataList = [];
+      this.$refs.stocksTable.selection.forEach(row => {
+        row.locations.forEach(location => {
+          moveDataList.push({
+            id: location.id,
+            stock_sku: location.sku,
+            shelf_num_orgin: location.shelf_num,
+            num: location.shelf_num,
+            location_code: location.warehouse_location_code
+          });
+        });
+      });
+      this.moveDataList = moveDataList;
     },
     handlerQueryParams(params) {
       this.query = params;
