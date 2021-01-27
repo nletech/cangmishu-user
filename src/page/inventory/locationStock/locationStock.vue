@@ -38,7 +38,7 @@
           <div slot="header" class="clearfix">
             <span> {{ tableTitle }} </span>
           </div>
-          <!-- <search @queryParams="handlerQueryParams"></search> -->
+          <search @queryParams="handlerQueryParams"></search>
           <el-table :data="tableData" style="width: 100%" ref="stocksTable">
             <el-table-column type="selection" width="85"> </el-table-column>
             <el-table-column prop="location_code" label="货区"
@@ -48,7 +48,7 @@
             >
             <el-table-column prop="location_code" label="货位"> </el-table-column>
             <el-table-column prop="name_cn" label="商品规格及名称"> </el-table-column>
-            <el-table-column prop="relevance_code" label="外部编码"> </el-table-column>
+            <el-table-column prop="relevance_code" label="SKU"> </el-table-column>
             <el-table-column prop="stock_sku" label="入库批次号"> </el-table-column>
             <el-table-column label="当前库存"
               ><template slot-scope="scope">
@@ -64,14 +64,22 @@
               </template>
             </el-table-column>
           </el-table>
-          <div style="margin-top: 20px">
-            <el-button @click="handlerRecount()">盘点库存</el-button>
-            <el-button @click="handlerMove()">移动货位</el-button>
-          </div>
+          <br />
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-button @click="handlerRecount()">盘点库存</el-button>
+              <el-button @click="handlerMove()">移动货位</el-button>
+            </el-col>
+            <el-col :span="12">
+              <div class="fr">
+                <pagination-public :params="params" @changePage="handlerChangePage">
+                </pagination-public>
+              </div>
+            </el-col>
+          </el-row>
         </el-card>
       </el-col>
     </el-row>
-    <pagination-public :params="params" @changePage="handlerChangePage"> </pagination-public>
   </div>
 </template>
 <script>
@@ -79,14 +87,14 @@ import $http from '@/api';
 import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
 import recountDrawer from '@/components/recount/index';
-// import search from './components/search';
+import search from './components/search';
 import moveLocation from '@/components/move-location/index';
 
 export default {
   mixins: [mixin],
   components: {
     paginationPublic,
-    // search,
+    search,
     recountDrawer,
     moveLocation
   },
@@ -138,11 +146,11 @@ export default {
     },
     handlerQueryParams(params) {
       this.query = params;
-      // this.getStocks(this.query);
+      this.loadLocationStockData();
     },
     handlerChangePage(val) {
       this.query.page = val;
-      this.loadData();
+      this.loadLocationStockData();
     },
     gotoAreaMange() {
       this.$router.push({
@@ -153,7 +161,7 @@ export default {
       });
     },
     loadData() {
-      $http.getAreaStockData(this.query).then(res => {
+      $http.getAreaStockData().then(res => {
         if (res.status) return;
         this.locationAreaList = res.data;
         res.data.forEach(area => {
@@ -181,9 +189,13 @@ export default {
     loadLocationStockData(id, title = '全部') {
       this.tableTitle = title;
       this.locationId = id;
-      $http.getLocationStockData({ id: id }).then(res => {
+      let query = this.query;
+      query.id = id;
+      $http.getLocationStockData(query).then(res => {
         if (res.status) return;
         this.tableData = res.data.data;
+        this.params.total = res.data.total;
+        this.params.currentPage = res.data.current_page;
       });
     }
   },
@@ -201,7 +213,9 @@ export default {
       locationId: 0,
       recountDataList: [],
       moveDataList: [],
-      query: {}
+      query: {
+        id: 0
+      }
     };
   }
 };

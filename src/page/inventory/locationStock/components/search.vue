@@ -14,16 +14,14 @@
             v-model="keywords"
             clearable
             style="width: 360px"
-            placeholder="按商品条码、SKU"
+            placeholder="按商品条码、规格SKU"
             size="small"
           />
           <el-button type="primary" @click="handlerChange" size="small" style="margin-left:10px;">
             搜索
           </el-button>
           <el-checkbox
-            v-model="show_low_stock"
-            true-label="1"
-            false-label="0"
+            v-model="not_show_zero_stock"
             border
             type="text"
             size="small"
@@ -35,17 +33,10 @@
         </div>
       </el-form-item>
     </el-form>
-    <div class="fr">
-      <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
-        导出商品库存
-      </el-button>
-    </div>
   </div>
 </template>
 
 <script>
-import baseApi from '@/lib/axios/base_api';
-
 export default {
   name: 'search',
   components: {},
@@ -54,7 +45,7 @@ export default {
       btnFilterSearch: {},
       isDisabled: false,
       keywords: '',
-      show_low_stock: 0,
+      not_show_zero_stock: true,
       dialogVisible: false,
       export_data: []
     };
@@ -91,50 +82,10 @@ export default {
     },
     handlerChange() {
       const query = {
-        warehouse_id: this.warehouseId,
         keywords: this.keywords,
-        show_low_stock: this.show_low_stock
+        not_show_zero_stock: this.not_show_zero_stock ? 1 : 0
       };
       this.$emit('queryParams', query);
-    },
-    handlerExportOrder() {
-      this.dialogVisible = true;
-    },
-    processExportOrder() {
-      if (!this.warehouseId) return;
-      // eslint-disable-next-line
-      const exportParams = `&barcode=${this.keywords}`;
-      if (this.export_data.length === 0) {
-        this.$message({
-          type: 'warning',
-          message: '请选择导出方式'
-        });
-        return;
-      }
-      if (this.export_data.length === 2) {
-        // 同时导出两个
-        // 导出 SKU 列表
-        window.open(
-          `${baseApi.BASE_URL}export/sku?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-        // 导出 货品库列表
-        window.open(
-          `${baseApi.BASE_URL}export/stock?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-      } else if (this.export_data[0] === '1') {
-        // 单独导出货品列表
-        window.open(
-          `${baseApi.BASE_URL}export/stock?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-      } else {
-        window.open(
-          `${baseApi.BASE_URL}export/sku?warehouse_id=${
-            // 单独导出 sku
-            this.warehouseId
-          }&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-      }
-      this.dialogVisible = false;
     }
   }
 };

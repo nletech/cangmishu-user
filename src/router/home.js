@@ -132,6 +132,12 @@ export const routerMap = [
             path: ''
           },
           {
+            name: 'saleOverview', // 子菜单-销售单概览
+            path: 'saleOverview',
+            component: SaleOverview,
+            nav: 2
+          },
+          {
             name: 'saleList', // 子菜单-销售列表
             path: 'saleList',
             component: SaleList,
@@ -171,12 +177,6 @@ export const routerMap = [
             name: 'saleCategory', // 子菜单-销售单分类
             path: 'saleCategory',
             component: SaleCategory,
-            nav: 2
-          },
-          {
-            name: 'saleOverview', // 子菜单-销售单分类
-            path: 'saleOverview',
-            component: SaleOverview,
             nav: 2
           },
           {
@@ -253,9 +253,21 @@ export const routerMap = [
             type: 'children-group'
           },
           {
+            name: 'inventoryOverview', // 子菜单-库存概览
+            path: 'inventoryOverview',
+            component: InventoryOverview,
+            nav: 2
+          },
+          {
             name: 'inventoryManage', // 子菜单-库存管理
             path: 'inventoryManage',
             component: InventoryManage,
+            nav: 2
+          },
+          {
+            name: 'locationStock', // 子菜单-货位库存
+            path: 'locationStock',
+            component: LocationStock,
             nav: 2
           },
           {
@@ -274,18 +286,6 @@ export const routerMap = [
             name: 'inventoryAlarm', // 子菜单-库存报警
             path: 'inventoryAlarm',
             component: InventoryAlarm,
-            nav: 2
-          },
-          {
-            name: 'inventoryOverview', // 子菜单-库存概览
-            path: 'inventoryOverview',
-            component: InventoryOverview,
-            nav: 2
-          },
-          {
-            name: 'locationStock', // 子菜单-货位库存
-            path: 'locationStock',
-            component: LocationStock,
             nav: 2
           },
           {
