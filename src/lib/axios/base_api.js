@@ -18,7 +18,7 @@ switch (baseUrl) {
     break;
   case 'localhost':
     baseApi = {
-      BASE_URL: 'https://dev-api.cangmishu.com/',
+      BASE_URL: 'https://api.cangmishu.com/',
       BASE_STATE: 'http://localhost:8081/#/'
     };
     break;

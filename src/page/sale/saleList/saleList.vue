@@ -106,7 +106,7 @@
           <el-button
             :loading="isButtonLoading"
             type="primary"
-            @click="ChangPayment(scope.row)"
+            @click="onChangPayment()"
             size="mini"
           >
             {{ $t('confirm') }}
@@ -501,7 +501,7 @@ export default {
       });
     }, // 支付类型
 
-    ChangPayment() {
+    onChangPayment() {
       if (!this.payId) return;
       $http.ChangPayment(this.payId, this.payment).then(res => {
         if (res.status) return;

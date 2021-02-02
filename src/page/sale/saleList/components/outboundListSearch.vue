@@ -74,7 +74,11 @@
           <div>
             <el-form ref="form" label-width="80px" class="form-no-bottom" size="mini">
               <el-form-item label="下单日期 :">
-                <date-range ref="date" @on-date-change="handlerDateChange" />
+                <date-range
+                  ref="date"
+                  @on-date-change="handlerDateChange"
+                  v-model="dateRangeIndex"
+                />
               </el-form-item>
               <el-divider />
               <el-form-item class="form-no-bottom" label="出库状态 :">
@@ -132,7 +136,8 @@ export default {
       planDateValue: '', // 选定的预计出库时间
       outboundStatus: '', // 选定的销售单状态
       outboundStatusList: [],
-      notShowCancel: '1'
+      notShowCancel: '1',
+      dateRangeIndex: 0
     };
   },
   created() {
@@ -172,6 +177,7 @@ export default {
       this.outboundStatus = '';
       this.planDateValue = '';
       this.keywords = '';
+      this.dateRangeIndex = 0;
       this.dateValue = {
         beginTime: null,
         endTime: null

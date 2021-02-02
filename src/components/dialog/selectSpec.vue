@@ -234,6 +234,7 @@ export default {
         return;
       }
       this.categoryId = item.id;
+      this.params.page = 1;
       this.loadSpecDataList();
     },
     loadCategoryList() {

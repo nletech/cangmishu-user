@@ -12,7 +12,7 @@
       >
     </li>
     <li>
-      <span class="font12">自定义时间 : </span>
+      <span class="font12">自定义时间 :</span>
       <el-date-picker
         v-model="customDate"
         style="width:300px;"
@@ -86,6 +86,7 @@ export default {
       };
       const method = methodsMap[index];
       if (method) {
+        this.customDate = '';
         const dateRange = method();
         this.$emit('on-date-change', dateRange);
       }

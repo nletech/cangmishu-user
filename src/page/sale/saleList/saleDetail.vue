@@ -307,7 +307,7 @@
         <hr />
         <el-row :class="$style.desc_detail">
           <el-col :span="8">
-            运输方式: {{ row_data.express_code }} <br /><br />
+            运输方式: {{ row_data.express_name }} <br /><br />
             快递单号: {{ row_data.express_num }}
           </el-col>
         </el-row>
