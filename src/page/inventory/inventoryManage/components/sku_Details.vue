@@ -1,4 +1,13 @@
 <template>
+  <!--
+  * 仓秘书免费开源WMS仓库管理系统+订货订单管理系统
+  *
+  * (c) Hunan NLE Network Technology Co., Ltd. <cangmishu.com>
+  *
+  * For the full copyright and license information, please view the LICENSE
+  * file that was distributed with this source code.
+  *
+  -->
   <el-dialog width="80%" @update:visible="$emit('update:visible', $event)" :visible="visible">
     <div :class="$style.main">
       <h1 :class="$style.details_h1">{{ rowInfo.sku }}{{ $t('StockHistory') }}</h1>

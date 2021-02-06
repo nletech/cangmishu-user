@@ -1,4 +1,13 @@
 <template>
+  <!--
+  * 仓秘书免费开源WMS仓库管理系统+订货订单管理系统
+  *
+  * (c) Hunan NLE Network Technology Co., Ltd. <cangmishu.com>
+  *
+  * For the full copyright and license information, please view the LICENSE
+  * file that was distributed with this source code.
+  *
+  -->
   <el-dialog width="80%" @update:visible="$emit('update:visible', $event)" :visible="visible">
     <h1 class="details-h1">({{ row.sku }})出入库记录</h1>
     <el-table :data="inventoryList" fit border>
