@@ -39,6 +39,7 @@
 
 ### 配置开源网址
 
+[仓秘书API端源码](https://github.com/nletech/cangmishu)    
 [仓秘书用户界面开源网址](https://github.com/nletech/cangmishu-user)     
 
 ### 相关连接
