@@ -1,213 +1,339 @@
 <template>
-          <div  class="addressManagement">
-                <div :class="$style.addressManagement">
-                      <div :class="$style.am_main">
-                        <!-- 标签页 -->
-                        <el-row>
-                          <!-- 点击按键 -->
-                          <div :class="$style.am_operation_btn">
-                              <span @click="info_add_btn">
-                                <i class="iconfont">&#xe618;</i>
-                                {{'添加供应商'}}
-                              </span>
-                          </div>
-                        <!-- 对应的标签页内容 -->
-                          <el-table   :class="$style.table_main"
-                                      :data="info_data"
-                                      border>
-                                      <el-table-column  label="#"
-                                                        header-align="center"
-                                                        align="center"
-                                                        type="index"
-                                                        width="80">
-                                      </el-table-column>
-                                      <el-table-column  label="供应商中文名"
-                                                        header-align="center"
-                                                        align="center"
-                                                        prop="name_cn">
-                                      </el-table-column>
-                                      <el-table-column  label="供应商英文名"
-                                                        header-align="center"
-                                                        align="center"
-                                                        prop="name_en">
-                                      </el-table-column>
-                                      <el-table-column  label="操作"
-                                                        header-align="center"
-                                                        width="240">
-                                                        <template   slot-scope="scope">
-                                                                    <el-button  size="mini"
-                                                                                @click="edit(scope.row)">
-                                                                                编辑
-                                                                    </el-button>
-                                                                    <el-button  size="mini"
-                                                                                type="danger"
-                                                                                @click="delete_data(scope.row)">
-                                                                                删除
-                                                                    </el-button>
-                                                        </template>
-                                      </el-table-column>
-                          </el-table>
-                          <el-pagination  :class="$style.pagination"
-                                          v-show="+total"
-                                          @current-change="handleCurrentChange"
-                                          :current-page="currentPage"
-                                          layout="total, prev, pager, next, jumper"
-                                          :total="+total">
-                          </el-pagination>
-                        </el-row>
-                      </div>
-                </div>
-                <!-- 添加供应商 -->
-                <el-dialog  :title="this.id ? '编辑供应商' : '添加供应商 '"
-                            :visible.sync="dialogVisible"
-                            width="30%">
-                            <el-form  :rules="rules"
-                                      ref="form"
-                                      :model="distributor"
-                                      label-width="140px">
-                                      <el-form-item  label="供应商中文名:"
-                                                     prop="name_cn">
-                                                     <el-input v-model="distributor.name_cn"></el-input>
-                                      </el-form-item>
-                                      <el-form-item  label="供应商英文名:"
-                                                     prop="name_en">
-                                                     <el-input v-model="distributor.name_en"></el-input>
-                                      </el-form-item>
-                            </el-form>
-                            <span   slot="footer" class="dialog-footer">
-                                    <el-button @click="dialogVisible = false">取 消</el-button>
-                                    <el-button type="primary" @click="submit_form">确 定</el-button>
-                            </span>
-                </el-dialog>
-          </div>
+  <div class="addressManagement">
+    <div class="clearfix">
+      <div class="fr">
+        <el-button size="small" type="primary" @click="onAdd">
+          {{ $t('addsupplier') }}
+        </el-button>
+      </div>
+    </div>
+    <div style="margin-top:40px;">
+      <el-row>
+        <el-table
+          element-loading-text="loading"
+          v-loading="isButtonLoading"
+          :data="dataList"
+          border
+        >
+          <el-table-column
+            label="#"
+            header-align="center"
+            align="center"
+            type="index"
+            width="60"
+            fixed="left"
+          >
+          </el-table-column>
+          <el-table-column
+            :label="$t('supplierNameCN')"
+            header-align="center"
+            align="center"
+            prop="name_cn"
+            fixed="left"
+          >
+          </el-table-column>
+          <el-table-column label="电话" header-align="center" align="center" prop="phone">
+          </el-table-column>
+          <el-table-column label="Email" header-align="center" align="center" prop="email">
+          </el-table-column>
+          <el-table-column label="城市" header-align="center" align="center" prop="city">
+          </el-table-column>
+          <el-table-column label="详细地址" header-align="center" align="center" prop="address">
+          </el-table-column>
+          <el-table-column label="创建时间" header-align="center" align="center" prop="created_at">
+          </el-table-column>
+          <el-table-column :label="$t('operation')" header-align="center" width="150" fixed="right">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="onEdit(scope.row)">
+                {{ $t('edit') }}
+              </el-button>
+              <el-button size="mini" type="danger" @click="onDelete(scope.row)">
+                {{ $t('delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          v-show="+params.total"
+          @current-change="handleCurrentChange"
+          :current-page="params.currentPage"
+          layout="total, prev, pager, next, jumper"
+          :total="+params.total"
+        >
+        </el-pagination>
+      </el-row>
+    </div>
+    <!-- 添加供应商 -->
+    <el-drawer :title="title" :visible.sync="dialogVisible" direction="rtl">
+      <div style="padding:0px 20px 0px 20px;">
+        <el-form
+          :rules="rules"
+          ref="form"
+          :model="form"
+          label-position="left"
+          label-width="240"
+          style="margin:0px;"
+        >
+          <h3>基本信息</h3>
+          <el-form-item :label="$t('supplierNameCN')">
+            <el-input v-model="form.name_cn"></el-input>
+          </el-form-item>
+          <el-form-item label="电话:">
+            <el-input v-model="form.phone"></el-input>
+          </el-form-item>
+          <el-form-item label="Email:">
+            <el-input v-model="form.email"></el-input>
+          </el-form-item>
+          <h3>扩展信息</h3>
+          <el-form-item prop="country" :label="$t('国家/地区')" size="middle">
+            <el-select
+              v-model="form.country"
+              @change="onChangeCountry"
+              placeholder="请选择国家"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in countryOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            v-if="!visibleOtherCountry"
+            prop="form.country"
+            :label="$t('SSQ')"
+            size="middle"
+          >
+            <el-cascader
+              style="width: 100%"
+              :props="cascaderProps"
+              :options="addressList"
+              v-model="form.address_picker"
+              placeholder="请选择地址"
+            >
+            </el-cascader>
+          </el-form-item>
+          <el-form-item v-if="visibleOtherCountry" prop="city" :label="$t('城市')" size="middle">
+            <el-input v-model="form.city" placeholder="请输入城市"> </el-input>
+          </el-form-item>
+          <el-form-item v-if="visibleOtherCountry" prop="street" :label="$t('街道')" size="middle">
+            <el-input v-model="form.street" placeholder="请输入街道"></el-input>
+          </el-form-item>
+          <el-form-item
+            v-if="visibleOtherCountry"
+            prop="door_no"
+            :label="$t('门牌号')"
+            size="middle"
+          >
+            <el-input v-model="form.door_no" placeholder="请输入门牌号"></el-input>
+          </el-form-item>
+          <el-form-item prop="address" :label="$t('addressDetial')" size="middle">
+            <el-input type="textarea" v-model="form.address" placeholder="请输入详细地址">
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <div class="fr" style="padding-bottom:20px;">
+          <el-button @click="dialogVisible = false">{{ $t('cancel') }}</el-button>
+          <el-button type="primary" @click="onSubmitForm">{{ $t('confirm') }}</el-button>
+        </div>
+      </div>
+    </el-drawer>
+  </div>
 </template>
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
+import Address from '@/assets/address.json';
+import Country from '@/assets/country.json';
 
 export default {
   name: 'supplierManagement',
+  mixins: [mixin],
   data() {
     return {
-      dialogVisible: false,
-      distributor: {
-        name_cn: '',
-        name_en: '',
+      countryOptions: Country,
+      addressList: Address, // 选择地址联动
+      cascaderProps: {
+        label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
+        value: 'value',
+        children: 'children'
       },
-      id: '', // 供应商的id（编辑）
+      dialogVisible: false,
+      visibleOtherCountry: false,
+      dataList: [],
+      form: {
+        id: 0,
+        name_cn: '',
+        city: '',
+        country: '中国',
+        door_no: '',
+        email: '',
+        phone: '',
+        postcode: '',
+        street: '',
+        address: '',
+        province: '',
+        district: '',
+        address_picker: []
+      },
+      query: {
+        id: 0
+      },
       rules: {
         name_cn: [
-          { required: true, message: '请输入供应商中文名', trigger: 'blur' },
-        ],
-        name_en: [
-          { required: true, message: '请输入供应商英文名', trigger: 'blur' },
-        ],
+          {
+            required: true,
+            message: this.$t('Pleaseentersuppliername'),
+            trigger: 'blur'
+          }
+        ]
       },
-      //
-      info_data: [], // 数据
-      total: '', // 列表总条数
-      currentPage: 1, // 当前页
-      current_page: 1, // 编辑的当前页(当选中的信息不在第一页时)
+      params: {
+        total: '',
+        currentPage: 1
+      }
     };
   },
   created() {
-    this.get_distributor_data();
+    this.loadData();
   },
   watch: {
     dialogVisible() {
       if (!this.dialogVisible) {
-        this.distributor.name_cn = '';
-        this.distributor.name_en = '';
-        this.id = '';
+        this.form.name_cn = '';
+        this.form.id = 0;
+        this.form.name_cn = '';
+        this.form.city = '';
+        this.form.country = '中国';
+        this.form.door_no = '';
+        this.form.email = '';
+        this.form.phone = '';
+        this.form.postcode = '';
+        this.form.street = '';
+        this.form.address = '';
+        this.form.address_picker = [];
+      }
+    }
+  },
+  computed: {
+    title() {
+      const title = this.form.id ? this.$t('edit') : this.$t('add');
+      return `${title} ${this.$t('supplier')}`;
+    }
+  },
+
+  methods: {
+    onChangeCountry(v) {
+      console.log(v);
+      if (v === '中国') {
+        this.visibleOtherCountry = false;
+      } else {
+        this.visibleOtherCountry = true;
       }
     },
-  },
-  methods: {
-    get_distributor_data() {
-      $http.getDistributor()
-        .then((res) => {
-          if (res.status) return;
-          this.info_data = res.data.data;
-          this.total = res.data.total;
-        });
+    loadData() {
+      $http.getDistributor({ warehouse_id: this.warehouseId }).then(res => {
+        if (res.status) return;
+        this.dataList = res.data.data;
+        this.params.total = res.data.total;
+      });
     },
-    submit_form() {
-      this.$refs.form.validate((validate) => {
+    onSubmitForm() {
+      this.$refs.form.validate(validate => {
         if (validate) {
-          if (+this.id) { // 编辑信息
-            $http.editDistributor(this.id, this.distributor)
-              .then((re) => {
-                if (re.status) return;
-                this.id = '';
-                this.dialogVisible = false;
-                this.handleCurrentChange(this.current_page); // 更新数据
-              });
-          } else { // 添加信息
-            $http.addDistributor(this.distributor)
-              .then((re) => {
-                if (re.status) return;
-                this.handleCurrentChange(this.current_page); // 更新数据
-              });
+          if (this.form.country === '中国') {
+            this.form.province = this.form.address_picker[0];
+            this.form.city = this.form.address_picker[1];
+            this.form.district = this.form.address_picker[2];
           }
-          this.dialogVisible = false;
+          if (this.form.id > 0) {
+            // 编辑信息
+            $http.editDistributor(this.form.id, this.form).then(re => {
+              if (re.status) return;
+              this.form.id = 0;
+              this.dialogVisible = false;
+              this.successTips(true, false);
+              this.handleCurrentChange(this.form.currentPage); // 更新数据
+            });
+          } else {
+            // 添加信息
+            $http.addDistributor(this.form).then(re => {
+              if (re.status) return;
+              this.dialogVisible = false;
+              this.successTips(false, false);
+              this.handleCurrentChange(this.form.currentPage); // 更新数据
+            });
+          }
         }
       });
     },
-    info_add_btn() {
+    onAdd() {
       this.dialogVisible = true;
     }, // 添加信息按钮
     handleCurrentChange(val) {
       // 缓存当前页
       this.current_page = val;
-      $http.checkDistributor({ page: val })
-        .then((res) => {
-          this.info_data = res.data.data;
-          this.total = res.data.total;
-          this.current_page = res.data.current_page;
+      $http
+        .checkDistributor({
+          page: val,
+          warehouse_id: this.warehouseId
+        })
+        .then(res => {
+          this.dataList = res.data.data;
+          this.params.total = res.data.total;
+          this.params.currentPage = res.data.current_page;
         });
     }, // 分页查询
-    edit(info) {
+    onEdit(info) {
       this.dialogVisible = true;
-      this.id = info.id;
-      this.distributor.name_cn = info.name_cn;
-      this.distributor.name_en = info.name_en;
+      this.form.name_cn = info.name_cn;
+      this.form.id = info.id;
+      this.form.city = info.city;
+      this.form.country = info.country;
+      this.form.door_no = info.door_no;
+      this.form.email = info.email;
+      this.form.phone = info.phone;
+      this.form.postcode = info.postcode;
+      this.form.street = info.street;
+      this.form.address = info.address;
+      this.form.province = info.province;
+      this.form.district = info.district;
+      this.form.address_picker = [this.form.province, this.form.city, this.form.district];
     },
-    delete_data(info) {
-      this.$confirm('此操作将永久删除，是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          $http.deleteDistributor(info.id)
-            .then(() => {
-              if (!status) {
-                this.$message({
-                  type: 'success',
-                  message: '操作成功!',
-                });
-                // this.get_distributor_data();
-                this.handleCurrentChange(this.current_page); // 更新数据
-              }
+    onDelete(info) {
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning'
+      }).then(() => {
+        $http.deleteDistributor(info.id).then(() => {
+          if (!status) {
+            this.$message({
+              type: 'success',
+              message: this.$t('success')
             });
+            this.handleCurrentChange(this.current_page); // 更新数据
+          }
         });
-    },
-  },
+      });
+    }
+  }
 };
 </script>
-<style lang="less" module>
-@import '../../../less/public_variable.less';
-
+<style lang="less">
 .addressManagement {
-  margin: 80px 0 10px 0;
+  .el-drawer {
+    overflow: scroll;
+  }
   .am_main {
-    width: 90%;
-    margin: 0 auto;
     position: relative;
     background-color: #fff;
     .am_operation_btn {
-      position: absolute;
-      top: -40px;
-      right: 20px;
+      float: right;
+      margin: 20px;
       z-index: 3;
       border: none;
       font-size: 1.2rem;
@@ -218,31 +344,29 @@ export default {
 }
 </style>
 <style lang="less">
-  .addressManagement {
-    .el-tabs__nav-scroll {
-      .el-tabs__nav {
-        display: flex;
-        position: relative;
-        justify-content: center;
-        align-items: center;
-        // background-color: orange;
-        float: none;
-        .el-tabs__item {
-          width: 50%;
-          text-align: center;
-          font-size: 1.2rem;
-        }
-      }
-    }
-    .el-tabs {
-      .el-tabs__content {
-        margin: 80px 0 0 0;
+.addressManagement {
+  .el-tabs__nav-scroll {
+    .el-tabs__nav {
+      display: flex;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      float: none;
+      .el-tabs__item {
+        width: 50%;
+        text-align: center;
+        font-size: 1.2rem;
       }
     }
   }
-  .el-pagination {
-    margin: 20px 0 0 0;
-    float: right;
+  .el-tabs {
+    .el-tabs__content {
+      margin: 80px 0 0 0;
+    }
   }
+}
+.el-pagination {
+  margin: 20px 0 0 0;
+  float: right;
+}
 </style>
-

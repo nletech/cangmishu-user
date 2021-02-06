@@ -3,7 +3,6 @@ export default {
     this.extendParams();
     if (!this.$route.query.type) return;
     this.params.type = this.$route.query.type;
-    console.log(this.params.type);
   },
   mounted() {
     if (this.getList) this.getList();
@@ -13,8 +12,8 @@ export default {
       params: {
         page_size: 10,
         page: 1,
-        data_count: 0,
-      },
+        data_count: 0
+      }
     };
   },
   methods: {
@@ -44,6 +43,6 @@ export default {
     handleCurrentChange(pageId) {
       this.params.page = pageId;
       this.getList();
-    },
-  },
+    }
+  }
 };

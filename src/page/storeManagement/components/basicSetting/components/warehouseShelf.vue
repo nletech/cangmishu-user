@@ -1,46 +1,62 @@
 <template>
   <div>
-    <el-table  :data="shelf_list_data"
-               border
-               style="width: 100%">
-               <el-table-column
-                 type="index"
-                 label="#">
-               </el-table-column>
-               <el-table-column  prop="code"
-                                 label="编号">
-               </el-table-column>
-               <el-table-column  prop="warehouse_area.name_cn"
-                                 label="所属货区">
-               </el-table-column>
-               <el-table-column  label="启用状态">
-                                 <template slot-scope="scope">
-                                   {{scope.row.is_enabled === 1 ? '是' : '否'}}
-                                 </template>
-               </el-table-column>
-               <el-table-column  width="260"
-                                 label="操作">
-                                 <template  slot-scope="scope">
-                                            <el-button size="mini" @click="edit(scope.row.id)">编辑</el-button>
-                                            <el-button  type="danger" @click="del(scope.row.id)" size="mini">删除</el-button>
-                                 </template>
-               </el-table-column>
+    <el-table
+      element-loading-text="loading"
+      v-loading="isButtonLoading"
+      :data="shelf_list_data"
+      border
+      style="width: 100%"
+    >
+      <el-table-column type="index" label="#"> </el-table-column>
+      <el-table-column prop="code" :label="$t('ShelfCode')"> </el-table-column>
+      <el-table-column prop="warehouse_area.name_cn" :label="$t('ShelfArea')"> </el-table-column>
+      <el-table-column :label="$t('ShelfStatus')">
+        <template slot-scope="scope">
+          {{ scope.row.is_enabled === 1 ? $t('yes') : $t('no') }}
+        </template>
+      </el-table-column>
+      <el-table-column width="260" :label="$t('operation')">
+        <template slot-scope="scope">
+          <el-tooltip :content="$t('edit')" placement="top">
+            <el-button
+              size="mini"
+              icon="el-icon-edit"
+              round
+              @click="edit(scope.row.id)"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip :content="$t('delete')" placement="top">
+            <el-button
+              size="mini"
+              icon="el-icon-delete"
+              @click="del(scope.row.id)"
+              type="danger"
+              round
+            >
+            </el-button>
+          </el-tooltip>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页组件 -->
-    <el-pagination  :class="$style.pagination"
-                    v-show="+total"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    layout="total, prev, pager, next, jumper"
-                    :total="+total">
+    <el-pagination
+      :class="$style.pagination"
+      v-show="+total"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      layout="total, prev, pager, next, jumper"
+      :total="+total"
+    >
     </el-pagination>
   </div>
 </template>
 
 <script>
 import $http from '@/api';
+import mixin from '@/mixin/form_config';
 
 export default {
+  mixins: [mixin],
   mounted() {
     if (this.show_data_flag === '货位') {
       this.get_data();
@@ -49,7 +65,7 @@ export default {
   },
   props: {
     id: [String],
-    show_data_flag: [String],
+    show_data_flag: [String]
   },
   watch: {
     show_data_flag(val) {
@@ -57,7 +73,15 @@ export default {
         this.active = true;
         this.get_data();
       }
-    },
+    }
+  },
+  computed: {
+    queryWarehouseId() {
+      if (+this.$route.query.warehouse_id) {
+        return +this.$route.query.warehouse_id;
+      }
+      return localStorage.getItem('warehouseId');
+    }
   },
   data() {
     return {
@@ -67,16 +91,17 @@ export default {
       total: '',
       currentPage: 1,
       area_list_data: [],
-      warehouse_name_cn: '',
+      warehouse_name_cn: ''
     };
   },
   methods: {
     handleCurrentChange(val) {
-      $http.checkWarehouseshelf({
-        page: val,
-        warehouse_id: this.$route.query.warehouse_id,
-      })
-        .then((res) => {
+      $http
+        .checkWarehouseshelf({
+          page: val,
+          warehouse_id: this.queryWarehouseId
+        })
+        .then(res => {
           this.shelf_list_data = res.data.data;
           this.total = res.data.total;
           this.currentPage = res.data.current_page;
@@ -84,28 +109,26 @@ export default {
     },
     get_data() {
       if (this.active) {
-        $http.getWarehouseshelf({ warehouse_id: this.$route.query.warehouse_id })
-          .then((res) => {
-            this.shelf_list_data = res.data.data;
-            this.total = res.data.total;
-          });
+        $http.getWarehouseshelf({ warehouse_id: this.queryWarehouseId }).then(res => {
+          this.shelf_list_data = res.data.data;
+          this.total = res.data.total;
+        });
       }
     }, // 获取数据列表
     del(id) {
-      this.$confirm('此操作将永久删除该货位, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning'
       }).then(() => {
-        $http.delWarehouseshelf(id)
-          .then(() => {
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-              showClose: true,
-            });
-            this.get_data();
+        $http.delWarehouseshelf(id).then(() => {
+          this.$message({
+            message: this.$t('success'),
+            type: 'success',
+            showClose: true
           });
+          this.get_data();
+        });
       });
     },
     edit(id) {
@@ -113,13 +136,13 @@ export default {
         name: 'editCargoShelf',
         query: {
           shelfId: id, // 该条数据的 id
-          warehouse_id: this.$route.query.warehouse_id, // 当前仓库 id
+          warehouse_id: this.queryWarehouseId, // 当前仓库 id
           edit: true,
-          currentPage: this.currentPage, // 这个参数是用来查询不在首页的数据(因为拿到的数据分页)
-        },
+          currentPage: this.currentPage // 这个参数是用来查询不在首页的数据(因为拿到的数据分页)
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

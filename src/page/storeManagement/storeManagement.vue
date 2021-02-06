@@ -1,94 +1,106 @@
 <template>
   <div :class="$style.storeManage">
-        <div :class="$style.body_main">
-              <div :class="$style.btn">
-                <i class="el-icon-plus"></i>
-                <span @click="handleClick">
-                  添加仓库
-                </span>
-              </div>
-              <!-- 表格 -->
-              <el-table  :class="$style.table_main"
-                         :data="warehouses"
-                          border>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            type="index"
-                                            width="80"
-                                            label="#">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="name_cn"
-                                            label="仓库名称">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="code"
-                                            label="仓库编号">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="warehouse_address"
-                                            label="地址">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="warehouse_feature"
-                                            label="仓库性质">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            align="center"
-                                            prop="area"
-                                            label="仓库面积(㎡)">
-                          </el-table-column>
-                          <el-table-column  header-align="center"
-                                            width="400"
-                                            label="操作">
-                                            <template slot-scope="scope">
-                                                      <el-button size="mini"
-                                                                 @click="edit(scope.row)">
-                                                                 查看编辑
-                                                      </el-button>
-                                                      <el-button size="mini"
-                                                                 @click="config(scope.row)">
-                                                                 基础配置
-                                                      </el-button>
-                                                      <el-button size="mini"
-                                                                 v-if="!scope.row.is_default_warehouse"
-                                                                 @click="setDefaultWarehouse(scope.row)">
-                                                                 设为默认仓库
-                                                      </el-button>
-                                                      <el-button size="mini"
-                                                                 type="danger"
-                                                                 v-if="!scope.row.is_default_warehouse"
-                                                                 @click="deleteWarehouse(scope.row)">
-                                                                 删除
-                                                      </el-button>
-                                            </template>
-                          </el-table-column>
-              </el-table>
-              <!-- 分页 -->
-              <el-pagination  :class="$style.pagination"
-                              @current-change="handleCurrentChange"
-                              :current-page="currentPage"
-                              layout="total, prev, pager, next, jumper"
-                              :total="+this.total">
-              </el-pagination>
-        </div>
-        <!-- 添加仓库 -->
-        <add-warehouse  :visible.sync = "switchFlag"
-                        :row_data="row_data"
-                        @updata_data="handle_updata_data">
-        </add-warehouse>
+    <div :class="$style.body_main">
+      <div :class="$style.btn">
+        <i class="el-icon-plus"></i>
+        <span @click="handleClick">{{ $t('addWarehouse') }}</span>
+      </div>
+      <!-- 表格 -->
+      <el-table :class="$style.table_main" :data="warehouses" border>
+        <el-table-column header-align="center" align="center" type="index" width="80" label="#">
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="code"
+          :label="$t('warehouseNO')"
+        >
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="name_cn"
+          :label="$t('storeName')"
+        >
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="warehouse_address"
+          width="300"
+          :label="$t('address')"
+        >
+        </el-table-column>
+        <el-table-column
+          header-align="center"
+          align="center"
+          prop="area"
+          :label="$t('WarehouseArea')"
+        >
+        </el-table-column>
+        <el-table-column header-align="center" fixed="right" :label="$t('operation')" width="240">
+          <template slot-scope="scope">
+            <el-tooltip :content="$t('edit')" placement="top">
+              <el-button size="mini" icon="el-icon-edit" round @click="edit(scope.row)">
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('warehouseConfig')" placement="top">
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-setting"
+                round
+                @click="config(scope.row)"
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('setDefault')" placement="top">
+              <el-button
+                size="mini"
+                v-if="!scope.row.is_default_warehouse"
+                round
+                icon="el-icon-house"
+                @click="setDefaultWarehouse(scope.row)"
+              >
+              </el-button>
+            </el-tooltip>
+            <el-tooltip :content="$t('delete')" placement="top">
+              <el-button
+                size="mini"
+                type="danger"
+                round
+                v-if="!scope.row.is_default_warehouse"
+                icon="el-icon-delete"
+                @click="deleteWarehouse(scope.row)"
+              >
+              </el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        :class="$style.pagination"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        layout="total, prev, pager, next, jumper"
+        :total="+this.total"
+      >
+      </el-pagination>
+    </div>
+    <!-- 添加仓库 -->
+    <edit-warehouse
+      :visible.sync="switchFlag"
+      :row_data="row_data"
+      @updata_data="handle_updata_data"
+    >
+    </edit-warehouse>
   </div>
 </template>
 
 <script>
-import cms from '@/components/cms';
-import PaginationAndButtons from '@/components/pagination_and_buttons';
 import $http from '@/api';
-import AddWarehouse from './components/editWarehouse';
+import EditWarehouse from './components/editWarehouse';
 
 export default {
   name: 'storeManage',
@@ -100,13 +112,11 @@ export default {
       warehouses: [], // 仓库列表
       total: '', // 列表总条数
       currentPage: 1, // 当前页
-      row_data: {},
+      row_data: {}
     };
   },
   components: {
-    cms,
-    PaginationAndButtons,
-    AddWarehouse,
+    EditWarehouse
   },
   created() {
     this.getWarehouse(); // 拉取仓库列表
@@ -131,19 +141,17 @@ export default {
     },
     handleCurrentChange(val) {
       this.current_page = +val;
-      $http.checkWarehouses({ page: val })
-        .then((res) => {
-          this.warehouses = res.data.data;
-        });
+      $http.checkWarehouses({ page: val }).then(res => {
+        this.warehouses = res.data.data;
+      });
     },
     getWarehouse() {
-      $http.warehouses()
-        .then((res) => {
-          this.warehouses = res.data.data;
-          this.total = res.data.total;
-          this.current_page = res.data.current_page;
-          this.all_warehouses_data = res.data;
-        });
+      $http.warehouses().then(res => {
+        this.warehouses = res.data.data;
+        this.total = res.data.total;
+        this.current_page = res.data.current_page;
+        this.all_warehouses_data = res.data;
+      });
     },
     handleClick() {
       this.$router.push({ name: 'addWarehouse' });
@@ -154,49 +162,42 @@ export default {
     },
     config(info) {
       this.$router.push({
-        name: 'basicSetting',
+        name: 'areaAndShelf',
         query: {
-          warehouse_id: info.id,
-        },
+          warehouse_id: info.id
+        }
       });
     },
     deleteWarehouse(info) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning'
       }).then(() => {
-        $http.deleteWarehouse(info.id)
-          .then(() => {
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-            });
-            this.getWarehouse();
+        $http.deleteWarehouse(info.id).then(() => {
+          this.$message({
+            message: this.$t('success'),
+            type: 'success'
           });
+          this.getWarehouse();
+        });
       });
     },
     setDefaultWarehouse(info) {
-      $http.setDefaultWarehouse(info.id)
-        .then((res) => {
-          if (res.status) return;
-          this.getWarehouse();
-        });
-    },
-  },
+      $http.setDefaultWarehouse(info.id).then(res => {
+        if (res.status) return;
+        this.getWarehouse();
+      });
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-@import '../../less/public_variable.less';
-@import '../../less/public_variable.less';
-
 .storeManage {
   position: relative;
-  margin: 20px 0 20px 0;
   .body_main {
     margin: 0 auto;
-    width: 90%;
     .btn {
       display: block;
       font-size: 1.2rem;
@@ -215,5 +216,5 @@ export default {
       float: right;
     }
   }
-};
+}
 </style>

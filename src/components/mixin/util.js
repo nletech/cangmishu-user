@@ -1,4 +1,3 @@
-
 function getGroup(el) {
   const groupMdoel = el.$parent.$parent;
   if (!groupMdoel) {

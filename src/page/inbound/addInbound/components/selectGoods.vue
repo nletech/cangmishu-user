@@ -1,45 +1,46 @@
 <template>
-        <div :class="$style.select_goods">
-              <!-- 选择商品弹窗 -->
-              <el-dialog  title="选择商品"
-                          width="80%"
-                          :visible.sync="visible_goods"
-                          :before-close="handleClose">
-                          <el-table  ref="table"
-                                     border
-                                     :data="goods"
-                                     style="width: 100%"
-                                     @selection-change="handleSelected"
-                                     :row-style="{cursor: 'pointer'}">
-                                    <el-table-column  type="selection"
-                                                      width="55">
-                                    </el-table-column>
-                                    <el-table-column  label="商品名称"
-                                                      prop="name_cn">
-                                    </el-table-column>
-                                    <el-table-column  prop="specs[0].relevance_code"
-                                                      label="SKU">
-                                  </el-table-column>
-                          </el-table>
-                          <!-- 分页 -->
-                          <el-pagination  :class="$style.pagination"
-                                          v-show="+total"
-                                          @current-change="handleCurrentChange"
-                                          :current-page="currentPage"
-                                          layout="total, prev, pager, next, jumper"
-                                          :total="+total">
-                          </el-pagination>
-                          <span slot="footer"
-                                class="dialog-footer">
-                                <el-button  type="primary"
-                                            @click="confirmSelected"
-                                            :class="$style.submit_btn"
-                                            :loading="$store.state.btn_loading">
-                                            {{$t('submit')}}
-                                </el-button>
-                          </span>
-              </el-dialog>
-        </div>
+  <div :class="$style.select_goods">
+    <!-- 选择商品弹窗 -->
+    <el-dialog
+      title="选择商品"
+      width="80%"
+      :visible.sync="visible_goods"
+      :before-close="handleClose"
+    >
+      <el-table
+        ref="table"
+        border
+        :data="goods"
+        style="width: 100%"
+        @selection-change="handleSelected"
+        :row-style="{ cursor: 'pointer' }"
+      >
+        <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table-column label="商品名称" prop="name_cn"> </el-table-column>
+        <el-table-column prop="specs[0].relevance_code" label="SKU"> </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        :class="$style.pagination"
+        v-show="+total"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        layout="total, prev, pager, next, jumper"
+        :total="+total"
+      >
+      </el-pagination>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="confirmSelected"
+          :class="$style.submit_btn"
+          :loading="$store.state.btn_loading"
+        >
+          {{ $t('submit') }}
+        </el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -50,8 +51,8 @@ export default {
   props: {
     visible_goods: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
@@ -59,7 +60,7 @@ export default {
       total: '',
       selected: [], // 初选
       currentPage: 1,
-      all_selected: [], // 总的选择存储（因为有分页）
+      all_selected: [] // 总的选择存储（因为有分页）
     };
   },
   watch: {
@@ -67,12 +68,12 @@ export default {
       if (this.visible_goods) {
         this.getGoodsList();
       }
-    },
+    }
   },
   computed: {
     warehouse_id() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
-    },
+    }
   },
   methods: {
     handleSelected(arr) {
@@ -84,15 +85,14 @@ export default {
     getGoodsList() {
       // eslint-disable-next-line
       const warehouse_data = {
-        warehouse_id: this.warehouse_id,
+        warehouse_id: this.warehouse_id
       };
-      $http.getProducts(warehouse_data)
-        .then((res) => {
-          if (res.status) return;
-          this.goods = res.data.data;
-          this.total = res.data.total;
-          this.currentPage = res.data.current_page;
-        });
+      $http.getProducts(warehouse_data).then(res => {
+        if (res.status) return;
+        this.goods = res.data.data;
+        this.total = res.data.total;
+        this.currentPage = res.data.current_page;
+      });
     }, // 获取商品列表
     handleClose() {
       this.$emit('update:visible_goods', false);
@@ -128,23 +128,23 @@ export default {
         this.all_selected.push(this.selected[i]);
       } // 缓存当前页的选中项
       // 分页请求
-      $http.getProductsPage({
-        page: val,
-        warehouse_id: this.warehouse_id,
-      })
-        .then((res) => {
+      $http
+        .getProductsPage({
+          page: val,
+          warehouse_id: this.warehouse_id
+        })
+        .then(res => {
           if (res.status) return;
           this.goods = res.data.data;
           this.total = res.data.total;
           this.currentPage = res.data.current_page;
         });
-    }, // 分页
-  },
+    } // 分页
+  }
 };
 </script>
 
 <style lang="less" module>
-
 .select_goods {
   .select_goods_btn {
     margin: 0 0 10px 0;
@@ -158,4 +158,3 @@ export default {
   }
 }
 </style>
-

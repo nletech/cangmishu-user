@@ -5,7 +5,7 @@
         <el-col :lg="colValue">
           <slot name="left"></slot>
         </el-col>
-        <el-col :lg="24-colValue">
+        <el-col :lg="24 - colValue">
           <slot name="right"></slot>
         </el-col>
       </el-row>
@@ -21,27 +21,25 @@ export default {
   props: {
     colValue: {
       type: Number,
-      default: 14,
-    },
+      default: 14
+    }
   },
   data() {
     return {
       checkList: [],
-      something: '',
+      something: ''
     };
-  },
+  }
 };
 </script>
 
 <style lang="less" module>
-@import '../../less/public_variable.less';
 .from {
   .from_container {
     padding: 45px;
     background: @white;
     min-height: 507px;
-    width: 88%;
-    box-shadow:2px 0px 8px rgba(109,96,186,0.3);
+    box-shadow: 2px 0px 8px rgba(109, 96, 186, 0.3);
     margin: 10px;
   }
   .submit {

@@ -2,7 +2,7 @@ const routerData = {
   namespaced: true,
   state: {
     isPermissionFilter: false,
-    routerMap: [],
+    routerMap: []
   },
   mutations: {
     // 添加路由成功
@@ -12,8 +12,8 @@ const routerData = {
     // 添加路由表
     addRouterTable(state, data) {
       state.routerMap = data;
-    },
-  },
+    }
+  }
 };
 
 export default routerData;

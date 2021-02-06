@@ -5,14 +5,12 @@
     :headers="Authorization"
     :on-success="handleAvatarSuccess"
     :on-remove="handleRemove"
-    :on-exceed="handleExceed"
-    :action=api
-    :limit="1"
-    :file-list="fileList"
-    name="image">
-    <img v-if="this.photo"
-    :src="this.photo"
-    class="avatar">
+    :showFileList="false"
+    :action="api"
+    list-type="picture"
+    name="image"
+  >
+    <img v-if="this.photo" :src="this.photo" class="avatar" />
     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
 </template>
@@ -23,55 +21,55 @@ import baseApi from '@/lib/axios/base_api';
 export default {
   props: {
     photo: {
-      type: String,
+      type: String
     },
     disabled: {
-      type: Boolean,
+      type: Boolean
     },
-  },
-  data() {
-    return {
-      // myPhoto: this.photo,
-      fileList: [],
-    };
+    limit: {
+      type: Number
+    }
   },
   computed: {
     Authorization() {
       return { Authorization: this.$store.state.token.token };
     },
     api() {
-      return `${baseApi}/upload/image`;
-    },
+      return `${baseApi.BASE_URL}upload/image`;
+    }
   },
   methods: {
-    handleExceed() {
-      this.$notify({
-        message: this.$t('onlyOnePicture'),
-        type: 'warning',
-      });
-    },
     // 上传截图成功回调
     handleAvatarSuccess(res) {
       if (res.status === 0) {
-        this.$emit('update:photo', res.data.url);
+        switch (this.limit) {
+          case 1:
+            this.$emit('update:photo', res.data.url); // 上传一个图片
+            return;
+          default:
+            throw Error('picture upload went wrong');
+        }
       } else if (res.status === 1) {
-        this.$notify({
+        this.$message({
           message: res.msg,
-          type: 'warning',
+          type: 'warning'
         });
       }
     },
     handleRemove() {
-      this.$emit('update:photo', '');
-    },
-  },
+      switch (this.limit) {
+        case 1:
+          this.$emit('update:photo', '');
+          return;
+        default:
+          throw Error('picture upload went wrong');
+      }
+    }
+  }
 };
 </script>
 
-<style lang="less" module>
-@import '../../less/public_variable.less';
-
-</style>
+<style lang="less" module></style>
 
 <style lang="less" scoped>
 .avatar-uploader-icon {

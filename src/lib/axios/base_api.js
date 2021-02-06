@@ -1,16 +1,32 @@
 const baseUrl = location.hostname;
-let base;
+let baseApi;
+
 switch (baseUrl) {
   case 'dev.cangmishu.com':
-    base = 'https://dev-api.cangmishu.com/'; // 仓秘书开发服
+    // 仓秘书开发服
+    baseApi = {
+      BASE_URL: 'https://dev-api.cangmishu.com/',
+      BASE_STATE: 'https://dev.cangmishu.com/#/'
+    };
     break;
-  case 'demo.cangmishu.com':
-    base = 'https://demo-api.cangmishu.com'; // 仓秘书正式服
+  case 'my.cangmishu.com':
+    // 仓秘书正式服
+    baseApi = {
+      BASE_URL: 'https://api.cangmishu.com/',
+      BASE_STATE: 'https://my.cangmishu.com/#/'
+    };
+    break;
+  case 'localhost':
+    baseApi = {
+      BASE_URL: 'https://api.cangmishu.com/',
+      BASE_STATE: 'http://localhost:8081/#/'
+    };
     break;
   default:
-    // base = 'http://192.168.0.184:10080'; // 李林峰本地服务器
-    base = 'https://dev-api.cangmishu.com/'; // 仓秘书开发服
+    baseApi = {
+      BASE_URL: 'https://dev-api.cangmishu.com/',
+      BASE_STATE: 'https://dev.cangmishu.com/#/'
+    };
     break;
 }
-const baseApi = base;
 export default baseApi;

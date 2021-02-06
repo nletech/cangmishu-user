@@ -4,9 +4,6 @@ export default {
     if (!this.$route.query.type) return;
     this.params.type = this.$route.query.type;
   },
-  // beforeUpdate() {
-  //   this.extendParams();
-  // },
   mounted() {
     if (this.getList) this.getList();
   },
@@ -15,14 +12,11 @@ export default {
       params: {
         page: 1,
         page_size: 10,
-        // type: '1',
-        // status: '0',
         keywords: '',
         data_count: 0,
         created_at_b: '',
-        created_at_e: '',
-        // handleCurrentChange: this.handleCurrentChange,
-      },
+        created_at_e: ''
+      }
     };
   },
   methods: {
@@ -52,6 +46,6 @@ export default {
     handleCurrentChange(pageId) {
       this.params.page = pageId;
       this.getList();
-    },
-  },
+    }
+  }
 };

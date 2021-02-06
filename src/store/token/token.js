@@ -1,5 +1,5 @@
 // import $http from '@/api';
-
+import router from '@/router';
 // 返回处理过的token数据
 function tokenData(value) {
   return `Bearer ${value}`;
@@ -12,12 +12,8 @@ function removeToken(key) {
 }
 
 // 将数据添加到本地
-function addToken(keep, key, val) {
-  if (keep) {
-    localStorage.setItem(key, val);
-  } else {
-    sessionStorage.setItem(key, val);
-  }
+function addToken(key, val) {
+  localStorage.setItem(key, val);
   return val;
 }
 
@@ -30,21 +26,26 @@ const token = {
   namespaced: true,
   state: {
     token: '',
-    vip_info: null,
+    vip_info: null
   },
   mutations: {
     // TOKEN 相关
     getToken(state) {
-      state.token = getData('TOKEN');
+      if (router.currentRoute.path === '/initPage/home' && router.currentRoute.query.token) {
+        state.token = router.currentRoute.query.token;
+        addToken('TOKEN', tokenData(router.currentRoute.query.token));
+      } else {
+        state.token = getData('TOKEN');
+      }
     }, // 写入token
     addToken(state, data) {
-      state.token = addToken(data.keep, 'TOKEN', tokenData(data.token));
+      state.token = addToken('TOKEN', tokenData(data));
     }, // 添加token
     delToken(state) {
       state.token = '';
       removeToken('TOKEN');
-    }, // 删除token
-  },
+    } // 删除token
+  }
 };
 
 export default token;

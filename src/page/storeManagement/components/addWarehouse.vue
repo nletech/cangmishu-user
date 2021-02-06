@@ -1,59 +1,61 @@
 <template>
-          <div  :class="$style.add_warehouse">
-                <div  :class="$style.main">
-                      <el-row  :class="$style.add_warehouse_main">
-                                <el-col :span="10" :offset="6">
-                                        <el-form  ref="rule_form"
-                                                  :class="$style.staff_form"
-                                                  label-width="140px"
-                                                  size="middle"
-                                                  :rules="rules"
-                                                  label-position="left"
-                                                  :model="warehouseInfo">
-                                                  <el-form-item  prop="name_cn"
-                                                                label="仓库名称"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.name_cn"></el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="code"
-                                                                label="仓库编码"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.code"></el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="address"
-                                                                label="省市区"
-                                                                size="middle">
-                                                                <el-cascader  :props="props"
-                                                                              :options="addressInfo"
-                                                                              v-model="warehouseInfo.address"
-                                                                              style="width: 100%;">
-                                                                </el-cascader>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="addressDetail"
-                                                                label="详细地址"
-                                                                size="middle">
-                                                                <el-input  type="textarea"
-                                                                            v-model="warehouseInfo.addressDetail">
-                                                                </el-input>
-                                                  </el-form-item>
-                                                  <el-form-item  prop="area"
-                                                                label="面积 (平方米)"
-                                                                size="middle">
-                                                                <el-input  v-model="warehouseInfo.area"></el-input>
-                                                  </el-form-item>
-                                        </el-form>
-                                        <el-row>
-                                                <el-col :span="2" :offset="13">
-                                                  <el-button  :class="$style.submit_btn"
-                                                              @click="warehouseInfoSubmit">
-                                                              提交
-                                                  </el-button>
-                                                </el-col>
-                                        </el-row>
-                                </el-col>
-                      </el-row>
-                </div>
-          </div>
+  <div :class="$style.add_warehouse">
+    <div :class="$style.main">
+      <el-row :class="$style.add_warehouse_main">
+        <el-col>
+          <el-form
+            ref="rule_form"
+            label-width="140px"
+            :rules="rules"
+            label-position="left"
+            :model="warehouseInfo"
+          >
+            <el-form-item prop="name_cn" :label="$t('storeName')" size="middle">
+              <el-input v-model="warehouseInfo.name_cn"></el-input>
+            </el-form-item>
+            <el-form-item prop="address" :label="$t('SSQ')" size="middle">
+              <el-cascader
+                :props="props"
+                :options="addressInfo"
+                v-model="warehouseInfo.address"
+                placeholder=""
+                style="width: 100%;"
+              >
+              </el-cascader>
+            </el-form-item>
+            <el-form-item prop="contact_number" :label="$t('phone')" size="medium">
+              <el-input v-model="warehouseInfo.contact_number"> </el-input>
+            </el-form-item>
+            <el-form-item prop="addressDetail" :label="$t('addressDetial')" size="middle">
+              <el-input type="textarea" v-model="warehouseInfo.addressDetail"> </el-input>
+            </el-form-item>
+            <label class="label">{{ $t('extraInfomation') }}</label>
+            <el-form-item prop="area" :label="$t('WarehouseArea')" size="medium">
+              <el-col :span="5">
+                <el-input v-model="warehouseInfo.area">
+                  <template slot="append">m²</template>
+                </el-input>
+              </el-col>
+            </el-form-item>
+            <!-- <el-form-item  label="启用多语言输入">
+                            <el-switch
+                              v-model="warehouseInfo.isEnabledLang"
+                              active-text="开启"
+                              :active-value="1"
+                              :inactive-value="0">
+                            </el-switch>
+                            <div :class="$style.tips">开启后商品库、分类都需要填写外文名称</div>
+                        </el-form-item> -->
+            <el-form-item>
+              <el-button type="primary" :class="$style.submit_btn" @click="warehouseInfoSubmit">
+                {{ $t('confirm') }}
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -67,57 +69,55 @@ export default {
     const check = {
       name_cn: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入姓名'));
+          callback(new Error(this.$t('Warehousenamecannotbeempty')));
         } else {
           callback();
         }
       },
       code: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入电话'));
+          callback(new Error(this.$t('Pleaseenterapositiveinteger')));
         } else {
           callback();
         }
       },
       address: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入省市区'));
+          callback(new Error(this.$t('pleaseInputCity')));
         } else {
           callback();
         }
       },
       addressDetail: (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入详细地址'));
+          callback(new Error(this.$t('Pleaseenteradetailedaddress')));
         } else {
           callback();
         }
       },
       area: (rule, value, callback) => {
         if (parseInt(value, 10) <= 0 || isNaN(parseInt(value, 10))) {
-          callback(new Error('请输入仓库面积'));
+          callback(new Error(this.$t('PleaseEnterTheWarehouseArea')));
         } else {
           callback();
         }
-      },
+      }
     };
     return {
       rules: {
-        name_cn: [
-          { validator: check.name_cn, trigger: 'blur', required: true },
-        ],
-        code: [
-          { validator: check.code, trigger: 'blur', required: true },
-        ],
+        name_cn: [{ validator: check.name_cn, trigger: 'blur', required: true }],
+        code: [{ validator: check.code, trigger: 'blur', required: true }],
         address: [
-          { type: Array, validator: check.address, trigger: 'blur', required: true },
+          {
+            type: Array,
+            validator: check.address,
+            trigger: 'blur',
+            required: true
+          }
         ],
-        addressDetail: [
-          { validator: check.addressDetail, trigger: 'blur', required: true },
-        ],
-        area: [
-          { validator: check.area, trigger: 'blur', required: true },
-        ],
+        addressDetail: [{ validator: check.addressDetail, trigger: 'blur', required: true }],
+        area: [{ validator: check.area, trigger: 'blur', required: true }],
+        contact_number: [{ trigger: 'blur', required: true }]
       },
       warehouseInfo: {
         name_cn: '',
@@ -125,6 +125,8 @@ export default {
         address: [],
         addressDetail: '',
         area: '',
+        contact_number: ''
+        // isEnabledLang: 0,
       },
       id: '',
       text_flag: '',
@@ -133,42 +135,37 @@ export default {
       props: {
         label: 'value', // json 数据的 value 属性对应联动组件的 label 属性
         value: 'value',
-        children: 'children',
-      },
+        children: 'children'
+      }
     };
   },
-  watch: {
-    visible() {
-      if (!this.visible) {
-        this.$emit('update:visible', false); // 关闭弹窗
-      }
-    },
-    row_data() {
-      if (!Object.keys(this.row_data).length) {
-        this.text_flag = false;
-        this.warehouseInfo = {};
-      } else {
-        /* eslint-disable */
-        this.text_flag = true;
-        this.warehouseInfo.name_cn       = this.row_data.name_cn;
-        this.warehouseInfo.code          = this.row_data.code;
-        this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
-        this.warehouseInfo.addressDetail = this.row_data.door_no;
-        this.warehouseInfo.area          = this.row_data.area;
-      }
-    },
-  },
+  // watch: {
+  //   row_data() {
+  //     if (!Object.keys(this.row_data).length) {
+  //       this.text_flag = false;
+  //       this.warehouseInfo = {};
+  //     } else {
+  //       /* eslint-disable */
+  //       this.text_flag = true;
+  //       this.warehouseInfo.name_cn       = this.row_data.name_cn;
+  //       this.warehouseInfo.code          = this.row_data.code;
+  //       this.warehouseInfo.address       = [this.row_data.province, this.row_data.city, this.row_data.street];
+  //       this.warehouseInfo.addressDetail = this.row_data.door_no;
+  //       this.warehouseInfo.area          = this.row_data.area;
+  //     }
+  //   },
+  // },
   methods: {
-    message(status, success_msg, fail_msg) {
+    message(status, successMsg, failMsg) {
       if (!status) {
         this.$message({
           type: 'success',
-          message: `${success_msg}`,
+          message: `${successMsg}`
         });
       } else {
         this.$message({
           type: 'info',
-          message: `${fail_msg}`,
+          message: `${failMsg}`
         });
       }
     },
@@ -198,26 +195,24 @@ export default {
       this.formInfo.street = this.warehouseInfo.address[2];
       this.formInfo.door_no = this.warehouseInfo.addressDetail;
       this.formInfo.area = this.warehouseInfo.area;
-      //
-      this.$refs.rule_form.validate((validate) => {
+      this.formInfo.contact_number = this.warehouseInfo.contact_number;
+      // this.formInfo.is_enabled_lang = this.warehouseInfo.isEnabledLang;
+      this.$refs.rule_form.validate(validate => {
         if (validate) {
-              $http.addWarehouse(this.formInfo)
-                .then((res) => {
-                  if (res.status) return;
-                  this.$router.push({ name: 'storeManage'});
-                });
+          $http.addWarehouse(this.formInfo).then(res => {
+            if (res.status) return;
+            this.$router.replace({ name: 'storeManage' });
+          });
         } else {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less" module>
-@import '../../../less/public_variable.less';
-
 .add_warehouse {
   .main {
     width: 88%;
@@ -237,6 +232,9 @@ export default {
         height: 120%;
         margin: 0 auto;
       }
+    }
+    .tips {
+      color: red;
     }
   }
 }

@@ -1,8 +1,8 @@
+// import $http from '@/api';
 import store from '@/store';
-// import { Message } from 'element-ui';
 import { routerMap } from './home';
 
-const whiteList = ['login', 'register', 'backPassword'];
+const whiteList = ['login', 'bindAccount', 'register', 'backPassword'];
 
 function addRouerMap(router, next, to) {
   store.commit('routerData/switchPermissionMapFilterStatus', true);
@@ -11,29 +11,32 @@ function addRouerMap(router, next, to) {
   next({ path: to.path, query: to.query });
 }
 
-export default function (router) {
+export default function(router) {
   return (to, from, next) => {
     if (store.state.token.token) {
       if (to.name === 'login') {
-        // console.log('to login');
         next('/');
       } else if (!store.state.routerData.isPermissionFilter) {
-        // console.log('未授权');
         addRouerMap(router, next, to); // 添加登录的路由
       } else {
-        // console.log('其他');
         next();
-        // console.log('next');
       }
     } else if (!store.state.token.token) {
-      if (whiteList.includes(to.name)) {
+      if (to.path === '/initPage/home' && to.query.token) {
+        store.commit('token/addToken', to.query.token);
+        // $http.getUserInfo().then(data => {
+        //   store.commit('config/setWarehouseName', data.data.user.default_warehouse.name_cn);
+        //   store.commit('config/setWarehouseId', data.data.user.default_warehouse.id);
+        //   store.commit('config/updateUserInfo', data.data.user);
+        //   // localStorage.setItem('setUser', data.data.user.id); // 存入用户 id
+        //   // localStorage.setItem('setUModules', JSON.stringify(data.data.modules)); // 存入用户 昵称
+        //   // localStorage.setItem('setUType', data.data.user.boss_id); // 存入员工标识 不为 0 则是员工类型
+        // });
+        next({ path: to.path, query: {} });
+      } else if (whiteList.includes(to.name)) {
         next();
       } else {
         next('/login');
-        // Message({
-        //   type: 'error',
-        //   message: '请重新登录',
-        // });
       }
     }
   };

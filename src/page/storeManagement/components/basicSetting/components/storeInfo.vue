@@ -1,142 +1,120 @@
 <template>
-          <el-dialog  :title="this.text_flag ? `编辑${active_tab_item}` : `添加${active_tab_item}` "
-                      :center="true"
-                      @update:visible="$emit('update:visible', $event)"
-                      :visible="visible"
-                      width="50%">
-                      <el-row :class="$style.add_warehouse_main">
-                        <!-- 添加信息 -->
-                        <el-col  :span="10"
-                                 :offset="6">
-                                 <el-form  :model="add_info"
-                                           ref="form"
-                                           :class="$style.staff_form"
-                                           label-width="140px"
-                                           size="middle"
-                                           label-position="left"
-                                           :rules="info_Verify_rules">
-                                           <!-- 货区编号 -->
-                                           <el-form-item  :label="`${active_tab_item}编号`"
-                                                          prop="code"
-                                                          size="middle">
-                                                          <el-input  v-model="add_info.code">
-                                                          </el-input>
-                                           </el-form-item>
-                                           <!-- 货区名称 -->
-                                           <el-form-item  :label="`${active_tab_item}名称`"
-                                                          prop="name_cn"
-                                                          size="middle">
-                                                          <el-input  v-model="add_info.name_cn">
-                                                          </el-input>
-                                           </el-form-item>
-                                           <!-- 是否启用 -->
-                                           <el-form-item  label="是否启用"
-                                                          prop="is_enabled">
-                                                          <el-switch  v-model="is_enabled"
-                                                                      active-color="#13ce66"
-                                                                      active-value="1"
-                                                                      inactive-value="0"
-                                                                      inactive-color="#ccc">
-                                                          </el-switch>
-                                           </el-form-item>
-                                           <label class="label"> 选填信息: </label>
-                                           <el-form-item  label="备注"
-                                                          prop="remark"
-                                                          size="middle">
-                                                          <el-input  v-model="add_info.remark"
-                                                                     type="textarea">
-                                                          </el-input>
-                                           </el-form-item>
-                                 </el-form>
-                                 <!-- 提交 -->
-                                 <el-row>
-                                          <el-col  :span="2"
-                                                  :offset="13">
-                                                  <el-button  @click="infoSubmit"
-                                                              :class="$style.submit_btn">
-                                                              提交
-                                                  </el-button>
-                                          </el-col>
-                                 </el-row>
-                        </el-col>
-                      </el-row>
-                      <el-row :class="$style.add_warehouse_main">
-                              <!-- 添加信息 -->
-                              <el-col  :span="10"
-                                      :offset="6">
-                                      <el-form  :model="add_info"
-                                                ref="form"
-                                                :class="$style.staff_form"
-                                                label-width="140px"
-                                                size="middle"
-                                                label-position="left"
-                                                :rules="info_Verify_rules">
-                                                <!-- 货区编号 -->
-                                                <el-form-item  :label="`${active_tab_item}编号`"
-                                                                prop="code"
-                                                                size="middle">
-                                                                <el-input  v-model="add_info.code">
-                                                                </el-input>
-                                                </el-form-item>
-                                                <!-- 货区名称 -->
-                                                <el-form-item  :label="this.text_flag ? `${active_tab_item}名称` : `${active_tab_item}名称`"
-                                                                prop="name_cn"
-                                                                size="middle">
-                                                                <el-input  v-model="add_info.name_cn">
-                                                                </el-input>
-                                                </el-form-item>
-                                                <!-- 是否启用 -->
-                                                <el-form-item  label="是否启用"
-                                                                prop="is_enabled">
-                                                                <el-switch  v-model="is_enabled"
-                                                                            active-color="#13ce66"
-                                                                            active-value="1"
-                                                                            inactive-value="0"
-                                                                            inactive-color="#ccc">
-                                                                </el-switch>
-                                                </el-form-item>
-                                                <label class="label"> 选填信息: </label>
-                                                <el-form-item  label="通道">
-                                                               <el-input
-                                                                          size="small">
-                                                               </el-input>
-                                                </el-form-item>
-                                                <el-form-item  label="排">
-                                                               <el-input
-                                                                          size="small">
-                                                               </el-input>
-                                                </el-form-item>
-                                                <el-form-item  label="列">
-                                                               <el-input
-                                                                          size="small">
-                                                               </el-input>
-                                                </el-form-item>
-                                                <el-form-item  label="层">
-                                                               <el-input
-                                                                          size="small">
-                                                               </el-input>
-                                                </el-form-item>
-                                                <el-form-item  label="备注">
-                                                               <el-input
-                                                                          type="textarea"
-                                                                          size="small"
-                                                                          :rows="3">
-                                                               </el-input>
-                                                </el-form-item>
-                                      </el-form>
-                                      <!-- 提交 -->
-                                      <el-row  :class="$style.submit_btn">
-                                                <el-col  :span="2"
-                                                        :offset="13">
-                                                        <el-button  @click="infoSubmit"
-                                                                    :class="$style.submit_btn">
-                                                                    提交
-                                                        </el-button>
-                                                </el-col>
-                                      </el-row>
-                              </el-col>
-                      </el-row>
-          </el-dialog>
+  <el-dialog
+    :title="this.text_flag ? `编辑${active_tab_item}` : `添加${active_tab_item}`"
+    :center="true"
+    @update:visible="$emit('update:visible', $event)"
+    :visible="visible"
+    width="50%"
+  >
+    <el-row :class="$style.add_warehouse_main">
+      <!-- 添加信息 -->
+      <el-col :span="10" :offset="6">
+        <el-form
+          :model="add_info"
+          ref="form"
+          :class="$style.staff_form"
+          label-width="140px"
+          size="middle"
+          label-position="left"
+          :rules="info_Verify_rules"
+        >
+          <!-- 货区编号 -->
+          <el-form-item :label="`${active_tab_item}编号`" prop="code" size="middle">
+            <el-input v-model="add_info.code"> </el-input>
+          </el-form-item>
+          <!-- 货区名称 -->
+          <el-form-item :label="`${active_tab_item}名称`" prop="name_cn" size="middle">
+            <el-input v-model="add_info.name_cn"> </el-input>
+          </el-form-item>
+          <!-- 是否启用 -->
+          <el-form-item label="是否启用" prop="is_enabled">
+            <el-switch
+              v-model="is_enabled"
+              active-color="#13ce66"
+              active-value="1"
+              inactive-value="0"
+              inactive-color="#ccc"
+            >
+            </el-switch>
+          </el-form-item>
+          <label class="label"> 选填信息: </label>
+          <el-form-item :label="$t('remark')" prop="remark" size="middle">
+            <el-input v-model="add_info.remark" type="textarea"> </el-input>
+          </el-form-item>
+        </el-form>
+        <!-- 提交 -->
+        <el-row>
+          <el-col :span="2" :offset="13">
+            <el-button @click="infoSubmit" :class="$style.submit_btn">
+              提交
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
+    <el-row :class="$style.add_warehouse_main">
+      <!-- 添加信息 -->
+      <el-col :span="10" :offset="6">
+        <el-form
+          :model="add_info"
+          ref="form"
+          :class="$style.staff_form"
+          label-width="140px"
+          size="middle"
+          label-position="left"
+          :rules="info_Verify_rules"
+        >
+          <!-- 货区编号 -->
+          <el-form-item :label="`${active_tab_item}编号`" prop="code" size="middle">
+            <el-input v-model="add_info.code"> </el-input>
+          </el-form-item>
+          <!-- 货区名称 -->
+          <el-form-item
+            :label="this.text_flag ? `${active_tab_item}名称` : `${active_tab_item}名称`"
+            prop="name_cn"
+            size="middle"
+          >
+            <el-input v-model="add_info.name_cn"> </el-input>
+          </el-form-item>
+          <!-- 是否启用 -->
+          <el-form-item label="是否启用" prop="is_enabled">
+            <el-switch
+              v-model="is_enabled"
+              active-color="#13ce66"
+              active-value="1"
+              inactive-value="0"
+              inactive-color="#ccc"
+            >
+            </el-switch>
+          </el-form-item>
+          <label class="label"> 选填信息: </label>
+          <el-form-item label="通道">
+            <el-input size="small"> </el-input>
+          </el-form-item>
+          <el-form-item label="排">
+            <el-input size="small"> </el-input>
+          </el-form-item>
+          <el-form-item label="列">
+            <el-input size="small"> </el-input>
+          </el-form-item>
+          <el-form-item label="层">
+            <el-input size="small"> </el-input>
+          </el-form-item>
+          <el-form-item :label="$t('remark')">
+            <el-input type="textarea" size="small" :rows="3"> </el-input>
+          </el-form-item>
+        </el-form>
+        <!-- 提交 -->
+        <el-row :class="$style.submit_btn">
+          <el-col :span="2" :offset="13">
+            <el-button @click="infoSubmit" :class="$style.submit_btn">
+              提交
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
+  </el-dialog>
 </template>
 
 <script>
@@ -150,7 +128,7 @@ export default {
     active_tab_item: [String],
     active_add_text: [String],
     row_data: [Object],
-    clear_is_enabled: [Number],
+    clear_is_enabled: [Number]
   },
   data() {
     // 自定义的验证规则
@@ -168,25 +146,22 @@ export default {
         } else {
           callback();
         }
-      },
+      }
     };
     return {
       add_info: {
         code: '',
         name_cn: '', // 分类名称
-        remark: '', // 备注
+        remark: '' // 备注
       },
       is_enabled: '0',
       formInfo: {},
       text_flag: '',
-      info_Verify_rules: { // 表单输入验证提醒
-        code: [
-          { validator: check.code, trigger: 'blur', required: true },
-        ],
-        name_cn: [
-          { validator: check.name_cn, trigger: 'blur', required: true },
-        ],
-      },
+      info_Verify_rules: {
+        // 表单输入验证提醒
+        code: [{ validator: check.code, trigger: 'blur', required: true }],
+        name_cn: [{ validator: check.name_cn, trigger: 'blur', required: true }]
+      }
     };
   },
   methods: {
@@ -217,7 +192,7 @@ export default {
                       if (re.status) return;
                       this.$emit('updata_data', active_item); // 更新数据列表
                     });
-                } else if(this.active_tab_item === '货位') {
+                } else if (this.active_tab_item === '货位') {
                   $http.editWarehouseshelf(id, this.formInfo)
                     .then((re) => {
                       if (re.status) return;
@@ -231,7 +206,7 @@ export default {
                       if (re.status) return;
                       this.$emit('updata_data_list', active_item); // 更新数据列表
                     });
-                } else if(this.active_tab_item === '货位') {
+                } else if (this.active_tab_item === '货位') {
                   $http.addWarehouseshelf(this.formInfo)
                     .then((re) => {
                       if (re.status) return;
@@ -249,10 +224,8 @@ export default {
 </script>
 
 <style lang="less" module>
-@import '../../../../../less/public_variable.less';
-
 .add_warehouse_main {
-  width: 90%;
+  width: 96%;
   height: 50%;
   margin: 0 auto;
   padding: 30px 0 0 0;

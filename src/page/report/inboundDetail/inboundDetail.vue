@@ -4,10 +4,8 @@
 
 <script>
 export default {
-  name: 'inboundDetail',
+  name: 'inboundDetail'
 };
 </script>
 
-<style lang="less" module>
-
-</style>
+<style lang="less" module></style>

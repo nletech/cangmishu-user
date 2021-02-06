@@ -3,20 +3,26 @@ html {
   margin: 0;
   padding: 0;
   font-size: 14px;
-  font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif !important;
+  font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB",
+    "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif !important;
   min-width: 1024px;
-  overflow-x: hidden;
   background: RGBA(247, 247, 247, 1);
+  color: #333;
+  overflow: hidden;
+}
+* {
+  box-sizing: border-box;
 }
 
 @font-face {
-  font-family: 'iconfont';  /* project id 1170870 */
-  src: url('//at.alicdn.com/t/font_1170870_e2b0n6dp9ys.eot');
-  src: url('//at.alicdn.com/t/font_1170870_e2b0n6dp9ys.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1170870_e2b0n6dp9ys.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1170870_e2b0n6dp9ys.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1170870_e2b0n6dp9ys.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1170870_e2b0n6dp9ys.svg#iconfont') format('svg');
+  font-family: "iconfont"; /* project id 1170870 */
+  src: url("//at.alicdn.com/t/font_1170870_7vgej6mq64.eot");
+  src: url("//at.alicdn.com/t/font_1170870_7vgej6mq64.eot?#iefix")
+      format("embedded-opentype"),
+    url("//at.alicdn.com/t/font_1170870_7vgej6mq64.woff2") format("woff2"),
+    url("//at.alicdn.com/t/font_1170870_7vgej6mq64.woff") format("woff"),
+    url("//at.alicdn.com/t/font_1170870_7vgej6mq64.ttf") format("truetype"),
+    url("//at.alicdn.com/t/font_1170870_7vgej6mq64.svg#iconfont") format("svg");
 }
 .iconfont {
   font-family: "iconfont" !important;
@@ -26,7 +32,24 @@ html {
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.fr{ float: right;}
+.fl{ float: left;}
+.oper-btn-card{
+  border-radius: 0;
+  .el-card__body{
+    padding: 10px;
+  }
+}
+.oper-button{
+  padding: 5px 10px;
+  border-radius: 0 0 5px 5px;
+  background-color:rgba(37, 37, 37, 0.16);
+}
+.btn-group{
+  .el-button+.el-button{
+    margin-left: 13px; 
+  }
+}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -36,7 +59,7 @@ html {
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #409eff;
 }
 
 .avatar-uploader-icon {
@@ -56,9 +79,15 @@ html {
 
 .label {
   font-size: 1.25rem;
+  margin-top: 20px;
   margin-bottom: 20px;
   display: block;
 }
 .pointer {
-  cursor: pointer,
+  cursor: pointer;
+}
+hr {
+  margin: 20px 0px;
+  border: 0px;
+  border-bottom: 1px solid #ccc;
 }

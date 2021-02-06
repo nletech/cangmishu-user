@@ -6,19 +6,28 @@ import store from '@/store';
 import router from '@/router';
 import baseApi from './base_api';
 
-Axios.defaults.baseURL = baseApi; // 默认前缀连接
+nprogress.configure({ showSpinner: false });
+
+Axios.defaults.baseURL = baseApi.BASE_URL; // 默认前缀连接
 Axios.defaults.timeout = 60000; // 超时时间
 Axios.defaults.transformRequest = [
   function form(params) {
     return qs.stringify(params);
-  },
+  }
 ];
 
 // 发送请求之前
 function requestTime(config) {
-  store.commit('config/loading', true);
+  if (!config.isBtnLoading) {
+    store.commit('config/loading', true);
+  }
+  if (!config.notNeedNprogress) {
+    nprogress.start();
+    nprogress.inc(0.8);
+  }
   config.headers.Authorization = store.state.token.token;
-  nprogress.start();
+  config.headers.warehouse = localStorage.getItem('warehouseId');
+  config.headers.Language = localStorage.getItem('lang') || 'cn'; // 后端语言标识
   return config;
 }
 
@@ -35,11 +44,12 @@ Axios.interceptors.request.use(requestTime, requestError);
 function responseSuccess(response) {
   store.commit('config/loading', false);
   nprogress.done();
-  if (+response.data.status) {
+  if (response.data.status === 500) {
+    // if (+response.data.status) {
     Message({
       message: response.data.msg,
       type: 'error',
-      showClose: true,
+      showClose: true
     });
     return Promise.reject(response.data);
   }
@@ -50,37 +60,44 @@ function responseSuccess(response) {
 function responseError(error) {
   nprogress.done();
   store.commit('config/loading', false);
-  if (error.response && error.response.status === 401) {
-    store.commit('token/delToken');
-    router.push({
-      name: 'login',
-    });
-    // Message.error('请重新登录');
-  } else if (error.response && error.response.status === 500) {
-    Message({
-      message: '服务器出错，请稍后重试...',
-      type: 'error',
-      showClose: true,
-    });
-  } else if (error.response && error.response.status === 422) {
-    // Message.error(error.response.data.msg);
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      showClose: true,
-    });
-  } else if (error.response && error.response.status === 404) {
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      showClose: true,
-    });
-  } else if (error.response && error.response.status === 403) {
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      showClose: true,
-    });
+  const ERRORSTATUS = error.response && error.response.status; // 捕获错误状态码
+  switch (ERRORSTATUS) {
+    case 401:
+      store.commit('token/delToken');
+      router.push({
+        name: 'login'
+      });
+      break;
+    case 403:
+      Message({
+        message: error.response.data.msg,
+        type: 'error',
+        showClose: true
+      });
+      break;
+    case 404:
+      Message({
+        message: error.response.data.msg || '后端api未上传',
+        type: 'error',
+        showClose: true
+      });
+      break;
+    case 422:
+      Message({
+        message: error.response.data.msg,
+        type: 'error',
+        showClose: true
+      });
+      break;
+    case 500:
+      Message({
+        message: '服务器出错，请稍后重试...',
+        type: 'error',
+        showClose: true
+      });
+      break;
+    default:
+      break;
   }
   return Promise.reject(error);
 }

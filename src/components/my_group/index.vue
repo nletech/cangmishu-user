@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="less" module>
-  @import '../../less/public_variable.less';
+  
   .my_group {
     width: 100%;
     margin-bottom: 10px;
