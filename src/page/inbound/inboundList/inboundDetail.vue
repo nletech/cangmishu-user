@@ -108,7 +108,12 @@
               prop="stockin_num"
             >
             </el-table-column>
-            <el-table-column :label="$t('Rack')" align="center" header-align="center" prop="code">
+            <el-table-column
+              :label="$t('Rack')"
+              align="center"
+              header-align="center"
+              prop="location_code"
+            >
             </el-table-column>
           </el-table>
           <button-pagination :pageParams="params"></button-pagination>
@@ -174,7 +179,7 @@ export default {
       total: 20, // 列表总条数
       //
       inboundInfo: {},
-      inboundDialogVisible: false,
+      inboundDialogVisible: false
     };
   },
   components: {
