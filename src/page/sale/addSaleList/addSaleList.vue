@@ -38,7 +38,12 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="出库日期" label-width="100px">
-              <el-date-picker v-model="form.delivery_date" type="date" placeholder="选择出库日期">
+              <el-date-picker
+                v-model="form.delivery_date"
+                type="date"
+                placeholder="选择出库日期"
+                value-format="yyyy-MM-dd"
+              >
               </el-date-picker>
             </el-form-item>
           </el-col>
