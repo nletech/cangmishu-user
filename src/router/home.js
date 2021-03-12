@@ -25,7 +25,7 @@ const InboundList = loadOnDemand('inbound/inboundList/inboundList'); // 入库�
 const InboundCategory = loadOnDemand('inbound/inboundCategory/inboundCategory'); // 入库单分类
 const AddInbound = loadOnDemand('inbound/addInbound/addInbound'); // 添加入库单
 const InboundShelf = loadOnDemand('inbound/inboundList/components/inboundShelf'); // 入库上架
-
+const InboundDetail = loadOnDemand('inbound/inboundList/inboundDetail'); // 入库详细
 // 销售
 const SaleList = loadOnDemand('sale/saleList/saleList'); // 销售单列表
 const SaleDetail = loadOnDemand('sale/saleList/saleDetail'); // 销售单详细
@@ -38,6 +38,8 @@ const SaleOverview = loadOnDemand('sale/saleOverview/saleOverview'); // 销售�
 
 // 库存
 const InventoryManage = loadOnDemand('inventory/inventoryManage/inventoryManage'); // 库存管理
+const InventoryDetail = loadOnDemand('inventory/inventoryManage/inventoryDetail'); // 库存详细
+const LocationStock = loadOnDemand('inventory/locationStock/locationStock'); // 货区库存
 const InventoryAlarm = loadOnDemand('inventory/inventoryAlarm/inventoryAlarm'); // 库存报警
 const StockTaking = loadOnDemand('inventory/stockTaking/stockTaking'); // 库存盘点 (新模块)
 const AddCheckStock = loadOnDemand('inventory/stockTaking/components/addCheckStock'); // 库存盘点 (新模块)
@@ -48,6 +50,7 @@ const InventoryOverview = loadOnDemand('inventory/inventoryOverview/inventoryOve
 const GoodsManage = loadOnDemand('inventory/goodsManage/goodsManage'); // 货品管理
 const GoodsAdd = loadOnDemand('inventory/goodsManage/components/goodsAdd'); // 商品新增
 const GoodsEdit = loadOnDemand('inventory/goodsManage/components/goodsEdit'); // 商品编辑
+const GoodsDetail = loadOnDemand('inventory/goodsManage/components/goodsDetail'); // 商品详细
 // 员工管理
 // 员工列表
 // const StaffList = loadOnDemand('staffManage/staffList/staffList'); // 员工列表
@@ -130,6 +133,12 @@ export const routerMap = [
             path: ''
           },
           {
+            name: 'saleOverview', // 子菜单-销售单概览
+            path: 'saleOverview',
+            component: SaleOverview,
+            nav: 2
+          },
+          {
             name: 'saleList', // 子菜单-销售列表
             path: 'saleList',
             component: SaleList,
@@ -169,12 +178,6 @@ export const routerMap = [
             name: 'saleCategory', // 子菜单-销售单分类
             path: 'saleCategory',
             component: SaleCategory,
-            nav: 2
-          },
-          {
-            name: 'saleOverview', // 子菜单-销售单分类
-            path: 'saleOverview',
-            component: SaleOverview,
             nav: 2
           },
           {
@@ -223,6 +226,12 @@ export const routerMap = [
             nav: 3
           },
           {
+            name: 'goodsDetail', // 模块  // 模块 货品管理--货品详细
+            path: 'goodsManage/goodsDetail',
+            component: GoodsDetail,
+            nav: 3
+          },
+          {
             name: 'categoryManagement', // 子菜单- 商品分类管理
             path: 'categoryManagement',
             component: CategoryManagement,
@@ -245,10 +254,28 @@ export const routerMap = [
             type: 'children-group'
           },
           {
+            name: 'inventoryOverview', // 子菜单-库存概览
+            path: 'inventoryOverview',
+            component: InventoryOverview,
+            nav: 2
+          },
+          {
             name: 'inventoryManage', // 子菜单-库存管理
             path: 'inventoryManage',
             component: InventoryManage,
             nav: 2
+          },
+          {
+            name: 'locationStock', // 子菜单-货位库存
+            path: 'locationStock',
+            component: LocationStock,
+            nav: 2
+          },
+          {
+            name: 'inventoryDetail', // 子菜单-库存详细
+            path: 'inventoryDetail',
+            component: InventoryDetail,
+            nav: 3
           },
           {
             name: 'stockTaking', // 子菜单-库存盘点
@@ -263,12 +290,6 @@ export const routerMap = [
             nav: 2
           },
           {
-            name: 'inventoryOverview', // 子菜单-库存概览
-            path: 'inventoryOverview',
-            component: InventoryOverview,
-            nav: 2
-          },
-          {
             name: 'inbound', // 子菜单-分组 入库
             path: '',
             type: 'children-group'
@@ -278,6 +299,12 @@ export const routerMap = [
             path: 'inboundList',
             component: InboundList,
             nav: 2
+          },
+          {
+            name: 'inboundDetail', // 子菜单-入库单详细
+            path: 'inboundDetail',
+            component: InboundDetail,
+            nav: 3
           },
           {
             name: 'inboundCategory', // 子菜单-入库单分类

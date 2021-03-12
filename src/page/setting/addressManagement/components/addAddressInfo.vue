@@ -1,21 +1,5 @@
 <template>
-  <!--
-  * 仓秘书免费开源WMS仓库管理系统+订货订单管理系统
-  *
-  * (c) Hunan NLE Network Technology Co., Ltd. <cangmishu.com>
-  *
-  * For the full copyright and license information, please view the LICENSE
-  * file that was distributed with this source code.
-  *
-  -->
-  <el-dialog
-    :title="title"
-    :center="true"
-    @update:visible="$emit('update:visible', $event)"
-    :visible="visible"
-    @closed="onClosedDialog"
-    width="60%"
-  >
+  <el-drawer :title="title" :visible.sync="visible" :before-close="onClosedDialog">
     <el-row :class="$style.add_warehouse_main">
       <!-- 添加信息 -->
       <el-col>
@@ -95,7 +79,7 @@
         </el-form>
       </el-col>
     </el-row>
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script>
@@ -121,7 +105,7 @@ export default {
         {
           id: 0,
           label: '中国',
-          value: 'CN'
+          value: '中国'
         }
       ],
       ocountryOptions: [
@@ -291,7 +275,7 @@ export default {
     row_data(value) {
       // 监听传入的 row_data 如果是空对象则弹框文字显示为 "添加",然后清除下表单的缓存
       // 如果是通过编辑按钮传入 row_data 则将信息填充进表单，填充的 id 用于请求编辑信息接口
-      if (value.country === 'CN' || !value.country) {
+      if (value.country === '中国' || !value.country) {
         this.visibleOtherCountry = false;
       } else {
         this.visibleOtherCountry = true;
@@ -317,14 +301,17 @@ export default {
     }
   },
   methods: {
-    onClosedDialog() {
+    onClosedDialog(done) {
+      done();
+      this.visible = false;
       this.$nextTick(() => {
         this.$refs.addressForm.resetFields();
       });
     },
     onChangeCountry(v) {
       this.addressInfo.address = [];
-      if (v === 'CN') {
+      console.log(v);
+      if (v === '中国') {
         this.visibleOtherCountry = false;
       } else {
         this.visibleOtherCountry = true;
@@ -342,7 +329,7 @@ export default {
       this.formInfo.door_no = this.addressInfo.door_no;
       this.formInfo.street = this.addressInfo.street;
       this.formInfo.country = this.addressInfo.country;
-      if (this.addressInfo.country === 'CN') {
+      if (this.addressInfo.country === '中国') {
         this.formInfo.province = this.addressInfo.address[0];
         this.formInfo.city = this.addressInfo.address[1];
         this.formInfo.district = this.addressInfo.address[2];

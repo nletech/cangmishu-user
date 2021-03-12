@@ -1,98 +1,143 @@
 <template>
-  <!--
-  * 仓秘书免费开源WMS仓库管理系统+订货订单管理系统
-  *
-  * (c) Hunan NLE Network Technology Co., Ltd. <cangmishu.com>
-  *
-  * For the full copyright and license information, please view the LICENSE
-  * file that was distributed with this source code.
-  *
-  -->
-  <div>
-    <el-col :span="3">
-      <el-date-picker
-        v-model="dateValue"
-        @change="handlerChange"
-        clearable
-        type="daterange"
-        :start-placeholder="$t('startDate')"
-        :end-placeholder="$t('endDate')"
-        size="small"
-        value-format="yyyy-MM-dd"
-        :default-time="['00:00:00', '23:59:59']"
-      >
-      </el-date-picker>
-    </el-col>
-    <el-col :span="2" :offset="5">
-      <el-date-picker
-        v-model="planDateValue"
-        @change="handlerChange"
-        type="date"
-        size="small"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        :placeholder="$t('planOutboundTime')"
-      >
-      </el-date-picker>
-    </el-col>
-    <el-col :span="3" :offset="4">
-      <el-select
-        v-model="outboundStatus"
-        clearable
-        size="small"
-        @change="handlerChange"
-        :placeholder="$t('selectStatus')"
-      >
-        <el-option
-          v-for="item in this.outboundStatusList"
-          :key="item.value"
-          :label="item.name"
-          :value="item.id"
+  <div class="clearfix">
+    <el-card shadow="never" class="oper-btn-card">
+      <div class="clearfix">
+        <el-form
+          class="fl form-no-bottom"
+          :inline="true"
+          label-position="left"
+          label-width="80px"
+          @keydown.enter.native="handlerChange"
         >
-        </el-option>
-      </el-select>
-    </el-col>
-    <el-col :span="4" :offset="2">
-      <el-row>
-        <el-col :span="21">
-          <el-input
-            v-model="outboundCode"
-            clearable
-            @change="handlerChange"
-            @clear="handlerChange"
+          <el-form-item>
+            <div class="btn-group">
+              <el-input
+                v-model="keywords"
+                clearable
+                style="width: 360px"
+                placeholder="按单据号,收件人手机号"
+                size="small"
+              />
+              <el-button
+                type="primary"
+                @click="handlerChange"
+                size="small"
+                style="margin-left:10px;"
+              >
+                搜索
+              </el-button>
+              <el-checkbox
+                v-model="notShowCancel"
+                true-label="1"
+                false-label="0"
+                border
+                type="text"
+                size="small"
+                style="margin-left:10px;"
+                @change="handlerChange"
+              >
+                不显示已作废单据
+              </el-checkbox>
+              <el-button
+                type="default"
+                @click="isFilterOpen = !isFilterOpen"
+                size="small"
+                style="margin-left:10px;"
+              >
+                展开筛选
+              </el-button>
+            </div>
+          </el-form-item>
+        </el-form>
+        <div class="fr">
+          <el-button
             size="small"
-            :placeholder="$t('pleaseEnterOutboundNO')"
+            type="primary"
+            class="fr"
+            @click="addSaleList"
+            icon="el-icon-plus"
+            style="margin-left:10px;"
           >
-          </el-input>
-        </el-col>
-        <el-col :span="2" :offset="1">
-          <el-button size="small" @click="handlerChange">
-            {{ $t('Search') }}
+            {{ $t('addSaleList') }}
           </el-button>
-        </el-col>
-      </el-row>
-    </el-col>
+          <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
+            {{ $t('Export') }}
+          </el-button>
+        </div>
+      </div>
+      <search-filter
+        v-show="isFilterOpen"
+        :search="btnFilterSearch"
+        :clear="handlerClearConditions"
+      >
+        <template>
+          <div>
+            <el-form ref="form" label-width="80px" class="form-no-bottom" size="mini">
+              <el-form-item label="下单日期 :">
+                <date-range
+                  ref="date"
+                  @on-date-change="handlerDateChange"
+                  v-model="dateRangeIndex"
+                />
+              </el-form-item>
+              <el-divider />
+              <el-form-item class="form-no-bottom" label="出库状态 :">
+                <group-radio
+                  @on-value-change="handlerChange"
+                  v-model="outboundStatus"
+                  :options="outboundStatusList"
+                />
+              </el-form-item>
+              <el-divider />
+              <el-form-item class="form-no-bottom" label="出库日期 :">
+                <el-date-picker
+                  v-model="planDateValue"
+                  @change="handlerChange"
+                  type="date"
+                  size="small"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :placeholder="$t('planOutboundTime')"
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-form>
+          </div>
+        </template>
+      </search-filter>
+    </el-card>
   </div>
 </template>
 
 <script>
 import $http from '@/api';
+import searchFilter from '@/components/search-filter';
+import dateRange from '@/components/date-range';
+import groupRadio from '@/components/group-radio';
+import baseApi from '@/lib/axios/base_api';
 
 export default {
   name: 'outboundListSearch',
+  components: {
+    searchFilter,
+    dateRange,
+    groupRadio
+  },
   data() {
     return {
-      dateValue: [], // 选定的选择时间
+      btnFilterSearch: {},
+      isDisabled: false,
+      isFilterOpen: false,
+      dateValue: {
+        beginTime: null,
+        endTime: null
+      }, // 选定的选择时间
+      keywords: '',
       planDateValue: '', // 选定的预计出库时间
       outboundStatus: '', // 选定的销售单状态
-      outboundStatusList: [
-        // { id: 0, name: '订单已取消' },
-        // { id: 1, name: '待拣货' },
-        // { id: 4, name: '待发货' },
-        // { id: 5, name: '配送中' },
-        // { id: 7, name: '已收货' },
-      ],
-      outboundCode: '' // 输入的销售单号
+      outboundStatusList: [],
+      notShowCancel: '1',
+      dateRangeIndex: 0
     };
   },
   created() {
@@ -105,35 +150,62 @@ export default {
   computed: {
     warehouseId() {
       return this.$store.state.config.setWarehouseId || +localStorage.getItem('warehouseId');
+    },
+    api() {
+      return this.$store.state.token.token.substring(7);
+    },
+    currentLang() {
+      return localStorage.getItem('lang') || 'cn';
     }
   },
   methods: {
+    addSaleList() {
+      this.$router.push({
+        name: 'addSaleList'
+      });
+    }, // 添加出库单
     getOutboundTypes() {
       $http.getOutboundTypes().then(res => {
         this.outboundStatusList = res.data;
       });
     },
+    handlerDateChange(v) {
+      this.dateValue = v;
+      this.handlerChange();
+    },
+    handlerClearConditions() {
+      this.outboundStatus = '';
+      this.planDateValue = '';
+      this.keywords = '';
+      this.dateRangeIndex = 0;
+      this.dateValue = {
+        beginTime: null,
+        endTime: null
+      };
+      this.handlerChange();
+    },
     handlerChange() {
-      // eslint-disable-next-line
-      let data = [];
-      if (Array.isArray(this.dateValue) && this.dateValue.length === 2) {
-        data[0] = this.dateValue[0];
-        data[1] = this.dateValue[1];
-      } else if (!this.dateValue) {
-        data = ['', ''];
-      }
       const query = {
         warehouse_id: this.warehouseId,
-        created_at_b: data[0],
-        created_at_e: data[1],
+        created_at_b: this.dateValue.beginTime,
+        created_at_e: this.dateValue.endTime,
         delivery_date: this.planDateValue,
         status: this.outboundStatus,
-        keywords: this.outboundCode
+        keywords: this.keywords,
+        not_show_cancel: this.notShowCancel
       };
-      $http.queryOrder(query).then(res => {
-        this.$emit('data_cb', res);
-        this.$emit('queryParams', query);
-      });
+      this.$emit('queryParams', query);
+    },
+    handlerExportOrder() {
+      if (!this.warehouseId) return;
+      this.isDisabled = true;
+      const timer = setTimeout(() => {
+        this.isDisabled = false;
+        clearTimeout(timer);
+      }, 2000);
+      window.open(
+        `${baseApi.BASE_URL}order/export?api_token=${this.api}&warehouse_id=${this.warehouseId}&${this.tempStr}`
+      );
     }
   }
 };

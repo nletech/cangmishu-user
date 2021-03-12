@@ -115,6 +115,9 @@ const $http = {
   editProducts(id, data) {
     return Axios.put(`/products/${id}`, data);
   }, // 编辑货品
+  logsProducts(id, data) {
+    return Axios.get(`/product/${id}/logs`, data);
+  }, // 编辑货品
   deleteProducts(id) {
     return Axios.delete(`/products/${id}`);
   }, // 删除货品
@@ -141,6 +144,9 @@ const $http = {
     return Axios.put(`/stock/${id}`, data);
   },
   //                                               库存管理
+  getSpecStocks(id, data) {
+    return Axios.get(`/spec/${id}/stocks`, { params: data });
+  }, // 获取库存列表
   getStocks(data) {
     return Axios.get('/stock', { params: data });
   }, // 获取库存列表
@@ -263,7 +269,16 @@ const $http = {
   checkWarehouseshelf(data) {
     return Axios.get('/locations', { params: data });
   }, // 分页查询--货位列表
-  //                                                          设置 -地址管理
+  getAreaStockData(data) {
+    return Axios.get('/areas/count', { params: data });
+  }, // 库存统计--货位列表
+  getAreaWithLocation(data) {
+    return Axios.get('/areas/locations', { params: data });
+  },
+  getLocationStockData(data) {
+    return Axios.get('/stock/locations', { params: data });
+  }, // 库存统计--货位详细库存
+  //设置 -地址管理
   addSenderAddress(data) {
     return Axios.post('/senderAddress', data, { isBtnLoading: true });
   }, // 添加发件人信息
@@ -371,6 +386,9 @@ const $http = {
   checkOrderType(data) {
     return Axios.get('/orderType', { params: data });
   }, // 分页查询--出库单分类
+  getOrderLogs(id) {
+    return Axios.get(`/order/${id}/logs`);
+  }, // 得到订单日志记录
   // 辅助功能
   getUserProfile() {
     return Axios.get(`user/profile`);
@@ -438,6 +456,9 @@ const $http = {
   addCheckStock(data) {
     return Axios.post('recount', data);
   }, // 新增盘点
+  moveLocation(data) {
+    return Axios.post('stock/moveLocation', data);
+  }, //移动货位
   checkStockDetail(StockId) {
     return Axios.get(`recount/${StockId}`);
   }, // 盘点清单详细

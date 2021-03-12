@@ -1,118 +1,162 @@
 <template>
-  <!--
-  * 仓秘书免费开源WMS仓库管理系统+订货订单管理系统
-  *
-  * (c) Hunan NLE Network Technology Co., Ltd. <cangmishu.com>
-  *
-  * For the full copyright and license information, please view the LICENSE
-  * file that was distributed with this source code.
-  *
-  -->
-  <div :class="$style.inboundShelf">
-    <el-row :gutter="10">
-      <el-col :span="13">
-        <span :class="$style.system_title">{{ $t('') }}</span>
-      </el-col>
-      <!-- 入库单分类 -->
-      <el-col :span="13">
-        <span :class="$style.classify_title">{{ $t('InboundListType') }}:</span>
-        <span>{{ inboundInfo.batch_type.name }}</span>
-      </el-col>
-      <!-- 二维码 -->
-      <el-col :span="4" :offset="3">
-        <img
-          v-if="inboundInfo.batch_code_barcode"
-          :src="inboundInfo.batch_code_barcode"
-          :class="$style.inboundimg"
-        />
-        <span>{{ inboundInfo.batch_code }}</span>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :span="13">
-        <span :class="$style.classify_title">{{ $t('supplier') }}:</span>
-        <span class="inbound_info" v-if="inboundInfo.distributor.name_cn">{{
-          inboundInfo.distributor.name_cn
-        }}</span>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :span="8">
-        <span :class="$style.classify_title">{{ $t('CreateTime') }}:</span>
-        <span class="inbound_info">{{ inboundInfo.created_at }}</span>
-      </el-col>
-      <el-col :span="6" :offset="8">
-        <span :class="$style.classify_title" v-if="inboundInfo.warehouse.name_cn">
-          {{ $t('warehouse') }}:&nbsp;&nbsp;&nbsp;
-          {{ inboundInfo.warehouse.name_cn }}
-        </span>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10" :class="$style.sku_input">
-      <el-col :span="4">
-        <el-input
-          :placeholder="$t('PleaseenterorscanSKU')"
-          @keyup.enter.native="check_sku()"
-          v-model="sku_input"
-          size="mini"
-        >
-          <i slot="suffix" class="iconfont" style="display: inline-block; margin: 8px 0 0 0;">
-            &#xe60b;
-          </i>
-        </el-input>
-      </el-col>
-      <el-col :span="2">
-        <el-button size="mini" @click="check_sku()">{{ $t('confirm') }}</el-button>
-      </el-col>
-    </el-row>
-    <h3>{{ $t('goodsList') }}</h3>
-    <el-table :data="inboundList" border style="width: 90%" v-loading="tableLoading">
-      <el-table-column type="index" align="center" header-align="center" width="60">
-      </el-table-column>
-      <el-table-column
-        :label="$t('cnName')"
-        prop="spec.product_name"
-        align="center"
-        header-align="center"
-      >
-      </el-table-column>
-      <el-table-column label="SKU" align="center" header-align="center" prop="relevance_code">
-      </el-table-column>
-      <el-table-column label="EAN" align="center" header-align="center" prop="ean">
-      </el-table-column>
-      <el-table-column
-        :label="$t('Estimatednumberofwarehousing')"
-        align="center"
-        header-align="center"
-        prop="need_num"
-        width="144"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.need_num }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('Actualwarehousingquantity')"
-        align="center"
-        header-align="center"
-        prop="stockin_num"
-      >
-      </el-table-column>
-      <el-table-column :label="$t('Rack')" align="center" header-align="center" prop="code">
-      </el-table-column>
-      <el-table-column :label="$t('operation')" align="center" header-align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)">{{ $t('edit') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <button-pagination :pageParams="params"></button-pagination>
-    <el-row :gutter="10">
-      <el-col :span="10">
-        <span :class="$style.classify_title">{{ $t('remark') }}:</span>
-        <span>{{ inboundInfo.remark }}</span>
-      </el-col>
-    </el-row>
+  <div>
+    <detail-dialog :visible.sync="inboundDialogVisible" :id.sync="batch_id"> </detail-dialog>
+    <model-form :colValue="24">
+      <!-- 入库单详情弹框 -->
+      <el-form slot="left" :rules="rules" :model="form" label-width="100px" ref="form">
+        <el-form-item>
+          <el-row :gutter="20" type="flex" justify="end">
+            <el-col>
+              <el-button
+                @click="handlerDownload()"
+                style="float:right"
+                icon="el-icon-download"
+                size="small"
+              >
+                下载
+              </el-button>
+              <el-button
+                @click="handlerCancel()"
+                style="float:right"
+                icon="el-icon-circle-close"
+                size="small"
+                type="danger"
+                v-if="inboundInfo.status !== 3"
+              >
+                取消订单
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        <h2 align="center" style="margin:0px;">
+          <div style="float:right">
+            <div :class="$style.img">
+              <img
+                v-if="inboundInfo.batch_code_barcode"
+                :src="inboundInfo.batch_code_barcode"
+                :class="$style.inboundimg"
+              />
+            </div>
+            <div>
+              <span style="font-size:12px;" v-if="inboundInfo">{{ inboundInfo.batch_code }}</span>
+            </div>
+          </div>
+          入库并上架
+        </h2>
+        <hr style="clear:both" />
+        <el-row type="flex" justify="space-between">
+          <el-col :span="8">
+            <el-form-item label="创建日期">
+              <div>{{ inboundInfo.created_at }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item :label="$t('category')">
+              {{ inboundInfo.batch_type.name }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <!-- 供应商 -->
+            <el-form-item :label="$t('supplier')">
+              {{ inboundInfo.distributor.name_cn }}
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <hr />
+        <!-- 入库单分类 -->
+        <el-card class="box-card">
+          <el-row :gutter="10" :class="$style.sku_input">
+            <el-col :span="4">
+              <el-input
+                :placeholder="$t('PleaseenterorscanSKU')"
+                @keyup.enter.native="check_sku()"
+                v-model="sku_input"
+                size="mini"
+              >
+                <i slot="suffix" class="iconfont" style="display: inline-block; margin: 8px 0 0 0;">
+                  &#xe60b;
+                </i>
+              </el-input>
+            </el-col>
+            <el-col :span="2">
+              <el-button size="mini" @click="check_sku()">{{ $t('confirm') }}</el-button>
+            </el-col>
+          </el-row>
+          <br />
+          <el-table :data="inboundList" border v-loading="tableLoading">
+            <el-table-column type="index" align="center" header-align="center" width="60">
+            </el-table-column>
+            <el-table-column
+              :label="$t('cnName')"
+              prop="spec.product_name"
+              align="center"
+              header-align="center"
+            >
+            </el-table-column>
+            <el-table-column label="SKU" align="center" header-align="center" prop="relevance_code">
+            </el-table-column>
+            <el-table-column label="EAN" align="center" header-align="center" prop="ean">
+            </el-table-column>
+            <el-table-column
+              :label="$t('Estimatednumberofwarehousing')"
+              align="center"
+              header-align="center"
+              prop="need_num"
+              width="144"
+            >
+              <template slot-scope="scope">
+                <span>{{ scope.row.need_num }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('Actualwarehousingquantity')"
+              align="center"
+              header-align="center"
+              prop="stockin_num"
+            >
+            </el-table-column>
+            <el-table-column :label="$t('Rack')" align="center" header-align="center" prop="code">
+            </el-table-column>
+            <el-table-column :label="$t('operation')" align="center" header-align="center">
+              <template slot-scope="scope">
+                <el-button @click="handleEdit(scope.row)">{{ $t('edit') }}</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <button-pagination :pageParams="params"></button-pagination>
+        </el-card>
+        <hr />
+        <!-- 提交按钮 -->
+        <el-row :gutter="24">
+          <el-col :span="18">
+            <el-form-item :label="$t('remark')">
+              <el-input
+                v-model="inboundInfo.remark"
+                type="textarea"
+                rows="6"
+                :placeholder="$t('TheFieldmaynotbegreaterthan30characters')"
+                :maxlength="30"
+              >
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="实际总数量:">
+              <span style="font-size:18px; font-weight:bold">{{ getSubQty() }}</span>
+            </el-form-item>
+            <el-divider></el-divider>
+            <el-button
+              @click="toInbound"
+              type="primary"
+              :loading="isButtonLoading"
+              style="width:100%;margin-bottom:15px;height:50px;"
+            >
+              {{ $t('submit') }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-form>
+    </model-form>
     <el-dialog
       v-if="dialogVisible"
       :title="$t('goodsDetial')"
@@ -201,13 +245,6 @@
         <el-button type="primary" @click="handleEditConfirm">{{ $t('submit') }}</el-button>
       </span>
     </el-dialog>
-    <el-row>
-      <el-col :span="10" :offset="10">
-        <el-button round plain @click="toInbound" :class="$style.toInbound">{{
-          $t('submit')
-        }}</el-button>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -220,6 +257,7 @@ import getListData from '@/mixin/list';
 import buttonPagination from '@/components/pagination_and_buttons';
 import { OnlyNumber } from '@/lib/validateForm';
 import mixin from '@/mixin/form_config';
+import detailDialog from './inbound_detail';
 
 export default {
   name: 'inboundShelf',
@@ -278,6 +316,7 @@ export default {
       ], // 库存信息
       //
       inboundInfo: {
+        id: 0,
         batch_type: {
           name: ''
         }, // 中文名称
@@ -290,17 +329,19 @@ export default {
           name_cn: ''
         },
         created_at: '',
-        remark: ''
+        remark: '',
+        sub_total: 0,
+        sub_qty: 0
       }, // 入库单信息
       remark: '', // 备注
       inboundList: [],
-      batch_id: '',
       tableLoading: false,
       order_status_list: [],
       warehouse_name: '',
       distributor_name: '',
       category_name: '',
       total_need_num: '',
+      inboundDialogVisible: false,
       //
       need_expiration_date: '', // 过期时间标志
       need_best_before_date: '', // 最佳体验期标志
@@ -310,23 +351,43 @@ export default {
   },
   components: {
     buttonPagination,
-    ModelForm
+    ModelForm,
+    detailDialog
   },
   watch: {
     warehouseId() {
       this.getData();
-    },
-    id: {
-      handler(value) {
-        this.getList();
-      },
-      deep: true
     }
   },
   mounted() {
+    this.batch_id = this.$route.query.batch_id;
     this.getData();
   },
   methods: {
+    handlerCancel() {
+      this.$confirm(this.$t('AcrionTips'), this.$t('tips'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning'
+      }).then(() => {
+        $http.deleteInbound(this.batch_id).then(() => {
+          this.$message({
+            message: this.$t('success'),
+            type: 'success',
+            showClose: true
+          });
+          this.$router.push({
+            name: 'inboundList',
+            query: {
+              warehouse_id: this.warehouseId
+            }
+          });
+        });
+      });
+    },
+    handlerDownload() {
+      this.inboundDialogVisible = true;
+    },
     handlerEmit() {
       this.$confirm(this.$t('Thiswillleavethecurrentpagewillyoucontinue'), this.$t('tips'), {
         confirmButtonText: this.$t('confirm'),
@@ -402,6 +463,13 @@ export default {
     handleSelect(item) {
       // console.log(item, 'item')
     },
+    getSubQty() {
+      let totalQty = 0;
+      for (let i = 0; i < this.inboundList.length; i += 1) {
+          totalQty += parseInt(this.inboundList[i].stockin_num);
+      }
+      return totalQty;
+    },
     check_sku() {
       for (let i = 0; i < this.inboundList.length; i += 1) {
         if (+this.sku_input === +this.inboundList[i].relevance_code) {
@@ -476,36 +544,9 @@ export default {
 
 <style lang="less" module>
 .inboundShelf {
-  margin: 10px 0 10px 0;
-  padding: 0 100px 0 40px;
-  background-color: white !important;
-  .system_title {
-    font-size: 1.5rem;
-    display: inline-block;
-    margin: 40px 0 40px 0;
-    font-weight: bold;
-  }
-  .classify_title {
-    display: inline-block;
-    margin: 10px 0 5px 0;
-    font-size: 1.15rem;
-    font-weight: bold;
-  }
-  .toInbound {
-    margin: 20px 0 0 0;
-    background-color: #5745c5;
-    color: #fff;
-  }
-  .sku_input {
-    margin: 15px 0 10px 0;
-  }
-  .spec {
-    padding: 4px 4px 4px 4px;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    position: absolute;
-    top: 5px;
-    left: 310px;
-  }
+  padding: 0 0 0 10px;
+  margin: 10px 0 0 0;
+  background-color: #ffffff;
+  padding: 0 40px 0 40px;
 }
 </style>

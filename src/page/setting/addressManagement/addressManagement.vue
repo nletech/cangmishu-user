@@ -9,17 +9,18 @@
   *
   -->
   <div class="addressManagement">
-    <div :class="$style.addressManagement">
+    <div class="clearfix">
+      <div class="fr">
+        <el-button size="small" type="primary" @click="info_add_btn">
+          {{ $t(`${active_add_text}`) }}
+        </el-button>
+      </div>
+    </div>
+    <!-- 点击按键 -->
+    <div :class="$style.addressManagement" style="clear:both; margin-top:50px;">
       <div :class="$style.am_main">
         <!-- 标签页 -->
         <el-row>
-          <!-- 点击按键 -->
-          <div :class="$style.am_operation_btn">
-            <span @click="info_add_btn">
-              <i class="iconfont">&#xe618;</i>
-              {{ $t(`${active_add_text}`) }}
-            </span>
-          </div>
           <!-- 标签页 -->
           <el-tabs :class="$style.am_tabs" v-model="active_tab_item">
             <el-tab-pane

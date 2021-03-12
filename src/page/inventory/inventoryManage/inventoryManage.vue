@@ -10,56 +10,8 @@
   -->
   <div :class="$style.page">
     <div :class="$style.main">
-      <el-row :class="$style.header">
-        <el-col :span="4">
-          <el-input
-            size="small"
-            @clear="handlerClear"
-            clearable
-            v-model="query.product_name"
-            :placeholder="$t('ProductName')"
-          >
-          </el-input>
-        </el-col>
-        <el-col :span="4" :offset="1">
-          <el-input
-            size="small"
-            clearable
-            @clear="handlerClear"
-            v-model="query.sku"
-            :placeholder="$t('Inboundbatchnumber')"
-          >
-          </el-input>
-        </el-col>
-        <el-col :span="1">
-          <el-button size="small" @click="handlerSearch">
-            {{ $t('Search') }}
-          </el-button>
-        </el-col>
-        <!-- 低于库存 -->
-        <el-col :span="2" :offset="1">
-          <div style="position: relative; top: 5px; font-size: 1.2rem;">
-            <el-checkbox
-              :true-label="1"
-              @change="handlerInventorySwitch"
-              v-model="query.show_low_stock"
-            >
-              {{ $t('Belowstock') }}
-            </el-checkbox>
-          </div>
-        </el-col>
-        <el-col :span="2" :offset="8">
-          <el-button
-            icon="el-icon-plus"
-            type="text"
-            :class="$style.header_btn"
-            :loading="isButtonLoading"
-            @click="dialogVisible = true"
-          >
-            {{ $t('ExportProductinventory') }}
-          </el-button>
-        </el-col>
-      </el-row>
+      <search @queryParams="handlerQueryParams"></search>
+      <br />
       <el-table element-loading-text="loading" v-loading="isButtonLoading" :data="stockList" border>
         <el-table-column type="expand">
           <template slot-scope="props">
@@ -127,22 +79,26 @@
         </el-table-column>
         <el-table-column align="center" header-align="center" type="index" label="#">
         </el-table-column>
-        <el-table-column
-          align="center"
-          header-align="center"
-          width="300"
-          :label="$t('ProductName')"
-        >
+        <el-table-column align="center" header-align="center" width="300" label="商品规格名称">
           <template slot-scope="scope">
             {{ scope.row.product_name }}
           </template>
         </el-table-column>
-        <el-table-column align="center" header-align="center" :label="$t('Chinesespecifications')">
+        <el-table-column align="center" header-align="center" label="商品条码">
           <template slot-scope="scope">
-            {{ scope.row.name_cn }}
+            {{ scope.row.barcode }}
           </template>
         </el-table-column>
-        <el-table-column align="center" header-align="center" prop="relevance_code" label="SKU">
+        <el-table-column align="center" header-align="center" prop="relevance_code" label="规格SKU">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          header-align="center"
+          prop="purchase_price"
+          label="进货价格"
+        >
+        </el-table-column>
+        <el-table-column align="center" header-align="center" prop="sale_price" label="销售价格">
         </el-table-column>
         <el-table-column
           align="center"
@@ -166,7 +122,12 @@
             {{ scope.row.total_stockout_times }} / {{ scope.row.total_stockout_num }}
           </template>
         </el-table-column>
-        <el-table-column align="center" header-align="center" :label="$t('StockHistory')">
+        <el-table-column
+          align="center"
+          fixed="right"
+          header-align="center"
+          :label="$t('StockHistory')"
+        >
           <template slot-scope="scope">
             <el-button size="mini" @click="viewDetails(scope.row)">{{ $t('detail') }}</el-button>
           </template>
@@ -183,30 +144,6 @@
         </el-col>
       </el-row>
     </div>
-    <!-- 导出商品库存弹框 -->
-    <el-dialog
-      :title="$t('ExportProductinventory')"
-      :visible.sync="dialogVisible"
-      @closed="onClosedDialog"
-      width="500px"
-    >
-      <el-checkbox-group v-model="export_data">
-        <el-checkbox value="1" label="1">{{ $t('ExportProductList') }}</el-checkbox>
-        <el-checkbox value="2" label="2">{{ $t('Productmeasurementlist') }}</el-checkbox>
-      </el-checkbox-group>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible = false">{{ $t('cancel') }}</el-button>
-        <el-button size="mini" type="primary" @click="exportStock">{{ $t('confirm') }}</el-button>
-      </span>
-    </el-dialog>
-    <!-- 出入库详情弹框 -->
-    <inventory-detail
-      :visible.sync="inventoryDialogVisible"
-      :rowInfo="rowInfo"
-      :warehouseName="warehouseName"
-      :id="id"
-    >
-    </inventory-detail>
     <!-- SKU详情 弹窗 -->
     <SkuDetails
       :visible.sync="skuDetalisSwitch"
@@ -223,16 +160,15 @@
 import $http from '@/api';
 import mixin from '@/mixin/form_config';
 import paginationPublic from '@/components/pagination-public';
-import baseApi from '@/lib/axios/base_api';
-import inventoryDetail from './components/inventory_detail';
 import SkuDetails from './components/sku_Details';
+import search from './components/search';
 
 export default {
   mixins: [mixin],
   components: {
-    inventoryDetail,
     SkuDetails,
-    paginationPublic
+    paginationPublic,
+    search
   },
   data() {
     return {
@@ -244,7 +180,6 @@ export default {
       boundList: [], // 入库仓库列表
       stockList: [],
       id: 0,
-      export_data: [],
       // warehouseName: '',
       rowInfo: {},
       dialogVisible: false,
@@ -254,7 +189,7 @@ export default {
       query: {
         warehouse_id: '',
         show_low_stock: 0, // 低于库存
-        product_name: '', // 搜索货品名称
+        keywords: '', // 搜索货品名称
         sku: '', // 搜索SKU
         page: '', // 分页
         total: '',
@@ -281,8 +216,9 @@ export default {
     }
   },
   methods: {
-    onClosedDialog() {
-      this.export_data = [];
+    handlerQueryParams(params) {
+      this.query = params;
+      this.getStocks(this.query);
     },
     getStocks(query) {
       if (!query.warehouse_id) return;
@@ -293,28 +229,6 @@ export default {
         this.query.currentPage = res.data.current_page;
       });
     }, // 获取库存列表
-    handlerInventorySwitch(val) {
-      if (val === 1) {
-        this.query.show_low_stock = 1;
-      } else {
-        this.query.show_low_stock = 0;
-      }
-      this.getStocks(this.query);
-    }, // 查询库存
-    handlerSearch() {
-      // eslint-disable-next-line
-      if (!this.query.product_name && !this.query.sku) return; // 无输入数据, 则不处理
-      this.query.page = 1;
-      this.getStocks(this.query);
-    }, // 搜索响应
-    handlerClear() {
-      this.getStocks(this.query);
-    }, // 清除输入框
-    handlerInputQuery(res) {
-      this.stockList = res.data.data;
-      this.query.total = res.data.total;
-      this.query.currentPage = res.data.current_page;
-    }, // 输入框回调
     handlerChangePage(val) {
       this.query.page = val;
       this.getStocks(this.query);
@@ -324,46 +238,13 @@ export default {
       this.stock_id = row.id;
       this.rowInfo = row;
     }, // sku 的详情
-    // eslint-disable-next-line
-    exportStock() {
-      // eslint-disable-next-line
-      const exportParams = `&product_name=${this.query.product_name}&sku=${this.query.sku}`;
-      if (this.export_data.length === 0) {
-        this.$message({
-          type: 'warning',
-          message: '请选择导出方式'
-        });
-        return;
-      }
-      if (this.export_data.length === 2) {
-        // 同时导出两个
-        // 导出 SKU 列表
-        window.open(
-          `${baseApi.BASE_URL}export/sku?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-        // 导出 货品库列表
-        window.open(
-          `${baseApi.BASE_URL}export/stock?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-      } else if (this.export_data[0] === '1') {
-        // 单独导出货品列表
-        window.open(
-          `${baseApi.BASE_URL}export/stock?warehouse_id=${this.warehouseId}&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-      } else {
-        window.open(
-          `${baseApi.BASE_URL}export/sku?warehouse_id=${
-            // 单独导出 sku
-            this.warehouseId
-          }&api_token=${this.$store.state.token.token}${exportParams}`
-        );
-      }
-      this.dialogVisible = false;
-    }, // 导出库存
     viewDetails(row) {
-      this.inventoryDialogVisible = true;
-      this.id = row.id;
-      this.rowInfo = row;
+      this.$router.push({
+        name: 'inventoryDetail',
+        query: {
+          id: row.id
+        }
+      });
     } // 入库单详情弹框
   }
 };
