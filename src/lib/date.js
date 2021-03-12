@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 /**
- * 获取过去七天时间range  
+ * 获取过去七天时间range
  */
 export const getLast7DaysRange = () => {
   const beginTime = moment()

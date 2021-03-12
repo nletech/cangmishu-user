@@ -57,6 +57,16 @@
           >
             新增入库单
           </el-button>
+          <el-button
+            size="small"
+            type="primary"
+            class="fr"
+            @click="$router.push({ name: 'inventoryImport' })"
+            icon="el-icon-plus"
+            style="margin-left:10px;"
+          >
+            导入
+          </el-button>
         </div>
       </div>
       <search-filter

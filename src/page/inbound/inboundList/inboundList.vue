@@ -11,12 +11,6 @@
   <listUI>
     <template v-slot:search>
       <inbound-list-search @queryParams="handlerCallBackData"></inbound-list-search>
-      <button-public
-        :loading="isButtonLoading"
-        text="导入"
-        @handleClickCallBack="$router.push({ name: 'inventoryImport' })"
-      >
-      </button-public>
     </template>
     <slot>
       <el-table
