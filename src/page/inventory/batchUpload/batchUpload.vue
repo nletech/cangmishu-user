@@ -604,22 +604,33 @@ export default {
     },
     // 批量提交订单
     async batchSubmitData() {
-      try {
-        await port.importSpecsTemplate({ ...this.form, product_stock: this.gridData });
-      } catch (e) {
-        this.$notify({
-          title: this.$t('addFailure'),
-          message: `添加失败`,
-          type: 'error',
-          duration: 0
-        });
+      if (!this.form.type_id) {
+        this.$message.error('请输入分类');
+        return;
       }
-      this.$notify({
-        title: this.$t('success'),
-        message: '成功提交全部包裹',
-        type: 'success'
-      });
-      this.$router.push({ name: 'inboundList' });
+      if (!this.form.distributor_id) {
+        this.$message.error('请选择供应商');
+        return;
+      }
+      var res;
+      try {
+        res = await port.importSpecsTemplate({ ...this.form, product_stock: this.gridData });
+      } catch (e) {
+        // this.$notify({
+        //   title: this.$t('addFailure'),
+        //   message: `添加失败`,
+        //   type: 'error',
+        //   duration: 0
+        // });
+      }
+      if (res.status == 0) {
+        this.$notify({
+          title: this.$t('success'),
+          message: '成功提交全部包裹',
+          type: 'success'
+        });
+        this.$router.push({ name: 'inboundList' });
+      }
     },
     // 处理任务队列
     handlerQueue() {
