@@ -19,6 +19,12 @@
             @handleClickCallBack="addInbound"
           >
           </button-public>
+          <button-public
+            :loading="isButtonLoading"
+            text="导入"
+            @handleClickCallBack="$router.push({ name: 'inventoryImport' })"
+          >
+          </button-public>
         </el-col>
       </el-row>
     </template>

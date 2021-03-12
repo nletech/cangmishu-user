@@ -606,6 +606,7 @@ const cn = {
   stockTakingList: '盘点清单',
   goodsManage: '商品管理',
   areaAndShelf: '货区和货位',
+  inventoryImport: '导入',
   PleaseSelectCategory: '请选择商品分类',
   PleaseEnterAKeyword: '请输入关键词',
   AddProduct: '添加商品',

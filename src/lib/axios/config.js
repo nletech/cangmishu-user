@@ -61,6 +61,7 @@ function responseError(error) {
   nprogress.done();
   store.commit('config/loading', false);
   const ERRORSTATUS = error.response && error.response.status; // 捕获错误状态码
+  console.log(error, 'error');
   switch (ERRORSTATUS) {
     case 401:
       store.commit('token/delToken');
@@ -91,7 +92,7 @@ function responseError(error) {
       break;
     case 500:
       Message({
-        message: '服务器出错，请稍后重试...',
+        message: error.response.data.msg,
         type: 'error',
         showClose: true
       });

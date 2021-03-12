@@ -588,6 +588,15 @@ const $http = {
   },
   getOfficialAccountQrCode() {
     return Axios.get(`officialAccount/qrCode`);
+  },
+  getSpecsTemplate() {
+    return Axios.get(`specs/stocks/template`);
+  },
+  importSpecsTemplate(data) {
+    return Axios.post(`specs/stocks/import`, data);
+  },
+  checkSpecsTemplate(data) {
+    return Axios.post(`specs/stocks/check`, data);
   }
 };
 export default $http;

@@ -18,6 +18,7 @@ const Home = loadOnDemand('initPage/home');
 // 采购
 const PurchaseList = loadOnDemand('purchase/purchaseList/purchaseList'); // 采购单列表
 const AddPurchase = loadOnDemand('purchase/addPurchase/addPurchase'); // 添加采购单
+const BatchUpload = loadOnDemand('inventory/batchUpload/batchUpload'); // 批量上传
 
 // 入库
 const InboundList = loadOnDemand('inbound/inboundList/inboundList'); // 入库单列表
@@ -323,6 +324,12 @@ export const routerMap = [
             name: 'checkStockDetail', // 模块  // 模块 货品管理--编辑货品
             path: 'stockTaking/checkStockDetail',
             component: CheckStockDetail,
+            nav: 3
+          },
+          {
+            name: 'inventoryImport', // 模块  // 模块 批量上传
+            path: 'purchaseList/inventoryImport',
+            component: BatchUpload,
             nav: 3
           }
         ]
