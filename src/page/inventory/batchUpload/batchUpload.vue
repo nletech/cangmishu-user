@@ -612,6 +612,7 @@ export default {
         this.$message.error('请选择供应商');
         return;
       }
+      this.submit_loading = true;
       var res;
       try {
         res = await port.importSpecsTemplate({ ...this.form, product_stock: this.gridData });
@@ -623,11 +624,11 @@ export default {
         //   duration: 0
         // });
       }
-      console.log(res, 'res....');
+      this.submit_loading = false;
       if (res.status == 0) {
         this.$notify({
           title: this.$t('success'),
-          message: '成功提交全部包裹',
+          message: '成功提交',
           type: 'success'
         });
         this.$router.push({ name: 'inboundList' });

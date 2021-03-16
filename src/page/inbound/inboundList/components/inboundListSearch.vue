@@ -59,7 +59,6 @@
           </el-button>
           <el-button
             size="small"
-            type="primary"
             class="fr"
             @click="$router.push({ name: 'inventoryImport' })"
             icon="el-icon-plus"

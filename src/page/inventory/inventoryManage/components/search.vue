@@ -71,6 +71,15 @@
           >
             库存概览
           </el-button>
+          <el-button
+            size="small"
+            class="fr"
+            @click="$router.push({ name: 'inventoryImport' })"
+            icon="el-icon-plus"
+            style="margin-left:10px;"
+          >
+            批量导入库存
+          </el-button>
           <el-button size="small" :disabled="isDisabled" @click="handlerExportOrder">
             导出商品库存
           </el-button>
