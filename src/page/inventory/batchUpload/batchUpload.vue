@@ -623,6 +623,7 @@ export default {
         //   duration: 0
         // });
       }
+      console.log(res, 'res....');
       if (res.status == 0) {
         this.$notify({
           title: this.$t('success'),

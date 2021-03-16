@@ -16,6 +16,21 @@ Axios.defaults.transformRequest = [
   }
 ];
 
+// json 提交方式
+let $json = Axios.create({
+  // baseURL: url, // 配置接口地址
+  headers: {
+    post: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  },
+  transformRequest: [
+    function(params) {
+      return JSON.stringify(params);
+    }
+  ]
+});
+
 // 发送请求之前
 function requestTime(config) {
   if (!config.isBtnLoading) {
@@ -38,6 +53,7 @@ function requestError(error) {
 }
 
 // 请求拦截器
+$json.interceptors.request.use(requestTime, requestError);
 Axios.interceptors.request.use(requestTime, requestError);
 
 // 响应成功
@@ -104,5 +120,8 @@ function responseError(error) {
 }
 // 响应拦截器
 Axios.interceptors.response.use(responseSuccess, responseError);
+$json.interceptors.response.use(responseSuccess, responseError);
+
+export { $json };
 
 export default Axios;

@@ -1,4 +1,4 @@
-import Axios from '@/lib/axios/config';
+import Axios, { $json } from '@/lib/axios/config';
 
 const $http = {
   getVerificationEmailCode(data) {
@@ -614,7 +614,7 @@ const $http = {
     return Axios.get(`specs/stocks/template`);
   },
   importSpecsTemplate(data) {
-    return Axios.post(`specs/stocks/import`, data);
+    return $json.post(`specs/stocks/import`, data);
   },
   checkSpecsTemplate(data) {
     return Axios.post(`specs/stocks/check`, data);
