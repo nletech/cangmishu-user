@@ -179,6 +179,7 @@
         </el-table-column>
       </el-table>
       <pagination-public
+        style="float: right"
         :params="logs.params"
         @changePage="handlerLogsChangePage"
       ></pagination-public>
