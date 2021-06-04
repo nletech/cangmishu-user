@@ -209,7 +209,10 @@ export default {
       moveDataList: [],
       logs: {
         dataList: [],
-        params: {}
+        params: {
+          total: 0,
+          page: 1
+        }
       },
       query: {
         id: '',
@@ -313,10 +316,10 @@ export default {
       });
     }, // 分页响应
     loadLogs() {
-      $http.getStockLogs(this.query.id, {}).then(res => {
+      $http.getStockLogs(this.query.id, this.logs.params).then(res => {
         this.logs.dataList = res.data.data;
         this.logs.params.total = res.data.total;
-        this.logs.params.currentPage = res.data.current_page;
+        this.logs.params.page = res.data.current_page;
       });
     },
     handlerLogsChangePage(val) {
